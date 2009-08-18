@@ -1,0 +1,52 @@
+h1. AnythingSlider jQuery Plugin
+
+*Just what the world needs, another jQuery slider. YAWN.* I know, check this one out though, it’s got lots of cool features.
+
+Here on CSS-Tricks, I’ve created a number of different sliders. Three, in fact. A "“featured content”":http://css-tricks.com/creating-a-slick-auto-playing-featured-content-slider/ slider, a "“start/stop slider”":http://css-tricks.com/startstop-slider/, and "“moving boxes”":http://css-tricks.com/moving-boxes/. Each of them had some cool interesting feature that I needed to build at the time. All were well-received, but as is the case with these things, people want them to do X, Y, and Z in addition to what they already did.
+
+This new AnythingSlider is an attempt at bringing together the functionality of all of those previous sliders and adding new features. In other words, to create a really “full featured” slider that could be widely useful. This is the first time (on CSS-Tricks) that one of these sliders is an actual plugin as well, which should make implementing it and customizing it much easier.
+
+"Keep Reading":http://css-tricks.com/anythingslider-jquery-plugin/
+
+<hr>
+
+h2. Features
+
+* Slides are HTML Content (can be anything)
+* Next Slide / Previous Slide Arrows
+* Navigation tabs are built and added dynamically (any number of slides)
+* Optional custom function for formatting navigation text
+* Auto-playing (optional feature, can start playing or stopped)
+* Each slide has a hashtag (can link directly to specific slides)
+* Infinite/Continuous sliding (always slides in the direction you are going, even at "last" slide)
+* Multiple sliders allowable per-page (hashtags only work on first)
+* Pauses autoPlay on hover (option)
+* Link to specific slides from static text links
+
+h2. Usage & Options (defaults)
+
+	$('.anythingSlider').anythingSlider({
+	   easing: "swing",                // Anything other than "linear" or "swing" requires the easing plugin
+	   autoPlay: true,                 // This turns off the entire FUNCTIONALITY, not just if it starts running or not
+	   startStopped: false,            // If autoPlay is on, this can force it to start stopped
+	   delay: 3000,                    // How long between slide transitions in AutoPlay mode
+	   animationTime: 600,             // How long the slide transition takes
+	   hashTags: true,                 // Should links change the hashtag in the URL?
+	   buildNavigation: true,          // If true, builds and list of anchor links to link to each slide
+	   pauseOnHover: true,             // If true, and autoPlay is enabled, the show will pause on hover
+	   startText: "Start",             // Start text
+	   stopText: "Stop",               // Stop text
+	   navigationFormatter: null       // Advanced Use: details below
+	});
+	
+To use the navigationFormatter function, you must have a function that accepts two paramaters, and returns a string of HTML text.
+	
+* <code>index</code> = integer index (1 based);
+* <code>panel</code> = jQuery wrapped LI item this tab references
+* Function must return a string of HTML/Text
+
+Here is a sample formatter:
+
+	navigationFormatter: function(index, panel){
+		return index + " Panel"; 		// This would have each tab with the text 'X Panel' where X = index
+	}
