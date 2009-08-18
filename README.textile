@@ -8,8 +8,6 @@ This new AnythingSlider is an attempt at bringing together the functionality of 
 
 "Keep Reading":http://css-tricks.com/anythingslider-jquery-plugin/
 
-<hr>
-
 h2. Features
 
 * Slides are HTML Content (can be anything)
@@ -25,6 +23,7 @@ h2. Features
 
 h2. Usage & Options (defaults)
 
+<pre>
 	$('.anythingSlider').anythingSlider({
 	   easing: "swing",                // Anything other than "linear" or "swing" requires the easing plugin
 	   autoPlay: true,                 // This turns off the entire FUNCTIONALITY, not just if it starts running or not
@@ -37,7 +36,7 @@ h2. Usage & Options (defaults)
 	   startText: "Start",             // Start text
 	   stopText: "Stop",               // Stop text
 	   navigationFormatter: null       // Advanced Use: details below
-	});
+	});</pre>
 	
 To use the navigationFormatter function, you must have a function that accepts two paramaters, and returns a string of HTML text.
 	
@@ -47,6 +46,7 @@ To use the navigationFormatter function, you must have a function that accepts t
 
 Here is a sample formatter:
 
+<pre>
 	navigationFormatter: function(index, panel){
 		return index + " Panel"; 		// This would have each tab with the text 'X Panel' where X = index
-	}
+	}</pre>
