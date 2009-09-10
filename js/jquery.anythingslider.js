@@ -1,5 +1,5 @@
 /*
-    anythingSlider v1.1
+    anythingSlider v1.2
     
     By Chris Coyier: http://css-tricks.com
     with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -227,7 +227,7 @@
 			base.playing = playing;
 			
 			// Toggle playing and text
-			base.$startStop.toggleClass("playing", playing).html( playing ? base.options.stopText : base.options.startText );
+			if(base.options.autoPlay) base.$startStop.toggleClass("playing", playing).html( playing ? base.options.stopText : base.options.startText );
 			
 			if(playing){
 				base.clearTimer(); // Just in case this was triggered twice in a row

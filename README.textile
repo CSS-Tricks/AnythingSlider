@@ -38,7 +38,7 @@ $('.anythingSlider').anythingSlider({
    navigationFormatter: null       // Advanced Use: details below
 });</pre>
 	
-To use the navigationFormatter function, you must have a function that accepts two paramaters, and returns a string of HTML text.
+To use the navigationFormatter function, you must have a function that accepts two parameters, and returns a string of HTML text.
 	
 * <code>index</code> = integer index (1 based);
 * <code>panel</code> = jQuery wrapped LI item this tab references
@@ -50,3 +50,22 @@ Here is a sample formatter:
 navigationFormatter: function(index, panel){
 	return index + " Panel"; 		// This would have each tab with the text 'X Panel' where X = index
 }</pre>
+
+h2. Changelog
+
+h3. Version 1.2
+
+* Bug Fix: When autoPlay was set to false, any interaction with the control would cause a javascript error.
+
+h3. Version 1.1
+
+* Changed default easing to "swing" so didn't depend on any other plugins
+* Removed extra junk (other plugins used for design, etc)
+* Added Pause on Hover option
+* Added options for passing in HTML for the start and stop button
+* Added option to use custom function for formatting the titles of the navigation
+* Added public interface for linking directly to certain slides
+
+h3. Version 1.0
+
+* First version
