@@ -20,6 +20,7 @@ h2. Features
 * Multiple sliders allowable per-page (hashtags only work on first)
 * Pauses autoPlay on hover (option)
 * Link to specific slides from static text links
+* Optionally autoPlay once through, stopping on the last page
 
 h2. Usage & Options (defaults)
 
@@ -35,6 +36,7 @@ $('.anythingSlider').anythingSlider({
    pauseOnHover: true,             // If true, and autoPlay is enabled, the show will pause on hover
    startText: "Start",             // Start text
    stopText: "Stop",               // Stop text
+   stopAtEnd: false,							 // If true, and autoPlay is on autoPlay will stop on the last page
    navigationFormatter: null       // Advanced Use: details below
 });</pre>
 	
@@ -52,6 +54,10 @@ navigationFormatter: function(index, panel){
 }</pre>
 
 h2. Changelog
+
+h3. Version 1.3
+
+* Added option to stop on the last page when autoPlay is set to true
 
 h3. Version 1.2
 

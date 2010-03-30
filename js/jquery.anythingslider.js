@@ -95,6 +95,11 @@
 				base.setCurrentPage(1);
 			};
 			
+			// Stop the slider when we reach the last page, if the option stopAtEnd is set to true
+			if(base.options.stopAtEnd){
+				if(page == base.pages) base.startStop(false);
+			}
+			
 			// Just check for bounds
 			if(page > base.pages + 1) page = base.pages;
 			if(page < 0 ) page = 1;
@@ -276,7 +281,8 @@
         buildNavigation: true,          // If true, builds and list of anchor links to link to each slide
         pauseOnHover: true,             // If true, and autoPlay is enabled, the show will pause on hover
 		startText: "Start",             // Start text
-		stopText: "Stop",               // Stop text
+		stopText: "Stop",               // Stop text,
+		stopAtEnd: false,								// If true, and autoPlay is on autoPlay will stop on the last page
 		navigationFormatter: null       // Details at the top of the file on this use (advanced use)
     };
 	
