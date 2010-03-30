@@ -36,7 +36,7 @@ $('.anythingSlider').anythingSlider({
    pauseOnHover: true,             // If true, and autoPlay is enabled, the show will pause on hover
    startText: "Start",             // Start text
    stopText: "Stop",               // Stop text
-   stopAtEnd: false,							 // If true, and autoPlay is on autoPlay will stop on the last page
+   stopAtEnd: false,               // If true, and autoPlay is on autoPlay will stop on the last page
    navigationFormatter: null       // Advanced Use: details below
 });</pre>
 	
