@@ -55,8 +55,12 @@
 
             // Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
 			// This supports the "infinite" scrolling
-			base.$items.filter(':first').before(base.$items.filter(':last').clone().addClass('cloned'));
-            base.$items.filter(':last' ).after(base.$items.filter(':first').clone().addClass('cloned'));
+			var $itemClone = base.$items.filter(':last').clone().addClass('cloned');
+      
+			base.$items.filter(':first').before($itemClone.attr('id', ($itemClone.attr('id') + "-cloned")));
+            
+            $itemClone = base.$items.filter(':first').clone().addClass('cloned');
+            base.$items.filter(':last' ).after($itemClone.attr('id', ($itemClone.attr('id') + "-cloned")));
 
 			// We just added two items, time to re-cache the list
             base.$items = base.$slider.find('> li'); // reselect
