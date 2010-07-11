@@ -46,13 +46,19 @@
             base.$items   = base.$slider.find('> li');
             base.$single  = base.$items.filter(':first');
 
-			// Build the navigation if needed
-			if(base.options.buildNavigation) base.buildNavigation();
-        
         	// Get the details
             base.singleWidth = base.$single.outerWidth();
             base.pages = base.$items.length;
 
+      // Remove navigation & player if there is only one page
+      if (base.pages === 1) {
+            base.options.autoPlay = false;
+            base.options.buildNavigation = false;
+      }
+
+			// Build the navigation if needed
+			if(base.options.buildNavigation) base.buildNavigation();
+        
             // Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
 			// This supports the "infinite" scrolling
 			base.$items.filter(':first').before(base.$items.filter(':last').clone().addClass('cloned'));
@@ -61,8 +67,8 @@
 			// We just added two items, time to re-cache the list
             base.$items = base.$slider.find('> li'); // reselect
             
-			// Setup our forward/backward navigation
-			base.buildNextBackButtons();
+			// Setup our forward/backward navigation - if more than one page exists
+			if (base.pages > 1) { base.buildNextBackButtons(); }
 		
 			// If autoPlay functionality is included, then initialize the settings
 			if(base.options.autoPlay) {
