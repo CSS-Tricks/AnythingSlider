@@ -2,12 +2,6 @@ h1. AnythingSlider jQuery Plugin
 
 *Just what the world needs, another jQuery slider. YAWN.* I know, check this one out though, it’s got lots of cool features.
 
-Here on CSS-Tricks, I’ve created a number of different sliders. Three, in fact. A "“featured content”":http://css-tricks.com/creating-a-slick-auto-playing-featured-content-slider/ slider, a "“start/stop slider”":http://css-tricks.com/startstop-slider/, and "“moving boxes”":http://css-tricks.com/moving-boxes/. Each of them had some cool interesting feature that I needed to build at the time. All were well-received, but as is the case with these things, people want them to do X, Y, and Z in addition to what they already did.
-
-This new AnythingSlider is an attempt at bringing together the functionality of all of those previous sliders and adding new features. In other words, to create a really “full featured” slider that could be widely useful. This is the first time (on CSS-Tricks) that one of these sliders is an actual plugin as well, which should make implementing it and customizing it much easier.
-
-"Keep Reading":http://css-tricks.com/anythingslider-jquery-plugin/
-
 h2. Features
 
 * Slides are HTML Content (can be anything)
@@ -23,8 +17,7 @@ h2. Features
 
 h2. Usage & Options (defaults)
 
-<pre>
-$('.anythingSlider').anythingSlider({
+<pre>$('.anythingSlider').anythingSlider({
    easing: "swing",                // Anything other than "linear" or "swing" requires the easing plugin
    autoPlay: true,                 // This turns off the entire FUNCTIONALITY, not just if it starts running or not
    startStopped: false,            // If autoPlay is on, this can force it to start stopped
@@ -46,12 +39,19 @@ To use the navigationFormatter function, you must have a function that accepts t
 
 Here is a sample formatter:
 
-<pre>
-navigationFormatter: function(index, panel){
+<pre>navigationFormatter: function(index, panel){
 	return index + " Panel"; 		// This would have each tab with the text 'X Panel' where X = index
 }</pre>
 
 h2. Changelog
+
+h3. Version 1.3
+
+* Accessibility improvements by Matt Lawson
+* Some generic JavaScript/HTML/CSS code cleaning
+* Move to GitHub entirely
+* Ensures unique panel ID's
+* Removes navigation if there is only one panel
 
 h3. Version 1.2
 

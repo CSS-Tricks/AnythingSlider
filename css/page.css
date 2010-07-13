@@ -1,8 +1,3 @@
-/*
-	 CSS-Tricks Example
-	 by Chris Coyier
-	 http://css-tricks.com
-*/
 *                                       { margin: 0; padding: 0; }
 body                                    { font: 12px Georgia, Serif; }
 a, a img                                { border: 0; text-decoration: none; outline: 0; }
@@ -22,15 +17,6 @@ ul li                                   { font: 15px Georgia, Serif; margin: 0 0
 
 #dl                                     { position: absolute; top: 10px; right: 0; background: black; color: white; -moz-border-radius: 5px; -webkit-border-radius: 5px; padding: 3px 6px; }
 #dl:hover                               { background: #666; }
-
-/*
-    This stuff is for the TitleBlock Plugin
-*/
-.image                                  { position: relative; margin-bottom: 20px; width: 100%; }
-.image h2                               { position: absolute; top: 220px; left: 0; width: 100%; }
-.image h2 span                          { color: white; font: bold 30px/40px Helvetica, Sans-Serif; letter-spacing: -1px; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); padding: 6px 8px; }
-.image h2 span.spacer                   { padding: 0 2px; background: none; }
-
 
 /*
     For Specific Slides
