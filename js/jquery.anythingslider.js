@@ -1,5 +1,5 @@
 /*
-    anythingSlider v1.2.1
+    anythingSlider v1.3
     
     By Chris Coyier: http://css-tricks.com
     with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -210,7 +210,7 @@
 			var $forward = $('<li class="arrow forward"><a href="#">' + base.options.forwardText + '</a></li>'),
 			  	$back    = $('<li class="arrow back"><a href="#">' + base.options.backText + '</a></li>');
 				
-           // Bind to the forward and back buttons
+    // Bind to the forward and back buttons
       $back.click(function(e) {
           base.goBack();
 				  e.preventDefault();
@@ -220,7 +220,7 @@
 				  e.preventDefault();
       });
 
-			// Append elements to page
+		// Append elements to page
 			$("ul", base.$nav).prepend($back).append($forward);
 		};
 		
