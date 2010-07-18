@@ -54,11 +54,10 @@
         
         if (base.pages === 1) {
               base.options.autoPlay = false;
-              base.options.buildNavigation = false;
         }
 
       // Build the navigation if needed
-        if (base.options.buildNavigation) base.buildNavigation();
+        base.buildNavigation();
 
       // Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
 			// This supports the "infinite" scrolling
@@ -81,7 +80,9 @@
         base.$items = base.$slider.find('> li'); // reselect
             
 			// Setup our forward/backward navigation
+			if (base.pages > 1) {
 			  base.buildNextBackButtons();
+			}
 		
 			// If autoPlay functionality is included, then initialize the settings
 			if (base.options.autoPlay) {
@@ -182,27 +183,31 @@
 		// Creates the numbered navigation links
 		base.buildNavigation = function() {
 			base.$nav = $("<div class='thumbNav'><ul/></div>").prependTo(base.$el);
-			base.$items.each(function(i,el) {
-				var index = i + 1;
-				var $a = $("<a href='#'></a>");
+			
+			if (base.options.buildNavigation && (base.pages > 1)) {
+  			base.$items.each(function(i,el) {
+  				var index = i + 1;
+  				var $a = $("<a href='#'></a>");
 				
-				// If a formatter function is present, use it
-				if (typeof(base.options.navigationFormatter) == "function") {
-					$a.html(base.options.navigationFormatter(index, $(this)));
-				} else {
-					$a.text(index);
-				}
+  				// If a formatter function is present, use it
+  				if (typeof(base.options.navigationFormatter) == "function") {
+  					$a.html(base.options.navigationFormatter(index, $(this)));
+  				} else {
+  					$a.text(index);
+  				}
 				
-				$a.click(function(e) {
-          base.gotoPage(index);
-          if (base.options.hashTags) base.setHash('panel-' + index);
-				  e.preventDefault();
-				});
+  				$a.click(function(e) {
+            base.gotoPage(index);
+            if (base.options.hashTags) base.setHash('panel-' + index);
+  				  e.preventDefault();
+  				});
 				
-				$("ul", base.$nav).append($a);
-        $a.wrap("<li />");
-			});
-			base.$navLinks = base.$nav.find('li > a');
+  				$("ul", base.$nav).append($a);
+          $a.wrap("<li />");
+  			});
+  			base.$navLinks = base.$nav.find('li > a');
+			
+  		}
 		};
 		
 		// Creates the Forward/Backward buttons
