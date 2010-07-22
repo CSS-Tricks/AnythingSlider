@@ -115,6 +115,11 @@
 				base.setCurrentPage(1);
 			};
 			
+			// Stop the slider when we reach the last page, if the option stopAtEnd is set to true
+			if(base.options.stopAtEnd){
+				if(page == base.pages) base.startStop(false);
+			}
+			
 			// Just check for bounds
 			if (page > base.pages + 1) page = base.pages;
 			if (page < 0 ) page = 1;
