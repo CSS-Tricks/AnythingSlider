@@ -42,28 +42,30 @@
         
         base.options = $.extend({},$.anythingSlider.defaults, options);
 			
-			// Cache existing DOM elements for later 
-			  base.$wrapper = base.$el.find('> div').css('overflow', 'hidden');
+		// Cache existing DOM elements for later 
+		base.$wrapper = base.$el.find('> div').css('overflow', 'hidden');
         base.$slider  = base.$wrapper.find('> ul');
         base.$items   = base.$slider.find('> li');
         base.$single  = base.$items.filter(':first');
-        
-      // Get the details
+
+    	// Get the details
         base.singleWidth = base.$single.outerWidth();
         base.pages = base.$items.length;
-        
-        if (base.pages === 1) {
-              base.options.autoPlay = false;
-        }
 
-      // Build the navigation if needed
-        base.buildNavigation();
+		// Remove navigation & player if there is only one page
+		if (base.pages === 1) {
+		    base.options.autoPlay = false;
+		    base.options.buildNavigation = false;
+		}
 
-      // Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
-			// This supports the "infinite" scrolling
-			// Ensures any cloned elements with ID's have unique ID's
-			  var $itemClone = base.$items.filter(':last').clone().addClass('cloned');
-			  if ($itemClone.attr("id") != "") {
+		// Build the navigation if needed
+		if(base.options.buildNavigation) base.buildNavigation();
+    
+        // Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
+		// This supports the "infinite" scrolling
+		// Ensures any cloned elements with ID's have unique ID's
+		var $itemClone = base.$items.filter(':last').clone().addClass('cloned');
+		if ($itemClone.attr("id") != "") {
           base.$items.filter(':first').before($itemClone.attr('id', ($itemClone.attr('id') + "-cloned")));
         } else {
           base.$items.filter(':first').before($itemClone);
@@ -79,7 +81,7 @@
 			// We just added two items, time to re-cache the list
         base.$items = base.$slider.find('> li'); // reselect
             
-			// Setup our forward/backward navigation
+			// Setup our forward/backward navigation - if more than one page exists
 			if (base.pages > 1) {
 			  base.buildNextBackButtons();
 			}
