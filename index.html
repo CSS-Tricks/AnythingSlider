@@ -23,18 +23,19 @@
         $(function () {
         
             $('.anythingSlider').anythingSlider({
-                easing: "easeInOutExpo",        // Anything other than "linear" or "swing" requires the easing plugin
-                autoPlay: true,                 // This turns off the entire FUNCTIONALY, not just if it starts running or not.
-                delay: 3000,                    // How long between slide transitions in AutoPlay mode
-                startStopped: false,            // If autoPlay is on, this can force it to start stopped
-                animationTime: 600,             // How long the slide transition takes
-                hashTags: true,                 // Should links change the hashtag in the URL?
-                buildNavigation: true,          // If true, builds and list of anchor links to link to each slide
-        		pauseOnHover: true,             // If true, and autoPlay is enabled, the show will pause on hover
-        		startText: "Go",             	// Start text
-		        stopText: "Stop",               // Stop text
-				stopAtEnd: false,				// If true, and autoPlay is on autoPlay will stop on the last page
-		        navigationFormatter: formatText	// Details at the top of the file on this use (advanced use)
+				easing: "swing",                // Anything other than "linear" or "swing" requires the easing plugin
+				autoPlay: true,                 // This turns off the entire FUNCTIONALY, not just if it starts running or not
+				startStopped: false,            // If autoPlay is on, this can force it to start stopped
+				delay: 3000,                    // How long between slide transitions in AutoPlay mode
+				animationTime: 600,             // How long the slide transition takes
+				hashTags: true,                 // Should links change the hashtag in the URL?
+				buildNavigation: true,          // If true, builds and list of anchor links to link to each slide
+				pauseOnHover: true,             // If true, and autoPlay is enabled, the show will pause on hover
+				startText: "Start",             // Start text
+				stopText: "Stop",               // Stop text
+				navigationFormatter: null,      // Details at the top of the file on this use (advanced use)
+				forwardText: "&gt;",            // Link text used to move the slider forward
+				backText: "&lt;"                // Link text used to move the slider back
             });
             
             $("#slide-jump").click(function(){
@@ -126,18 +127,19 @@
         
         <h2>Usage &amp; Options (defaults)</h2>
         <pre>$('.anythingSlider').anythingSlider({
-        easing: "swing",                // Anything other than "linear" or "swing" requires the easing plugin
-        autoPlay: true,                 // This turns off the entire FUNCTIONALY, not just if it starts running or not
-        startStopped: false,            // If autoPlay is on, this can force it to start stopped
-        delay: 3000,                    // How long between slide transitions in AutoPlay mode
-        animationTime: 600,             // How long the slide transition takes
-        hashTags: true,                 // Should links change the hashtag in the URL?
-        buildNavigation: true,          // If true, builds and list of anchor links to link to each slide
-        pauseOnHover: true,             // If true, and autoPlay is enabled, the show will pause on hover
-        startText: "Start",             // Start text
-        stopText: "Stop",               // Stop text
-	stopAtEnd: false,								// If true, and autoPlay is on autoPlay will stop on the last page
-        navigationFormatter: null       // Details at the top of the file on this use (advanced use)
+	easing: "swing",                // Anything other than "linear" or "swing" requires the easing plugin
+	autoPlay: true,                 // This turns off the entire FUNCTIONALY, not just if it starts running or not
+	startStopped: false,            // If autoPlay is on, this can force it to start stopped
+	delay: 3000,                    // How long between slide transitions in AutoPlay mode
+	animationTime: 600,             // How long the slide transition takes
+	hashTags: true,                 // Should links change the hashtag in the URL?
+	buildNavigation: true,          // If true, builds and list of anchor links to link to each slide
+	pauseOnHover: true,             // If true, and autoPlay is enabled, the show will pause on hover
+	startText: "Start",             // Start text
+	stopText: "Stop",               // Stop text
+	navigationFormatter: null,      // Details at the top of the file on this use (advanced use)
+	forwardText: "&amp;gt;",            // Link text used to move the slider forward
+	backText: "&amp;lt;"                // Link text used to move the slider back
 });</pre>
 
         <h3>Linking directly to slides</h3>
