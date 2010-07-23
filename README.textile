@@ -47,6 +47,14 @@ Here is a sample formatter:
 
 h2. Changelog
 
+h3. Version 1.3.1
+
+* Markup improvements by Dean Sofer
+* Wrapper divs (<div class="anythingSlider"><div class="wrapper">) no longer required in html. Divs are generated in jquery
+* CSS classes are scoped to the added classes
+* Hash URLS now work for multiple panels
+* Improved code formatting (again) and merged all forks
+
 h3. Version 1.3
 
 * Accessibility improvements by Matt Lawson
