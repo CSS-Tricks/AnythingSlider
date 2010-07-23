@@ -50,7 +50,7 @@ h2. Changelog
 h3. Version 1.3.1
 
 * Markup improvements by Dean Sofer
-* Wrapper divs (<div class="anythingSlider"><div class="wrapper">) no longer required in html. Divs are generated in jquery
+* Wrapper divs (<code><div class="anythingSlider"><div class="wrapper"></code>) no longer required in html. Divs are generated in jquery
 * CSS classes are scoped to the added classes
 * Hash URLS now work for multiple panels
 * Improved code formatting (again) and merged all forks
@@ -83,4 +83,8 @@ h3. Version 1.0
 
 h2. To Do
 
-* Make ID's less generic e.g. "wrapper" should be more like "as_wrapper"
+* <del>Make ID's less generic e.g. "wrapper" should be more like "as_wrapper"</del>
+* Allow dynamic sized sliders. 
+** Calculate existing dimensions and size window accordingly
+** Resizing requires manually adjusting CSS in several different locations
+** Might be resolved by slightly refactoring/improving the HTML/CSS markup only
