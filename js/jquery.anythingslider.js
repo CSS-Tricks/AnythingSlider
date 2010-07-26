@@ -1,5 +1,5 @@
 /*
-	anythingSlider v1.3.1
+	anythingSlider v1.3.2
 	
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -48,10 +48,22 @@
 			base.options = $.extend({},$.anythingSlider.defaults, options);
 				
 			// Cache existing DOM elements for later 
-			base.$wrapper = base.$el.find('> div').css('overflow', 'hidden');
+			base.$wrapper = base.$el.find('> div');
 			base.$slider  = base.$wrapper.find('> ul');
 			base.$items   = base.$slider.find('> li');
 			base.$single  = base.$items.filter(':first');
+			
+			// Set the dimensions
+			if (base.options.width) {
+				base.$el.css('width', base.options.width);
+				base.$wrapper.css('width', base.options.width);
+				base.$items.css('width', base.options.width);
+			}
+			if (base.options.height) {
+				base.$el.css('height', base.options.height);
+				base.$wrapper.css('height', base.options.height);
+				base.$items.css('height', base.options.height);
+			}
 	
 			// Get the details
 			base.singleWidth = base.$single.outerWidth();
@@ -64,7 +76,7 @@
 			}
 	
 			// Build the navigation if needed
-			if(base.options.buildNavigation) base.buildNavigation();
+			if (base.options.buildNavigation) base.buildNavigation();
 		
 			// Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
 			// This supports the "infinite" scrolling
@@ -132,8 +144,8 @@
 			if (page < 0 ) page = 1;
 	
 			var dir = page < base.currentPage ? -1 : 1,
-			n = Math.abs(base.currentPage - page),
-			left = base.singleWidth * dir * n;
+				n = Math.abs(base.currentPage - page),
+				left = base.singleWidth * dir * n;
 			
 			base.$wrapper.filter(':not(:animated)').animate({
 				scrollLeft : '+=' + left
@@ -195,7 +207,7 @@
 			
 		// Creates the numbered navigation links
 		base.buildNavigation = function() {
-			base.$nav = $("<div class='thumbNav'><ul/></div>").prependTo(base.$el);
+			base.$nav = $('<ul class="thumbNav" />').appendTo(base.$el);
 			
 			if (base.options.buildNavigation && (base.pages > 1)) {
 				base.$items.each(function(i,el) {
@@ -215,7 +227,7 @@
 						e.preventDefault();
 					});
 					
-					$("ul", base.$nav).append($a);
+					$(base.$nav).append($a);
 					$a.wrap("<li />");
 				});
 				base.$navLinks = base.$nav.find('li > a');
@@ -225,8 +237,8 @@
 		
 		// Creates the Forward/Backward buttons
 		base.buildNextBackButtons = function() {
-			var $forward = $('<li class="arrow forward"><a href="#">' + base.options.forwardText + '</a></li>'),
-				$back    = $('<li class="arrow back"><a href="#">' + base.options.backText + '</a></li>');
+			var $forward = $('<span class="arrow forward"><a href="#">' + base.options.forwardText + '</a></span>'),
+				$back    = $('<span class="arrow back"><a href="#">' + base.options.backText + '</a></span>');
 					
 			// Bind to the forward and back buttons
 			$back.click(function(e) {
@@ -239,14 +251,14 @@
 			});
 	
 			// Append elements to page
-			$("ul", base.$nav).prepend($back).append($forward);
+			$(base.$el).prepend($forward).prepend($back);
 		};
 		
 		// Creates the Start/Stop button
 		base.buildAutoPlay = function(){
 
 			base.$startStop = $("<a href='#' class='start-stop'></a>").html(base.playing ? base.options.stopText :  base.options.startText);
-			base.$el.prepend(base.$startStop);            
+			base.$el.append(base.$startStop);            
 			base.$startStop.click(function(e) {
 				base.startStop(!base.playing);
 				e.preventDefault();
@@ -314,8 +326,10 @@
 		startText: "Start",             // Start text
 		stopText: "Stop",               // Stop text
 		navigationFormatter: null,      // Details at the top of the file on this use (advanced use)
-		forwardText: "&gt;",            // Link text used to move the slider forward
-		backText: "&lt;"                // Link text used to move the slider back
+		forwardText: "&raquo;",			// Link text used to move the slider forward
+		backText: "&laquo;",			// Link text used to move the slider back
+		width: null,					// Override the default CSS width
+		height: null,					// Override the default CSS height
 	};
 	
 	$.fn.anythingSlider = function(options) {

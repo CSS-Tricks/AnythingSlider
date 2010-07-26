@@ -19,18 +19,22 @@ h2. Features
 h2. Usage & Options (defaults)
 
 <pre>$('.anythingSlider').anythingSlider({
-   easing: "swing",                // Anything other than "linear" or "swing" requires the easing plugin
-   autoPlay: true,                 // This turns off the entire FUNCTIONALITY, not just if it starts running or not
-   startStopped: false,            // If autoPlay is on, this can force it to start stopped
-   delay: 3000,                    // How long between slide transitions in AutoPlay mode
-   animationTime: 600,             // How long the slide transition takes
-   hashTags: true,                 // Should links change the hashtag in the URL?
-   buildNavigation: true,          // If true, builds and list of anchor links to link to each slide
-   pauseOnHover: true,             // If true, and autoPlay is enabled, the show will pause on hover
-   startText: "Start",             // Start text
-   stopText: "Stop",               // Stop text
-   stopAtEnd: false,               // If true, and autoPlay is on autoPlay will stop on the last page
-   navigationFormatter: null       // Advanced Use: details below
+	easing: "swing",                // Anything other than "linear" or "swing" requires the easing plugin
+	autoPlay: true,                 // This turns off the entire FUNCTIONALITY, not just if it starts running or not
+	startStopped: false,            // If autoPlay is on, this can force it to start stopped
+	delay: 3000,                    // How long between slide transitions in AutoPlay mode
+	animationTime: 600,             // How long the slide transition takes
+	hashTags: true,                 // Should links change the hashtag in the URL?
+	buildNavigation: true,          // If true, builds and list of anchor links to link to each slide
+	pauseOnHover: true,             // If true, and autoPlay is enabled, the show will pause on hover
+	startText: "Start",             // Start text
+	stopText: "Stop",               // Stop text
+	stopAtEnd: false,               // If true, and autoPlay is on autoPlay will stop on the last page
+	navigationFormatter: null       // Advanced Use: details below
+	forwardText: "&raquo;",			// Link text used to move the slider forward
+	backText: "&laquo;",			// Link text used to move the slider back
+	width: null,						// Override the default CSS width
+	height: null,					// Override the default CSS height
 });</pre>
 	
 To use the navigationFormatter function, you must have a function that accepts two parameters, and returns a string of HTML text.
@@ -46,6 +50,14 @@ Here is a sample formatter:
 }</pre>
 
 h2. Changelog
+
+h3. Version 1.3.2
+
+* Greatly refactored CSS for a more fluid resizing behavior
+* Dimensions can be passed via javascript or modified at the top of the css file
+* Merged all Github forks
+* Wrapper DIVs are no longer needed in the source html
+* Improved CSS scope, Javascript degredation is handled differently now however
 
 h3. Version 1.3.1
 
