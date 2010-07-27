@@ -261,6 +261,7 @@
 			base.$el.append(base.$startStop);            
 			base.$startStop.click(function(e) {
 				base.startStop(!base.playing);
+				if(base.playing) base.goForward(true);
 				e.preventDefault();
 			});
 
