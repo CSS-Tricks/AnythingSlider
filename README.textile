@@ -5,13 +5,13 @@ h1. AnythingSlider jQuery Plugin
 h2. Features
 
 * Slides are HTML Content (can be anything)
-* Next Slide / Previous Slide Arrows
+* Optional Next Slide / Previous Slide Arrows
 * Navigation tabs are built and added dynamically (any number of slides)
 * Optional custom function for formatting navigation text
 * Auto-playing (optional feature, can start playing or stopped)
 * Each slide has a hashtag (can link directly to specific slides)
 * Infinite/Continuous sliding (always slides in the direction you are going, even at "last" slide)
-* Multiple sliders allowable per-page (hashtags only work on first)
+* Multiple sliders allowable per-page
 * Pauses autoPlay on hover (option)
 * Link to specific slides from static text links
 * Optionally autoPlay once through, stopping on the last page
@@ -33,10 +33,17 @@ h2. Usage & Options (defaults)
 	navigationFormatter: null       // Advanced Use: details below
 	forwardText: "&raquo;",			// Link text used to move the slider forward
 	backText: "&laquo;",			// Link text used to move the slider back
-	width: null,						// Override the default CSS width
+	width: null,					// Override the default CSS width
 	height: null,					// Override the default CSS height
+	buildArrows: true,				// If true, builds the forwards and backwards buttons
 });</pre>
 	
+Linking directly to slides
+
+<pre>$("#slide-jump").click(function(){
+	$('.anythingSlider').anythingSlider(6);
+});</pre>
+
 To use the navigationFormatter function, you must have a function that accepts two parameters, and returns a string of HTML text.
 	
 * <code>index</code> = integer index (1 based);
@@ -51,21 +58,20 @@ Here is a sample formatter:
 
 h2. Changelog
 
+h3. Version 1.3.3
+
+* Previous / Next arrows are now optional
+* Clicking start button immediately begins transition instead of waiting for the delay
+
+
 h3. Version 1.3.2
 
 * Greatly refactored CSS for a more fluid resizing behavior
 * Dimensions can be passed via javascript or modified at the top of the css file
 * Merged all Github forks
-* Wrapper DIVs are no longer needed in the source html
-* Improved CSS scope, Javascript degredation is handled differently now however
-
-h3. Version 1.3.1
-
-* Markup improvements by Dean Sofer
-* Wrapper divs (<code><div class="anythingSlider"><div class="wrapper"></code>) no longer required in html. Divs are generated in jquery
-* CSS classes are scoped to the added classes
+* Wrapper DIVs (<code><div class="anythingSlider"><div class="wrapper"></code>) no longer required in html. Divs are generated in jquery
+* Improved CSS scope and classes, Javascript degredation behaves differently however
 * Hash URLS now work for multiple panels
-* Improved code formatting (again) and merged all forks
 
 h3. Version 1.3
 
@@ -92,11 +98,3 @@ h3. Version 1.1
 h3. Version 1.0
 
 * First version
-
-h2. To Do
-
-* <del>Make ID's less generic e.g. "wrapper" should be more like "as_wrapper"</del>
-* Allow dynamic sized sliders. 
-** Calculate existing dimensions and size window accordingly
-** Resizing requires manually adjusting CSS in several different locations
-** Might be resolved by slightly refactoring/improving the HTML/CSS markup only

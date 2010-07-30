@@ -73,11 +73,12 @@
 			if (base.pages === 1) {
 				base.options.autoPlay = false;
 				base.options.buildNavigation = false;
+				base.options.buildArrows = false;
 			}
 	
 			// Build the navigation if needed
 			if (base.options.buildNavigation) base.buildNavigation();
-		
+			
 			// Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
 			// This supports the "infinite" scrolling
 			// Ensures any cloned elements with ID's have unique ID's
@@ -98,10 +99,8 @@
 			// We just added two items, time to re-cache the list
 			base.$items = base.$slider.find('> li'); // reselect
 				
-			// Setup our forward/backward navigation - if more than one page exists
-			if (base.pages > 1) {
-			  base.buildNextBackButtons();
-			}
+			// Build forwards/backwards buttons if needed
+			if (base.options.buildArrows) base.buildNextBackButtons();
 			
 			// If autoPlay functionality is included, then initialize the settings
 			if (base.options.autoPlay) {
@@ -327,6 +326,7 @@
 		startText: "Start",             // Start text
 		stopText: "Stop",               // Stop text
 		navigationFormatter: null,      // Details at the top of the file on this use (advanced use)
+		buildArrows: true,				// If true, builds the forwards and backwards buttons
 		forwardText: "&raquo;",			// Link text used to move the slider forward
 		backText: "&laquo;",			// Link text used to move the slider back
 		width: null,					// Override the default CSS width
