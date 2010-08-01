@@ -31,11 +31,11 @@ h2. Usage & Options (defaults)
 	stopText: "Stop",               // Stop text
 	stopAtEnd: false,               // If true, and autoPlay is on autoPlay will stop on the last page
 	navigationFormatter: null       // Advanced Use: details below
-	forwardText: "&raquo;",			// Link text used to move the slider forward
-	backText: "&laquo;",			// Link text used to move the slider back
-	width: null,					// Override the default CSS width
-	height: null,					// Override the default CSS height
-	buildArrows: true,				// If true, builds the forwards and backwards buttons
+	forwardText: "&raquo;",         // Link text used to move the slider forward
+	backText: "&laquo;",            // Link text used to move the slider back
+	width: null,                    // Override the default CSS width
+	height: null,                   // Override the default CSS height
+	buildArrows: true               // If true, builds the forwards and backwards buttons
 });</pre>
 	
 Linking directly to slides
@@ -58,11 +58,18 @@ Here is a sample formatter:
 
 h2. Changelog
 
+h3. Version 1.3.4
+
+* Added keyboard navigation.
+* Embeded objects will now resize to fit the panel.
+* YouTube videos will pause the video when it is not in view and play (if already started) if it is in view.
+  Note: this feature only works in non-IE browsers and when the files are hosted on a webserver as the flash player restricts calls between local files and the internet.
+* Modified code according to JSLint & added minified version.
+
 h3. Version 1.3.3
 
 * Previous / Next arrows are now optional
 * Clicking start button immediately begins transition instead of waiting for the delay
-
 
 h3. Version 1.3.2
 
