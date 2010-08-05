@@ -2,7 +2,7 @@
 body                                    { font: 12px Georgia, Serif; }
 a, a img                                { border: 0; text-decoration: none; outline: 0; }
 
-#page-wrap                              { width: 760px; padding: 15px; background: white; margin: 0 auto 50px; position: relative; }
+#page-wrap                              { width: 90%; padding: 15px; background: white; margin: 0 auto 50px; position: relative; }
 #col1                                   { width: 49%; float: left; margin: 0 0 20px 0; }
 #col2                                   { width: 49%; float: right; }
 
@@ -27,6 +27,6 @@ ul li                                   { font: 15px Georgia, Serif; margin: 0 0
 #textSlide ul                           { list-style: disc; margin: 0 0 0 25px; }
 #textSlide ul li                        { display: list-item; }
 
-#quoteSlide                             { padding: 30px; }
-#quoteSlide blockquote                  { font: italic 24px/1.5 Georgia, Serif; text-align: center; color: #444; margin: 0 0 10px 0; }
-#quoteSlide p                           { text-align: center; }
+.quoteSlide                             { padding: 30px; }
+.quoteSlide blockquote                  { font: italic 24px/1.5 Georgia, Serif; text-align: center; color: #444; margin: 0 0 10px 0; }
+.quoteSlide p                           { text-align: center; }

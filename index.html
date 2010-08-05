@@ -12,7 +12,7 @@
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jquery.easing.1.2.js"></script>
-	<script src="js/jquery.anythingslider.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.anythingslider.js" type="text/javascript" charset="utf-8"></script>
 
 	<script type="text/javascript">
 
@@ -22,7 +22,7 @@
 
 		$(function () {
 
-			$('.anythingSlider').anythingSlider({
+			$('#slider1').anythingSlider({
 				easing: "swing",           // Anything other than "linear" or "swing" requires the easing plugin
 				autoPlay: true,            // This turns off the entire FUNCTIONALY, not just if it starts running or not
 				startStopped: false,       // If autoPlay is on, this can force it to start stopped
@@ -36,13 +36,21 @@
 				navigationFormatter: null, // Details at the top of the file on this use (advanced use)
 				forwardText: "&raquo;",    // Link text used to move the slider forward
 				backText: "&laquo;",       // Link text used to move the slider back
-				width: 680,                // Override the default CSS width
-				height: 317,               // Override the default CSS height
-				buildArrows: true          // If true, builds the forwards and backwards buttons
+				buildArrows: true,         // If true, builds the forwards and backwards buttons
+				resizeContents: true,      // If true, solitary images in the panel will expand to fit the panel
+				width: 800                 // Override the default CSS width
 			});
 
+			$('#slider2').anythingSlider({
+				resizeContents: false,
+				autoPlay: false,
+				width: 600,                // if resizeContent is false, this is the default width if panel size is not defined
+				height: 350                // if resizeContent is false, this is the default height if panel size is not defined
+			})
+
 			$("#slide-jump").click(function(){
-				$('.anythingSlider').anythingSlider(6);
+				$('.anythingSlider').eq(1).anythingSlider(4);
+				return false;
 			});
 
 		});
@@ -52,21 +60,48 @@
 <body>
 
 	<div id="page-wrap">
-
-		<a href="http://github.com/ProLoser/AnythingSlider" id="dl">Download v1.3.4</a>
+		<a href="http://github.com/ProLoser/AnythingSlider" id="dl">Download v1.3.5</a>
 
 		<h5>By <a href="http://css-tricks.com">Chris Coyier</a>, based upon lots of smart stuff by <a href="http://jqueryfordesigners.com/">Remy Sharp</a>,<br />
 		significantly improved by <a href="http://pixelgraphics.us/">Douglas Neiner</a></h5>
 
 		<h1>AnythingSlider</h1>
 
-			<ul class="anythingSlider">
+			<!-- AnythingSlider #1 -->
+			<ul id="slider1">
 
 			<li>
 				<img src="images/slide-civil-1.jpg" alt="" />
 			</li>
 
 			<li>
+				<img src="images/slide-env-1.jpg" alt="" />
+			</li>
+
+			<li>
+				<img src="images/slide-civil-2.jpg" alt=""  />
+			</li>
+
+			<li>
+				<object width="480" height="385"><param name="movie" value="http://www.youtube.com/v/zSgiXGELjbc&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/zSgiXGELjbc&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></embed></object>
+			</li>
+
+			<li>
+				<object width="640" height="385"><param name="movie" value="http://www.youtube.com/v/2Qj8PhxSnhg&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/2Qj8PhxSnhg&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="640" height="385"></embed></object>
+			</li> 
+
+			<li>
+				<img src="images/slide-env-2.jpg" alt="" />
+			</li>
+
+			</ul>  <!-- END AnythingSlider #1 -->
+
+			<br><br>
+
+			<!-- AnythingSlider #2 -->
+			<ul id="slider2">
+
+			<li class="panel1">
 				<div id="textSlide">
 					<img src="images/251356.jpg" alt="tomato sandwich" style="float: right; margin: 0 0 2px 10px;" />
 					<h3>Queenie's Killer Tomato Bagel Sandwich</h3>
@@ -81,34 +116,28 @@
 				</div>
 			</li>
 
-			<li>
-				<img src="images/slide-env-1.jpg" alt="" />
+			<li class="panel2">
+				<div class="quoteSlide">
+					<blockquote>In awe I watched the waxing moon ride across the zenith of the heavens like an ambered chariot towards the ebon void of infinite space wherein the tethered belts of Jupiter and Mars hang forever festooned in their orbital majesty. And as I looked at all this I thought... I must put a roof on this lavatory.<br>-- Les Dawson</blockquote>
+				</div>
 			</li>
 
-			<li>
-				<img src="images/slide-civil-2.jpg" alt=""  />
+			<li class="panel3">
+				<img src="images/slide-tele-1.jpg" alt="" />
 			</li>
 
-			<li><!-- embed code directly from youtube -->
-				<object width="480" height="385"><param name="movie" value="http://www.youtube.com/v/zSgiXGELjbc&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/zSgiXGELjbc&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></embed></object>
-			</li>
-
-			<li>
-				<div id="quoteSlide">
+			<li class="panel4">
+				<div class="quoteSlide">
 					<blockquote>Life is conversational. Web design should be the same way. On the web, you&#8217;re talking to someone you&#8217;ve probably never met – so it&#8217;s important to be clear and precise. Thus, well structured navigation and content organization goes hand in hand with having a good conversation.</blockquote>
 					<p> - <a id='perma' href='http://quotesondesign.com/chikezie-ejiasi/'>Chikezie Ejiasi</a></p>
 				</div>
 			</li>
 
-			<li><!-- embed code directly from youtube -->
-				<object width="640" height="385"><param name="movie" value="http://www.youtube.com/v/2Qj8PhxSnhg&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/2Qj8PhxSnhg&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="640" height="385"></embed></object>
+			<li class="panel5">
+				<img src="images/slide-tele-2.jpg" alt="" />
 			</li>
 
-			<li>
-				<img src="images/slide-env-2.jpg" alt="" />
-			</li>
-
-			</ul>  <!-- END AnythingSlider -->
+			</ul>  <!-- END AnythingSlider #2 -->
 
 
 		<h2>Features</h2>
@@ -123,7 +152,7 @@
 			<li>Multiple sliders allowable per-page</li>
 			<li>Pauses slideshow autoPlay on hover (option)</li>
 			<li>Pauses playing YouTube videos when not in view and resumes them when in view (only in non-IE browsers & if files are hosted on the web)</li>
-			<li>Link to specific slides from static text links (<a href="#" id="slide-jump">Slide 6</a>)</li>
+			<li>Link to specific slides from static text links (<a href="#" id="slide-jump">Slide 4</a> in second example)</li>
 			<li>Optionally autoPlay once through, stopping on the last page</li>
 		</ul>
 
@@ -145,15 +174,28 @@
   backText: "&amp;laquo;",        // Link text used to move the slider back
   width: null,                // Override the default CSS width
   height: null,               // Override the default CSS height
-  buildArrows: true           // If true, builds the forwards and backwards buttons
+  buildArrows: true,          // If true, builds the forwards and backwards buttons
+  resizePanel: true           // If true, solitary images in the panel will expand to fit the panel
 });</pre>
 
 		<h3>Linking directly to slides</h3>
 		<pre>$("#slide-jump").click(function(){
-  $('.anythingSlider').anythingSlider(6);
+  $('.anythingSlider').eq(1).anythingSlider(4);
 });</pre>
 
 		<h2>Changelog</h2>
+
+		<h3>Version 1.3.5</h3>
+		<ul>
+			<li>Added resizePanel option - does not support percentage sizing.<br><br>
+				<ul>
+					<li>When true, it will resize all panels & solitary content to the size settings (CSS or the script options).</li>
+					<li>When false, the AnythingSlider wrapper will resize to fit the panel (set inline or in the CSS for each panel).</li>
+				</ul>
+			</li>
+			<li>Fixed keyboard navigation to work with multiple AnythingSliders on a page.</li>
+			<li>Added tabbed navigation. Both the links within panels and the thumbnail navigation will activate it.</li>
+		</ul>
 
 		<h3>Version 1.3.4</h3>
 		<ul>

@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.3.4
+	AnythingSlider v1.3.5
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -53,40 +53,37 @@
 			base.$items   = base.$slider.find('> li');
 			base.$single  = base.$items.filter(':first');
 			base.$objects = base.$items.find('object');
+			base.$dimensions = [];
 
 			// Set the dimensions
-			if (base.options.width) {
+			if (base.options.width && base.options.resizeContents) {
 				base.$el.css('width', base.options.width);
 				base.$wrapper.css('width', base.options.width);
 				base.$items.css('width', base.options.width);
 			}
-			if (base.options.height) {
+			if (base.options.height && base.options.resizeContents) {
 				base.$el.css('height', base.options.height);
 				base.$wrapper.css('height', base.options.height);
 				base.$items.css('height', base.options.height);
 			}
-
-			// resize embeded objects & initialize the youtube api
-			if (base.$objects.length){
-				base.$objects.find('embed').andSelf().css({
-					width : '100%',
-					height: '100%'
-				});
-				// initialize youtube api - doesn't work in IE (someone have a solution?)
-				var $el;
-				base.$objects.each(function(){
-					if ($(this).find('embed[src*=youtube]').length){
-						$el = $(this)
-							.wrap('<div id="yt-temp"></div>')
-							.find('embed[src*=youtube]').attr('src', function(i,s){ return s + '&enablejsapi=1&version=3'; }).end()
-							.find('param[value*=youtube]').attr('value', function(i,v){ return v + '&enablejsapi=1&version=3'; }).end()
-							// detach/appendTo required for Chrome
-							.detach()
-							.appendTo($('#yt-temp'))
-							.unwrap();
-					}
-				});
+			if (base.$objects.length && base.options.resizeContents){
+				base.$objects.find('embed').andSelf().css({ width : '100%', height: '100%' });
 			}
+
+			// initialize youtube api - doesn't work in IE (someone have a solution?)
+			var $el;
+			base.$objects.each(function(){
+				if ($(this).find('embed[src*=youtube]').length){
+					$el = $(this)
+						.wrap('<div id="yt-temp"></div>')
+						.find('embed[src*=youtube]').attr('src', function(i,s){ return s + '&enablejsapi=1&version=3'; }).end()
+						.find('param[value*=youtube]').attr('value', function(i,v){ return v + '&enablejsapi=1&version=3'; }).end()
+						// detach/appendTo required for Chrome
+						.detach()
+						.appendTo($('#yt-temp'))
+						.unwrap();
+				}
+			});
 
 			// Get the details
 			base.singleWidth = base.$single.outerWidth();
@@ -113,6 +110,8 @@
 
 			// We just added two items, time to re-cache the list
 			base.$items = base.$slider.find('> li'); // reselect
+			base.setDimensions();
+			if (!base.options.resizeContents) { $(window).load(function(){ base.setDimensions(); }); } // set dimensions after all images load
 
 			// Build forwards/backwards buttons if needed
 			if (base.options.buildArrows) { base.buildNextBackButtons(); }
@@ -136,6 +135,52 @@
 			if ((base.options.hashTags === true && !base.gotoHash()) || base.options.hashTags === false) {
 				base.setCurrentPage(1);
 			}
+
+			// Fix tabbing through the page
+			base.$items.find('a').focus(function(){
+				base.$items.find('.focusedLink').removeClass('focusedLink');
+				$(this).addClass('focusedLink');
+				base.$items.each(function(i){
+					if ($(this).find('a.focusedLink').length) {
+						console.debug(i);
+						base.gotoPage(i);
+						return false;
+					}
+				});
+			});
+
+		};
+
+		// Set panel dimensions to either resize content or adjust panel to content
+		base.setDimensions = function(){
+			var w, h, c, dw;
+			base.$items.each(function(i){
+				c = $(this).children('*');
+				if (base.options.resizeContents){
+					w = base.options.width || base.$wrapper.width();
+					h = base.options.height || base.$wrapper.height();
+					$(this).css({ width: w, height: h });
+					// resize contents if solitary (wrapped content or solitary image)
+					if (c.length == 1){
+						c.css({ width: w, height: h });
+					}
+				} else {
+					w = $(this).width(); // if not defined, it will return the width of the ul parent (32700px)
+					dw = (w > 32000) ? true : false;
+					if (c.length == 1 && dw){
+						cw = (c.width() > 32000) ? base.$wrapper.width() : c.width(); // get width of solitary child
+						$(this).css({ width: cw });
+						c.css({ 'max-width' : cw });
+						w = cw;
+					}
+					w = (dw) ?  base.options.width || base.$wrapper.width() : w;
+					$(this).css( 'width', w );
+					// get height after setting width
+					h = $(this).outerHeight();
+					$(this).css( 'height', h );
+				}
+				base.$dimensions[i] = [w,h];
+			});
 		};
 
 		base.gotoPage = function(page, autoplay) {
@@ -157,9 +202,7 @@
 			if (page > base.pages + 1) { page = base.pages; }
 			if (page < 0 ) { page = 1; }
 
-			var dir = page < base.currentPage ? -1 : 1,
-				n = Math.abs(base.currentPage - page),
-				left = base.singleWidth * dir * n;
+			var left = base.getLeft(page) - base.getLeft(base.currentPage);
 
 			// pause YouTube videos before scrolling
 			var emb;
@@ -177,14 +220,16 @@
 				});
 			}
 
-			base.$wrapper.filter(':not(:animated)').animate({
-				scrollLeft : '+=' + left
+			base.$el.add(base.$wrapper).filter(':not(:animated)').animate({
+				scrollLeft : '+=' + left,
+				width: base.$dimensions[page][0],
+				height: base.$dimensions[page][1]
 			}, base.options.animationTime, base.options.easing, function () {
 				if (page === 0) {
-					base.$wrapper.scrollLeft(base.singleWidth * base.pages);
+					base.$wrapper.scrollLeft(base.getLeft(base.pages));
 					page = base.pages;
 				} else if (page > base.pages) {
-					base.$wrapper.scrollLeft(base.singleWidth);
+					base.$wrapper.scrollLeft(0);
 					// reset back to start position
 					page = 1;
 				}
@@ -213,10 +258,32 @@
 			}
 
 			// Only change left if move does not equal false
-			if (move !== false) { base.$wrapper.scrollLeft(base.singleWidth * page); }
-
+			if (move !== false) {
+				base.$el.add(base.$wrapper).css({
+					width: base.$dimensions[page][0],
+					height: base.$dimensions[page][1]
+				});
+				base.$el.scrollLeft(0);
+				base.$wrapper.scrollLeft( base.getLeft(page) );
+			}
 			// Update local variable
 			base.currentPage = page;
+		
+			// Set current slider as active
+			if ($('div.anythingSlider.activeSlider') == base.$el){
+				return;
+			} else {
+				$('div.anythingSlider.activeSlider').removeClass('activeSlider');
+				base.$el.addClass('activeSlider');
+			}
+		};
+
+		base.getLeft = function(page){
+			var i, left = 0;
+			for (i = 0; i < page; i++){
+				left += base.$dimensions[i][0];
+			}
+			return left;
 		};
 
 		base.goForward = function(autoplay) {
@@ -263,7 +330,7 @@
 						$a.text(index);
 					}
 
-					$a.click(function(e) {
+					$a.bind('click focusin', function(e) {
 						base.gotoPage(index);
 						if (base.options.hashTags) { base.setHash('panel' + base.runTimes + '-' + index); }
 						e.preventDefault();
@@ -279,7 +346,7 @@
 		// Creates the Forward/Backward buttons
 		base.buildNextBackButtons = function() {
 			var $forward = $('<span class="arrow forward"><a href="#">' + base.options.forwardText + '</a></span>'),
-				$back    = $('<span class="arrow back"><a href="#">' + base.options.backText + '</a></span>');
+				$back = $('<span class="arrow back"><a href="#">' + base.options.backText + '</a></span>');
 
 			// Bind to the forward and back buttons
 			$back.click(function(e) {
@@ -296,14 +363,16 @@
 
 			// Add keyboard navigation
 			$(window).keyup(function(e){
-				switch (e.which) {
-					case 39: // right arrow
-						base.goForward();
-						e.preventDefault();
-						break;
-					case 37: //left arrow
-						base.goBack();
-						break;
+				if (base.$el.is('.activeSlider')) {
+					switch (e.which) {
+						case 39: // right arrow
+							base.goForward();
+							e.preventDefault();
+							break;
+						case 37: //left arrow
+							base.goBack();
+							break;
+					}
 				}
 			});
 
@@ -386,7 +455,8 @@
 		forwardText: "&raquo;",    // Link text used to move the slider forward
 		backText: "&laquo;",       // Link text used to move the slider back
 		width: null,               // Override the default CSS width
-		height: null               // Override the default CSS height
+		height: null,              // Override the default CSS height
+		resizeContents: true       // If true, solitary images/objects in the panel will expand to fit the panel
 	};
 
 	$.fn.anythingSlider = function(options) {

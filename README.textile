@@ -58,6 +58,14 @@ Here is a sample formatter:
 
 h2. Changelog
 
+h3. Version 1.3.5
+
+* Added resizePanel option - does not support percentage sizing.
+** When true, it will resize all panels & solitary content to the size settings (CSS or the script options).
+** When false, the AnythingSlider wrapper will resize to fit the panel (set inline or in the CSS for each panel).
+* Fixed keyboard navigation to work with multiple AnythingSliders on a page.
+* Added tabbed navigation. Both the links within panels and the thumbnail navigation will activate it.
+
 h3. Version 1.3.4
 
 * Added keyboard navigation.
