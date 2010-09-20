@@ -49,7 +49,7 @@
 			})
 
 			$("#slide-jump").click(function(){
-				$('.anythingSlider').eq(1).anythingSlider(4);
+				$('#slider2').anythingSlider(4);
 				return false;
 			});
 
@@ -151,14 +151,15 @@
 			<li>Infinite/Continuous sliding (always slides in the direction you are going, even at "last" slide)</li>
 			<li>Multiple sliders allowable per-page</li>
 			<li>Pauses slideshow autoPlay on hover (option)</li>
-			<li>Pauses playing YouTube videos when not in view and resumes them when in view (only in non-IE browsers & if files are hosted on the web)</li>
+			<li>Pauses playing YouTube videos when not in view and resumes them when in view (only in non-IE browsers &amp; if files are hosted on the web)</li>
 			<li>Link to specific slides from static text links (<a href="#" id="slide-jump">Slide 4</a> in second example)</li>
 			<li>Optionally autoPlay once through, stopping on the last page</li>
+			<li>Optionally resizes dimensions for each panel (specified per panel in css)</li>
 		</ul>
 
 
 		<h2>Usage &amp; Options (defaults)</h2>
-		<pre>$('.anythingSlider').anythingSlider({
+		<pre>$('#slider1, #slider2').anythingSlider({
   easing: "swing",            // Anything other than "linear" or "swing" requires the easing plugin
   autoPlay: true,             // This turns off the entire FUNCTIONALY, not just if it starts running or not
   startStopped: false,        // If autoPlay is on, this can force it to start stopped
@@ -175,21 +176,27 @@
   width: null,                // Override the default CSS width
   height: null,               // Override the default CSS height
   buildArrows: true,          // If true, builds the forwards and backwards buttons
-  resizePanel: true           // If true, solitary images in the panel will expand to fit the panel
+  resizeContents: true           // If true, solitary images in the panel will expand to fit the panel
 });</pre>
 
 		<h3>Linking directly to slides</h3>
 		<pre>$("#slide-jump").click(function(){
-  $('.anythingSlider').eq(1).anythingSlider(4);
+  $('#slider2').anythingSlider(4);
 });</pre>
 
 		<h2>Changelog</h2>
+		
+		<h3>Version 1.3.6</h3>
+		<ul>
+			<li>Fixed minor bug with links to specific slides and updated example to reflect changes and be less confusing</li>
+			<li>Tweaked start/stop button css to be more maleable</li>
+		</ul>
 
 		<h3>Version 1.3.5</h3>
 		<ul>
 			<li>Added resizePanel option - does not support percentage sizing.<br><br>
 				<ul>
-					<li>When true, it will resize all panels & solitary content to the size settings (CSS or the script options).</li>
+					<li>When true, it will resize all panels &amp; solitary content to the size settings (CSS or the script options).</li>
 					<li>When false, the AnythingSlider wrapper will resize to fit the panel (set inline or in the CSS for each panel).</li>
 				</ul>
 			</li>
@@ -204,7 +211,7 @@
 			<li>YouTube videos will pause the video when it is not in view and play (if already started) when in view (in non-IE browsers)<br>
 				*Note: this feature only works when the files are hosted on a webserver as the flash player restricts calls between local files and the internet.
 			</li>
-			<li>Modified code according to JSLint & added minified version.</li>
+			<li>Modified code according to JSLint &amp; added minified version.</li>
 		</ul>
 
 		<h3>Version 1.3.3</h3>

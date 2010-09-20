@@ -6,7 +6,7 @@
     based on work by Remy Sharp: http://jqueryfordesigners.com/
 */
 
-/******* SET DIMENSIONS HERE ********/
+/******* SET DEFAULT DIMENSIONS HERE ********/
 div.anythingSlider, div.anythingSlider .anythingWindow, div.anythingSlider .anythingWindow ul li {
 	width: 700px;
 	height: 390px;
@@ -14,14 +14,7 @@ div.anythingSlider, div.anythingSlider .anythingWindow, div.anythingSlider .anyt
 }
 
 /****** SET COLORS HERE *******/
-/* Active */
-div.anythingSlider.activeSlider .thumbNav a.cur, div.anythingSlider.activeSlider .thumbNav a {
-	background-color: #7C9127;
-}
-div.anythingSlider.activeSlider .anythingWindow {
-	border-color: #7C9127;
-}
-/* Inactive */
+/* Default State */
 div.anythingSlider .thumbNav a.cur, div.anythingSlider .thumbNav a {
 	background: #777;
 }
@@ -29,12 +22,13 @@ div.anythingSlider .anythingWindow {
 	border-top: 3px solid #777;
 	border-bottom: 3px solid #777;
 }
-/* Set second slider panel sizes */
-#slider2 .panel1 { width: 500px; height: 350px; }
-#slider2 .panel2 { width: 450px; height: 420px; }
-#slider2 .panel3 { width: 680px; height: 317px; }
-#slider2 .panel4 { } /* left undefined to show it defaults to wrapper size */
-#slider2 .panel5 { width: 680px; height: 317px; }
+/* Active State */
+div.anythingSlider.activeSlider .thumbNav a.cur, div.anythingSlider.activeSlider .thumbNav a {
+	background-color: #7C9127;
+}
+div.anythingSlider.activeSlider .anythingWindow {
+	border-color: #7C9127;
+}
 
 /**** DO NOT CHANGE BELOW THIS LINE ****/
 div.anythingSlider .anythingWindow, div.anythingSlider .anythingWindow ul li {
@@ -115,9 +109,8 @@ div.anythingSlider .start-stop {
 	padding: 2px 5px;
 	width: 40px;
 	text-align: center;
-	position: absolute;
 	text-decoration: none;
-	right: 45px; bottom: 4px;
+	float: right;
 	-moz-border-radius-bottomleft: 5px;
 	-moz-border-radius-bottomright: 5px;
 	-webkit-border-bottom-right-radius: 5px;

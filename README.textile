@@ -15,10 +15,11 @@ h2. Features
 * Pauses autoPlay on hover (option)
 * Link to specific slides from static text links
 * Optionally autoPlay once through, stopping on the last page
+* Optionally resizes dimensions for each panel (specified per panel in css)
 
 h2. Usage & Options (defaults)
 
-<pre>$('.anythingSlider').anythingSlider({
+<pre>$('#slider1, #slider2').anythingSlider({
 	easing: "swing",                // Anything other than "linear" or "swing" requires the easing plugin
 	autoPlay: true,                 // This turns off the entire FUNCTIONALITY, not just if it starts running or not
 	startStopped: false,            // If autoPlay is on, this can force it to start stopped
@@ -36,12 +37,13 @@ h2. Usage & Options (defaults)
 	width: null,                    // Override the default CSS width
 	height: null,                   // Override the default CSS height
 	buildArrows: true               // If true, builds the forwards and backwards buttons
+	resizeContents: true            // If true, solitary images in the panel will expand to fit the panel
 });</pre>
 	
 Linking directly to slides
 
 <pre>$("#slide-jump").click(function(){
-	$('.anythingSlider').anythingSlider(6);
+	$('#slider2').anythingSlider(6);
 });</pre>
 
 To use the navigationFormatter function, you must have a function that accepts two parameters, and returns a string of HTML text.
@@ -57,6 +59,11 @@ Here is a sample formatter:
 }</pre>
 
 h2. Changelog
+		
+h3. Version 1.3.6
+
+* Fixed minor bug with links to specific slides and updated example to reflect changes and be less confusing
+* Tweaked start/stop button css to be more maleable
 
 h3. Version 1.3.5
 

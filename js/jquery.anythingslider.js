@@ -96,6 +96,12 @@
 				base.options.buildArrows = false;
 			}
 
+			// If autoPlay functionality is included, then initialize the settings
+			if (base.options.autoPlay) {
+				base.playing = !base.options.startStopped; // Sets the playing variable to false if startStopped is true
+				base.buildAutoPlay();
+			}
+
 			// Build the navigation
 			base.buildNavigation();
 
@@ -115,12 +121,6 @@
 
 			// Build forwards/backwards buttons if needed
 			if (base.options.buildArrows) { base.buildNextBackButtons(); }
-
-			// If autoPlay functionality is included, then initialize the settings
-			if (base.options.autoPlay) {
-				base.playing = !base.options.startStopped; // Sets the playing variable to false if startStopped is true
-				base.buildAutoPlay();
-			}
 
 			// If pauseOnHover then add hover effects
 			if (base.options.pauseOnHover) {
@@ -461,20 +461,21 @@
 
 	$.fn.anythingSlider = function(options) {
 
-		if (typeof(options) == "object"){
-			return this.each(function(i){
-				(new $.anythingSlider(this, options));
-			});
+		if (typeof(options) == "number" || typeof(options) == "string") {
 
-		} else if (typeof(options) == "number") {
-
-			return this.each(function(i) {
+			return this.closest('.anythingSlider').each(function(i) {
 				var anySlide = $(this).data('AnythingSlider');
 				if (anySlide) {
 					anySlide.gotoPage(options);
 				}
 			});
 
+		} else {
+	
+			return this.each(function(i){
+				(new $.anythingSlider(this, options));
+			});
+			
 		}
 
 	};
