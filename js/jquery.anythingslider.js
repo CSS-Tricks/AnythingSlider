@@ -34,11 +34,6 @@
 		// Wraps the ul in the necessary divs and then gives Access to jQuery element
 		base.$el = $(el).wrap('<div class="anythingSlider"><div class="anythingWindow" /></div>');
 
-		// Set up a few defaults
-		base.currentPage = 1;
-		base.timer = null;
-		base.playing = false;
-
 		// Add a reverse reference to the DOM object
 		base.$el.data("AnythingSlider", base);
 
@@ -54,10 +49,15 @@
 			base.$objects = base.$items.find('object');
 			base.$dimensions = [];
 
-			// Get the details
+			// Set up a few defaults & get details
 			base.currentPage = base.options.startPanel;
+			base.timer = null;
+			base.playing = false;
 			base.pages   = base.$items.length;
 			base.$objlen = !!base.$objects.length;
+
+			// Make sure easing function exists. Posted a fix for this bug: http://dev.jquery.com/ticket/7064, remove when fixed.
+			if (!$.isFunction($.easing[base.options.easing])) { base.options.easing = "swing"; }
 
 			// Set the dimensions
 			if (base.options.resizeContents) {

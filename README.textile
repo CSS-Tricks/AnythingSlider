@@ -90,6 +90,7 @@ h3. Version 1.3.7
 * Fixed height/width options to accept strings (e.g. "400px" instead of a number, it may not work properly if values are other than the numnber of pixels).
 * Fixed setting to accept strings (e.g. $(slider).anythingSlider(" 1 ")) as well as numbers.
 * Fixed problem with objects (youtube videos) flickering in Firefox by setting <code>resizeContent</code> to false.
+* Fixed problem that occurs when using an incorrect easing function name (submitted ticket: http://dev.jquery.com/ticket/7064 )
 * Reorganized, cleaned up the code and updated the demos & instructions.
 
 h3. Version 1.3.6
