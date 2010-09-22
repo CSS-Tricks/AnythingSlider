@@ -54,26 +54,25 @@ h3. Getting current slide:
  <pre>$('#slider1').data('AnythingSlider').currentPage; // returns page #</pre>
 
 h3. Setting current slide. External link example:
-<pre>&lt;a href="#" id="slide-jump"&gt;Slide 4&lt;/a&gt;</pre>
-<pre>$("#slide-jump").click(function(){
+<pre>&lt;a href="#" id="slide-jump"&gt;Slide 4&lt;/a&gt;</pre><pre>$("#slide-jump").click(function(){
   $('#slider2').anythingSlider(4);
 });</pre>
 
-h3. External Slideshow Control</h3>
+h3. External Slideshow Control
 <pre>$('#slider1').data('AnythingSlider').startStop(true);  // start the slideshow
 $('#slider2').data('AnythingSlider').startStop(false); // stops the slideshow
 $('#slider1').data('AnythingSlider').goForward();      // go forward one slide
 $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 </pre>
 
-h3. Formatting Navigation Text</h3>
+h3. Formatting Navigation Text
  To use the <code>navigationFormatter</code> option, you must have a function that accepts two parameters, and returns a string of HTML text.
 
 * <code>index</code> = integer index (1 based);
 * <code>panel</code> = jQuery wrapped LI item this tab references
 * Function must return a string of HTML/Text
 * Here is a sample formatter (view index.html page source for another example):
-  <pre>$('#slider').anythingSlider({
+ <pre>$('#slider').anythingSlider({
  navigationFormatter : function(index, panel){
   return " Panel #" + index; // This would have each tab with the text 'Panel #X' where X = index
  }
