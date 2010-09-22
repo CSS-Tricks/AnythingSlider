@@ -15,48 +15,88 @@ h2. Features
 * Pauses autoPlay on hover (option)
 * Link to specific slides from static text links
 * Optionally autoPlay once through, stopping on the last page
+* Optionally resizes dimensions for each panel (specified per panel in css)
 
-h2. Usage & Options (defaults)
+h2. Default Options
 
-<pre>$('.anythingSlider').anythingSlider({
-	easing: "swing",                // Anything other than "linear" or "swing" requires the easing plugin
-	autoPlay: true,                 // This turns off the entire FUNCTIONALITY, not just if it starts running or not
-	startStopped: false,            // If autoPlay is on, this can force it to start stopped
-	delay: 3000,                    // How long between slide transitions in AutoPlay mode
-	animationTime: 600,             // How long the slide transition takes
-	hashTags: true,                 // Should links change the hashtag in the URL?
-	buildNavigation: true,          // If true, builds and list of anchor links to link to each slide
-	pauseOnHover: true,             // If true, and autoPlay is enabled, the show will pause on hover
-	startText: "Start",             // Start text
-	stopText: "Stop",               // Stop text
-	stopAtEnd: false,               // If true, and autoPlay is on autoPlay will stop on the last page
-	navigationFormatter: null       // Advanced Use: details below
-	forwardText: "&raquo;",         // Link text used to move the slider forward
-	backText: "&laquo;",            // Link text used to move the slider back
-	width: null,                    // Override the default CSS width
-	height: null,                   // Override the default CSS height
-	buildArrows: true               // If true, builds the forwards and backwards buttons
+<pre>$('#slider1, #slider2').anythingSlider({
+	// Appearance
+	width               : null,      // Override the default CSS width
+	height              : null,      // Override the default CSS height
+	resizeContents      : true       // If true, solitary images/objects in the panel will expand to fit the viewport
+
+	// Navigation
+	startPanel          : 1,         // This sets the initial panel
+	hashTags            : true,      // Should links change the hashtag in the URL?
+	buildArrows         : true,      // If true, builds the forwards and backwards buttons
+	buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
+	navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
+	forwardText         : "&raquo;", // Link text used to move the slider forward (hidden by CSS, replaced with arrow image)
+	backText            : "&laquo;", // Link text used to move the slider back (hidden by CSS, replace with arrow image)
+
+	// Slideshow options
+	autoPlay            : true,      // This turns off the entire slideshow FUNCTIONALY, not just if it starts running or not
+	startStopped        : false,     // If autoPlay is on, this can force it to start stopped
+	pauseOnHover        : true,      // If true & the slideshow is active, the slideshow will pause on hover
+	resumeOnVideoEnd    : true,      // If true & the slideshow is active & a youtube video is playing, it will pause the autoplay until the video is complete
+	stopAtEnd           : false,     // If true & the slideshow is active, the slideshow will stop on the last page
+	playRtl             : false,     // If true, the slideshow will move right-to-left
+	startText           : "Start",   // Start button text
+	stopText            : "Stop",    // Stop button text
+	delay               : 3000,      // How long between slideshow transitions in AutoPlay mode (in milliseconds)
+	animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
+	easing              : "swing"    // Anything other than "linear" or "swing" requires the easing plugin
 });</pre>
-	
-Linking directly to slides
 
+h2. Usage
+
+h3. Getting current slide:
+ <pre>$('#slider1').data('AnythingSlider').currentPage; // returns page #</pre>
+
+h3. Setting current slide. External link example:
+<pre>&lt;a href="#" id="slide-jump"&gt;Slide 4&lt;/a&gt;</pre>
 <pre>$("#slide-jump").click(function(){
-	$('.anythingSlider').anythingSlider(6);
+  $('#slider2').anythingSlider(4);
 });</pre>
 
-To use the navigationFormatter function, you must have a function that accepts two parameters, and returns a string of HTML text.
-	
+h3. External Slideshow Control</h3>
+<pre>$('#slider1').data('AnythingSlider').startStop(true);  // start the slideshow
+$('#slider2').data('AnythingSlider').startStop(false); // stops the slideshow
+$('#slider1').data('AnythingSlider').goForward();      // go forward one slide
+$('#slider1').data('AnythingSlider').goBack();         // go back one slide
+</pre>
+
+h3. Formatting Navigation Text</h3>
+ To use the <code>navigationFormatter</code> option, you must have a function that accepts two parameters, and returns a string of HTML text.
+
 * <code>index</code> = integer index (1 based);
 * <code>panel</code> = jQuery wrapped LI item this tab references
 * Function must return a string of HTML/Text
-
-Here is a sample formatter:
-
-<pre>navigationFormatter: function(index, panel){
-	return index + " Panel"; 		// This would have each tab with the text 'X Panel' where X = index
-}</pre>
+* Here is a sample formatter (view index.html page source for another example):
+  <pre>$('#slider').anythingSlider({
+ navigationFormatter : function(index, panel){
+  return " Panel #" + index; // This would have each tab with the text 'Panel #X' where X = index
+ }
+})</pre>
 
 h2. Changelog
+
+h3. Version 1.3.7
+
+* Added <code>startPanel</code> option.
+* Added <code>playRtl</code> option to reverse the play direction.
+* Added back <code>stopAtEnd</code> option (not should how it was removed from the options).
+* Added <code>resumeOnVideoEnd</code> option to prevent an active slideshow from pausing a video.
+* Changed location of reverse reference from the wrapping div ("anythingSlider" class) to the original ul ("silder1" id in the first example) - updated instructions.
+* Fixed height/width options to accept strings (e.g. "400px" instead of a number, it may not work properly if values are other than the numnber of pixels).
+* Fixed setting to accept strings (e.g. $(slider).anythingSlider(" 1 ")) as well as numbers.
+* Fixed problem with objects (youtube videos) flickering in Firefox by setting <code>resizeContent</code> to false.
+* Reorganized, cleaned up the code and updated the demos & instructions.
+
+h3. Version 1.3.6
+
+* Fixed minor bug with links to specific slides and updated example to reflect changes and be less confusing
+* Tweaked start/stop button css to be more maleable
 
 h3. Version 1.3.5
 
