@@ -1,5 +1,5 @@
 /*
-    anythingSlider v1.3.5
+    anythingSlider v1.3.7
 
     By Chris Coyier: http://css-tricks.com
     with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -45,14 +45,14 @@ div.anythingSlider {
 div.anythingSlider .anythingWindow ul {
 	/* Width below is max for Opera */
 	width: 32700px;
-	background: #eee;
+	background: transparent;
 	list-style: none;
 	position: absolute;
 	top: 0; left: 0;
 	margin: 0;
 }
 div.anythingSlider .anythingWindow ul li {
-	background: #eee;
+	background: transparent;
 	display: block;
 	float: left;
 	padding: 0;
@@ -61,6 +61,8 @@ div.anythingSlider .anythingWindow ul li {
 div.anythingSlider .anythingWindow ul ul {
 	position: static; margin: 0; background: none; overflow: visible; width: auto; border: 0; }
 div.anythingSlider .anythingWindow ul ul li { float: none; height: auto; width: auto; background: none; }
+
+/* Navigation Arrows */
 div.anythingSlider .arrow {
 	top: 50%;
 	position: absolute;
@@ -82,6 +84,7 @@ div.anythingSlider .back a { background-position: -88px -40px; }
 div.anythingSlider .forward a:hover { background-position: 0 -240px; }
 div.anythingSlider .back a:hover { background-position: -88px -240px; }
 
+/* Navigation Links */
 div.anythingSlider .thumbNav { margin: 0; }
 div.anythingSlider .thumbNav li { display: inline; }
 div.anythingSlider .thumbNav a {
@@ -102,6 +105,12 @@ div.anythingSlider .thumbNav a {
 }
 div.anythingSlider .thumbNav a:hover { background-image: none; }
 
+/* slider autoplay right-to-left, reverse order of nav links to look better */
+div.anythingSlider.rtl .thumbNav a { float: right; } /* reverse order of nav links */
+div.anythingSlider.rtl .thumbNav { float: left; }    /* move nav link group to left */
+/* div.anythingSlider.rtl .start-stop { float: right; } */ /* move start/stop button - in case you want to switch sides */
+
+/* Autoplay Start/Stop button */
 div.anythingSlider .start-stop {
 	z-index: 10;
 	background: green url(../images/cellshade.png) repeat-x center top;
