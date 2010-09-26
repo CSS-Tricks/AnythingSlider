@@ -56,7 +56,7 @@
 			base.pages   = base.$items.length;
 			base.$objlen = !!base.$objects.length;
 
-			// Make sure easing function exists. Posted a fix for this bug: http://dev.jquery.com/ticket/7064, remove when fixed.
+			// Make sure easing function exists.
 			if (!$.isFunction($.easing[base.options.easing])) { base.options.easing = "swing"; }
 
 			// Set the dimensions
