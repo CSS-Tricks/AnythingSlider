@@ -1,5 +1,5 @@
 /*
-    anythingSlider v1.3.7
+    AnythingSlider v1.4
 
     By Chris Coyier: http://css-tricks.com
     with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -7,7 +7,7 @@
 */
 
 /******* SET DEFAULT DIMENSIONS HERE ********/
-div.anythingSlider, div.anythingSlider .anythingWindow, div.anythingSlider .anythingWindow ul li {
+div.anythingSlider {
 	width: 700px;
 	height: 390px;
 	margin: 0 auto;
@@ -31,36 +31,33 @@ div.anythingSlider.activeSlider .anythingWindow {
 }
 
 /**** DO NOT CHANGE BELOW THIS LINE ****/
-div.anythingSlider .anythingWindow, div.anythingSlider .anythingWindow ul li {
-	width: 100%;
-}
+/* anythingSlider viewport window */
 div.anythingSlider .anythingWindow {
 	overflow: hidden;
 	position: relative;
+	width: 100%;
+	height: 100%;
 }
+/* wrapper: 45px right & left padding for the arrows, 28px @ bottom for naviagation */
 div.anythingSlider {
 	position: relative;
 	padding: 0 45px 28px 45px;
 }
-div.anythingSlider .anythingWindow ul {
-	/* Width below is max for Opera */
-	width: 32700px;
+/* anythingSlider base UL */
+ul.anythingBase {
 	background: transparent;
 	list-style: none;
 	position: absolute;
 	top: 0; left: 0;
 	margin: 0;
 }
-div.anythingSlider .anythingWindow ul li {
+ul.anythingBase li.panel {
 	background: transparent;
 	display: block;
 	float: left;
 	padding: 0;
 	margin: 0;
 }
-div.anythingSlider .anythingWindow ul ul {
-	position: static; margin: 0; background: none; overflow: visible; width: auto; border: 0; }
-div.anythingSlider .anythingWindow ul ul li { float: none; height: auto; width: auto; background: none; }
 
 /* Navigation Arrows */
 div.anythingSlider .arrow {
@@ -74,6 +71,7 @@ div.anythingSlider .arrow a {
 	margin-top: -60px;
 	width: 45px;
 	text-align: center;
+	outline: 0;
 	background: url(../images/arrows.png) no-repeat;
 	text-indent: -9999px;
 }
@@ -81,8 +79,8 @@ div.anythingSlider .forward { right: 0; }
 div.anythingSlider .back { left: 0; }
 div.anythingSlider .forward a { background-position: 0 -40px; }
 div.anythingSlider .back a { background-position: -88px -40px; }
-div.anythingSlider .forward a:hover { background-position: 0 -240px; }
-div.anythingSlider .back a:hover { background-position: -88px -240px; }
+div.anythingSlider .forward a:hover, div.anythingSlider .forward a.hover { background-position: 0 -240px; }
+div.anythingSlider .back a:hover, div.anythingSlider .back a.hover { background-position: -88px -240px; }
 
 /* Navigation Links */
 div.anythingSlider .thumbNav { margin: 0; }
@@ -98,6 +96,7 @@ div.anythingSlider .thumbNav a {
 	background-image: url(../images/cellshade.png);
 	background-repeat: repeat-x;
 	text-align: center;
+	outline: 0;
 	-moz-border-radius-bottomleft: 5px;
 	-moz-border-radius-bottomright: 5px;
 	-webkit-border-bottom-right-radius: 5px;
@@ -126,4 +125,4 @@ div.anythingSlider .start-stop {
 	-webkit-border-bottom-left-radius: 5px;
 }
 div.anythingSlider .start-stop.playing { background-color: red; }
-div.anythingSlider .start-stop:hover { background-image: none; }
+div.anythingSlider .start-stop:hover, div.anythingSlider .start-stop.hover { background-image: none; color: #ff0 }

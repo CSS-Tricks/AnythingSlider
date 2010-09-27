@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.3.7
+	AnythingSlider v1.4
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -18,8 +18,6 @@
 */
 
 (function($) {
-	// global variable to match hash tags with multiple sliders
-	__anythingSliderRunTimes = 0;
 
 	$.anythingSlider = function(el, options) {
 
@@ -27,12 +25,8 @@
 		// to reference this class from internal events and functions.
 		var base = this;
 
-			// Keeps track of the index of the current instance
-		__anythingSliderRunTimes++;
-		base.runTimes = __anythingSliderRunTimes;
-
 		// Wraps the ul in the necessary divs and then gives Access to jQuery element
-		base.$el = $(el).wrap('<div class="anythingSlider"><div class="anythingWindow" /></div>');
+		base.$el = $(el).addClass('anythingBase').wrap('<div class="anythingSlider"><div class="anythingWindow" /></div>');
 
 		// Add a reverse reference to the DOM object
 		base.$el.data("AnythingSlider", base);
@@ -45,7 +39,7 @@
 			// base.$el = original ul
 			base.$wrapper = base.$el.parent().closest('div.anythingSlider'); // parent() then closest incase the ul has anythingSlider class
 			base.$window = base.$el.closest('div.anythingWindow');
-			base.$items   = base.$el.find('> li');
+			base.$items   = base.$el.find('> li').addClass('panel');
 			base.$objects = base.$items.find('object');
 			base.$dimensions = [];
 
@@ -56,6 +50,9 @@
 			base.pages   = base.$items.length;
 			base.$objlen = !!base.$objects.length;
 
+			// Get index (run time) of this slider on the page
+			base.runTimes = $('div.anythingSlider').index(base.$wrapper) + 1;
+
 			// Make sure easing function exists.
 			if (!$.isFunction($.easing[base.options.easing])) { base.options.easing = "swing"; }
 
@@ -63,12 +60,10 @@
 			if (base.options.resizeContents) {
 				if (base.options.width) {
 					base.$wrapper.css('width', base.options.width);
-					base.$window.css('width', base.options.width);
 					base.$items.css('width', base.options.width);
 				}
 				if (base.options.height) {
 					base.$wrapper.css('height', base.options.height);
-					base.$window.css('height', base.options.height);
 					base.$items.css('height', base.options.height);
 				}
 				if (base.$objlen){
@@ -134,7 +129,7 @@
 
 			// If a hash can not be used to trigger the plugin, then go to start panel
 			if ((base.options.hashTags === true && !base.gotoHash()) || base.options.hashTags === false) {
-				base.setCurrentPage(base.options.startPanel);
+				base.setCurrentPage(base.options.startPanel, false);
 			}
 
 			// Fix tabbing through the page
@@ -209,26 +204,35 @@
 				base.goForward();
 				e.preventDefault();
 			});
+			// using tab to get to arrow links will show they have focus (outline is disabled in css)
+			$back.add($forward).find('a').bind('focusin focusout',function(){
+			 $(this).toggleClass('hover');
+			});
 
 			// Append elements to page
-			$(base.$wrapper).prepend($forward).prepend($back);
+			base.$wrapper.prepend($forward).prepend($back);
 		};
 
 		// Creates the Start/Stop button
 		base.buildAutoPlay = function(){
 			base.$startStop = $("<a href='#' class='start-stop'></a>").html(base.playing ? base.options.stopText :  base.options.startText);
 			base.$wrapper.append(base.$startStop);
-			base.$startStop.click(function(e) {
-				base.startStop(!base.playing);
-				if (base.playing) {
-					if (base.options.playRtl) {
-						base.goBack(true);
-					} else {
-						base.goForward(true);
+			base.$startStop
+				.click(function(e) {
+					base.startStop(!base.playing);
+					if (base.playing) {
+						if (base.options.playRtl) {
+							base.goBack(true);
+						} else {
+							base.goForward(true);
+						}
 					}
-				}
-				e.preventDefault();
-			});
+					e.preventDefault();
+				})
+				// show button has focus while tabbing
+				.bind('focusin focusout',function(){
+					$(this).toggleClass('hover');
+				});
 
 			// Use the same setting, but trigger the start;
 			base.startStop(base.playing);
@@ -236,12 +240,12 @@
 
 		// Set panel dimensions to either resize content or adjust panel to content
 		base.setDimensions = function(){
-			var w, h, c, cw, dw, leftEdge = 0;
+			var w, h, c, cw, dw, leftEdge = 0, bww = base.$window.width(), winw = $(window).width();
 			base.$items.each(function(i){
 				c = $(this).children('*');
 				if (base.options.resizeContents){
 					// get viewport width & height from options (if set), or css
-					w = parseInt(base.options.width,10) || base.$window.width();
+					w = parseInt(base.options.width,10) || bww;
 					h = parseInt(base.options.height,10) || base.$window.height();
 					// resize panel
 					$(this).css({ width: w, height: h });
@@ -249,15 +253,15 @@
 					if (c.length == 1){ c.css({ width: w, height: h }); }
 				} else {
 					// get panel width & height and save it
-					w = $(this).width(); // if not defined, it will return the width of the ul parent (32700px)
-					dw = (w >= 32700) ? true : false; // width defined from css?
+					w = $(this).width(); // if not defined, it will return the width of the ul parent
+					dw = (w >= winw) ? true : false; // width defined from css?
 					if (c.length == 1 && dw){
-						cw = (c.width() >= 32700) ? base.$window.width() : c.width(); // get width of solitary child
+						cw = (c.width() >= winw) ? bww : c.width(); // get width of solitary child
 						$(this).css('width', cw); // set width of panel
 						c.css('max-width', cw);   // set max width for all children
 						w = cw;
 					}
-					w = (dw) ?  base.options.width || base.$window.width() : w;
+					w = (dw) ?  base.options.width || bww : w;
 					$(this).css('width', w);
 					h = $(this).outerHeight(); // get height after setting width
 					$(this).css('height', h);
@@ -265,8 +269,8 @@
 				base.$dimensions[i] = [w,h,leftEdge];
 				leftEdge += w;
 			});
-			//  Set total width of slider, but don't go beyond opera's max width
-			if (leftEdge < 32766) { base.$el.css('width',leftEdge); }
+			//  Set total width of slider, but don't go beyond the set max overall width (limited by Opera)
+			base.$el.css('width', (leftEdge < base.options.maxOverallWidth) ? leftEdge : base.options.maxOverallWidth);
 		};
 
 		base.gotoPage = function(page, autoplay) {
@@ -287,22 +291,20 @@
 			// pause YouTube videos before scrolling or prevent change if playing
 			if (base.checkVideo(base.playing)) { return; }
 
-			var left = base.$dimensions[page][2] - base.$dimensions[base.currentPage][2];
-
 			// resize slider if content size varies
-			if (base.options.resizeContents) {
-				// animate positioning only, animating width and height cause youtube to flicker in Firefox
-				base.$window.filter(':not(:animated)').animate(
-					{ scrollLeft : '+=' + left },
-					{ queue: false, duration: base.options.animationTime, easing: base.options.easing, complete: function(){ base.endAnimation(page); } }
-				);
-			} else {
-				// animating the wrapper & window causes flickering in Firefox and breaks the youtube video pause/play functionality
-				base.$wrapper.add(base.$window).filter(':not(:animated)').animate(
-					{ scrollLeft : '+=' + left, width: base.$dimensions[page][0], height: base.$dimensions[page][1] },
-					{ queue: false, duration: base.options.animationTime, easing: base.options.easing, complete: function(){ base.endAnimation(page); } }
+			if (!base.options.resizeContents) {
+				// animating the wrapper resize before the window prevents flickering in Firefox
+				base.$wrapper.filter(':not(:animated)').animate(
+					{ width: base.$dimensions[page][0], height: base.$dimensions[page][1] },
+					{ queue: false, duration: base.options.animationTime, easing: base.options.easing }
 				);
 			}
+			// Animate Slider
+			base.$window.filter(':not(:animated)').animate(
+				{ scrollLeft : base.$dimensions[page][2] },
+				{ queue: false, duration: base.options.animationTime, easing: base.options.easing, complete: function(){ base.endAnimation(page); } }
+			);
+
 		};
 
 		base.endAnimation = function(page){
@@ -310,11 +312,11 @@
 				base.$window.scrollLeft(base.$dimensions[base.pages][2]);
 				page = base.pages;
 			} else if (page > base.pages) {
-				base.$window.scrollLeft(0);
 				// reset back to start position
+				base.$window.scrollLeft(0);
 				page = 1;
 			}
-			base.setCurrentPage(page);
+			base.setCurrentPage(page, false);
 
 			// continue YouTube video if in current panel
 			if (base.$objlen){
@@ -335,8 +337,8 @@
 			}
 
 			// Only change left if move does not equal false
-			if (move !== false) {
-				base.$wrapper.add(base.$window).css({
+			if (!move) {
+				base.$wrapper.css({ // .add(base.$window)
 					width: base.$dimensions[page][0],
 					height: base.$dimensions[page][1]
 				});
@@ -347,9 +349,7 @@
 			base.currentPage = page;
 
 			// Set current slider as active so keyboard navigation works properly
-			if ($('.activeSlider') == base.$wrapper){
-				return;
-			} else {
+			if (!base.$wrapper.is('.activeSlider')){
 				$('.activeSlider').removeClass('activeSlider');
 				base.$wrapper.addClass('activeSlider');
 			}
@@ -376,7 +376,7 @@
 					var slide = parseInt(hash[2],10),
 						$item = base.$items.filter(':eq(' + slide + ')');
 					if ($item.length !== 0) {
-						base.setCurrentPage(slide);
+						base.setCurrentPage(slide, false);
 						return true;
 					}
 				}
@@ -488,7 +488,9 @@
 		stopText            : "Stop",    // Stop button text
 		delay               : 3000,      // How long between slideshow transitions in AutoPlay mode (in milliseconds)
 		animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
-		easing              : "swing"    // Anything other than "linear" or "swing" requires the easing plugin
+		easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
+		
+		maxOverallWidth     : 32766      // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
 	};
 
 	$.fn.anythingSlider = function(options) {
