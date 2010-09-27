@@ -89,7 +89,7 @@ h3. Formatting Navigation Text
 h2. Changelog
 
 h3. Version 1.4
-* Added <code>maxOverallWidth</code> options. This sets the max width (in pixels) of all combined sliders (side-to-side) due to problems with Opera.</li>
+* Added <code>maxOverallWidth</code> option. This sets the max width (in pixels) of all combined sliders (side-to-side) due to problems with Opera.</li>
 * Added new classes to the base UL ("anythingBase") and its immediate children LIs ("panels") to reduce and clarify the CSS.</li>
 * Added hover class to arrows and start/stop button to indicate the link has focus (while tabbing through the page)</li>
 * Fixed flickering problem completely :P - numerous changes made to script & CSS</li>
