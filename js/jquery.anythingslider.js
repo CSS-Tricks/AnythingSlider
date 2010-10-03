@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.41
+	AnythingSlider v1.42
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -78,10 +78,10 @@
 			base.$objects.each(function(){
 				if ($(this).find('[src*=youtube]').length){
 					$(this)
-						.prepend('<param name="wmode" value="transparent"/>')
+						.prepend('<param name="wmode" value="' + base.options.addWmodeToObject +'"/>')
 						.parent().wrap('<div id="yt-temp"></div>')
 						.find('embed[src*=youtube]').attr('src', function(i,s){ return s + '&enablejsapi=1&version=3'; })
-						.attr('wmode','transparent').end()
+						.attr('wmode',base.options.addWmodeToObject).end()
 						.find('param[value*=youtube]').attr('value', function(i,v){ return v + '&enablejsapi=1&version=3'; }).end()
 						// detach/appendTo required for Chrome
 						.detach()
@@ -531,6 +531,8 @@
 		animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
 		easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
 		
+		// Misc options
+		addWmodeToObject    : "opaque",  // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting
 		maxOverallWidth     : 32766      // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
 	};
 

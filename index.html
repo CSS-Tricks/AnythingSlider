@@ -196,7 +196,9 @@
   delay               : 3000,      // How long between slideshow transitions in AutoPlay mode (in milliseconds)
   animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
   easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
-  
+
+  // Misc options
+  addWmodeToObject    : "opaque",  // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting
   maxOverallWidth     : 32766      // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
 });</pre>
 		</blockquote>
@@ -249,6 +251,11 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 		</ul>
 
 		<h2>Changelog</h2>
+
+		<h3>Version 1.42</h3>
+		<ul>
+			<li>Added <code>addWmodeToObject</code>. When a slider has an embedded object (like a youtube video), the script adds a wmode parameter with the value from this option ("opaque" by default).</li>
+		</ul>
 
 		<h3>Version 1.41</h3>
 		<ul>
