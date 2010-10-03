@@ -18,6 +18,8 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 #dl                    { position: absolute; top: 10px; right: 0; background: black; color: white; -moz-border-radius: 5px; -webkit-border-radius: 5px; padding: 3px 6px; }
 #dl:hover              { background: #666; }
 
+.themeselector         { margin: 0 auto; text-align: center; }
+
 /* For Specific Slides */
 #textSlide             { padding: 10px 30px; }
 #textSlide h3          { font: 20px Georgia, Serif; }

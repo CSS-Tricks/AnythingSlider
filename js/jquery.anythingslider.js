@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.4
+	AnythingSlider v1.41
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -33,22 +33,26 @@
 
 		base.init = function(){
 
-			base.options = $.extend({},$.anythingSlider.defaults, options);
+			base.options = $.extend({}, $.anythingSlider.defaults, options);
 
 			// Cache existing DOM elements for later
 			// base.$el = original ul
-			base.$wrapper = base.$el.parent().closest('div.anythingSlider'); // parent() then closest incase the ul has anythingSlider class
+			// for wrap - get parent() then closest in case the ul has "anythingSlider" class
+			base.$wrapper = base.$el.parent().closest('div.anythingSlider').addClass('anythingSlider-' + base.options.theme);
 			base.$window = base.$el.closest('div.anythingWindow');
-			base.$items   = base.$el.find('> li').addClass('panel');
+			base.$controls = $('<div class="anythingControls"></div>').appendTo(base.$wrapper);
+			base.$items = base.$el.find('> li').addClass('panel');
 			base.$objects = base.$items.find('object');
-			base.$dimensions = [];
 
 			// Set up a few defaults & get details
 			base.currentPage = base.options.startPanel;
+			base.pages = base.$items.length;
 			base.timer = null;
 			base.playing = false;
-			base.pages   = base.$items.length;
-			base.$objlen = !!base.$objects.length;
+			base.hovered = false;
+			base.hasObj = !!base.$objects.length;
+			base.theme = {};
+			base.panelSize = [];
 
 			// Get index (run time) of this slider on the page
 			base.runTimes = $('div.anythingSlider').index(base.$wrapper) + 1;
@@ -56,27 +60,28 @@
 			// Make sure easing function exists.
 			if (!$.isFunction($.easing[base.options.easing])) { base.options.easing = "swing"; }
 
+			// Set up Theme
+		if (base.options.theme != 'default') {
+			if (!$('link[href*=' + base.options.theme + ']').length){
+				$('body').append('<link rel="stylesheet" href="' + base.options.themeDirectory.replace(/\{themeName\}/g, base.options.theme) + '" type="text/css" />');
+			}
+		}
+
 			// Set the dimensions
 			if (base.options.resizeContents) {
-				if (base.options.width) {
-					base.$wrapper.css('width', base.options.width);
-					base.$items.css('width', base.options.width);
-				}
-				if (base.options.height) {
-					base.$wrapper.css('height', base.options.height);
-					base.$items.css('height', base.options.height);
-				}
-				if (base.$objlen){
-					base.$objects.find('embed').andSelf().css({ width : '100%', height: '100%' });
-				}
+				if (base.options.width) { base.$wrapper.add(base.$items).css('width', base.options.width); }
+				if (base.options.height) { base.$wrapper.add(base.$items).css('height', base.options.height); }
+				if (base.hasObj){ base.$objects.find('embed').andSelf().css({ width : '100%', height: '100%' }); }
 			}
 
 			// initialize youtube api - doesn't work in IE (someone have a solution?)
 			base.$objects.each(function(){
 				if ($(this).find('[src*=youtube]').length){
-					$(this).parent()
-						.wrap('<div id="yt-temp"></div>')
-						.find('embed[src*=youtube]').attr('src', function(i,s){ return s + '&enablejsapi=1&version=3'; }).end()
+					$(this)
+						.prepend('<param name="wmode" value="transparent"/>')
+						.parent().wrap('<div id="yt-temp"></div>')
+						.find('embed[src*=youtube]').attr('src', function(i,s){ return s + '&enablejsapi=1&version=3'; })
+						.attr('wmode','transparent').end()
 						.find('param[value*=youtube]').attr('value', function(i,v){ return v + '&enablejsapi=1&version=3'; }).end()
 						// detach/appendTo required for Chrome
 						.detach()
@@ -102,13 +107,9 @@
 			base.buildNavigation();
 
 			// Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
-			// This supports the "infinite" scrolling
-			// Ensures any cloned elements with ID's have unique ID's
-			var $itemClone = base.$items.filter(':last').clone().addClass('cloned');
-			base.$items.filter(':first').before( $itemClone.attr('id', function(i,id){ return (id==='') ? '' : id + "-cloned"; }) );
-
-			$itemClone = base.$items.filter(':first').clone().addClass('cloned');
-			base.$items.filter(':last' ).after($itemClone.attr('id', function(i,id){ return (id==='') ? '' : id + "-cloned"; }) );
+			// This supports the "infinite" scrolling, also ensures any cloned elements don't duplicate an ID
+			base.$el.prepend( base.$items.filter(':last').clone().addClass('cloned').removeAttr('id') );
+			base.$el.append( base.$items.filter(':first').clone().addClass('cloned').removeAttr('id') );
 
 			// We just added two items, time to re-cache the list, then get the dimensions of each panel
 			base.$items = base.$el.find('> li'); // reselect
@@ -144,6 +145,13 @@
 				});
 			});
 
+			// Hide/Show navigation & play/stop controls
+			base.slideControls(false);
+			base.$wrapper.hover(function(e){
+				base.hovered = (e.type=="mouseenter") ? true : false;
+				base.slideControls( base.hovered, false );
+			});
+
 			// Add keyboard navigation
 			$(window).keyup(function(e){
 				if (base.$wrapper.is('.activeSlider')) {
@@ -162,17 +170,21 @@
 
 		// Creates the numbered navigation links
 		base.buildNavigation = function() {
-			base.$nav = $('<ul class="thumbNav" />').appendTo(base.$wrapper);
+			base.$nav = $('<ul class="thumbNav" />').appendTo(base.$controls);
 			if (base.options.playRtl) { base.$wrapper.addClass('rtl'); }
 
 			if (base.options.buildNavigation && (base.pages > 1)) {
 				base.$items.each(function(i,el) {
 					var index = i + 1,
-						$a = $("<a href='#'></a>");
+						$a = $("<a href='#'></a>").addClass('panel' + index).wrap("<li />");
+					base.$nav.append($a);
 
 					// If a formatter function is present, use it
 					if (typeof(base.options.navigationFormatter) == "function") {
-						$a.html(base.options.navigationFormatter(index, $(this)));
+						var tmp = base.options.navigationFormatter(index, $(this));
+						$a.html(tmp);
+						// Add formatting to title attribute if text is hidden
+						if (parseInt($a.css('text-indent'),10) < 0) { $a.addClass(base.options.tooltipClass).attr('title', tmp); }
 					} else {
 						$a.text(index);
 					}
@@ -183,8 +195,6 @@
 						e.preventDefault();
 					});
 
-					$(base.$nav).append($a);
-					$a.wrap("<li />");
 				});
 
 			}
@@ -192,31 +202,32 @@
 
 		// Creates the Forward/Backward buttons
 		base.buildNextBackButtons = function() {
-			var $forward = $('<span class="arrow forward"><a href="#">' + base.options.forwardText + '</a></span>'),
-				$back = $('<span class="arrow back"><a href="#">' + base.options.backText + '</a></span>');
+			base.$forward = $('<span class="arrow forward"><a href="#">' + base.options.forwardText + '</a></span>');
+			base.$back = $('<span class="arrow back"><a href="#">' + base.options.backText + '</a></span>');
 
 			// Bind to the forward and back buttons
-			$back.click(function(e) {
+			base.$back.click(function(e) {
 				base.goBack();
 				e.preventDefault();
 			});
-			$forward.click(function(e) {
+			base.$forward.click(function(e) {
 				base.goForward();
 				e.preventDefault();
 			});
 			// using tab to get to arrow links will show they have focus (outline is disabled in css)
-			$back.add($forward).find('a').bind('focusin focusout',function(){
+			base.$back.add(base.$forward).find('a').bind('focusin focusout',function(){
 			 $(this).toggleClass('hover');
 			});
 
 			// Append elements to page
-			base.$wrapper.prepend($forward).prepend($back);
+			base.$wrapper.prepend(base.$forward).prepend(base.$back);
+			base.$arrowWidth = base.$forward.width();
 		};
 
 		// Creates the Start/Stop button
 		base.buildAutoPlay = function(){
 			base.$startStop = $("<a href='#' class='start-stop'></a>").html(base.playing ? base.options.stopText :  base.options.startText);
-			base.$wrapper.append(base.$startStop);
+			base.$controls.append(base.$startStop);
 			base.$startStop
 				.click(function(e) {
 					base.startStop(!base.playing);
@@ -266,7 +277,7 @@
 					h = $(this).outerHeight(); // get height after setting width
 					$(this).css('height', h);
 				}
-				base.$dimensions[i] = [w,h,leftEdge];
+				base.panelSize[i] = [w,h,leftEdge];
 				leftEdge += w;
 			});
 			//  Set total width of slider, but don't go beyond the set max overall width (limited by Opera)
@@ -279,6 +290,11 @@
 				base.setCurrentPage(base.options.startPage);
 			}
 
+			// pause YouTube videos before scrolling or prevent change if playing
+			if (base.checkVideo(base.playing)) { return; }
+
+			base.slideControls(true, false);
+
 			// Just check for bounds
 			if (page > base.pages + 1) { page = base.pages; }
 			if (page < 0 ) { page = 1; }
@@ -288,20 +304,17 @@
 			// Stop the slider when we reach the last page, if the option stopAtEnd is set to true
 			if (!autoplay || (base.options.stopAtEnd && page == base.pages)) { base.startStop(false); }
 
-			// pause YouTube videos before scrolling or prevent change if playing
-			if (base.checkVideo(base.playing)) { return; }
-
 			// resize slider if content size varies
 			if (!base.options.resizeContents) {
 				// animating the wrapper resize before the window prevents flickering in Firefox
 				base.$wrapper.filter(':not(:animated)').animate(
-					{ width: base.$dimensions[page][0], height: base.$dimensions[page][1] },
+					{ width: base.panelSize[page][0], height: base.panelSize[page][1] },
 					{ queue: false, duration: base.options.animationTime, easing: base.options.easing }
 				);
 			}
 			// Animate Slider
 			base.$window.filter(':not(:animated)').animate(
-				{ scrollLeft : base.$dimensions[page][2] },
+				{ scrollLeft : base.panelSize[page][2] },
 				{ queue: false, duration: base.options.animationTime, easing: base.options.easing, complete: function(){ base.endAnimation(page); } }
 			);
 
@@ -309,7 +322,7 @@
 
 		base.endAnimation = function(page){
 			if (page === 0) {
-				base.$window.scrollLeft(base.$dimensions[base.pages][2]);
+				base.$window.scrollLeft(base.panelSize[base.pages][2]);
 				page = base.pages;
 			} else if (page > base.pages) {
 				// reset back to start position
@@ -317,9 +330,10 @@
 				page = 1;
 			}
 			base.setCurrentPage(page, false);
+			if (!base.hovered) { base.slideControls(false); }
 
 			// continue YouTube video if in current panel
-			if (base.$objlen){
+			if (base.hasObj){
 				var emb = base.$items.eq(base.currentPage).find('embed[src*=youtube]');
 				try {
 					if (emb.length && $.isFunction(emb[0].getPlayerState) && emb[0].getPlayerState() > 0) {
@@ -339,11 +353,11 @@
 			// Only change left if move does not equal false
 			if (!move) {
 				base.$wrapper.css({ // .add(base.$window)
-					width: base.$dimensions[page][0],
-					height: base.$dimensions[page][1]
+					width: base.panelSize[page][0],
+					height: base.panelSize[page][1]
 				});
 				base.$wrapper.scrollLeft(0); // reset in case tabbing changed this scrollLeft
-				base.$window.scrollLeft( base.$dimensions[page][2] );
+				base.$window.scrollLeft( base.panelSize[page][2] );
 			}
 			// Update local variable
 			base.currentPage = page;
@@ -385,7 +399,7 @@
 		};
 
 		// Taken from AJAXY jquery.history Plugin
-		base.setHash = function (hash) {
+		base.setHash = function (hash){
 			// Write hash
 			if ( typeof window.location.hash !== 'undefined' ) {
 				if ( window.location.hash !== hash ) {
@@ -399,6 +413,22 @@
 			return hash;
 		};
 		// <-- End AJAXY code
+
+		// Slide controls (nav and play/stop button up or down
+		base.slideControls = function(toggle, playing){
+			var dir = (toggle) ? 'slideDown' : 'slideUp',
+				t1 = (toggle) ? 0 : base.options.animationTime,
+				t2 = (toggle) ? base.options.animationTime: 0,
+				sign = (toggle) ? 0 : 1; // 0 = visible, 1 = hidden
+			if (base.options.toggleControls) {
+				base.$controls.stop(true,true).delay(t1)[dir](base.options.animationTime/2).delay(t2); 
+			}
+			if (base.options.toggleArrows) {
+				if (!base.hovered && base.playing) { sign = 1; }
+				base.$forward.stop(true,true).delay(t1).animate({ right: sign * base.$arrowWidth, opacity: t2 }, base.options.animationTime/2);
+				base.$back.stop(true,true).delay(t1).animate({ left: sign * base.$arrowWidth, opacity: t2 }, base.options.animationTime/2);
+			}
+		};
 
 		base.clearTimer = function(){
 			// Clear the timer only if it is set
@@ -414,7 +444,13 @@
 			base.playing = playing;
 
 			// Toggle playing and text
-			if (base.options.autoPlay) { base.$startStop.toggleClass("playing", playing).html( playing ? base.options.stopText : base.options.startText ); }
+			if (base.options.autoPlay) {
+				base.$startStop.toggleClass('playing', playing).html( playing ? base.options.stopText : base.options.startText );
+				// add button text to title attribute if it is hidden by text-indent
+				if (parseInt(base.$startStop.css('text-indent'),10) < 0) {
+					base.$startStop.addClass(base.options.tooltipClass).attr('title', playing ? 'Stop' : 'Start');
+				}
+			}
 
 			if (playing){
 				base.clearTimer(); // Just in case this was triggered twice in a row
@@ -436,7 +472,7 @@
 		base.checkVideo = function(playing){
 			// pause YouTube videos before scrolling?
 			var emb, ps, stopAdvance = false;
-			if (base.$objlen){
+			if (base.hasObj){
 				base.$objects.each(function(){
 					// this only works on youtube videos
 					emb = $(this).find('embed[src*=youtube]');
@@ -467,12 +503,17 @@
 		width               : null,      // Override the default CSS width
 		height              : null,      // Override the default CSS height
 		resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
+		tooltipClass        : 'tooltip', // Class added to navigation & start/stop button (text copied to title if it is hidden by a negative text indent)
+		theme               : 'default', // Theme name
+		themeDirectory      : 'css/theme-{themeName}.css', // Theme directory & filename {themeName} is replaced by the theme value above
 
 		// Navigation
 		startPanel          : 1,         // This sets the initial panel
 		hashTags            : true,      // Should links change the hashtag in the URL?
 		buildArrows         : true,      // If true, builds the forwards and backwards buttons
+		toggleArrows        : false,     // if true, side navigation arrows will slide out on hovering & hide @ other times
 		buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
+		toggleControls      : false,     // if true, slide in controls (navigation + play/stop button) on hover and slide change, hide @ other times
 		navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
 		forwardText         : "&raquo;", // Link text used to move the slider forward (hidden by CSS, replaced with arrow image)
 		backText            : "&laquo;", // Link text used to move the slider back (hidden by CSS, replace with arrow image)
@@ -498,6 +539,7 @@
 		// initialize the slider
 		if ((typeof(options)).match('object|undefined')){
 			return this.each(function(i){
+				if ($(this).is('.anythingBase')) { return; } // prevent multiple initializations
 				(new $.anythingSlider(this, options));
 			});
 

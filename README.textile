@@ -10,18 +10,20 @@ This new AnythingSlider is an attempt at bringing together the functionality of 
 
 h2. Features
 
-* Slides are HTML Content (can be anything)
-* Optional Next Slide / Previous Slide Arrows
-* Navigation tabs are built and added dynamically (any number of slides)
-* Optional custom function for formatting navigation text
-* Auto-playing (optional feature, can start playing or stopped)
-* Each slide has a hashtag (can link directly to specific slides)
-* Infinite/Continuous sliding (always slides in the direction you are going, even at "last" slide)
-* Multiple sliders allowable per-page
-* Pauses autoPlay on hover (option)
-* Link to specific slides from static text links
-* Optionally autoPlay once through, stopping on the last page
-* Optionally resizes dimensions for each panel (specified per panel in css)
+* Panels are HTML Content (can be anything).
+* Multiple AnythingSliders allowable per-page.
+* Infinite/Continuous sliding (always slides in the direction you are going, even at "last" slide).
+* Optionally resize each panel (specified per panel in css).
+* Optional Next / Previous Panel Arrows.
+* Use keyboard navigation or tabs that are built and added dynamically (any number of panels).
+* Link to specific slides or go forward or back one slide from static text links.
+* Each panel has a hashtag (can link directly to specific panels).
+* Optional custom function for formatting navigation text.
+* Auto-playing slideshow (optional feature, can start playing or stopped)
+* Pauses playing YouTube videos when not in view and resumes them when in view (only in non-IE browsers &amp; if files are hosted on the web).
+* If slideshow is active, a playing video will complete before the slideshow continues.
+* Pauses slideshow on hover (optional).
+* Optionally play the slideshow once through, stopping on the last page.
 
 h2. Default Options
 
@@ -30,12 +32,17 @@ h2. Default Options
 	width               : null,      // Override the default CSS width
 	height              : null,      // Override the default CSS height
 	resizeContents      : true       // If true, solitary images/objects in the panel will expand to fit the viewport
+	tooltipClass        : 'tooltip', // Class added to navigation & start/stop button (text copied to title if it is hidden by a negative text indent)
+	theme               : 'default', // Theme name
+	themeDirectory      : 'css/theme-{themeName}.css', // Theme directory & filename {themeName} is replaced by the theme value above
 
 	// Navigation
 	startPanel          : 1,         // This sets the initial panel
 	hashTags            : true,      // Should links change the hashtag in the URL?
 	buildArrows         : true,      // If true, builds the forwards and backwards buttons
+	toggleArrows        : false,     // if true, side navigation arrows will slide out on hovering & hide @ other times
 	buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
+	toggleControls      : false,     // if true, slide in controls (navigation + play/stop button) on hover and slide change, hide @ other times
 	navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
 	forwardText         : "&raquo;", // Link text used to move the slider forward (hidden by CSS, replaced with arrow image)
 	backText            : "&laquo;", // Link text used to move the slider back (hidden by CSS, replace with arrow image)
@@ -87,6 +94,12 @@ h3. Formatting Navigation Text
 })</pre>
 
 h2. Changelog
+
+h3. Version 1.41
+* Added <code>theme</code> option and several themes. Themes can now be added to individual AnythingSliders (although they are based largely on CSS).
+* Added <code>tooltipClass</code> option which adds the assigned class name to the navigation and play/stop button only if the text is hidden (negative text-indent). The tooltip plugin must be added separately.
+* Added <code>toggleArrows</code> option. This option (if true) will slide out (reveal) the arrows while hovering & hide them at other times.
+* Added <code>toggleControls</code> option. This option (if true) will slide down (reveal) the navigation links and play/stop button while hovering & hide them at other times. Adding this option required a new "anythingControls" class that wraps both the navigation links and the play/stop button.
 
 h3. Version 1.4
 * Added <code>maxOverallWidth</code> option. This sets the max width (in pixels) of all combined sliders (side-to-side) due to problems with Opera.</li>
