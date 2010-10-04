@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.42
+	AnythingSlider v1.43
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -47,12 +47,12 @@
 			// Set up a few defaults & get details
 			base.currentPage = base.options.startPanel;
 			base.pages = base.$items.length;
-			base.timer = null;
-			base.playing = false;
-			base.hovered = false;
-			base.hasObj = !!base.$objects.length;
-			base.theme = {};
-			base.panelSize = [];
+			base.timer = null;    // slideshow timer (setInterval) container
+			base.flag = false;    // event flag to prevent multiple calls (used in control click/focusin)
+			base.playing = false; // slideshow state
+			base.hovered = false; // actively hovering over the slider
+			base.hasObj = !!base.$objects.length; // embedded objects exist in the slider
+			base.panelSize = []; // will contain dimensions and left position of each panel
 
 			// Get index (run time) of this slider on the page
 			base.runTimes = $('div.anythingSlider').index(base.$wrapper) + 1;
@@ -122,9 +122,15 @@
 			// If pauseOnHover then add hover effects
 			if (base.options.pauseOnHover) {
 				base.$wrapper.hover(function() {
-					base.clearTimer();
+					if (base.playing) {
+						base.$el.trigger('slideshow_paused', base.$el);
+						base.clearTimer(true);
+					}
 				}, function() {
-					base.startStop(base.playing);
+					if (base.playing) {
+						base.$el.trigger('slideshow_unpaused', base.$el);
+						base.startStop(base.playing, true);
+					}
 				});
 			}
 
@@ -180,7 +186,7 @@
 					base.$nav.append($a);
 
 					// If a formatter function is present, use it
-					if (typeof(base.options.navigationFormatter) == "function") {
+					if ($.isFunction(base.options.navigationFormatter)) {
 						var tmp = base.options.navigationFormatter(index, $(this));
 						$a.html(tmp);
 						// Add formatting to title attribute if text is hidden
@@ -189,9 +195,13 @@
 						$a.text(index);
 					}
 
-					$a.bind('click focusin', function(e) {
-						base.gotoPage(index);
-						if (base.options.hashTags) { base.setHash('panel' + base.runTimes + '-' + index); }
+					$a.bind(base.options.clickControls, function(e) {
+						if (!base.flag) {
+							// prevent running functions twice (once for click, second time for focusin)
+							base.flag = true; setTimeout(function(){ base.flag = false; }, 100);
+							base.gotoPage(index);
+							if (base.options.hashTags) { base.setHash('panel' + base.runTimes + '-' + index); }
+						}
 						e.preventDefault();
 					});
 
@@ -206,11 +216,11 @@
 			base.$back = $('<span class="arrow back"><a href="#">' + base.options.backText + '</a></span>');
 
 			// Bind to the forward and back buttons
-			base.$back.click(function(e) {
+			base.$back.bind(base.options.clickArrows, function(e) {
 				base.goBack();
 				e.preventDefault();
 			});
-			base.$forward.click(function(e) {
+			base.$forward.bind(base.options.clickArrows, function(e) {
 				base.goForward();
 				e.preventDefault();
 			});
@@ -229,7 +239,7 @@
 			base.$startStop = $("<a href='#' class='start-stop'></a>").html(base.playing ? base.options.stopText :  base.options.startText);
 			base.$controls.append(base.$startStop);
 			base.$startStop
-				.click(function(e) {
+				.bind(base.options.clickSlideshow, function(e) {
 					base.startStop(!base.playing);
 					if (base.playing) {
 						if (base.options.playRtl) {
@@ -293,6 +303,9 @@
 			// pause YouTube videos before scrolling or prevent change if playing
 			if (base.checkVideo(base.playing)) { return; }
 
+			base.$el.trigger('slide_init', base.$el);
+			if ($.isFunction(base.options.init)) { base.options.init(page); }
+
 			base.slideControls(true, false);
 
 			// Just check for bounds
@@ -303,6 +316,8 @@
 			if (autoplay !== true) { autoplay = false; }
 			// Stop the slider when we reach the last page, if the option stopAtEnd is set to true
 			if (!autoplay || (base.options.stopAtEnd && page == base.pages)) { base.startStop(false); }
+
+			base.$el.trigger('slide_begin', base.$el);
 
 			// resize slider if content size varies
 			if (!base.options.resizeContents) {
@@ -330,6 +345,7 @@
 				page = 1;
 			}
 			base.setCurrentPage(page, false);
+
 			if (!base.hovered) { base.slideControls(false); }
 
 			// continue YouTube video if in current panel
@@ -341,6 +357,9 @@
 					}
 				} catch(err) {}
 			}
+
+			base.$el.trigger('slide_complete', base.$el);
+
 		};
 
 		base.setCurrentPage = function(page, move) {
@@ -430,15 +449,20 @@
 			}
 		};
 
-		base.clearTimer = function(){
+		base.clearTimer = function(paused){
 			// Clear the timer only if it is set
-			if (base.timer) { window.clearInterval(base.timer); }
+			if (base.timer) { 
+				window.clearInterval(base.timer); 
+				if (!paused) { base.$el.trigger('slideshow_stop', base.$el); }
+			}
 		};
 
 		// Handles stopping and playing the slideshow
 		// Pass startStop(false) to stop and startStop(true) to play
-		base.startStop = function(playing) {
+		base.startStop = function(playing, paused) {
 			if (playing !== true) { playing = false; } // Default if not supplied is false
+
+			if (playing && !paused) { base.$el.trigger('slideshow_start', base.$el); }
 
 			// Update variable
 			base.playing = playing;
@@ -453,7 +477,7 @@
 			}
 
 			if (playing){
-				base.clearTimer(); // Just in case this was triggered twice in a row
+				base.clearTimer(true); // Just in case this was triggered twice in a row
 				base.timer = window.setInterval(function() {
 					// prevent autoplay if video is playing
 					if (!base.checkVideo(playing)) {
@@ -511,7 +535,7 @@
 		startPanel          : 1,         // This sets the initial panel
 		hashTags            : true,      // Should links change the hashtag in the URL?
 		buildArrows         : true,      // If true, builds the forwards and backwards buttons
-		toggleArrows        : false,     // if true, side navigation arrows will slide out on hovering & hide @ other times
+		toggleArrows        : false,     // If true, side navigation arrows will slide out on hovering & hide @ other times
 		buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
 		toggleControls      : false,     // if true, slide in controls (navigation + play/stop button) on hover and slide change, hide @ other times
 		navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
@@ -530,10 +554,15 @@
 		delay               : 3000,      // How long between slideshow transitions in AutoPlay mode (in milliseconds)
 		animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
 		easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
-		
+
+		// Interactivity
+		clickArrows         : "click",         // Event used to activate arrow functionality (e.g. "click" or "mouseenter")
+		clickControls       : "click focusin", // Events used to activate navigation control functionality
+		clickSlideshow      : "click",         // Event used to activate slideshow play/stop button
+
 		// Misc options
-		addWmodeToObject    : "opaque",  // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting
-		maxOverallWidth     : 32766      // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
+		addWmodeToObject    : "opaque", // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting
+		maxOverallWidth     : 32766     // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
 	};
 
 	$.fn.anythingSlider = function(options) {

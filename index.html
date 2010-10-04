@@ -43,6 +43,14 @@
 				return false;
 			});
 
+			// Report Events to console
+			$('.anythingSlider').bind('slideshow_start slideshow_stop slideshow_paused slideshow_unpaused slide_init slide_begin slide_complete',function(e, el){
+				// show object ID + event (e.g. "slider1: slide_begin")
+				var txt = el.id + ': ' + e.type + ', now on panel #' + $(el).data('AnythingSlider').currentPage;
+				$('#status').text(txt);
+				if (window.console){ console.debug(txt); }
+			})
+
 			// Theme Selector (This is really for demo purposes only)
 			var themes = ['minimalist-round','minimalist-square','metallic','construction'];
 			$('#currentTheme').change(function(){
@@ -160,6 +168,7 @@
 			<li>Pauses playing YouTube videos when not in view and resumes them when in view (only in non-IE browsers &amp; if files are hosted on the web).</li>
 			<li>Pauses slideshow on hover (optional).</li>
 			<li>Optionally play the slideshow once through, stopping on the last page.</li>
+			<li>Extend the script by binding to custom events, last triggered event: <span id="status">none</span></li>
 		</ul>
 
 		<h2>Default Options</h2>
@@ -197,21 +206,26 @@
   animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
   easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
 
+  // Interactivity
+  clickArrows         : "click",         // Event used to activate arrow functionality (e.g. "click" or "mouseenter")
+  clickControls       : "click focusin", // Events used to activate navigation control functionality
+  clickSlideshow      : "click",         // Event used to activate slideshow play/stop button
+
   // Misc options
-  addWmodeToObject    : "opaque",  // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting
-  maxOverallWidth     : 32766      // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
+  addWmodeToObject    : "opaque", // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting
+  maxOverallWidth     : 32766     // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
 });</pre>
 		</blockquote>
 
 		<h2>Usage</h2>
 		<ul>
-			<li><h3>Getting current slide number:</h3>
+			<li><h3>Getting Current Slide Number:</h3>
 				<blockquote>
 					<pre>var current = $('#slider1').data('AnythingSlider').currentPage; // returns page #</pre>
 				</blockquote>
 			</li>
 
-			<li><h3>Setting current slide (external link example):</h3>
+			<li><h3>Setting Current Slide (external link example):</h3>
 				<blockquote>
 					<pre>&lt;a href="#" id="slide-jump"&gt;Slide 4&lt;/a&gt;</pre>
 				<pre>$("#slide-jump").click(function(){
@@ -226,6 +240,37 @@
 $('#slider2').data('AnythingSlider').startStop(false); // stops the slideshow
 $('#slider1').data('AnythingSlider').goForward();      // go forward one slide
 $('#slider1').data('AnythingSlider').goBack();         // go back one slide
+</pre>
+				</blockquote>
+			</li>
+
+			<li><h3>Extending - Event Hooks</h3>
+				<blockquote>
+				<ul>
+					<li><code>slideshow_start</code> - slideshow started</li>
+					<li><code>slideshow_stop</code> - slideshow stopped</li>
+					<li><code>slideshow_paused</code> - slideshow paused</li>
+					<li><code>slideshow_unpaused</code> - slideshow unpaused - may not trigger properly or match a pause event if user clicks play/stop button</li>
+					<li><code>slide_init</code> - triggered when panel slide is initialized (before controls animate)</li>
+					<li><code>slide_begin</code> - triggered before panel slide animation</li>
+					<li><code>slide_complete</code> - triggered after panel slide animation</li>
+				</ul>
+				</blockquote>
+				You can bind to any of the custom event triggers as follows (see this page source for another example):<br>
+				<br>
+				<blockquote>
+					<pre>$('#slider1').bind('slide_complete', function(e, el){
+ $('#status').text( 'Now on page #' + $(el).data('AnythingSlider').currentPage );
+ // Do something else
+});
+</pre>
+				</blockquote>
+				<br>
+				<blockquote>
+					<pre>$('.anythingSlider').bind('slideshow_start slideshow_stop', function(e, el){
+ var msg = (e.type == "slideshow_start") ? 'Someone started the #^&%$! slideshow!' : 'Whew, thanks for stopping the slideshow';
+ $('#status').text( msg );
+});
 </pre>
 				</blockquote>
 			</li>
@@ -251,6 +296,13 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 		</ul>
 
 		<h2>Changelog</h2>
+
+		<h3>Version 1.43</h3>
+		<ul>
+			<li>Added options to modify interactivity: <code>clickArrows</code>, <code>clickControls</code> & <code>clickSlideshow</code>.</li>
+			<li>Added custom events - slideshow start, stop, pause & unpause as well as slide begin, start & stop. See the "Extending - Event Hooks" section above for a more detailed description.</li>
+			<li>Updated instructions on how to use custom events.</li>
+		</ul>
 
 		<h3>Version 1.42</h3>
 		<ul>

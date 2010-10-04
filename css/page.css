@@ -20,6 +20,8 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 
 .themeselector         { margin: 0 auto; text-align: center; }
 
+#status                { color: #00a; font-weight: bold; }
+
 /* For Specific Slides */
 #textSlide             { padding: 10px 30px; }
 #textSlide h3          { font: 20px Georgia, Serif; }

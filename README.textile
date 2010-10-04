@@ -60,6 +60,11 @@ h2. Default Options
 	animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
 	easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
 
+	// Interactivity
+	clickArrows         : "click",         // Event used to activate arrow functionality (e.g. "click" or "mouseenter")
+	clickControls       : "click focusin", // Events used to activate navigation control functionality
+	clickSlideshow      : "click",         // Event used to activate slideshow play/stop button
+
 	// Misc options
 	addWmodeToObject    : "opaque",  // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting
 	maxOverallWidth     : 32766      // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
@@ -79,8 +84,28 @@ h3. External Slideshow Control
 <pre>$('#slider1').data('AnythingSlider').startStop(true);  // start the slideshow
 $('#slider2').data('AnythingSlider').startStop(false); // stops the slideshow
 $('#slider1').data('AnythingSlider').goForward();      // go forward one slide
-$('#slider1').data('AnythingSlider').goBack();         // go back one slide
-</pre>
+$('#slider1').data('AnythingSlider').goBack();         // go back one slide</pre>
+
+h3. >Extending - Event Hooks
+* <code>slideshow_start</code> - slideshow started
+* <code>slideshow_stop</code> - slideshow stopped
+* <code>slideshow_paused</code> - slideshow paused
+* <code>slideshow_unpaused</code> - slideshow unpaused - may not trigger properly or match a pause event if user clicks play/stop button
+* <code>slide_init</code> - triggered when panel slide is initialized (before controls animate)
+* <code>slide_begin</code> - triggered before panel slide animation
+* <code>slide_complete</code> - triggered after panel slide animation
+
+You can bind to any of the custom event triggers as follows (see this page source for another example):<br>
+
+<pre>$('#slider1').bind('slide_complete', function(e, el){
+ $('#status').text( 'Now on page #' + $(el).data('AnythingSlider').currentPage );
+ // Do something else
+});</pre>
+
+<pre>$('.anythingSlider').bind('slideshow_start slideshow_stop', function(e, el){
+ var msg = (e.type == "slideshow_start") ? 'Someone started the #^&%$! slideshow!' : 'Whew, thanks for stopping the slideshow';
+ $('#status').text( msg );
+});</pre>
 
 h3. Formatting Navigation Text
  To use the <code>navigationFormatter</code> option, you must have a function that accepts two parameters, and returns a string of HTML text.
@@ -96,6 +121,11 @@ h3. Formatting Navigation Text
 })</pre>
 
 h2. Changelog
+
+h3. Version 1.43
+* Added options to modify interactivity: <code>clickArrows</code>, <code>clickControls</code> & <code>clickSlideshow</code>.
+* Added custom events - slideshow start, stop, pause & unpause as well as slide begin, start & stop. See the "Extending - Event Hooks" section above for a more detailed description.
+* Updated instructions on how to use custom events.
 
 h3. Version 1.42
 * Added <code>addWmodeToObject</code>. When a slider has an embedded object (like a youtube video), the script adds a wmode parameter with the value from this option ("opaque" by default).
