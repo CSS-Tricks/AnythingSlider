@@ -122,15 +122,15 @@ h3. Formatting Navigation Text
 
 h2. Changelog
 
-h3. Version 1.43
+h3. Version 1.4.3
 * Added options to modify interactivity: <code>clickArrows</code>, <code>clickControls</code> & <code>clickSlideshow</code>.
 * Added custom events - slideshow start, stop, pause & unpause as well as slide begin, start & stop. See the "Extending - Event Hooks" section above for a more detailed description.
 * Updated instructions on how to use custom events.
 
-h3. Version 1.42
+h3. Version 1.4.2
 * Added <code>addWmodeToObject</code>. When a slider has an embedded object (like a youtube video), the script adds a wmode parameter with the value from this option ("opaque" by default).
 
-h3. Version 1.41
+h3. Version 1.4.1
 * Added <code>theme</code> option and several themes. Themes can now be added to individual AnythingSliders (although they are based largely on CSS).
 * Added <code>tooltipClass</code> option which adds the assigned class name to the navigation and play/stop button only if the text is hidden (negative text-indent). The tooltip plugin must be added separately.
 * Added <code>toggleArrows</code> option. This option (if true) will slide out (reveal) the arrows while hovering & hide them at other times.
