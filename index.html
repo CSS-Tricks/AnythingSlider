@@ -24,7 +24,7 @@
 		$(function () {
 
 			$('#slider1').anythingSlider({
-				startStopped   : true, // This turns off the entire slideshow FUNCTIONALY, not just if it starts running or not
+				startStopped   : true, // If autoPlay is on, this can force it to start stopped
 				width          : 800,  // Override the default CSS width
 				toggleControls : true, // if true, then slide in controls on hover and slider change, hide @ other times
 				theme          : 'metallic'
@@ -34,7 +34,7 @@
 				width               : 600,        // if resizeContent is false, this is the default width if panel size is not defined
 				height              : 350,        // if resizeContent is false, this is the default height if panel size is not defined
 				resizeContents      : false,      // If true, solitary images/objects in the panel will expand to fit the viewport
-				autoPlay            : false,      // This turns off the entire slideshow FUNCTIONALY, not just if it starts running or not
+				startStopped        : true,       // If autoPlay is on, this can force it to start stopped
 				navigationFormatter : formatText  // Format navigation labels with text
 			})
 

@@ -159,7 +159,7 @@
 			});
 
 			// Add keyboard navigation
-			$(window).keyup(function(e){
+			$(document).keyup(function(e){
 				if (base.$wrapper.is('.activeSlider')) {
 					switch (e.which) {
 						case 39: // right arrow
