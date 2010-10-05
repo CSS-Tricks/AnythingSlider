@@ -34,7 +34,7 @@
 				width               : 600,        // if resizeContent is false, this is the default width if panel size is not defined
 				height              : 350,        // if resizeContent is false, this is the default height if panel size is not defined
 				resizeContents      : false,      // If true, solitary images/objects in the panel will expand to fit the viewport
-				autoPlay          : false,      // This turns off the entire slideshow FUNCTIONALY, not just if it starts running or not
+				autoPlay            : false,      // This turns off the entire slideshow FUNCTIONALY, not just if it starts running or not
 				navigationFormatter : formatText  // Format navigation labels with text
 			})
 
@@ -48,7 +48,7 @@
 				// show object ID + event (e.g. "slider1: slide_begin")
 				var txt = el.id + ': ' + e.type + ', now on panel #' + $(el).data('AnythingSlider').currentPage;
 				$('#status').text(txt);
-				if (window.console){ console.debug(txt); }
+				if (window.console && window.console.firebug){ console.debug(txt); } // added window.console.firebug to make this work in Opera
 			})
 
 			// Theme Selector (This is really for demo purposes only)
