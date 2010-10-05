@@ -1,7 +1,7 @@
 /* Demo specific css */
 *                      { margin: 0; padding: 0; }
 body                   { font: 12px Georgia, Serif; }
-a, a img               { border: 0; text-decoration: none; outline: 0; }
+a, a img               { border: 0; text-decoration: none; }
 
 #page-wrap             { width: 90%; padding: 15px; background: white; margin: 0 auto 50px; position: relative; }
 
@@ -17,6 +17,10 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 
 #dl                    { position: absolute; top: 10px; right: 0; background: black; color: white; -moz-border-radius: 5px; -webkit-border-radius: 5px; padding: 3px 6px; }
 #dl:hover              { background: #666; }
+
+.themeselector         { margin: 0 auto; text-align: center; }
+
+#status                { color: #00a; font-weight: bold; }
 
 /* For Specific Slides */
 #textSlide             { padding: 10px 30px; }
