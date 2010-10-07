@@ -60,6 +60,15 @@ h2. Default Options
 	animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
 	easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
 
+	// Callbacks
+	onShowStart         : null,      // Callback on slideshow start
+	onShowStop          : null,      // Callback after slideshow stops
+	onShowPause         : null,      // Callback when slideshow pauses
+	onShowUnpause       : null,      // Callback when slideshow unpauses - may not trigger properly if user clicks on any controls
+	onSlideInit         : null,      // Callback when slide initiates, before control animation
+	onSlideBegin        : null,      // Callback before slide animates
+	onSlideComplete     : null,      // Callback when slide completes
+
 	// Interactivity
 	clickArrows         : "click",         // Event used to activate arrow functionality (e.g. "click" or "mouseenter")
 	clickControls       : "click focusin", // Events used to activate navigation control functionality
