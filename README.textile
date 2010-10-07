@@ -32,27 +32,27 @@ h2. Default Options
 	width               : null,      // Override the default CSS width
 	height              : null,      // Override the default CSS height
 	resizeContents      : true       // If true, solitary images/objects in the panel will expand to fit the viewport
-	tooltipClass        : 'tooltip', // Class added to navigation &amp; start/stop button (text copied to title if it is hidden by a negative text indent)
+	tooltipClass        : 'tooltip', // Class added to navigation & start/stop button (text copied to title if it is hidden by a negative text indent)
 	theme               : 'default', // Theme name
-	themeDirectory      : 'css/theme-{themeName}.css', // Theme directory &amp; filename {themeName} is replaced by the theme value above
+	themeDirectory      : 'css/theme-{themeName}.css', // Theme directory & filename {themeName} is replaced by the theme value above
 
 	// Navigation
 	startPanel          : 1,         // This sets the initial panel
 	hashTags            : true,      // Should links change the hashtag in the URL?
 	buildArrows         : true,      // If true, builds the forwards and backwards buttons
-	toggleArrows        : false,     // if true, side navigation arrows will slide out on hovering &amp; hide @ other times
+	toggleArrows        : false,     // if true, side navigation arrows will slide out on hovering & hide @ other times
 	buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
 	toggleControls      : false,     // if true, slide in controls (navigation + play/stop button) on hover and slide change, hide @ other times
 	navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
-	forwardText         : "&amp;raquo;", // Link text used to move the slider forward (hidden by CSS, replaced with arrow image)
-	backText            : "&amp;laquo;", // Link text used to move the slider back (hidden by CSS, replace with arrow image)
+	forwardText         : "&raquo;", // Link text used to move the slider forward (hidden by CSS, replaced with arrow image)
+	backText            : "&laquo;", // Link text used to move the slider back (hidden by CSS, replace with arrow image)
 
 	// Slideshow options
 	autoPlay            : true,      // This turns off the entire slideshow FUNCTIONALY, not just if it starts running or not
 	startStopped        : false,     // If autoPlay is on, this can force it to start stopped
-	pauseOnHover        : true,      // If true &amp; the slideshow is active, the slideshow will pause on hover
-	resumeOnVideoEnd    : true,      // If true &amp; the slideshow is active &amp; a youtube video is playing, it will pause the autoplay until the video is complete
-	stopAtEnd           : false,     // If true &amp; the slideshow is active, the slideshow will stop on the last page
+	pauseOnHover        : true,      // If true & the slideshow is active, the slideshow will pause on hover
+	resumeOnVideoEnd    : true,      // If true & the slideshow is active & a youtube video is playing, it will pause the autoplay until the video is complete
+	stopAtEnd           : false,     // If true & the slideshow is active, the slideshow will stop on the last page
 	playRtl             : false,     // If true, the slideshow will move right-to-left
 	startText           : "Start",   // Start button text
 	stopText            : "Stop",    // Stop button text
@@ -114,7 +114,7 @@ You can bind to any of the custom event triggers as follows (see this page sourc
 });</pre>
 
 <pre>$('.anythingSlider').bind('slideshow_start slideshow_stop', function(e, slider){
- var msg = (e.type == "slideshow_start") ? 'Someone started the #^&amp;%$! slideshow!' : 'Whew, thanks for stopping the slideshow';
+ var msg = (e.type == "slideshow_start") ? 'Someone started the #^&%$! slideshow!' : 'Whew, thanks for stopping the slideshow';
  $('#status').text( msg );
 });</pre>
 
