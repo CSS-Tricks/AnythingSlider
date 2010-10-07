@@ -73,6 +73,7 @@ ul.anythingBase {
 	top: 0;
 	left: 0;
 	margin: 0;
+	padding: 0;
 }
 ul.anythingBase li.panel {
 	background: transparent;
@@ -151,3 +152,9 @@ div.anythingSlider .start-stop {
 }
 div.anythingSlider .start-stop:hover, div.anythingSlider .start-stop.hover { background-image: none; }
 
+.noTransitions {
+	transition-duration: 0;
+	-o-transition-duration: 0;
+	-moz-transition-duration: 0;
+	-webkit-transition-duration: 0;
+}

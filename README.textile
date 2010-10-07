@@ -32,27 +32,27 @@ h2. Default Options
 	width               : null,      // Override the default CSS width
 	height              : null,      // Override the default CSS height
 	resizeContents      : true       // If true, solitary images/objects in the panel will expand to fit the viewport
-	tooltipClass        : 'tooltip', // Class added to navigation & start/stop button (text copied to title if it is hidden by a negative text indent)
+	tooltipClass        : 'tooltip', // Class added to navigation &amp; start/stop button (text copied to title if it is hidden by a negative text indent)
 	theme               : 'default', // Theme name
-	themeDirectory      : 'css/theme-{themeName}.css', // Theme directory & filename {themeName} is replaced by the theme value above
+	themeDirectory      : 'css/theme-{themeName}.css', // Theme directory &amp; filename {themeName} is replaced by the theme value above
 
 	// Navigation
 	startPanel          : 1,         // This sets the initial panel
 	hashTags            : true,      // Should links change the hashtag in the URL?
 	buildArrows         : true,      // If true, builds the forwards and backwards buttons
-	toggleArrows        : false,     // if true, side navigation arrows will slide out on hovering & hide @ other times
+	toggleArrows        : false,     // if true, side navigation arrows will slide out on hovering &amp; hide @ other times
 	buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
 	toggleControls      : false,     // if true, slide in controls (navigation + play/stop button) on hover and slide change, hide @ other times
 	navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
-	forwardText         : "&raquo;", // Link text used to move the slider forward (hidden by CSS, replaced with arrow image)
-	backText            : "&laquo;", // Link text used to move the slider back (hidden by CSS, replace with arrow image)
+	forwardText         : "&amp;raquo;", // Link text used to move the slider forward (hidden by CSS, replaced with arrow image)
+	backText            : "&amp;laquo;", // Link text used to move the slider back (hidden by CSS, replace with arrow image)
 
 	// Slideshow options
 	autoPlay            : true,      // This turns off the entire slideshow FUNCTIONALY, not just if it starts running or not
 	startStopped        : false,     // If autoPlay is on, this can force it to start stopped
-	pauseOnHover        : true,      // If true & the slideshow is active, the slideshow will pause on hover
-	resumeOnVideoEnd    : true,      // If true & the slideshow is active & a youtube video is playing, it will pause the autoplay until the video is complete
-	stopAtEnd           : false,     // If true & the slideshow is active, the slideshow will stop on the last page
+	pauseOnHover        : true,      // If true &amp; the slideshow is active, the slideshow will pause on hover
+	resumeOnVideoEnd    : true,      // If true &amp; the slideshow is active &amp; a youtube video is playing, it will pause the autoplay until the video is complete
+	stopAtEnd           : false,     // If true &amp; the slideshow is active, the slideshow will stop on the last page
 	playRtl             : false,     // If true, the slideshow will move right-to-left
 	startText           : "Start",   // Start button text
 	stopText            : "Stop",    // Stop button text
@@ -86,26 +86,45 @@ $('#slider2').data('AnythingSlider').startStop(false); // stops the slideshow
 $('#slider1').data('AnythingSlider').goForward();      // go forward one slide
 $('#slider1').data('AnythingSlider').goBack();         // go back one slide</pre>
 
-h3. >Extending - Event Hooks
-* <code>slideshow_start</code> - slideshow started
-* <code>slideshow_stop</code> - slideshow stopped
-* <code>slideshow_paused</code> - slideshow paused
-* <code>slideshow_unpaused</code> - slideshow unpaused - may not trigger properly or match a pause event if user clicks play/stop button
-* <code>slide_init</code> - triggered when panel slide is initialized (before controls animate)
-* <code>slide_begin</code> - triggered before panel slide animation
-* <code>slide_complete</code> - triggered after panel slide animation
+h3. Extending - Event Hooks (callback functions)
+*Note: Changed bind function returned arguments to make more straightforward values available, see callback arguments below.*
 
-You can bind to any of the custom event triggers as follows (see this page source for another example):<br>
+* <code>slideshow_start</code> (<code>onShowStart</code>) - slideshow started.
+* <code>slideshow_stop</code> (<code>onShowStop</code>) - slideshow stopped.
+* <code>slideshow_paused</code> (<code>onShowPause</code>) - slideshow paused.
+* <code>slideshow_unpaused</code> (<code>onShowUnpause</code>) - slideshow unpaused - may not trigger properly or match a pause event if user clicks play/stop button.
+* <code>slide_init</code> (<code>onSlideInit</code>) - triggered when panel slide is initialized (before controls animate).
+* <code>slide_begin</code> (<code>onSlideBegin</code>) - triggered before panel slide animation.
+* <code>slide_complete</code> (<code>onSlideComplete</code>) - triggered after panel slide animation.
 
-<pre>$('#slider1').bind('slide_complete', function(e, el){
- $('#status').text( 'Now on page #' + $(el).data('AnythingSlider').currentPage );
+You can bind to any of the custom event triggers as follows (see this page source for another example):
+
+<pre>$('#slider1').bind('slide_complete', function(e, slider){
+ $('#status').text( 'Now on page #' + slider.currentPage );
  // Do something else
 });</pre>
 
-<pre>$('.anythingSlider').bind('slideshow_start slideshow_stop', function(e, el){
- var msg = (e.type == "slideshow_start") ? 'Someone started the #^&%$! slideshow!' : 'Whew, thanks for stopping the slideshow';
+<pre>$('.anythingSlider').bind('slideshow_start slideshow_stop', function(e, slider){
+ var msg = (e.type == "slideshow_start") ? 'Someone started the #^&amp;%$! slideshow!' : 'Whew, thanks for stopping the slideshow';
  $('#status').text( msg );
 });</pre>
+
+or use one of the callback functions:
+
+<pre>$('#slider').anythingSlider({
+ onSlideComplete : function(slider){
+  alert('Welcome to Slide #' + slider.currentPage);
+ }
+})</pre>
+
+Callback Arguments ( examples are if you use "slider" in the callback function, e.g. function(slider){...}, or in the trigger function, e.g. function(e, slider){...} )
+
+*Callback Argument - Description*
+* slider.currentPage - Currently displayed page/slide number.
+* slider.pages - Number of pages contained in the slider.
+* slider.playing - Is true if the slideshow is currently playing (is false when slideshow is paused, but true while youtube video is playing).
+* slider.hovered - Is true if the slider is currently being hovered.
+* slider.options.{name} - Access any of the options (e.g. slider.options.theme). Trying to set the options this way may break the slider.
 
 h3. Formatting Navigation Text
  To use the <code>navigationFormatter</code> option, you must have a function that accepts two parameters, and returns a string of HTML text.
@@ -122,25 +141,31 @@ h3. Formatting Navigation Text
 
 h2. Changelog
 
-h3. Version 1.43
-* Added options to modify interactivity: <code>clickArrows</code>, <code>clickControls</code> & <code>clickSlideshow</code>.
-* Added custom events - slideshow start, stop, pause & unpause as well as slide begin, start & stop. See the "Extending - Event Hooks" section above for a more detailed description.
+h3. Version 1.4.4
+* Added CSS to fix a problem with CSS3 transitions occurring during the animation. Added <code>noTransitions</code> class to the arrows, navigation and slider.
+* Added callback functions: <code>onShowStart</code>, <code>onShowStop</code>, <code>onShowPause</code>, <code>onShowUnpause</code>, <code>onSlideInit</code>, <code>onSlideBegin</code> &amp; <code>onSlideComplete</code>.
+* Added instructions on callback argument useage as values and access to internal functions.
+* Changed triggered event callback argument to make using them easier - see the Event Hooks section above.
+
+h3. Version 1.4.3
+* Added options to modify interactivity: <code>clickArrows</code>, <code>clickControls</code> &amp; <code>clickSlideshow</code>.
+* Added custom events - slideshow start, stop, pause &amp; unpause as well as slide begin, start &amp; stop. See the "Extending - Event Hooks" section above for a more detailed description.
 * Updated instructions on how to use custom events.
 
-h3. Version 1.42
+h3. Version 1.4.2
 * Added <code>addWmodeToObject</code>. When a slider has an embedded object (like a youtube video), the script adds a wmode parameter with the value from this option ("opaque" by default).
 
-h3. Version 1.41
+h3. Version 1.4.1
 * Added <code>theme</code> option and several themes. Themes can now be added to individual AnythingSliders (although they are based largely on CSS).
 * Added <code>tooltipClass</code> option which adds the assigned class name to the navigation and play/stop button only if the text is hidden (negative text-indent). The tooltip plugin must be added separately.
-* Added <code>toggleArrows</code> option. This option (if true) will slide out (reveal) the arrows while hovering & hide them at other times.
-* Added <code>toggleControls</code> option. This option (if true) will slide down (reveal) the navigation links and play/stop button while hovering & hide them at other times. Adding this option required a new "anythingControls" class that wraps both the navigation links and the play/stop button.
+* Added <code>toggleArrows</code> option. This option (if true) will slide out (reveal) the arrows while hovering &amp; hide them at other times.
+* Added <code>toggleControls</code> option. This option (if true) will slide down (reveal) the navigation links and play/stop button while hovering &amp; hide them at other times. Adding this option required a new "anythingControls" class that wraps both the navigation links and the play/stop button.
 
 h3. Version 1.4
 * Added <code>maxOverallWidth</code> option. This sets the max width (in pixels) of all combined sliders (side-to-side) due to problems with Opera.</li>
 * Added new classes to the base UL ("anythingBase") and its immediate children LIs ("panels") to reduce and clarify the CSS.</li>
 * Added hover class to arrows and start/stop button to indicate the link has focus (while tabbing through the page)</li>
-* Fixed flickering problem completely :P - numerous changes made to script & CSS</li>
+* Fixed flickering problem completely :P - numerous changes made to script &amp; CSS</li>
 * Bumped version to 1.4 because of significant differences from version 1.3</li>
 
 h3. Version 1.3.7
@@ -154,7 +179,7 @@ h3. Version 1.3.7
 * Fixed setting to accept strings (e.g. $(slider).anythingSlider(" 1 ")) as well as numbers.
 * Fixed problem with objects (youtube videos) flickering in Firefox by setting <code>resizeContent</code> to false.
 * Fixed problem that occurs when using an incorrect easing function name (submitted ticket: http://dev.jquery.com/ticket/7064 )
-* Reorganized, cleaned up the code and updated the demos & instructions.
+* Reorganized, cleaned up the code and updated the demos &amp; instructions.
 
 h3. Version 1.3.6
 
@@ -164,7 +189,7 @@ h3. Version 1.3.6
 h3. Version 1.3.5
 
 * Added resizePanel option - does not support percentage sizing.
-** When true, it will resize all panels & solitary content to the size settings (CSS or the script options).
+** When true, it will resize all panels &amp; solitary content to the size settings (CSS or the script options).
 ** When false, the AnythingSlider wrapper will resize to fit the panel (set inline or in the CSS for each panel).
 * Fixed keyboard navigation to work with multiple AnythingSliders on a page.
 * Added tabbed navigation. Both the links within panels and the thumbnail navigation will activate it.
@@ -175,7 +200,7 @@ h3. Version 1.3.4
 * Embeded objects will now resize to fit the panel.
 * YouTube videos will pause the video when it is not in view and play (if already started) if it is in view.
   Note: this feature only works in non-IE browsers and when the files are hosted on a webserver as the flash player restricts calls between local files and the internet.
-* Modified code according to JSLint & added minified version.
+* Modified code according to JSLint &amp; added minified version.
 
 h3. Version 1.3.3
 

@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.43
+	AnythingSlider v1.4.4
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -38,8 +38,8 @@
 			// Cache existing DOM elements for later
 			// base.$el = original ul
 			// for wrap - get parent() then closest in case the ul has "anythingSlider" class
-			base.$wrapper = base.$el.parent().closest('div.anythingSlider').addClass('anythingSlider-' + base.options.theme);
-			base.$window = base.$el.closest('div.anythingWindow');
+			base.$wrapper = base.$el.parent().closest('div.anythingSlider').addClass('noTransitions anythingSlider-' + base.options.theme);
+			base.$window = base.$el.closest('div.anythingWindow').addClass('noTransitions');
 			base.$controls = $('<div class="anythingControls"></div>').appendTo(base.$wrapper);
 			base.$items = base.$el.find('> li').addClass('panel');
 			base.$objects = base.$items.find('object');
@@ -123,12 +123,14 @@
 			if (base.options.pauseOnHover) {
 				base.$wrapper.hover(function() {
 					if (base.playing) {
-						base.$el.trigger('slideshow_paused', base.$el);
+						base.$el.trigger('slideshow_paused', base);
+						if ($.isFunction(base.options.onShowPause)) { base.options.onShowPause(base); }
 						base.clearTimer(true);
 					}
 				}, function() {
 					if (base.playing) {
-						base.$el.trigger('slideshow_unpaused', base.$el);
+						base.$el.trigger('slideshow_unpaused', base);
+						if ($.isFunction(base.options.onShowUnpause)) { base.options.onShowUnpause(base); }
 						base.startStop(base.playing, true);
 					}
 				});
@@ -176,7 +178,7 @@
 
 		// Creates the numbered navigation links
 		base.buildNavigation = function() {
-			base.$nav = $('<ul class="thumbNav" />').appendTo(base.$controls);
+			base.$nav = $('<ul class="thumbNav noTransitions" />').appendTo(base.$controls);
 			if (base.options.playRtl) { base.$wrapper.addClass('rtl'); }
 
 			if (base.options.buildNavigation && (base.pages > 1)) {
@@ -212,8 +214,8 @@
 
 		// Creates the Forward/Backward buttons
 		base.buildNextBackButtons = function() {
-			base.$forward = $('<span class="arrow forward"><a href="#">' + base.options.forwardText + '</a></span>');
-			base.$back = $('<span class="arrow back"><a href="#">' + base.options.backText + '</a></span>');
+			base.$forward = $('<span class="arrow forward noTransitions"><a href="#">' + base.options.forwardText + '</a></span>');
+			base.$back = $('<span class="arrow back noTransitions"><a href="#">' + base.options.backText + '</a></span>');
 
 			// Bind to the forward and back buttons
 			base.$back.bind(base.options.clickArrows, function(e) {
@@ -303,8 +305,8 @@
 			// pause YouTube videos before scrolling or prevent change if playing
 			if (base.checkVideo(base.playing)) { return; }
 
-			base.$el.trigger('slide_init', base.$el);
-			if ($.isFunction(base.options.init)) { base.options.init(page); }
+			base.$el.trigger('slide_init', base);
+			if ($.isFunction(base.options.onSlideInit)) { base.options.onSlideInit(base); }
 
 			base.slideControls(true, false);
 
@@ -317,7 +319,8 @@
 			// Stop the slider when we reach the last page, if the option stopAtEnd is set to true
 			if (!autoplay || (base.options.stopAtEnd && page == base.pages)) { base.startStop(false); }
 
-			base.$el.trigger('slide_begin', base.$el);
+			base.$el.trigger('slide_begin', base);
+			if ($.isFunction(base.options.onSlideBegin)) { base.options.onSlideBegin(base); }
 
 			// resize slider if content size varies
 			if (!base.options.resizeContents) {
@@ -358,8 +361,12 @@
 				} catch(err) {}
 			}
 
-			base.$el.trigger('slide_complete', base.$el);
-
+			base.$el.trigger('slide_complete', base);
+			if ($.isFunction(base.options.onSlideComplete)) {
+				// Added setTimeout (zero time) to ensure animation is complete... for some reason this code:
+				// alert(base.$window.is(':animated')); // alerts true
+				setTimeout(function(){ base.options.onSlideComplete(base); }, 0);
+			}
 		};
 
 		base.setCurrentPage = function(page, move) {
@@ -453,7 +460,10 @@
 			// Clear the timer only if it is set
 			if (base.timer) { 
 				window.clearInterval(base.timer); 
-				if (!paused) { base.$el.trigger('slideshow_stop', base.$el); }
+				if (!paused) {
+					base.$el.trigger('slideshow_stop', base); 
+					if ($.isFunction(base.options.onShowStop)) { base.options.onShowStop(base); }
+				}
 			}
 		};
 
@@ -462,7 +472,10 @@
 		base.startStop = function(playing, paused) {
 			if (playing !== true) { playing = false; } // Default if not supplied is false
 
-			if (playing && !paused) { base.$el.trigger('slideshow_start', base.$el); }
+			if (playing && !paused) {
+				base.$el.trigger('slideshow_start', base);
+				if ($.isFunction(base.options.onShowStart)) { base.options.onShowStart(base); }
+			}
 
 			// Update variable
 			base.playing = playing;
@@ -554,6 +567,15 @@
 		delay               : 3000,      // How long between slideshow transitions in AutoPlay mode (in milliseconds)
 		animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
 		easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
+
+		// Callbacks
+		onShowStart         : null,      // Callback on slideshow start
+		onShowStop          : null,      // Callback after slideshow stops
+		onShowPause         : null,      // Callback when slideshow pauses
+		onShowUnpause       : null,      // Callback when slideshow unpauses - may not trigger properly if user clicks on any controls
+		onSlideInit         : null,      // Callback when slide initiates, before control animation
+		onSlideBegin        : null,      // Callback before slide animates
+		onSlideComplete     : null,      // Callback when slide completes
 
 		// Interactivity
 		clickArrows         : "click",         // Event used to activate arrow functionality (e.g. "click" or "mouseenter")
