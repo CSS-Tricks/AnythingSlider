@@ -1,5 +1,5 @@
 /*
-    AnythingSlider v1.4 Default (base) theme
+    AnythingSlider v1.4.4 Default (base) theme
 
     By Chris Coyier: http://css-tricks.com
     with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -73,6 +73,7 @@ ul.anythingBase {
 	top: 0;
 	left: 0;
 	margin: 0;
+	padding: 0;
 }
 ul.anythingBase li.panel {
 	background: transparent;
@@ -91,7 +92,7 @@ div.anythingSlider .arrow {
 div.anythingSlider .arrow a {
 	display: block;
 	height: 120px;
-	margin-top: -60px;
+	margin: -60px 0 0 0;
 	width: 45px;
 	text-align: center;
 	outline: 0;
@@ -151,3 +152,9 @@ div.anythingSlider .start-stop {
 }
 div.anythingSlider .start-stop:hover, div.anythingSlider .start-stop.hover { background-image: none; }
 
+.noTransitions {
+	transition-duration: 0;
+	-o-transition-duration: 0;
+	-moz-transition-duration: 0;
+	-webkit-transition-duration: 0;
+}

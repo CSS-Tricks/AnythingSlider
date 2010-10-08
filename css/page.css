@@ -21,6 +21,11 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 .themeselector         { margin: 0 auto; text-align: center; }
 
 #status                { color: #00a; font-weight: bold; }
+.alert                 { color: #f00; font-weight: bold; }
+.data                  { width: 100%; border: #555 1px solid; border-collapse: collapse; }
+.data td, .data th     { border: #555 1px solid; padding: 0 5px; }
+.data th               { background: #eee; }
+.data .col             { width: 200px; }
 
 /* For Specific Slides */
 #textSlide             { padding: 10px 30px; }

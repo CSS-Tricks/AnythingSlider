@@ -15,19 +15,20 @@
 	<script type="text/javascript" src="js/jquery.anythingslider.js" charset="utf-8"></script>
 
 	<script type="text/javascript">
-
 		var slider2 = ['Recipe', 'Quote', 'Image', 'Quote #2', 'Image #2'];
 		function formatText(index, panel){
 			return slider2[index - 1];
 		}
 
 		$(function () {
-
 			$('#slider1').anythingSlider({
-				startStopped   : true, // If autoPlay is on, this can force it to start stopped
-				width          : 800,  // Override the default CSS width
-				toggleControls : true, // if true, then slide in controls on hover and slider change, hide @ other times
-				theme          : 'metallic'
+				startStopped    : true, // If autoPlay is on, this can force it to start stopped
+				width           : 800,  // Override the default CSS width
+//				toggleControls  : true, // if true, then slide in controls on hover and slider change, hide @ other times
+				theme           : 'metallic',
+				onSlideComplete : function(slider){
+					// alert('Welcome to Slide #' + slider.currentPage);
+				}
 			});
 
 			$('#slider2').anythingSlider({
@@ -36,7 +37,7 @@
 				resizeContents      : false,      // If true, solitary images/objects in the panel will expand to fit the viewport
 				startStopped        : true,       // If autoPlay is on, this can force it to start stopped
 				navigationFormatter : formatText  // Format navigation labels with text
-			})
+			});
 
 			$("#slide-jump").click(function(){
 				$('#slider2').anythingSlider(4);
@@ -44,15 +45,15 @@
 			});
 
 			// Report Events to console
-			$('.anythingSlider').bind('slideshow_start slideshow_stop slideshow_paused slideshow_unpaused slide_init slide_begin slide_complete',function(e, el){
+			$('.anythingSlider').bind('slideshow_start slideshow_stop slideshow_paused slideshow_unpaused slide_init slide_begin slide_complete',function(e, slider){
 				// show object ID + event (e.g. "slider1: slide_begin")
-				var txt = el.id + ': ' + e.type + ', now on panel #' + $(el).data('AnythingSlider').currentPage;
+				var txt = slider.$el[0].id + ': ' + e.type + ', now on panel #' + slider.currentPage;
 				$('#status').text(txt);
 				if (window.console && window.console.firebug){ console.debug(txt); } // added window.console.firebug to make this work in Opera
-			})
+			});
 
 			// Theme Selector (This is really for demo purposes only)
-			var themes = ['minimalist-round','minimalist-square','metallic','construction'];
+			var themes = ['minimalist-round','minimalist-square','metallic','construction','cs-portfolio'];
 			$('#currentTheme').change(function(){
 				var theme = $(this).val();
 
@@ -62,8 +63,7 @@
 				$('#slider1').closest('div.anythingSlider')
 					.removeClass( $.map(themes, function(t){ return 'anythingSlider-' + t; }).join(' ') )
 					.addClass('anythingSlider-' + theme);
-
-			})
+			});
 
 		});
 	</script>
@@ -74,7 +74,8 @@
 	<div id="page-wrap">
 		<a href="http://github.com/ProLoser/AnythingSlider/downloads" id="dl">Download Latest on Github</a>
 
-		<h5><a href="http://css-tricks.com/examples/AnythingSlider/">Original</a> By <a href="http://css-tricks.com">Chris Coyier</a>, based upon lots of smart stuff by <a href="http://css-tricks.com/anythingslider-1-4/">A LOT of people</a>.</h5>
+		<h5><a href="http://css-tricks.com/examples/AnythingSlider/">Original</a> By <a href="http://css-tricks.com">Chris Coyier</a>, based upon lots of smart stuff by <a href="http://jqueryfordesigners.com/">Remy Sharp</a>,<br />
+		significantly improved by <a href="http://pixelgraphics.us/">Douglas Neiner</a></h5>
 
 		<h1>AnythingSlider</h1>
 
@@ -83,8 +84,9 @@
 								<option value="default">Default</option>
 								<option value="minimalist-round">Minimalist-Round</option>
 								<option value="minimalist-square">Minimalist-Square</option>
-								<option value="metallic" selected>Metallic</option>
+								<option value="metallic" selected="selected">Metallic</option>
 								<option value="construction">Construction</option>
+								<option value="cs-portfolio">CS-Portfolio</option>
 							</select>
 			</div>
 
@@ -164,7 +166,7 @@
 			<li>Each panel has a hashtag (can link directly to specific panels).</li>
 			<li>Optional custom function for <a href="#format">formatting navigation text</a>.</li>
 			<li>Auto-playing slideshow (optional feature, can start playing or stopped)</li>
-			<li>Pauses playing YouTube videos when not in view and resumes them when in view (only in non-IE browsers &amp;amp; if files are hosted on the web).</li>
+			<li>Pauses playing YouTube videos when not in view and resumes them when in view (only in non-IE browsers &amp; if files are hosted on the web).</li>
 			<li>Pauses slideshow on hover (optional).</li>
 			<li>Optionally play the slideshow once through, stopping on the last page.</li>
 			<li>Extend the script by binding to custom events, last triggered event: <span id="status">none</span></li>
@@ -205,6 +207,15 @@
   animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
   easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
 
+  // Callbacks
+  onShowStart         : null,      // Callback on slideshow start
+  onShowStop          : null,      // Callback after slideshow stops
+  onShowPause         : null,      // Callback when slideshow pauses
+  onShowUnpause       : null,      // Callback when slideshow unpauses - may not trigger properly if user clicks on any controls
+  onSlideInit         : null,      // Callback when slide initiates, before control animation
+  onSlideBegin        : null,      // Callback before slide animates
+  onSlideComplete     : null,      // Callback when slide completes
+
   // Interactivity
   clickArrows         : "click",         // Event used to activate arrow functionality (e.g. "click" or "mouseenter")
   clickControls       : "click focusin", // Events used to activate navigation control functionality
@@ -243,34 +254,61 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 				</blockquote>
 			</li>
 
-			<li><h3>Extending - Event Hooks</h3>
+			<li><h3>Extending - Event Hooks (callback functions)</h3>
+				<div class="alert"><b>Note:</b> Changed bind function returned arguments to make more straightforward values available, see callback arguments below.</div>
+				<br>
 				<blockquote>
 				<ul>
-					<li><code>slideshow_start</code> - slideshow started</li>
-					<li><code>slideshow_stop</code> - slideshow stopped</li>
-					<li><code>slideshow_paused</code> - slideshow paused</li>
-					<li><code>slideshow_unpaused</code> - slideshow unpaused - may not trigger properly or match a pause event if user clicks play/stop button</li>
-					<li><code>slide_init</code> - triggered when panel slide is initialized (before controls animate)</li>
-					<li><code>slide_begin</code> - triggered before panel slide animation</li>
-					<li><code>slide_complete</code> - triggered after panel slide animation</li>
+					<li><code>slideshow_start</code> (<code>onShowStart</code>) - slideshow started</li>
+					<li><code>slideshow_stop</code> (<code>onShowStop</code>) - slideshow stopped</li>
+					<li><code>slideshow_paused</code> (<code>onShowPause</code>) - slideshow paused</li>
+					<li><code>slideshow_unpaused</code> (<code>onShowUnpause</code>) - slideshow unpaused - may not trigger properly or match a pause event if user clicks play/stop button</li>
+					<li><code>slide_init</code> (<code>onSlideInit</code>) - triggered when panel slide is initialized (before controls animate)</li>
+					<li><code>slide_begin</code> (<code>onSlideBegin</code>) - triggered before panel slide animation</li>
+					<li><code>slide_complete</code> (<code>onSlideComplete</code>) - triggered after panel slide animation</li>
 				</ul>
 				</blockquote>
 				You can bind to any of the custom event triggers as follows (see this page source for another example):<br>
 				<br>
 				<blockquote>
-					<pre>$('#slider1').bind('slide_complete', function(e, el){
- $('#status').text( 'Now on page #' + $(el).data('AnythingSlider').currentPage );
+					<pre>$('#slider1').bind('slide_complete', function(e, slider){
+ $('#status').text( 'Now on page #' + slider.currentPage );
  // Do something else
 });
 </pre>
 				</blockquote>
 				<br>
 				<blockquote>
-					<pre>$('.anythingSlider').bind('slideshow_start slideshow_stop', function(e, el){
- var msg = (e.type == "slideshow_start") ? 'Someone started the #^&amp;%$! slideshow!' : 'Whew, thanks for stopping the slideshow';
+					<pre>$('.anythingSlider').bind('slideshow_start slideshow_stop', function(e, slider){
+ var msg = (e.type == "slideshow_start") ? 'Someone started the #^&%$! slideshow!' : 'Whew, thanks for stopping the slideshow';
  $('#status').text( msg );
 });
 </pre>
+				</blockquote>
+
+				or use one of the callback functions:
+				<br><br>
+
+				<blockquote>
+					<pre>$('#slider').anythingSlider({
+ onSlideComplete : function(slider){
+  alert('Welcome to Slide #' + slider.currentPage);
+ }
+})
+</pre>
+				</blockquote>
+
+				Callback Arguments ( examples are if you use "slider" in the callback function, e.g. function(slider){...}, or in the trigger function, e.g. function(e, slider){...} )
+				<br><br>
+				<blockquote>
+				<table class="data">
+					<tr><th class="col">Argument</th><th>Description</th></tr>
+					<tr><td>slider.currentPage</td><td>Currently displayed page/slide number.</td></tr>
+					<tr><td>slider.pages</td><td>Number of pages contained in the slider.</td></tr>
+					<tr><td>slider.playing</td><td>Is true if the slideshow is currently playing (is false when slideshow is paused, but true while youtube video is playing).</td></tr>
+					<tr><td>slider.hovered</td><td>Is true if the slider is currently being hovered.</td></tr>
+					<tr><td>slider.options.{name}</td><td>Access any of the options (e.g. slider.options.theme). Trying to set the options this way may break the slider.</td></tr>
+				</table>
 				</blockquote>
 			</li>
 
@@ -289,12 +327,27 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
   return " Panel #" + index; // This would have each tab with the text 'Panel #X' where X = index
  }
 })</pre>
-						</blockquote></li>
+						</blockquote>
+					</li>
 				</ul>
 			</li>
 		</ul>
 
 		<h2>Changelog</h2>
+
+		<h3>Version 1.4.5</h3>
+		<ul>
+			<li>Added Curtis Scott's Portfolio theme from <a href="http://www.curtisscott.com/portfolio.html">his site</a>. Thanks for sharing! - don't use the control toggle option as it messes up the page layout.</li>
+			<li>Fixed the flickering problem that was occuring when the slider moved from the last slide to the first.</li>
+		</ul>
+
+		<h3>Version 1.4.4</h3>
+		<ul>
+			<li>Added CSS to fix a problem with CSS3 transitions occurring during the animation. Added <code>noTransitions</code> class to the arrows, navigation and slider.</li>
+			<li>Added callback functions: <code>onShowStart</code>, <code>onShowStop</code>, <code>onShowPause</code>, <code>onShowUnpause</code>, <code>onSlideInit</code>, <code>onSlideBegin</code> &amp; <code>onSlideComplete</code>.</li>
+			<li>Added instructions on callback argument useage as values and access to internal functions.</li>
+			<li>Changed triggered event callback argument to make using them easier - see the Event Hooks section above.</li>
+		</ul>
 
 		<h3>Version 1.4.3</h3>
 		<ul>
@@ -349,7 +402,7 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 		<ul>
 			<li>Added resizePanel option - does not support percentage sizing.<br><br>
 				<ul>
-					<li>When true, it will resize all panels &amp;amp; solitary content to the size settings (CSS or the script options).</li>
+					<li>When true, it will resize all panels &amp; solitary content to the size settings (CSS or the script options).</li>
 					<li>When false, the AnythingSlider wrapper will resize to fit the panel (set inline or in the CSS for each panel).</li>
 				</ul>
 			</li>
