@@ -1,5 +1,5 @@
 /*
-    AnythingSlider v1.4 Default (base) theme
+    AnythingSlider v1.4.4 Default (base) theme
 
     By Chris Coyier: http://css-tricks.com
     with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -92,7 +92,7 @@ div.anythingSlider .arrow {
 div.anythingSlider .arrow a {
 	display: block;
 	height: 120px;
-	margin-top: -60px;
+	margin: -60px 0 0 0;
 	width: 45px;
 	text-align: center;
 	outline: 0;

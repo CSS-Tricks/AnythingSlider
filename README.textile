@@ -150,6 +150,10 @@ h3. Formatting Navigation Text
 
 h2. Changelog
 
+h3. Version 1.4.5
+* Added Curtis Scott's Portfolio theme from <a href="http://www.curtisscott.com/portfolio.html">his site</a>. Thanks for sharing! - don't use the control toggle option as it messes up the page layout.
+* Fixed the flickering problem that was occuring when the slider moved from the last slide to the first.
+
 h3. Version 1.4.4
 * Added CSS to fix a problem with CSS3 transitions occurring during the animation. Added <code>noTransitions</code> class to the arrows, navigation and slider.
 * Added callback functions: <code>onShowStart</code>, <code>onShowStop</code>, <code>onShowPause</code>, <code>onShowUnpause</code>, <code>onSlideInit</code>, <code>onSlideBegin</code> &amp; <code>onSlideComplete</code>.

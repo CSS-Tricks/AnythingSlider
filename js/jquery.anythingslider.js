@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.4.4
+	AnythingSlider v1.4.5
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -344,7 +344,7 @@
 				page = base.pages;
 			} else if (page > base.pages) {
 				// reset back to start position
-				base.$window.scrollLeft(0);
+				base.$window.scrollLeft(base.panelSize[1][2]);
 				page = 1;
 			}
 			base.setCurrentPage(page, false);

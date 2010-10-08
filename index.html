@@ -24,7 +24,7 @@
 			$('#slider1').anythingSlider({
 				startStopped    : true, // If autoPlay is on, this can force it to start stopped
 				width           : 800,  // Override the default CSS width
-				toggleControls  : true, // if true, then slide in controls on hover and slider change, hide @ other times
+//				toggleControls  : true, // if true, then slide in controls on hover and slider change, hide @ other times
 				theme           : 'metallic',
 				onSlideComplete : function(slider){
 					// alert('Welcome to Slide #' + slider.currentPage);
@@ -53,7 +53,7 @@
 			});
 
 			// Theme Selector (This is really for demo purposes only)
-			var themes = ['minimalist-round','minimalist-square','metallic','construction'];
+			var themes = ['minimalist-round','minimalist-square','metallic','construction','cs-portfolio'];
 			$('#currentTheme').change(function(){
 				var theme = $(this).val();
 
@@ -86,6 +86,7 @@
 								<option value="minimalist-square">Minimalist-Square</option>
 								<option value="metallic" selected="selected">Metallic</option>
 								<option value="construction">Construction</option>
+								<option value="cs-portfolio">CS-Portfolio</option>
 							</select>
 			</div>
 
@@ -333,6 +334,12 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 		</ul>
 
 		<h2>Changelog</h2>
+
+		<h3>Version 1.4.5</h3>
+		<ul>
+			<li>Added Curtis Scott's Portfolio theme from <a href="http://www.curtisscott.com/portfolio.html">his site</a>. Thanks for sharing! - don't use the control toggle option as it messes up the page layout.</li>
+			<li>Fixed the flickering problem that was occuring when the slider moved from the last slide to the first.</li>
+		</ul>
 
 		<h3>Version 1.4.4</h3>
 		<ul>
