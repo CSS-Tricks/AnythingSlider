@@ -273,7 +273,7 @@
 					// resize panel
 					$(this).css({ width: w, height: h });
 					// resize panel contents, if solitary (wrapped content or solitary image)
-					if (c.length == 1){ c.css({ width: w, height: h }); }
+					if (c.length == 1){ c.css({ width: '100%', height: '100%' }); }
 				} else {
 					// get panel width & height and save it
 					w = $(this).width(); // if not defined, it will return the width of the ul parent
