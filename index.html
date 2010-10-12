@@ -10,8 +10,9 @@
 	<link rel="stylesheet" href="css/page.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="css/anythingslider.css" type="text/css" media="screen" />
 
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jquery.easing.1.2.js"></script>
+	<script type="text/javascript" src="js/swfobject.js"></script> <!-- http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js -->
 	<script type="text/javascript" src="js/jquery.anythingslider.js" charset="utf-8"></script>
 
 	<script type="text/javascript">
@@ -222,7 +223,7 @@
   clickSlideshow      : "click",         // Event used to activate slideshow play/stop button
 
   // Misc options
-  addWmodeToObject    : "opaque", // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting
+  addWmodeToObject    : "opaque", // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting, if swfobject.js is active
   maxOverallWidth     : 32766     // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
 });</pre>
 		</blockquote>
@@ -334,6 +335,12 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 		</ul>
 
 		<h2>Changelog</h2>
+
+		<h3>Version 1.4.6</h3>
+		<ul>
+			<li>SWFObject script (swfobject.js) is now a required dependency to make YouTube videos pause when not in view & resume play when in view. This was added so IE will also have this functionality.</li>
+			<li>Commented out previous code which added the above YouTube functionality to non-IE browsers. Will consider completely removing it if users are okay with the SWFObject script dependency.</li>
+		</ul>
 
 		<h3>Version 1.4.5</h3>
 		<ul>

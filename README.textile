@@ -75,7 +75,7 @@ h2. Default Options
 	clickSlideshow      : "click",         // Event used to activate slideshow play/stop button
 
 	// Misc options
-	addWmodeToObject    : "opaque",  // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting
+	addWmodeToObject    : "opaque",  // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting, if swfobject.js is active
 	maxOverallWidth     : 32766      // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
 });</pre>
 
@@ -150,6 +150,10 @@ h3. Formatting Navigation Text
 
 h2. Changelog
 
+h3. Version 1.4.6
+* SWFObject script (swfobject.js) is now a required dependency to make YouTube videos pause when not in view & resume play when in view. This was added so IE will also have this functionality.
+* Commented out previous code which added the above YouTube functionality to non-IE browsers. Will consider completely removing it if users are okay with the SWFObject script dependency.
+
 h3. Version 1.4.5
 * Added Curtis Scott's Portfolio theme from <a href="http://www.curtisscott.com/portfolio.html">his site</a>. Thanks for sharing! - don't use the control toggle option as it messes up the page layout.
 * Fixed the flickering problem that was occuring when the slider moved from the last slide to the first.
@@ -182,7 +186,6 @@ h3. Version 1.4
 * Bumped version to 1.4 because of significant differences from version 1.3</li>
 
 h3. Version 1.3.7
-
 * Added <code>startPanel</code> option.
 * Added <code>playRtl</code> option to reverse the play direction.
 * Added back <code>stopAtEnd</code> option (not should how it was removed from the options).
@@ -195,12 +198,10 @@ h3. Version 1.3.7
 * Reorganized, cleaned up the code and updated the demos &amp; instructions.
 
 h3. Version 1.3.6
-
 * Fixed minor bug with links to specific slides and updated example to reflect changes and be less confusing
 * Tweaked start/stop button css to be more maleable
 
 h3. Version 1.3.5
-
 * Added resizePanel option - does not support percentage sizing.
 ** When true, it will resize all panels &amp; solitary content to the size settings (CSS or the script options).
 ** When false, the AnythingSlider wrapper will resize to fit the panel (set inline or in the CSS for each panel).
@@ -208,7 +209,6 @@ h3. Version 1.3.5
 * Added tabbed navigation. Both the links within panels and the thumbnail navigation will activate it.
 
 h3. Version 1.3.4
-
 * Added keyboard navigation.
 * Embeded objects will now resize to fit the panel.
 * YouTube videos will pause the video when it is not in view and play (if already started) if it is in view.
@@ -216,12 +216,10 @@ h3. Version 1.3.4
 * Modified code according to JSLint &amp; added minified version.
 
 h3. Version 1.3.3
-
 * Previous / Next arrows are now optional
 * Clicking start button immediately begins transition instead of waiting for the delay
 
 h3. Version 1.3.2
-
 * Greatly refactored CSS for a more fluid resizing behavior
 * Dimensions can be passed via javascript or modified at the top of the css file
 * Merged all Github forks
@@ -230,7 +228,6 @@ h3. Version 1.3.2
 * Hash URLS now work for multiple panels
 
 h3. Version 1.3
-
 * Accessibility improvements by Matt Lawson
 * Some generic JavaScript/HTML/CSS code cleaning
 * Move to GitHub entirely
@@ -239,11 +236,9 @@ h3. Version 1.3
 * Added option to stop on the last page when autoPlay is set to true
 
 h3. Version 1.2
-
 * Bug Fix: When autoPlay was set to false, any interaction with the control would cause a javascript error.
 
 h3. Version 1.1
-
 * Changed default easing to "swing" so didn't depend on any other plugins
 * Removed extra junk (other plugins used for design, etc)
 * Added Pause on Hover option
