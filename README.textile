@@ -20,7 +20,7 @@ h2. Features
 * Each panel has a hashtag (can link directly to specific panels).
 * Optional custom function for formatting navigation text.
 * Auto-playing slideshow (optional feature, can start playing or stopped)
-* Pauses playing YouTube videos when not in view and resumes them when in view (only in non-IE browsers &amp; if files are hosted on the web).
+* Pauses playing YouTube videos when not in view and resumes them when in view (if files are hosted on the web).
 * If slideshow is active, a playing video will complete before the slideshow continues.
 * Pauses slideshow on hover (optional).
 * Optionally play the slideshow once through, stopping on the last page.
