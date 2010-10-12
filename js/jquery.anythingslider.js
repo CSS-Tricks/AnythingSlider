@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.4.5
+	AnythingSlider v1.4.6
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -38,21 +38,21 @@
 			// Cache existing DOM elements for later
 			// base.$el = original ul
 			// for wrap - get parent() then closest in case the ul has "anythingSlider" class
-			base.$wrapper = base.$el.parent().closest('div.anythingSlider').addClass('noTransitions anythingSlider-' + base.options.theme);
-			base.$window = base.$el.closest('div.anythingWindow').addClass('noTransitions');
+			base.$wrapper = base.$el.parent().closest('div.anythingSlider').addClass('anythingSlider-' + base.options.theme);
+			base.$window = base.$el.closest('div.anythingWindow');
 			base.$controls = $('<div class="anythingControls"></div>').appendTo(base.$wrapper);
 			base.$items = base.$el.find('> li').addClass('panel');
-			base.$objects = base.$items.find('object');
 
 			// Set up a few defaults & get details
-			base.currentPage = base.options.startPanel;
-			base.pages = base.$items.length;
-			base.timer = null;    // slideshow timer (setInterval) container
-			base.flag = false;    // event flag to prevent multiple calls (used in control click/focusin)
+			base.pages   = base.$items.length;
+			base.timer   = null;  // slideshow timer (setInterval) container
+			base.flag    = false; // event flag to prevent multiple calls (used in control click/focusin)
 			base.playing = false; // slideshow state
 			base.hovered = false; // actively hovering over the slider
-			base.hasObj = !!base.$objects.length; // embedded objects exist in the slider
-			base.panelSize = []; // will contain dimensions and left position of each panel
+			base.panelSize = [];  // will contain dimensions and left position of each panel
+			base.currentPage = base.options.startPanel;
+			base.hasEmb = !!base.$items.find('embed[src*=youtube]').length; // embedded youtube objects exist in the slider
+			base.hasSwfo = (typeof(swfobject) !== 'undefined' && swfobject.hasOwnProperty('embedSWF') && $.isFunction(swfobject.embedSWF)) ? true : false; // is swfobject loaded?
 
 			// Get index (run time) of this slider on the page
 			base.runTimes = $('div.anythingSlider').index(base.$wrapper) + 1;
@@ -60,35 +60,49 @@
 			// Make sure easing function exists.
 			if (!$.isFunction($.easing[base.options.easing])) { base.options.easing = "swing"; }
 
-			// Set up Theme
-		if (base.options.theme != 'default') {
-			if (!$('link[href*=' + base.options.theme + ']').length){
+			// Add theme stylesheet, if it isn't already loaded
+			if (base.options.theme != 'default' && !$('link[href*=' + base.options.theme + ']').length){
 				$('body').append('<link rel="stylesheet" href="' + base.options.themeDirectory.replace(/\{themeName\}/g, base.options.theme) + '" type="text/css" />');
 			}
-		}
+
+			// Initialize YouTube javascript api, if YouTube video is present
+			if (base.hasEmb && base.hasSwfo) {
+					base.$items.find('embed[src*=youtube]').each(function(i){
+						// Older IE doesn't have an object - just make sure we are wrapping the correct element
+						var $tar = ($(this).parent()[0].tagName == "OBJECT") ? $(this).parent() : $(this);
+						$tar.wrap('<div id="ytvideo' + i + '"></div>');
+						// use SWFObject if it exists, it replaces the wrapper with the object/embed
+						swfobject.embedSWF($(this).attr('src') + '&enablejsapi=1&version=3&playerapiid=ytvideo' + i, 'ytvideo' + i, '100%', '100%', '10', null, null, { allowScriptAccess: "always", wmode : base.options.addWmodeToObject }, {});
+					});
+				}
+				/***** Consider removing this portion completely, if users will use SWFObject *****
+				// This commented out code will allow YouTube API functions to work for non-IE browsers
+				 else if (base.hasEmb) {
+					// initialize youtube api when swf isn't loaded - doesn't work in IE (even if you find('embed'))
+					base.$items.find('object').each(function(i){
+						if ($(this).find('[src*=youtube]').length){
+							$(this)
+								.prepend('<param name="wmode" value="' + base.options.addWmodeToObject +'"/>')
+								.wrap('<div id="yt-temp"></div>')
+								.find('embed[src*=youtube]').attr('src', function(j,s){ return s + '&enablejsapi=1&version=3&playerapiid=ytvideo' + i; })
+								.attr('wmode',base.options.addWmodeToObject).end()
+								.find('param[value*=youtube]').attr('value', function(j,v){ return v + '&enablejsapi=1&version=3&playerapiid=ytvideo' + i; }).end()
+								// detach/appendTo required to initialize the wmode code
+								.detach()
+								.appendTo($('#yt-temp'))
+								.attr('id', 'ytvideo' + i)
+								.unwrap();
+						}
+					});
+				}
+			} // ***** End script removal consideration *****/
 
 			// Set the dimensions
 			if (base.options.resizeContents) {
 				if (base.options.width) { base.$wrapper.add(base.$items).css('width', base.options.width); }
 				if (base.options.height) { base.$wrapper.add(base.$items).css('height', base.options.height); }
-				if (base.hasObj){ base.$objects.find('embed').andSelf().css({ width : '100%', height: '100%' }); }
+				if (base.hasEmb){ base.$el.find('object, embed').css({ width : '100%', height: '100%' }); } // this only expands youtube videos
 			}
-
-			// initialize youtube api - doesn't work in IE (someone have a solution?)
-			base.$objects.each(function(){
-				if ($(this).find('[src*=youtube]').length){
-					$(this)
-						.prepend('<param name="wmode" value="' + base.options.addWmodeToObject +'"/>')
-						.parent().wrap('<div id="yt-temp"></div>')
-						.find('embed[src*=youtube]').attr('src', function(i,s){ return s + '&enablejsapi=1&version=3'; })
-						.attr('wmode',base.options.addWmodeToObject).end()
-						.find('param[value*=youtube]').attr('value', function(i,v){ return v + '&enablejsapi=1&version=3'; }).end()
-						// detach/appendTo required for Chrome
-						.detach()
-						.appendTo($('#yt-temp'))
-						.unwrap();
-				}
-			});
 
 			// Remove navigation & player if there is only one page
 			if (base.pages === 1) {
@@ -112,7 +126,7 @@
 			base.$el.append( base.$items.filter(':first').clone().addClass('cloned').removeAttr('id') );
 
 			// We just added two items, time to re-cache the list, then get the dimensions of each panel
-			base.$items = base.$el.find('> li'); // reselect
+			base.$items = base.$el.find('> li');
 			base.setDimensions();
 			if (!base.options.resizeContents) { $(window).load(function(){ base.setDimensions(); }); } // set dimensions after all images load
 
@@ -178,14 +192,14 @@
 
 		// Creates the numbered navigation links
 		base.buildNavigation = function() {
-			base.$nav = $('<ul class="thumbNav noTransitions" />').appendTo(base.$controls);
+			base.$nav = $('<ul class="thumbNav" />').appendTo(base.$controls);
 			if (base.options.playRtl) { base.$wrapper.addClass('rtl'); }
 
 			if (base.options.buildNavigation && (base.pages > 1)) {
 				base.$items.each(function(i,el) {
 					var index = i + 1,
 						$a = $("<a href='#'></a>").addClass('panel' + index).wrap("<li />");
-					base.$nav.append($a);
+					base.$nav.append($a.parent()); // use $a.parent() so IE will add <li> instead of only the <a> to the <ul>
 
 					// If a formatter function is present, use it
 					if ($.isFunction(base.options.navigationFormatter)) {
@@ -214,8 +228,8 @@
 
 		// Creates the Forward/Backward buttons
 		base.buildNextBackButtons = function() {
-			base.$forward = $('<span class="arrow forward noTransitions"><a href="#">' + base.options.forwardText + '</a></span>');
-			base.$back = $('<span class="arrow back noTransitions"><a href="#">' + base.options.backText + '</a></span>');
+			base.$forward = $('<span class="arrow forward"><a href="#">' + base.options.forwardText + '</a></span>');
+			base.$back = $('<span class="arrow back"><a href="#">' + base.options.backText + '</a></span>');
 
 			// Bind to the forward and back buttons
 			base.$back.bind(base.options.clickArrows, function(e) {
@@ -352,19 +366,18 @@
 			if (!base.hovered) { base.slideControls(false); }
 
 			// continue YouTube video if in current panel
-			if (base.hasObj){
-				var emb = base.$items.eq(base.currentPage).find('embed[src*=youtube]');
-				try {
-					if (emb.length && $.isFunction(emb[0].getPlayerState) && emb[0].getPlayerState() > 0) {
-						emb[0].playVideo();
-					}
-				} catch(err) {}
+			if (base.hasEmb){
+				var emb = base.$items.eq(base.currentPage).find('object[id*=ytvideo], embed[id*=ytvideo]');
+				// player states: unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
+				if (emb.length && $.isFunction(emb[0].getPlayerState) && emb[0].getPlayerState() > 0 && emb[0].getPlayerState() != 5) {
+					emb[0].playVideo();
+				}
 			}
 
 			base.$el.trigger('slide_complete', base);
 			if ($.isFunction(base.options.onSlideComplete)) {
 				// Added setTimeout (zero time) to ensure animation is complete... for some reason this code:
-				// alert(base.$window.is(':animated')); // alerts true
+				// alert(base.$window.is(':animated')); // alerts true - http://dev.jquery.com/ticket/7156
 				setTimeout(function(){ base.options.onSlideComplete(base); }, 0);
 			}
 		};
@@ -378,7 +391,7 @@
 
 			// Only change left if move does not equal false
 			if (!move) {
-				base.$wrapper.css({ // .add(base.$window)
+				base.$wrapper.css({
 					width: base.panelSize[page][0],
 					height: base.panelSize[page][1]
 				});
@@ -440,7 +453,7 @@
 		};
 		// <-- End AJAXY code
 
-		// Slide controls (nav and play/stop button up or down
+		// Slide controls (nav and play/stop button up or down)
 		base.slideControls = function(toggle, playing){
 			var dir = (toggle) ? 'slideDown' : 'slideUp',
 				t1 = (toggle) ? 0 : base.options.animationTime,
@@ -509,23 +522,20 @@
 		base.checkVideo = function(playing){
 			// pause YouTube videos before scrolling?
 			var emb, ps, stopAdvance = false;
-			if (base.hasObj){
-				base.$objects.each(function(){
-					// this only works on youtube videos
-					emb = $(this).find('embed[src*=youtube]');
-					try {
-						if (emb.length && $.isFunction(emb[0].getPlayerState)) {
-							// player states: unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
-							ps = emb[0].getPlayerState();
-							// if autoplay, video playing, video is in current panel and resume option are true, then don't advance
-							if (playing && ps == 1 && base.$items.index(emb.closest('li')) == base.currentPage && base.options.resumeOnVideoEnd) {
-								stopAdvance = true;
-							} else {
-								// pause video if not autoplaying (if already initialized)
-								if (ps > 0) { emb[0].pauseVideo(); }
-							}
+			if (base.hasEmb){
+				base.$items.find('object[id*=ytvideo], embed[id*=ytvideo]').each(function(){ // include embed for IE; if not using SWFObject, old detach/append code needs "object embed" here
+					emb = $(this);
+					if (emb.length && $.isFunction(emb[0].getPlayerState)) {
+						// player states: unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
+						ps = emb[0].getPlayerState();
+						// if autoplay, video playing, video is in current panel and resume option are true, then don't advance
+						if (playing && (ps == 1 || ps > 2) && base.$items.index(emb.closest('li.panel')) == base.currentPage && base.options.resumeOnVideoEnd) {
+							stopAdvance = true;
+						} else {
+							// pause video if not autoplaying (if already initialized)
+							if (ps > 0) { emb[0].pauseVideo(); }
 						}
-					} catch(err) {}
+					}
 				});
 			}
 			return stopAdvance;

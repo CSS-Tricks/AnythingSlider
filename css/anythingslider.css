@@ -1,5 +1,5 @@
 /*
-    AnythingSlider v1.4.4 Default (base) theme
+    AnythingSlider v1.4.1+ Default (base) theme
 
     By Chris Coyier: http://css-tricks.com
     with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -152,7 +152,7 @@ div.anythingSlider .start-stop {
 }
 div.anythingSlider .start-stop:hover, div.anythingSlider .start-stop.hover { background-image: none; }
 
-.noTransitions {
+div.anythingSlider, div.anythingSlider .anythingWindow, div.anythingSlider .thumbNav a, div.anythingSlider .arrow a, div.anythingSlider .start-stop {
 	transition-duration: 0;
 	-o-transition-duration: 0;
 	-moz-transition-duration: 0;
