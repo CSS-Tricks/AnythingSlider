@@ -6,7 +6,7 @@ Here on CSS-Tricks, I’ve created a number of different sliders. Three, in fact
 
 This new AnythingSlider is an attempt at bringing together the functionality of all of those previous sliders and adding new features. In other words, to create a really “full featured” slider that could be widely useful. This is the first time (on CSS-Tricks) that one of these sliders is an actual plugin as well, which should make implementing it and customizing it much easier.
 
-"Keep Reading":http://css-tricks.com/anythingslider-1-4/
+"Keep Reading":http://css-tricks.com/anythingslider-1-4/ | "See a Demo!":http://proloser.github.com/AnythingSlider/
 
 h2. Features
 
