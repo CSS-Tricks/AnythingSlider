@@ -129,7 +129,9 @@ or use one of the callback functions:
 Callback Arguments ( examples are if you use "slider" in the callback function, e.g. function(slider){...}, or in the trigger function, e.g. function(e, slider){...} )
 
 *Callback Argument - Description*
-* slider.currentPage - Currently displayed page/slide number.
+* slider.$currentPage - jQuery object of the Target page - not the same page as "slider.currentPage".
+* slider.$lastPage - jQuery object of the previous page - same page as "slider.currentPage" until "slide_complete" is called.
+* slider.currentPage - Currently displayed page/slide number. Updated when the animation completes.
 * slider.pages - Number of pages contained in the slider.
 * slider.playing - Is true if the slideshow is currently playing (is false when slideshow is paused, but true while youtube video is playing).
 * slider.hovered - Is true if the slider is currently being hovered.
@@ -149,6 +151,10 @@ h3. Formatting Navigation Text
 })</pre>
 
 h2. Changelog
+
+h3 Version 1.4.7
+* Added jQuery Objects for <code>$currentPage</code> and <code>$lastPage</code> which are accessible to the bind & callback functions for easy access to the pages. Added these callback arguments and more detail to the information above.
+* Improved the hash tag code so it will now work with multiple AnythingSliders on the page. The hash tag will still only update when clicking on the navigation links and not the navigation arrows.
 
 h3. Version 1.4.6
 * SWFObject script (swfobject.js) is now a required dependency to make YouTube videos pause when not in view & resume play when in view. This was added so IE will also have this functionality.

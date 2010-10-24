@@ -304,7 +304,9 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 				<blockquote>
 				<table class="data">
 					<tr><th class="col">Argument</th><th>Description</th></tr>
-					<tr><td>slider.currentPage</td><td>Currently displayed page/slide number.</td></tr>
+					<tr><td>slider.$currentPage</td><td>jQuery object of the Target page - not the same page as "slider.currentPage".</td></tr>
+					<tr><td>slider.$lastPage</td><td>jQuery object of the starting page - same page as "slider.currentPage" until "slide_complete" is called.</td></tr>
+					<tr><td>slider.currentPage</td><td>Currently displayed page/slide number. Updated when the animation completes.</td></tr>
 					<tr><td>slider.pages</td><td>Number of pages contained in the slider.</td></tr>
 					<tr><td>slider.playing</td><td>Is true if the slideshow is currently playing (is false when slideshow is paused, but true while youtube video is playing).</td></tr>
 					<tr><td>slider.hovered</td><td>Is true if the slider is currently being hovered.</td></tr>
@@ -335,6 +337,12 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 		</ul>
 
 		<h2>Changelog</h2>
+
+		<h3>Version 1.4.7</h3>
+		<ul>
+			<li>Added jQuery Objects for <code>$currentPage</code> and <code>$lastPage</code> which are accessible to the bind & callback functions for easy access to the pages. Added these callback arguments and more detail to the information above.</li>
+			<li>Improved the hash tag code so it will now work with multiple AnythingSliders on the page. The hash tag will still only update when clicking on the navigation links and not the navigation arrows.</li>
+		</ul>
 
 		<h3>Version 1.4.6</h3>
 		<ul>

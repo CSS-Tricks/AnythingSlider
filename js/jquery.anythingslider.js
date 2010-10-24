@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.4.6
+	AnythingSlider v1.4.7
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -51,11 +51,14 @@
 			base.hovered = false; // actively hovering over the slider
 			base.panelSize = [];  // will contain dimensions and left position of each panel
 			base.currentPage = base.options.startPanel;
+			base.$currentPage = base.$items.eq(base.currentPage);
+			base.$lastPage = base.$currentPage;
 			base.hasEmb = !!base.$items.find('embed[src*=youtube]').length; // embedded youtube objects exist in the slider
 			base.hasSwfo = (typeof(swfobject) !== 'undefined' && swfobject.hasOwnProperty('embedSWF') && $.isFunction(swfobject.embedSWF)) ? true : false; // is swfobject loaded?
 
 			// Get index (run time) of this slider on the page
 			base.runTimes = $('div.anythingSlider').index(base.$wrapper) + 1;
+			base.regex = new RegExp('panel' + base.runTimes + '-(\\d+)', 'i'); // hash tag regex
 
 			// Make sure easing function exists.
 			if (!$.isFunction($.easing[base.options.easing])) { base.options.easing = "swing"; }
@@ -151,9 +154,12 @@
 			}
 
 			// If a hash can not be used to trigger the plugin, then go to start panel
-			if ((base.options.hashTags === true && !base.gotoHash()) || base.options.hashTags === false) {
-				base.setCurrentPage(base.options.startPanel, false);
-			}
+			var startPanel = (base.options.hashTags) ?  base.gotoHash() || base.options.startPanel : base.options.startPanel;
+			base.setCurrentPage(startPanel, false);
+
+//			if ((base.options.hashTags === true && !base.gotoHash()) || base.options.hashTags === false) {
+//				base.setCurrentPage(base.options.startPanel, false);
+//			}
 
 			// Fix tabbing through the page
 			base.$items.find('a').focus(function(){
@@ -216,7 +222,7 @@
 							// prevent running functions twice (once for click, second time for focusin)
 							base.flag = true; setTimeout(function(){ base.flag = false; }, 100);
 							base.gotoPage(index);
-							if (base.options.hashTags) { base.setHash('panel' + base.runTimes + '-' + index); }
+							if (base.options.hashTags) { base.setHash(index); }
 						}
 						e.preventDefault();
 					});
@@ -311,22 +317,24 @@
 		};
 
 		base.gotoPage = function(page, autoplay) {
+			base.$lastPage = base.$items.eq(base.currentPage);
 			if (typeof(page) === "undefined" || page === null) {
 				page = base.options.startPage;
 				base.setCurrentPage(base.options.startPage);
 			}
 
 			// pause YouTube videos before scrolling or prevent change if playing
-			if (base.checkVideo(base.playing)) { return; }
-
-			base.$el.trigger('slide_init', base);
-			if ($.isFunction(base.options.onSlideInit)) { base.options.onSlideInit(base); }
-
-			base.slideControls(true, false);
+			if (base.hasEmb && base.checkVideo(base.playing)) { return; }
 
 			// Just check for bounds
 			if (page > base.pages + 1) { page = base.pages; }
 			if (page < 0 ) { page = 1; }
+
+			base.$currentPage = base.$items.eq(page);
+			base.$el.trigger('slide_init', base);
+			if ($.isFunction(base.options.onSlideInit)) { base.options.onSlideInit(base); }
+
+			base.slideControls(true, false);
 
 			// When autoplay isn't passed, we stop the timer
 			if (autoplay !== true) { autoplay = false; }
@@ -367,7 +375,7 @@
 
 			// continue YouTube video if in current panel
 			if (base.hasEmb){
-				var emb = base.$items.eq(base.currentPage).find('object[id*=ytvideo], embed[id*=ytvideo]');
+				var emb = base.$currentPage.find('object[id*=ytvideo], embed[id*=ytvideo]');
 				// player states: unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
 				if (emb.length && $.isFunction(emb[0].getPlayerState) && emb[0].getPlayerState() > 0 && emb[0].getPlayerState() != 5) {
 					emb[0].playVideo();
@@ -422,36 +430,17 @@
 		// If found, it tries to find a matching item
 		// If that is found as well, then that item starts visible
 		base.gotoHash = function(){
-			var hash = window.location.hash.match(/^#?panel(\d+)-(\d+)$/);
-			if (hash) {
-				var panel = parseInt(hash[1],10);
-				if (panel == base.runTimes) {
-					var slide = parseInt(hash[2],10),
-						$item = base.$items.filter(':eq(' + slide + ')');
-					if ($item.length !== 0) {
-						base.setCurrentPage(slide, false);
-						return true;
-					}
-				}
-			}
-			return false; // An item wasn't found;
+			var n = window.location.hash.match(base.regex);
+			return (n===null) ? '' : parseInt(n[1],10);
 		};
 
-		// Taken from AJAXY jquery.history Plugin
-		base.setHash = function (hash){
-			// Write hash
-			if ( typeof window.location.hash !== 'undefined' ) {
-				if ( window.location.hash !== hash ) {
-					window.location.hash = hash;
-				}
-			} else if ( location.hash !== hash ) {
-				location.hash = hash;
+		base.setHash = function(n){
+			var s = 'panel' + base.runTimes + '-',
+				h = window.location.hash;
+			if ( typeof h !== 'undefined' ) {
+				window.location.hash = (h.indexOf(s) > 0) ? h.replace(base.regex, s + n) : h + "&" + s + n;
 			}
-
-			// Done
-			return hash;
 		};
-		// <-- End AJAXY code
 
 		// Slide controls (nav and play/stop button up or down)
 		base.slideControls = function(toggle, playing){
@@ -506,7 +495,7 @@
 				base.clearTimer(true); // Just in case this was triggered twice in a row
 				base.timer = window.setInterval(function() {
 					// prevent autoplay if video is playing
-					if (!base.checkVideo(playing)) {
+					if (!(base.hasEmb && base.checkVideo(playing))) {
 						if (base.options.playRtl) {
 							base.goBack(true);
 						} else {
@@ -522,22 +511,20 @@
 		base.checkVideo = function(playing){
 			// pause YouTube videos before scrolling?
 			var emb, ps, stopAdvance = false;
-			if (base.hasEmb){
-				base.$items.find('object[id*=ytvideo], embed[id*=ytvideo]').each(function(){ // include embed for IE; if not using SWFObject, old detach/append code needs "object embed" here
-					emb = $(this);
-					if (emb.length && $.isFunction(emb[0].getPlayerState)) {
-						// player states: unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
-						ps = emb[0].getPlayerState();
-						// if autoplay, video playing, video is in current panel and resume option are true, then don't advance
-						if (playing && (ps == 1 || ps > 2) && base.$items.index(emb.closest('li.panel')) == base.currentPage && base.options.resumeOnVideoEnd) {
-							stopAdvance = true;
-						} else {
-							// pause video if not autoplaying (if already initialized)
-							if (ps > 0) { emb[0].pauseVideo(); }
-						}
+			base.$items.find('object[id*=ytvideo], embed[id*=ytvideo]').each(function(){ // include embed for IE; if not using SWFObject, old detach/append code needs "object embed" here
+				emb = $(this);
+				if (emb.length && $.isFunction(emb[0].getPlayerState)) {
+					// player states: unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
+					ps = emb[0].getPlayerState();
+					// if autoplay, video playing, video is in current panel and resume option are true, then don't advance
+					if (playing && (ps == 1 || ps > 2) && base.$items.index(emb.closest('li.panel')) == base.currentPage && base.options.resumeOnVideoEnd) {
+						stopAdvance = true;
+					} else {
+						// pause video if not autoplaying (if already initialized)
+						if (ps > 0) { emb[0].pauseVideo(); }
 					}
-				});
-			}
+				}
+			});
 			return stopAdvance;
 		};
 
