@@ -199,7 +199,7 @@
   autoPlay            : true,      // This turns off the entire slideshow FUNCTIONALY, not just if it starts running or not
   startStopped        : false,     // If autoPlay is on, this can force it to start stopped
   pauseOnHover        : true,      // If true &amp; the slideshow is active, the slideshow will pause on hover
-  resumeOnVideoEnd    : true,      // If true &amp; the slideshow is active &amp; a youtube video is playing, it will pause the autoplay until the video has completed
+  resumeOnVideoEnd    : true,      // If true &amp; the slideshow is active &amp; a youtube video is playing, the autoplay will pause until the video completes
   stopAtEnd           : false,     // If true &amp; the slideshow is active, the slideshow will stop on the last page
   playRtl             : false,     // If true, the slideshow will move right-to-left
   startText           : "Start",   // Start button text
@@ -223,10 +223,52 @@
   clickSlideshow      : "click",         // Event used to activate slideshow play/stop button
 
   // Misc options
-  addWmodeToObject    : "opaque", // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting, if swfobject.js is active
+  addWmodeToObject    : "opaque", // If there is an embedded object &amp; swfobject.js is active, the script will automatically add this wmode parameter
   maxOverallWidth     : 32766     // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
 });</pre>
 		</blockquote>
+
+		<h2>Setup</h2>
+		<ul>
+			<li><h3>Add the following inside the <code>&lt;head&gt;&lt;/head&gt;</code> of your page</h3>
+				<blockquote>
+					<pre>&lt;!-- Required --&gt;
+&lt;link type=&quot;text/css&quot; href=&quot;css/anythingslider.css&quot; rel=&quot;stylesheet&quot; media=&quot;screen&quot; /&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.anythingslider.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+$(function () {
+ $('#slider1').anythingSlider(); // add any non-default options here
+});
+&lt;/script&gt;
+
+&lt;!-- Optional --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.easing.1.2.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;js/swfobject.js&quot;&gt;&lt;/script&gt;</pre>
+				</blockquote>
+			</li>
+		</ul>
+
+		<ul>
+			<li><h3>Example HTML</h3>
+				<blockquote>
+					<pre> &lt;ul id=&quot;slider1&quot;&gt;
+  &lt;li&gt;&lt;div class=&quot;text&quot&gt;Put anything you want here&lt;/div&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;img src=&quot;image1.jpg&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;object&gt;...&lt;/object&gt;&lt;/li&gt;
+  &lt;li&gt;
+   &lt;div class=&quot;list&quot&gt;
+    &lt;h4&gt;Title&lt;/h4&gt;
+    &lt;ul&gt;
+     &lt;li&gt;List item #1&lt;/li&gt;
+     &lt;li&gt;List item #2&lt;/li&gt;
+    &lt;/ul&gt;
+   &lt;/div&gt;
+  &lt;/li&gt;
+ &lt;/ul&gt;</pre>
+				</blockquote>
+			</li>
+		</ul>
 
 		<h2>Usage</h2>
 		<ul>
@@ -486,4 +528,4 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 
 </body>
 
-</html>
+</html

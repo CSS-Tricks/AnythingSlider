@@ -79,6 +79,41 @@ h2. Default Options
 	maxOverallWidth     : 32766      // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
 });</pre>
 
+h2. Setup
+
+h3. Add the following inside the <code>&lt;head&gt;&lt;/head&gt;</code> of your page
+
+<pre>&lt;!-- Required --&gt;
+&lt;link type=&quot;text/css&quot; href=&quot;css/anythingslider.css&quot; rel=&quot;stylesheet&quot; media=&quot;screen&quot; /&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.anythingslider.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+$(function () {
+ $('#slider1').anythingSlider(); // add any non-default options here
+});
+&lt;/script&gt;
+
+&lt;!-- Optional --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.easing.1.2.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;js/swfobject.js&quot;&gt;&lt;/script&gt;</pre>
+
+h3. Example HTML
+
+<pre> &lt;ul id=&quot;slider1&quot;&gt;
+  &lt;li&gt;&lt;div class=&quot;text&quot&gt;Put anything you want here&lt;/div&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;img src=&quot;image1.jpg&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;object&gt;...&lt;/object&gt;&lt;/li&gt;
+  &lt;li&gt;
+   &lt;div class=&quot;list&quot&gt;
+    &lt;h4&gt;Title&lt;/h4&gt;
+    &lt;ul&gt;
+     &lt;li&gt;List item #1&lt;/li&gt;
+     &lt;li&gt;List item #2&lt;/li&gt;
+    &lt;/ul&gt;
+   &lt;/div&gt;
+  &lt;/li&gt;
+ &lt;/ul&gt;</pre>
+
 h2. Usage
 
 h3. Getting current slide:
