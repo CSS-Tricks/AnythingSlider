@@ -83,36 +83,36 @@ h2. Setup
 
 h3. Add the following inside the <code>&lt;head&gt;&lt;/head&gt;</code> of your page
 
-<pre>&lt;!-- Required --&gt;
-&lt;link type=&quot;text/css&quot; href=&quot;css/anythingslider.css&quot; rel=&quot;stylesheet&quot; media=&quot;screen&quot; /&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.anythingslider.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot;&gt;
+<pre><!-- Required -->
+<link type="text/css" href="css/anythingslider.css" rel="stylesheet" media="screen" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.anythingslider.js"></script>
+<script type="text/javascript">
 $(function () {
  $('#slider1').anythingSlider(); // add any non-default options here
 });
-&lt;/script&gt;
+</script>
 
-&lt;!-- Optional --&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.easing.1.2.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;js/swfobject.js&quot;&gt;&lt;/script&gt;</pre>
+<!-- Optional -->
+<script type="text/javascript" src="js/jquery.easing.1.2.js"></script>
+<script type="text/javascript" src="js/swfobject.js"></script></pre>
 
 h3. Example HTML
 
-<pre> &lt;ul id=&quot;slider1&quot;&gt;
-  &lt;li&gt;&lt;div class=&quot;text&quot&gt;Put anything you want here&lt;/div&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;img src=&quot;image1.jpg&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;object&gt;...&lt;/object&gt;&lt;/li&gt;
-  &lt;li&gt;
-   &lt;div class=&quot;list&quot&gt;
-    &lt;h4&gt;Title&lt;/h4&gt;
-    &lt;ul&gt;
-     &lt;li&gt;List item #1&lt;/li&gt;
-     &lt;li&gt;List item #2&lt;/li&gt;
-    &lt;/ul&gt;
-   &lt;/div&gt;
-  &lt;/li&gt;
- &lt;/ul&gt;</pre>
+<pre> <ul id="slider1">
+  <li><div class="text">Put anything you want here</div></li>
+  <li><img src="image1.jpg" /></li>
+  <li><object>...</object></li>
+  <li>
+   <div class="list">
+    <h4>Title</h4>
+    <ul>
+     <li>List item #1</li>
+     <li>List item #2</li>
+    </ul>
+   </div>
+  </li>
+ </ul></pre>
 
 h2. Usage
 
