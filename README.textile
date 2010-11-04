@@ -187,6 +187,11 @@ h3. Formatting Navigation Text
 
 h2. Changelog
 
+h3. Version 1.4.8
+* Added an optional extension &quot;AnythingSlider FX&quot; to add animation effects to each panel.
+* Added an "AnythingSlider FX demo page":demos.htm with examples, code, and multiple methods to achieve the same effects. Thanks to Paal Joachim for input on which demos were needed.
+* Added <code>activePage</code> class to the visible slider; but it is not updated until just before the <code>slide_complete</code> event.
+
 h3. Version 1.4.7
 * Added jQuery Objects for <code>$currentPage</code> and <code>$lastPage</code> which are accessible to the bind & callback functions for easy access to the pages. Added these callback arguments and more detail to the information above.
 * Improved the hash tag code so it will now work with multiple AnythingSliders on the page. The hash tag will still only update when clicking on the navigation links and not the navigation arrows.
@@ -220,11 +225,11 @@ h3. Version 1.4.1
 * Added <code>toggleControls</code> option. This option (if true) will slide down (reveal) the navigation links and play/stop button while hovering &amp; hide them at other times. Adding this option required a new "anythingControls" class that wraps both the navigation links and the play/stop button.
 
 h3. Version 1.4
-* Added <code>maxOverallWidth</code> option. This sets the max width (in pixels) of all combined sliders (side-to-side) due to problems with Opera.</li>
-* Added new classes to the base UL ("anythingBase") and its immediate children LIs ("panels") to reduce and clarify the CSS.</li>
-* Added hover class to arrows and start/stop button to indicate the link has focus (while tabbing through the page)</li>
-* Fixed flickering problem completely :P - numerous changes made to script &amp; CSS</li>
-* Bumped version to 1.4 because of significant differences from version 1.3</li>
+* Added <code>maxOverallWidth</code> option. This sets the max width (in pixels) of all combined sliders (side-to-side) due to problems with Opera.
+* Added new classes to the base UL ("anythingBase") and its immediate children LIs ("panels") to reduce and clarify the CSS.
+* Added hover class to arrows and start/stop button to indicate the link has focus (while tabbing through the page)
+* Fixed flickering problem completely :P - numerous changes made to script &amp; CSS.
+* Bumped version to 1.4 because of significant differences from version 1.3.
 
 h3. Version 1.3.7
 * Added <code>startPanel</code> option.

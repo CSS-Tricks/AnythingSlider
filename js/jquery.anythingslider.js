@@ -1,9 +1,10 @@
 /*
-	AnythingSlider v1.4.7
+	AnythingSlider v1.4.8
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
 	based on work by Remy Sharp: http://jqueryfordesigners.com/
+	crazy mods by Rob Garrison (aka Mottie)
 
 	To use the navigationFormatter function, you must have a function that
 	accepts two paramaters, and returns a string of HTML text.
@@ -75,30 +76,10 @@
 						var $tar = ($(this).parent()[0].tagName == "OBJECT") ? $(this).parent() : $(this);
 						$tar.wrap('<div id="ytvideo' + i + '"></div>');
 						// use SWFObject if it exists, it replaces the wrapper with the object/embed
-						swfobject.embedSWF($(this).attr('src') + '&enablejsapi=1&version=3&playerapiid=ytvideo' + i, 'ytvideo' + i, '100%', '100%', '10', null, null, { allowScriptAccess: "always", wmode : base.options.addWmodeToObject }, {});
+						swfobject.embedSWF($(this).attr('src') + '&enablejsapi=1&version=3&playerapiid=ytvideo' + i, 'ytvideo' + i, '100%', '100%', '10', null, null,
+							{ allowScriptAccess: "always", wmode : base.options.addWmodeToObject }, {});
 					});
 				}
-				/***** Consider removing this portion completely, if users will use SWFObject *****
-				// This commented out code will allow YouTube API functions to work for non-IE browsers
-				 else if (base.hasEmb) {
-					// initialize youtube api when swf isn't loaded - doesn't work in IE (even if you find('embed'))
-					base.$items.find('object').each(function(i){
-						if ($(this).find('[src*=youtube]').length){
-							$(this)
-								.prepend('<param name="wmode" value="' + base.options.addWmodeToObject +'"/>')
-								.wrap('<div id="yt-temp"></div>')
-								.find('embed[src*=youtube]').attr('src', function(j,s){ return s + '&enablejsapi=1&version=3&playerapiid=ytvideo' + i; })
-								.attr('wmode',base.options.addWmodeToObject).end()
-								.find('param[value*=youtube]').attr('value', function(j,v){ return v + '&enablejsapi=1&version=3&playerapiid=ytvideo' + i; }).end()
-								// detach/appendTo required to initialize the wmode code
-								.detach()
-								.appendTo($('#yt-temp'))
-								.attr('id', 'ytvideo' + i)
-								.unwrap();
-						}
-					});
-				}
-			} // ***** End script removal consideration *****/
 
 			// Set the dimensions
 			if (base.options.resizeContents) {
@@ -154,12 +135,9 @@
 			}
 
 			// If a hash can not be used to trigger the plugin, then go to start panel
-			var startPanel = (base.options.hashTags) ?  base.gotoHash() || base.options.startPanel : base.options.startPanel;
+			var startPanel = (base.options.hashTags) ? base.gotoHash() || base.options.startPanel : base.options.startPanel;
 			base.setCurrentPage(startPanel, false);
-
-//			if ((base.options.hashTags === true && !base.gotoHash()) || base.options.hashTags === false) {
-//				base.setCurrentPage(base.options.startPanel, false);
-//			}
+			base.gotoPage(startPanel); // added to trigger events for FX code
 
 			// Fix tabbing through the page
 			base.$items.find('a').focus(function(){
@@ -258,7 +236,7 @@
 
 		// Creates the Start/Stop button
 		base.buildAutoPlay = function(){
-			base.$startStop = $("<a href='#' class='start-stop'></a>").html(base.playing ? base.options.stopText :  base.options.startText);
+			base.$startStop = $("<a href='#' class='start-stop'></a>").html(base.playing ? base.options.stopText : base.options.startText);
 			base.$controls.append(base.$startStop);
 			base.$startStop
 				.bind(base.options.clickSlideshow, function(e) {
@@ -304,7 +282,7 @@
 						c.css('max-width', cw);   // set max width for all children
 						w = cw;
 					}
-					w = (dw) ?  base.options.width || bww : w;
+					w = (dw) ? base.options.width || bww : w;
 					$(this).css('width', w);
 					h = $(this).outerHeight(); // get height after setting width
 					$(this).css('height', h);
@@ -312,7 +290,7 @@
 				base.panelSize[i] = [w,h,leftEdge];
 				leftEdge += w;
 			});
-			//  Set total width of slider, but don't go beyond the set max overall width (limited by Opera)
+			// Set total width of slider, but don't go beyond the set max overall width (limited by Opera)
 			base.$el.css('width', (leftEdge < base.options.maxOverallWidth) ? leftEdge : base.options.maxOverallWidth);
 		};
 
@@ -331,6 +309,7 @@
 			if (page < 0 ) { page = 1; }
 
 			base.$currentPage = base.$items.eq(page);
+			base.currentPage = page; // ensure that event has correct target page
 			base.$el.trigger('slide_init', base);
 			if ($.isFunction(base.options.onSlideInit)) { base.options.onSlideInit(base); }
 
@@ -370,6 +349,8 @@
 				page = 1;
 			}
 			base.setCurrentPage(page, false);
+			// Add active panel class
+			base.$items.removeClass('activePage').eq(page).addClass('activePage');
 
 			if (!base.hovered) { base.slideControls(false); }
 
@@ -385,7 +366,7 @@
 			base.$el.trigger('slide_complete', base);
 			if ($.isFunction(base.options.onSlideComplete)) {
 				// Added setTimeout (zero time) to ensure animation is complete... for some reason this code:
-				// alert(base.$window.is(':animated')); // alerts true - http://dev.jquery.com/ticket/7156
+				// alert(base.$window.is(':animated')); // alerts true - http://bugs.jquery.com/ticket/7157
 				setTimeout(function(){ base.options.onSlideComplete(base); }, 0);
 			}
 		};
@@ -586,26 +567,22 @@
 
 	$.fn.anythingSlider = function(options) {
 
-		// initialize the slider
-		if ((typeof(options)).match('object|undefined')){
-			return this.each(function(i){
-				if ($(this).is('.anythingBase')) { return; } // prevent multiple initializations
-				(new $.anythingSlider(this, options));
-			});
+		return this.each(function(i){
+			var anySlide = $(this).data('AnythingSlider');
 
-		// If options is a number, process as an external link to page #: $(element).anythingSlider(#)
-		} else if (/\d/.test(options) && !isNaN(options)) {
-			return this.each(function(i) {
-				var anySlide = $(this).data('AnythingSlider');
-				if (anySlide) {
-					var page = (typeof(options) == "number") ? options : parseInt($.trim(options),10); // accepts "  2  "
-					// ignore out of bound pages
-					if ( page < 1 || page > anySlide.pages ) { return; }
+			// initialize the slider but prevent multiple initializations
+			if ((typeof(options)).match('object|undefined') && !anySlide){
+				(new $.anythingSlider(this, options));
+
+			// If options is a number, process as an external link to page #: $(element).anythingSlider(#)
+			} else if (/\d/.test(options) && !isNaN(options) && anySlide) {
+				var page = (typeof(options) == "number") ? options : parseInt($.trim(options),10); // accepts "  2  "
+				// ignore out of bound pages
+				if ( page >= 1 && page <= anySlide.pages ) {
 					anySlide.gotoPage(page);
 				}
-			});
-		}
-
+			}
+		});
 	};
 
 })(jQuery);

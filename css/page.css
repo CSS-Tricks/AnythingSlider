@@ -1,15 +1,19 @@
-/* Demo specific css */
+/*** Demo specific css ***/
 *                      { margin: 0; padding: 0; }
-body                   { font: 12px Georgia, Serif; }
+body                   { font: 12px Georgia, Serif; background: #fff; color: #000; }
 a, a img               { border: 0; text-decoration: none; }
 
-#page-wrap             { width: 90%; padding: 15px; background: white; margin: 0 auto 50px; position: relative; }
+#ribbon1, #ribbon2     { display: block; position: absolute; top: 0; left: 0; width: 200px; height: 200px; background: left top no-repeat; }
+#ribbon1               { background-image: url(../images/ribbon1.png); }
+#ribbon2               { background-image: url(../images/ribbon2.png); }
+#page-wrap, #demo2     { width: 90%; padding: 15px; margin: 0 auto 50px; position: relative; }
 
 h1                     { font: bold 60px Helvetica, Sans-Serif; letter-spacing: -2px; margin: 20px 0; text-align: center; }
-h2                     { font: bold 30px Helvetica, Sans-Serif; letter-spacing: -1px; margin: 0 0 10px 0; }
-h3                     { font: 20px Georgia, Serif; margin: 0 0 10px 0; }
+h2                     { font: bold 30px Helvetica, Sans-Serif; letter-spacing: -1px; margin: 0 0 10px 0; color: #002266; }
+h2.title               { text-align: center; }
+h3                     { font: 20px Georgia, Serif; margin: 0 0 10px 0; color: #003388; }
 h5                     { font: 15px Georgia, Serif; text-align: center; }
-pre                    { font: 13px/1.8 Monaco, MonoSpace; margin: 0 0 15px 0; padding: 5px; background: #f5f5f5; block: inline; }
+pre, code              { font: 13px/1.8 Monaco, MonoSpace; margin: 0 0 15px 0; padding: 5px; background: #f5f5f5; block: inline; }
 blockquote             { margin-left: 30px; }
 
 ul                     { margin: 0 0 25px 25px; }
@@ -28,19 +32,80 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 .data .col             { width: 200px; }
 
 /* For Specific Slides */
-#textSlide             { padding: 10px 30px; }
-#textSlide h3          { font: 20px Georgia, Serif; }
-#textSlide h4          { text-transform: uppercase; font: 15px Georgia, Serif; margin: 10px 0; }
-#textSlide ul          { list-style: disc; margin: 0 0 0 25px; }
-#textSlide ul li       { display: list-item; }
+.textSlide             { padding: 10px 30px; }
+.textSlide h3          { font: 20px Georgia, Serif; }
+.textSlide h4          { text-transform: uppercase; font: 15px Georgia, Serif; margin: 10px 0; }
+.textSlide ul          { list-style: disc; margin: 0 0 0 25px; }
+.textSlide ul li       { display: list-item; }
 
 .quoteSlide            { padding: 30px; }
 .quoteSlide blockquote { font: italic 24px/1.5 Georgia, Serif; text-align: center; color: #444; margin: 0 0 10px 0; }
 .quoteSlide p          { text-align: center; }
 
-/* Set second slider panel sizes */
+/* Set slider2 panel sizes */
 #slider2 .panel1       { width: 500px; height: 350px; }
 #slider2 .panel2       { width: 450px; height: 420px; }
 #slider2 .panel3       { width: 680px; height: 317px; }
 #slider2 .panel4       { } /* left undefined to show it defaults to wrapper size */
 #slider2 .panel5       { width: 680px; height: 317px; }
+#slider2 .panel6       { width: 450px; height: 300px; }
+
+/*** FX Demo Page CSS ***/
+/* Demo page accordions */
+.accordion             { width: 70%; margin: 0 auto; }
+.accordion .ui-widget-content a { color: #004499; }
+
+/** Demo 1 **/
+/* colorbox images to full size */
+#cboxPhoto             { width: 100%; height: 100%; margin: 0 !important; }
+/* Change metallic slider defaults to show thumbnails -
+  using #demo2 (page wrapper) to increase this CSS priority */
+#demo2 div.anythingSlider-metallic .thumbNav a {
+ background-image: url();
+ height: 30px;
+ width: 30px;
+ border: #000 1px solid;
+ border-radius: 2px;
+ -moz-border-radius: 2px;
+ -webkit-border-radius: 2px;
+ text-indent: 0;
+}
+/* border around image to show current page */
+#demo2 div.anythingSlider-metallic .thumbNav a:hover,
+#demo2 div.anythingSlider-metallic .thumbNav a.cur {
+ border-color: #fff;
+}
+/* reposition the start/stop button */
+#demo2 div.anythingSlider-metallic .start-stop {
+ margin-top: 15px;
+}
+
+/** Demo 3 **/
+/* expand image */
+#slider3 img           { width: 100%; height: 100%; position: relative; }
+#slider3 .panel        { position: relative; }
+
+/* position close button */
+.caption-top .close,
+.caption-right .close,
+.caption-bottom .close,
+.caption-left .close   { font-size: 80%; cursor: pointer; float: right; display: inline-block; }
+
+ /* captions */
+ /* set to position: relative here in case javascript is disabled, script sets captions to position: absolute */
+#slider3 .caption-top,
+#slider3 .caption-right,
+#slider3 .caption-bottom,
+#slider3 .caption-left { background: #000; color: #fff; padding: 10px; margin: 0; position: relative; z-index: 10; opacity: .8; filter: alpha(opacity=80); }
+
+/* Top caption - padding is included in the width (480px here, 500px in the script), same for height */
+#slider3 .caption-top    { left: 0; top: 0; width: 480px; height: 30px; }
+
+/* Right caption - padding is included in the width (130px here, 150px in the script), same for height */
+#slider3 .caption-right  { right: 0; bottom: 0; width: 130px; height: 180px;  }
+
+/* Bottom caption  - padding is included in the width (480px here, 500px in the script), same for height */
+#slider3 .caption-bottom { left: 0; bottom: 0; width: 480px; height: 30px; }
+
+/* Left caption - padding is included in the width (130px here, 150px in the script), same for height */
+#slider3 .caption-left   { left: 0; bottom: 0; width: 130px; height: 180px;  }

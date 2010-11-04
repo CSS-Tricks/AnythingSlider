@@ -7,25 +7,29 @@
 
 	<title>AnythingSlider</title>
 
-	<link rel="stylesheet" href="css/page.css" type="text/css" media="screen" />
+	<!-- jQuery (required) -->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+
+	<!-- Anything Slider optional plugins -->
+	<script type="text/javascript" src="js/jquery.easing.1.2.js"></script>
+	<!-- http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js -->
+	<script type="text/javascript" src="js/swfobject.js"></script>
+	
+	<!-- Anything Slider -->
+	<script type="text/javascript" src="js/jquery.anythingslider.js"></script>
 	<link rel="stylesheet" href="css/anythingslider.css" type="text/css" media="screen" />
 
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-	<script type="text/javascript" src="js/jquery.easing.1.2.js"></script>
-	<script type="text/javascript" src="js/swfobject.js"></script> <!-- http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js -->
-	<script type="text/javascript" src="js/jquery.anythingslider.js" charset="utf-8"></script>
+	<!-- Demo stuff -->
+	<link rel="stylesheet" href="css/page.css" type="text/css" media="screen" />
 
 	<script type="text/javascript">
-		var slider2 = ['Recipe', 'Quote', 'Image', 'Quote #2', 'Image #2'];
-		function formatText(index, panel){
-			return slider2[index - 1];
-		}
+		// Set up Sliders
+		// **************
+		$(function(){
 
-		$(function () {
 			$('#slider1').anythingSlider({
 				startStopped    : true, // If autoPlay is on, this can force it to start stopped
 				width           : 800,  // Override the default CSS width
-//				toggleControls  : true, // if true, then slide in controls on hover and slider change, hide @ other times
 				theme           : 'metallic',
 				onSlideComplete : function(slider){
 					// alert('Welcome to Slide #' + slider.currentPage);
@@ -33,19 +37,30 @@
 			});
 
 			$('#slider2').anythingSlider({
-				width               : 600,        // if resizeContent is false, this is the default width if panel size is not defined
-				height              : 350,        // if resizeContent is false, this is the default height if panel size is not defined
-				resizeContents      : false,      // If true, solitary images/objects in the panel will expand to fit the viewport
-				startStopped        : true,       // If autoPlay is on, this can force it to start stopped
-				navigationFormatter : formatText  // Format navigation labels with text
+				width               : 600,   // if resizeContent is false, this is the default width if panel size is not defined
+				height              : 350,   // if resizeContent is false, this is the default height if panel size is not defined
+				resizeContents      : false, // If true, solitary images/objects in the panel will expand to fit the viewport
+				startStopped        : true,  // If autoPlay is on, this can force it to start stopped
+				navigationFormatter : function(index, panel){ // Format navigation labels with text
+					return ['Recipe', 'Quote', 'Image', 'Quote #2', 'Image #2'][index - 1];
+				}
 			});
 
+		});
+	</script>
+
+	<script type="text/javascript">
+		// Demo functions
+		// **************
+		$(function(){
+
+			// External Link
 			$("#slide-jump").click(function(){
 				$('#slider2').anythingSlider(4);
 				return false;
 			});
 
-			// Report Events to console
+			// Report Events to console & features list
 			$('.anythingSlider').bind('slideshow_start slideshow_stop slideshow_paused slideshow_unpaused slide_init slide_begin slide_complete',function(e, slider){
 				// show object ID + event (e.g. "slider1: slide_begin")
 				var txt = slider.$el[0].id + ': ' + e.type + ', now on panel #' + slider.currentPage;
@@ -57,7 +72,6 @@
 			var themes = ['minimalist-round','minimalist-square','metallic','construction','cs-portfolio'];
 			$('#currentTheme').change(function(){
 				var theme = $(this).val();
-
 				if (!$('link[href*=' + theme + ']').length) {
 					$('body').append('<link rel="stylesheet" href="css/theme-' + theme + '.css" type="text/css" media="screen" />');
 				}
@@ -71,7 +85,7 @@
 </head>
 
 <body>
-
+	<a id="ribbon1" href="demos.htm"></a>
 	<div id="page-wrap">
 		<a href="http://github.com/ProLoser/AnythingSlider/downloads" id="dl">Download Latest on Github</a>
 
@@ -116,7 +130,7 @@
 			<ul id="slider2">
 
 				<li class="panel1">
-					<div id="textSlide">
+					<div class="textSlide">
 						<img src="images/251356.jpg" alt="tomato sandwich" style="float: right; margin: 0 0 2px 10px;" />
 						<h3>Queenie's Killer Tomato Bagel Sandwich</h3>
 						<h4>Ingredients</h4>
@@ -171,6 +185,7 @@
 			<li>Pauses slideshow on hover (optional).</li>
 			<li>Optionally play the slideshow once through, stopping on the last page.</li>
 			<li>Extend the script by binding to custom events, last triggered event: <span id="status">none</span></li>
+			<li>Optional FX extension to add animation to panels elements as they scroll into and out of view. See the <a href="demos.htm">demo page</a>.</li>
 		</ul>
 
 		<h2>Default Options</h2>
@@ -379,6 +394,13 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 		</ul>
 
 		<h2>Changelog</h2>
+
+		<h3>Version 1.4.8</h3>
+		<ul>
+			<li>Added an optional extension "AnythingSlider FX" to add animation effects to each panel.</li>
+			<li>Added an <a href="demos.htm">AnythingSlider FX demo page</a> with examples, code, and multiple methods to achieve the same effects. Thanks to Paal Joachim for input on which demos were needed.</li>
+			<li>Added <code>activePage</code> class to the visible slider; but it is not updated until just before the <code>slide_complete</code> event.</li>
+		</ul>
 
 		<h3>Version 1.4.7</h3>
 		<ul>
