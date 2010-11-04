@@ -432,7 +432,7 @@
 			if (base.options.toggleControls) {
 				base.$controls.stop(true,true).delay(t1)[dir](base.options.animationTime/2).delay(t2); 
 			}
-			if (base.options.toggleArrows) {
+			if (base.options.buildArrows && base.options.toggleArrows) {
 				if (!base.hovered && base.playing) { sign = 1; }
 				base.$forward.stop(true,true).delay(t1).animate({ right: sign * base.$arrowWidth, opacity: t2 }, base.options.animationTime/2);
 				base.$back.stop(true,true).delay(t1).animate({ left: sign * base.$arrowWidth, opacity: t2 }, base.options.animationTime/2);
