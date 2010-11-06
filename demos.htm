@@ -72,6 +72,7 @@
        <li>Click on the current slider image to open a light box. Press escape or click on the (X) in the lower right corner to close it.</li>
        <li>Additional CSS is required to modify the Colorbox plugin. The CSS expands the image to completely fill the inside the colorbox popup. Adjust as desired to keep the image proportional.</li>
        <li>The script attaches a colorbox popup to all images inside the slider. Add a class to the images to modify this behaviour.</li>
+       <li>The colorbox popup will contain all the current slider images. In the script the name "group" is added to all images in the "rel" attribute. This can be done in the HTML to target only the images to be shown in the colorbox - then remove the <code>.attr('rel','group')</code> in the script.</li>
       </ul>
      </li>
      <li>The AnythingSlider FX extension is not required to add any of the above functionality.</li>
@@ -146,16 +147,16 @@
   })
   // target all images inside the current slider
   // replace with 'img.someclass' to target specific images
-  .find('img').click(function(){
-   // initialize colorbox
-   $.colorbox({
-    width: '90%',
-    height: '90%',
-    href: $(this).attr('src'),
-    // use $(this).attr('title') for specific image captions
-    title: 'Press escape to close'
-   });
-  });</code></pre>
+  .find('.panel:not(.cloned) img') // ignore the cloned panels
+   .attr('rel','group')            // add all slider images to a colorbox group
+   .colorbox({
+     width: '90%',
+     height: '90%',
+     href: function(){ return $(this).attr('src'); },
+     // use $(this).attr('title') for specific image captions
+     title: 'Press escape to close',
+     rel: 'group'
+   });</code></pre>
    </div>
   </div>
 

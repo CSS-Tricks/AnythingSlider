@@ -24,6 +24,7 @@ h2. Features
 * If slideshow is active, a playing video will complete before the slideshow continues.
 * Pauses slideshow on hover (optional).
 * Optionally play the slideshow once through, stopping on the last page.
+* Optional FX extension to add animation to panels elements as they scroll into and out of view. See the "demo page":http://proloser.github.com/AnythingSlider/demos.htm.
 
 h2. Default Options
 
