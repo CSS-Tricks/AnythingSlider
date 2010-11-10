@@ -80,6 +80,18 @@
 					.addClass('anythingSlider-' + theme);
 			});
 
+			// Add a slide
+			var imageNumber = 1;
+			$('button.add').click(function(){
+				$('#slider1')
+					.append('<li><img src="images/slide-tele-' + (++imageNumber%2 + 1)  + '.jpg" alt="" /></li>')
+					.anythingSlider(); // update the slider
+			});
+			$('button.remove').click(function(){
+				$('#slider1 > li:not(.cloned):last').remove();
+				$('#slider1').anythingSlider(); // update the slider
+			});
+
 		});
 	</script>
 </head>
@@ -103,6 +115,8 @@
 								<option value="construction">Construction</option>
 								<option value="cs-portfolio">CS-Portfolio</option>
 							</select>
+				<button class="add">Add Slide</button>
+				<button class="remove">Remove Slide</button>
 			</div>
 
 			<br><br>
@@ -172,6 +186,7 @@
 		<ul>
 			<li>Panels are HTML Content (can be anything).</li>
 			<li>Multiple AnythingSliders allowable per-page.</li>
+			<li>Add or remove content, then easily update the slider.</li>
 			<li>Themes can be applied to individual sliders.</li>
 			<li>Infinite/Continuous sliding (always slides in the direction you are going, even at "last" slide).</li>
 			<li>Optionally resize each panel (specified per panel in css).</li>
@@ -287,6 +302,18 @@ $(function () {
 
 		<h2>Usage</h2>
 		<ul>
+			<li><h3>Updating the Slider (content added or removed)</h3>
+			<ul>
+				<li>Any options added inside the anythingSlider call will be ignored.</li>
+				<li>Note that if you are removing any panels from AnythingSlider, make sure your script ignores the cloned panels (they have a 'cloned' class). See this page's source for an example.</li>
+			</ul>
+				<blockquote>
+					<pre>$('#slider1')
+  .append('&lt;li&gt;&lt;img src=&quot;some-image.jpg&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;') // add a new panel to the slider
+  .anythingSlider(); // update the slider</pre>
+				</blockquote>
+			</li>
+
 			<li><h3>Getting Current Slide Number:</h3>
 				<blockquote>
 					<pre>var current = $('#slider1').data('AnythingSlider').currentPage; // returns page #</pre>
@@ -394,6 +421,11 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 		</ul>
 
 		<h2>Changelog</h2>
+
+		<h3>Version 1.5</h3>
+		<ul>
+			<li>Modified core to allow updating the AnythingSlider content (change the number of slides).</li>
+		</ul>
 
 		<h3>Version 1.4.8</h3>
 		<ul>

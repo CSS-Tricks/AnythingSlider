@@ -12,6 +12,7 @@ h2. Features
 
 * Panels are HTML Content (can be anything).
 * Multiple AnythingSliders allowable per-page.
+* Add or remove content, then easily update the slider.
 * Infinite/Continuous sliding (always slides in the direction you are going, even at "last" slide).
 * Optionally resize each panel (specified per panel in css).
 * Optional Next / Previous Panel Arrows.
@@ -117,6 +118,14 @@ h3. Example HTML
 
 h2. Usage
 
+h3. Updating the Slider (content added or removed) - options will be ignored.
+* Any options added inside the anythingSlider call will be ignored.
+* Note that if you are removing any panels from AnythingSlider, make sure your script ignores the cloned panels (they have a 'cloned' class). See the page source of "index.html" for an example.
+
+ <pre>$('#slider1')
+  .append('<li><img src="images/slide-tele-' + (++imageNumber%2 + 1)  + '.jpg" alt="" /></li>')
+  .anythingSlider(); // update the slider</pre>
+
 h3. Getting current slide:
  <pre>$('#slider1').data('AnythingSlider').currentPage; // returns page #</pre>
 
@@ -187,6 +196,9 @@ h3. Formatting Navigation Text
 })</pre>
 
 h2. Changelog
+
+h3. Version 1.5
+* Modified core to allow updating the AnythingSlider content (change the number of slides).
 
 h3. Version 1.4.8
 * Added an optional extension &quot;AnythingSlider FX&quot; to add animation effects to each panel.

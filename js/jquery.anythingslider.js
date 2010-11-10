@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.4.8
+	AnythingSlider v1.5
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -42,20 +42,23 @@
 			base.$wrapper = base.$el.parent().closest('div.anythingSlider').addClass('anythingSlider-' + base.options.theme);
 			base.$window = base.$el.closest('div.anythingWindow');
 			base.$controls = $('<div class="anythingControls"></div>').appendTo(base.$wrapper);
-			base.$items = base.$el.find('> li').addClass('panel');
+			base.$nav = $('<ul class="thumbNav" />').appendTo(base.$controls);
 
 			// Set up a few defaults & get details
-			base.pages   = base.$items.length;
 			base.timer   = null;  // slideshow timer (setInterval) container
 			base.flag    = false; // event flag to prevent multiple calls (used in control click/focusin)
 			base.playing = false; // slideshow state
 			base.hovered = false; // actively hovering over the slider
 			base.panelSize = [];  // will contain dimensions and left position of each panel
 			base.currentPage = base.options.startPanel;
+			if (base.options.playRtl) { base.$wrapper.addClass('rtl'); }
+
+			// save some options
+			base.original = [ base.options.autoPlay, base.options.buildNavigation, base.options.buildArrows];
+			base.updateSlider();
+
 			base.$currentPage = base.$items.eq(base.currentPage);
 			base.$lastPage = base.$currentPage;
-			base.hasEmb = !!base.$items.find('embed[src*=youtube]').length; // embedded youtube objects exist in the slider
-			base.hasSwfo = (typeof(swfobject) !== 'undefined' && swfobject.hasOwnProperty('embedSWF') && $.isFunction(swfobject.embedSWF)) ? true : false; // is swfobject loaded?
 
 			// Get index (run time) of this slider on the page
 			base.runTimes = $('div.anythingSlider').index(base.$wrapper) + 1;
@@ -68,54 +71,6 @@
 			if (base.options.theme != 'default' && !$('link[href*=' + base.options.theme + ']').length){
 				$('body').append('<link rel="stylesheet" href="' + base.options.themeDirectory.replace(/\{themeName\}/g, base.options.theme) + '" type="text/css" />');
 			}
-
-			// Initialize YouTube javascript api, if YouTube video is present
-			if (base.hasEmb && base.hasSwfo) {
-					base.$items.find('embed[src*=youtube]').each(function(i){
-						// Older IE doesn't have an object - just make sure we are wrapping the correct element
-						var $tar = ($(this).parent()[0].tagName == "OBJECT") ? $(this).parent() : $(this);
-						$tar.wrap('<div id="ytvideo' + i + '"></div>');
-						// use SWFObject if it exists, it replaces the wrapper with the object/embed
-						swfobject.embedSWF($(this).attr('src') + '&enablejsapi=1&version=3&playerapiid=ytvideo' + i, 'ytvideo' + i, '100%', '100%', '10', null, null,
-							{ allowScriptAccess: "always", wmode : base.options.addWmodeToObject }, {});
-					});
-				}
-
-			// Set the dimensions
-			if (base.options.resizeContents) {
-				if (base.options.width) { base.$wrapper.add(base.$items).css('width', base.options.width); }
-				if (base.options.height) { base.$wrapper.add(base.$items).css('height', base.options.height); }
-				if (base.hasEmb){ base.$el.find('object, embed').css({ width : '100%', height: '100%' }); } // this only expands youtube videos
-			}
-
-			// Remove navigation & player if there is only one page
-			if (base.pages === 1) {
-				base.options.autoPlay = false;
-				base.options.buildNavigation = false;
-				base.options.buildArrows = false;
-			}
-
-			// If autoPlay functionality is included, then initialize the settings
-			if (base.options.autoPlay) {
-				base.playing = !base.options.startStopped; // Sets the playing variable to false if startStopped is true
-				base.buildAutoPlay();
-			}
-
-			// Build the navigation
-			base.buildNavigation();
-
-			// Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
-			// This supports the "infinite" scrolling, also ensures any cloned elements don't duplicate an ID
-			base.$el.prepend( base.$items.filter(':last').clone().addClass('cloned').removeAttr('id') );
-			base.$el.append( base.$items.filter(':first').clone().addClass('cloned').removeAttr('id') );
-
-			// We just added two items, time to re-cache the list, then get the dimensions of each panel
-			base.$items = base.$el.find('> li');
-			base.setDimensions();
-			if (!base.options.resizeContents) { $(window).load(function(){ base.setDimensions(); }); } // set dimensions after all images load
-
-			// Build forwards/backwards buttons
-			if (base.options.buildArrows) { base.buildNextBackButtons(); }
 
 			// If pauseOnHover then add hover effects
 			if (base.options.pauseOnHover) {
@@ -136,20 +91,7 @@
 
 			// If a hash can not be used to trigger the plugin, then go to start panel
 			var startPanel = (base.options.hashTags) ? base.gotoHash() || base.options.startPanel : base.options.startPanel;
-			base.setCurrentPage(startPanel, false);
 			base.gotoPage(startPanel); // added to trigger events for FX code
-
-			// Fix tabbing through the page
-			base.$items.find('a').focus(function(){
-				base.$items.find('.focusedLink').removeClass('focusedLink');
-				$(this).addClass('focusedLink');
-				base.$items.each(function(i){
-					if ($(this).find('a.focusedLink').length) {
-						base.gotoPage(i);
-						return false;
-					}
-				});
-			});
 
 			// Hide/Show navigation & play/stop controls
 			base.slideControls(false);
@@ -174,13 +116,102 @@
 
 		};
 
+		// called during initialization & to update the slider if a panel is added or deleted
+		base.updateSlider = function(){
+			// needed for updating the slider
+			base.$el.find('li.cloned').remove();
+			base.$nav.empty();
+
+			base.$items = base.$el.find('> li'); 
+			base.pages = base.$items.length;
+
+			// Set the dimensions of each panel
+			if (base.options.resizeContents) {
+				if (base.options.width) { base.$wrapper.add(base.$items).css('width', base.options.width); }
+				if (base.options.height) { base.$wrapper.add(base.$items).css('height', base.options.height); }
+				if (base.hasEmb){ base.$el.find('object, embed').css({ width : '100%', height: '100%' }); } // this only expands youtube videos
+			}
+
+			// Remove navigation & player if there is only one page
+			if (base.pages === 1) {
+				base.options.autoPlay = false;
+				base.options.buildNavigation = false;
+				base.options.buildArrows = false;
+				base.$controls.hide();
+				base.$nav.hide();
+				if (base.$forward) { base.$forward.add(base.$back).hide(); }
+			} else {
+				base.options.autoPlay = base.original[0];
+				base.options.buildNavigation = base.original[1];
+				base.options.buildArrows = base.original[2];
+				base.$controls.show();
+				base.$nav.show();
+				if (base.$forward) { base.$forward.add(base.$back).show(); }
+			}
+
+			// Build navigation tabs
+			base.buildNavigation();
+
+			// If autoPlay functionality is included, then initialize the settings
+			if (base.options.autoPlay) {
+				base.playing = !base.options.startStopped; // Sets the playing variable to false if startStopped is true
+				base.buildAutoPlay();
+			}
+
+			// Build forwards/backwards buttons
+			if (base.options.buildArrows) { base.buildNextBackButtons(); }
+
+			// Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
+			// This supports the "infinite" scrolling, also ensures any cloned elements don't duplicate an ID
+			base.$el.prepend( base.$items.filter(':last').clone().addClass('cloned').removeAttr('id') );
+			base.$el.append( base.$items.filter(':first').clone().addClass('cloned').removeAttr('id') );
+
+			// We just added two items, time to re-cache the list, then get the dimensions of each panel
+
+			base.$items = base.$el.find('> li').addClass('panel');
+			base.setDimensions();
+			if (!base.options.resizeContents) { $(window).load(function(){ base.setDimensions(); }); } // set dimensions after all images load
+
+			if (base.currentPage > base.pages) {
+				base.currentPage = base.pages;
+				base.setCurrentPage(base.pages, false);
+			}
+			base.$nav.find('a').eq(base.currentPage - 1).addClass('cur'); // update current selection
+
+			base.hasEmb = !!base.$items.find('embed[src*=youtube]').length; // embedded youtube objects exist in the slider
+			base.hasSwfo = (typeof(swfobject) !== 'undefined' && swfobject.hasOwnProperty('embedSWF') && $.isFunction(swfobject.embedSWF)) ? true : false; // is swfobject loaded?
+
+			// Initialize YouTube javascript api, if YouTube video is present
+			if (base.hasEmb && base.hasSwfo) {
+				base.$items.find('embed[src*=youtube]').each(function(i){
+					// Older IE doesn't have an object - just make sure we are wrapping the correct element
+					var $tar = ($(this).parent()[0].tagName == "OBJECT") ? $(this).parent() : $(this);
+					$tar.wrap('<div id="ytvideo' + i + '"></div>');
+					// use SWFObject if it exists, it replaces the wrapper with the object/embed
+					swfobject.embedSWF($(this).attr('src') + '&enablejsapi=1&version=3&playerapiid=ytvideo' + i, 'ytvideo' + i, '100%', '100%', '10', null, null,
+						{ allowScriptAccess: "always", wmode : base.options.addWmodeToObject }, {});
+				});
+			}
+
+			// Fix tabbing through the page
+			base.$items.find('a').unbind('focus').bind('focus', function(){
+				base.$items.find('.focusedLink').removeClass('focusedLink');
+				$(this).addClass('focusedLink');
+				base.$items.each(function(i){
+					if ($(this).find('a.focusedLink').length) {
+						base.gotoPage(i);
+						return false;
+					}
+				});
+			});
+
+		};
+
 		// Creates the numbered navigation links
 		base.buildNavigation = function() {
-			base.$nav = $('<ul class="thumbNav" />').appendTo(base.$controls);
-			if (base.options.playRtl) { base.$wrapper.addClass('rtl'); }
 
 			if (base.options.buildNavigation && (base.pages > 1)) {
-				base.$items.each(function(i,el) {
+				base.$items.filter(':not(.cloned)').each(function(i,el) {
 					var index = i + 1,
 						$a = $("<a href='#'></a>").addClass('panel' + index).wrap("<li />");
 					base.$nav.append($a.parent()); // use $a.parent() so IE will add <li> instead of only the <a> to the <ul>
@@ -204,14 +235,13 @@
 						}
 						e.preventDefault();
 					});
-
 				});
-
 			}
 		};
 
 		// Creates the Forward/Backward buttons
 		base.buildNextBackButtons = function() {
+			if (base.$forward) { return; }
 			base.$forward = $('<span class="arrow forward"><a href="#">' + base.options.forwardText + '</a></span>');
 			base.$back = $('<span class="arrow back"><a href="#">' + base.options.backText + '</a></span>');
 
@@ -236,8 +266,9 @@
 
 		// Creates the Start/Stop button
 		base.buildAutoPlay = function(){
+			if (base.$startStop) { return; }
 			base.$startStop = $("<a href='#' class='start-stop'></a>").html(base.playing ? base.options.stopText : base.options.startText);
-			base.$controls.append(base.$startStop);
+			base.$controls.prepend(base.$startStop);
 			base.$startStop
 				.bind(base.options.clickSlideshow, function(e) {
 					base.startStop(!base.playing);
@@ -295,6 +326,7 @@
 		};
 
 		base.gotoPage = function(page, autoplay) {
+			if (base.pages === 1) { return; }
 			base.$lastPage = base.$items.eq(base.currentPage);
 			if (typeof(page) === "undefined" || page === null) {
 				page = base.options.startPage;
@@ -304,10 +336,8 @@
 			// pause YouTube videos before scrolling or prevent change if playing
 			if (base.hasEmb && base.checkVideo(base.playing)) { return; }
 
-			// Just check for bounds
 			if (page > base.pages + 1) { page = base.pages; }
 			if (page < 0 ) { page = 1; }
-
 			base.$currentPage = base.$items.eq(page);
 			base.currentPage = page; // ensure that event has correct target page
 			base.$el.trigger('slide_init', base);
@@ -336,7 +366,6 @@
 				{ scrollLeft : base.panelSize[page][2] },
 				{ queue: false, duration: base.options.animationTime, easing: base.options.easing, complete: function(){ base.endAnimation(page); } }
 			);
-
 		};
 
 		base.endAnimation = function(page){
@@ -372,6 +401,9 @@
 		};
 
 		base.setCurrentPage = function(page, move) {
+			if (page > base.pages + 1) { page = base.pages; }
+			if (page < 0 ) { page = 1; }
+
 			// Set visual
 			if (base.options.buildNavigation){
 				base.$nav.find('.cur').removeClass('cur');
@@ -571,9 +603,12 @@
 			var anySlide = $(this).data('AnythingSlider');
 
 			// initialize the slider but prevent multiple initializations
-			if ((typeof(options)).match('object|undefined') && !anySlide){
-				(new $.anythingSlider(this, options));
-
+			if ((typeof(options)).match('object|undefined')){
+				if (!anySlide) {
+					(new $.anythingSlider(this, options));
+				} else {
+					anySlide.updateSlider();
+				}
 			// If options is a number, process as an external link to page #: $(element).anythingSlider(#)
 			} else if (/\d/.test(options) && !isNaN(options) && anySlide) {
 				var page = (typeof(options) == "number") ? options : parseInt($.trim(options),10); // accepts "  2  "
