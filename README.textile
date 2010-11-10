@@ -32,7 +32,7 @@ h2. Default Options
 	// Appearance
 	width               : null,      // Override the default CSS width
 	height              : null,      // Override the default CSS height
-	resizeContents      : true       // If true, solitary images/objects in the panel will expand to fit the viewport
+	resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
 	tooltipClass        : 'tooltip', // Class added to navigation & start/stop button (text copied to title if it is hidden by a negative text indent)
 	theme               : 'default', // Theme name
 	themeDirectory      : 'css/theme-{themeName}.css', // Theme directory & filename {themeName} is replaced by the theme value above
