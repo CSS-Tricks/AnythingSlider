@@ -147,9 +147,9 @@ $('#slider1').data('AnythingSlider').goForward();      // go forward one slide
 $('#slider1').data('AnythingSlider').goBack();         // go back one slide</pre>
 
 h3. Extending - Event Hooks (callback functions)
-span{color:red}*Note: Changed bind function returned arguments to make more straightforward values available, see "callback arguments":"#callback" below.*
+*Note: Changed bind function returned arguments to make more straightforward values available, see <a href="#callback">callback arguments</a> below.*
 
-* <code>before_initialize</code> (<code>onBeforeInitialize</code>) - triggered right after creating the anythingSlider object. "Read note":"#note-before-init".
+* <code>before_initialize</code> (<code>onBeforeInitialize</code>) - triggered right after creating the anythingSlider object. <a href="#note-before-init">Read note</a>.
 * <code>initialized</code> (<code>onInitialized</code>) - triggered after creating the anythingSlider object.
 * <code>slideshow_start</code> (<code>onShowStart</code>) - slideshow started.
 * <code>slideshow_stop</code> (<code>onShowStop</code>) - slideshow stopped.
@@ -218,9 +218,9 @@ h3. Version 1.5.1
 * Added <code>enableNavigation</code> option which, when false, will allow visible navigation links to be unclickable. You'll have to change the CSS to stop the hover effect.
 * Added <code>enablePlay</code> option which, when false, will allow a visible play/stop button to be unclickable. You'll have to change the CSS to stop the hover effect.
 * Fixed a problem with clicking control links inside a slider (links that take the slider to other panels). This also required that all links in the cloned panels are modified (changed into spans) - this will mess up any FX you add to these links but only in the first and last panels.
-* Added the following changes that "Midu":"https://github.com/midu/AnythingSlider" (Stefano B) made in his branch. Thanks for the great mods! I would have just merged your changes into the core, but I still suck at using git LOL :P
+* Added the following changes that <a href="https://github.com/midu/AnythingSlider">Midu</a> (Stefano B) made in his branch. Thanks for the great mods! I would have just merged your changes into the core, but I still suck at using git LOL :P
 * Added <code>appendControlsTo</code> which allows you to attach the slider controls (navigation tabs &amp; play/stop button) to another object on the page. This wasn't throughly tested, but I know you'll need to include custom CSS to style these links outside the slider.
-* Added event hook & callback <code>before_initialize</code> (<code>onBeforeInitialize</code>) which is triggered immediately after the slider is initialized, "see the note":"#note-before-init" above for more details.
+* Added event hook & callback <code>before_initialize</code> (<code>onBeforeInitialize</code>) which is triggered immediately after the slider is initialized, <a href="#note-before-init">see the note</a> above for more details.
 * Added event hook & callback <code>initialized</code> (<code>onInitialized</code>) which is triggered after the AnythingSlider has completed its setup.
 * Optimized how callbacks functions are called - you shouldn't notice a difference.
 
@@ -242,7 +242,7 @@ h3. Version 1.4.6
 * Commented out previous code which added the above YouTube functionality to non-IE browsers. Will consider completely removing it if users are okay with the SWFObject script dependency.
 
 h3. Version 1.4.5
-* Added Curtis Scott's Portfolio theme from "his site":"http://www.curtisscott.com/portfolio.html". Thanks for sharing! - don't use the control toggle option as it messes up the page layout.
+* Added Curtis Scott's Portfolio theme from <a href="http://www.curtisscott.com/portfolio.html">his site</a>. Thanks for sharing! - don't use the control toggle option as it messes up the page layout.
 * Fixed the flickering problem that was occuring when the slider moved from the last slide to the first.
 
 h3. Version 1.4.4
