@@ -217,15 +217,19 @@
   // Navigation
   startPanel          : 1,         // This sets the initial panel
   hashTags            : true,      // Should links change the hashtag in the URL?
+  enableKeyboard      : true,      // if false, keyboard arrow keys will not work for the current panel.
   buildArrows         : true,      // If true, builds the forwards and backwards buttons
   toggleArrows        : false,     // if true, side navigation arrows will slide out on hovering &amp; hide @ other times
   buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
+  enableNavigation    : true,      // if false, navigation links will still be visible, but not clickable.
   toggleControls      : false,     // if true, slide in controls (navigation + play/stop button) on hover and slide change, hide @ other times
+  appendControlsTo    : null,      // A HTML element (jQuery Object, selector or HTMLNode) to which the controls will be appended if not null
   navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
   forwardText         : "&amp;raquo;", // Link text used to move the slider forward (hidden by CSS, replaced with arrow image)
   backText            : "&amp;laquo;", // Link text used to move the slider back (hidden by CSS, replace with arrow image)
 
   // Slideshow options
+  enablePlay          : true,      // if false, the play/stop button will still be visible, but not clickable.
   autoPlay            : true,      // This turns off the entire slideshow FUNCTIONALY, not just if it starts running or not
   startStopped        : false,     // If autoPlay is on, this can force it to start stopped
   pauseOnHover        : true,      // If true &amp; the slideshow is active, the slideshow will pause on hover
@@ -239,6 +243,8 @@
   easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
 
   // Callbacks
+  onBeforeInitialize  : null,      // Callback before the plugin initializes
+  onInitialized       : null,      // Callback when the plugin finished initializing
   onShowStart         : null,      // Callback on slideshow start
   onShowStop          : null,      // Callback after slideshow stops
   onShowPause         : null,      // Callback when slideshow pauses
@@ -340,20 +346,37 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 			</li>
 
 			<li><h3>Extending - Event Hooks (callback functions)</h3>
-				<div class="alert"><b>Note:</b> Changed bind function returned arguments to make more straightforward values available, see callback arguments below.</div>
+				<div class="alert"><b>Note:</b> In version 1.4.4, the bind function returned arguments were changed to make more straightforward values available, see the <a href="#callbacks">callback arguments</a> section below.</div>
 				<br>
 				<blockquote>
 				<ul>
-					<li><code>slideshow_start</code> (<code>onShowStart</code>) - slideshow started</li>
-					<li><code>slideshow_stop</code> (<code>onShowStop</code>) - slideshow stopped</li>
-					<li><code>slideshow_paused</code> (<code>onShowPause</code>) - slideshow paused</li>
-					<li><code>slideshow_unpaused</code> (<code>onShowUnpause</code>) - slideshow unpaused - may not trigger properly or match a pause event if user clicks play/stop button</li>
-					<li><code>slide_init</code> (<code>onSlideInit</code>) - triggered when panel slide is initialized (before controls animate)</li>
-					<li><code>slide_begin</code> (<code>onSlideBegin</code>) - triggered before panel slide animation</li>
-					<li><code>slide_complete</code> (<code>onSlideComplete</code>) - triggered after panel slide animation</li>
+					<li><code>before_initialize</code> (<code>onBeforeInitialize</code>) - triggered right after creating the anythingSlider object. *<a href="#note-before-init">See Note</a>.</li>
+					<li><code>initialized</code> (<code>onInitialized</code>) - triggered after creating the anythingSlider object.</li>
+					<li><code>slideshow_start</code> (<code>onShowStart</code>) - slideshow started.</li>
+					<li><code>slideshow_stop</code> (<code>onShowStop</code>) - slideshow stopped.</li>
+					<li><code>slideshow_paused</code> (<code>onShowPause</code>) - slideshow paused.</li>
+					<li><code>slideshow_unpaused</code> (<code>onShowUnpause</code>) - slideshow unpaused - may not trigger properly or match a pause event if user clicks play/stop button.</li>
+					<li><code>slide_init</code> (<code>onSlideInit</code>) - triggered when panel slide is initialized (before controls animate).</li>
+					<li><code>slide_begin</code> (<code>onSlideBegin</code>) - triggered before panel slide animation.</li>
+					<li><code>slide_complete</code> (<code>onSlideComplete</code>) - triggered after panel slide animation.</li>
 				</ul>
+
+				<a id="note-before-init"></a>
+				* Please note that at when the <code>onBeforeInitialize</code> event triggers/callback is called, almost nothing has been set:
+					<blockquote>
+						<ol>
+							<li>The <code>anythingSlider</code> object has been attached to the <code>ul</code>.</li>
+							<li>The class <code>anythingBase</code> was added to the <code>ul</code>.</li>
+							<li>The <code>ul</code> was wrapped in two <code>div</code>s (<code>div.anythingSlider div.anythingWindow</code>).</li>
+						</ol>
+
+						That's it! If you want to use some anythingSlider functionalities, you probably want to wait for the initialization to be completed (and register to the event <code>initialized</code> or use the <code>onInitialized</code> option).
+					</blockquote>
 				</blockquote>
-				You can bind to any of the custom event triggers as follows (see this page source for another example):<br>
+				<br>
+
+				<span class="header">Binding to Events and using Callbacks:</span>
+				<br>You can bind to any of the custom event triggers as follows (see this page source for another example):<br>
 				<br>
 				<blockquote>
 					<pre>$('#slider1').bind('slide_complete', function(e, slider){
@@ -382,8 +405,8 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 })
 </pre>
 				</blockquote>
-
-				Callback Arguments ( examples are if you use "slider" in the callback function, e.g. function(slider){...}, or in the trigger function, e.g. function(e, slider){...} )
+				<a id="callbacks"></a>
+				<span class="header">Callback Arguments</span> ( examples are if you use "slider" in the callback function, e.g. function(slider){...}, or in the trigger function, e.g. function(e, slider){...} )
 				<br><br>
 				<blockquote>
 				<table class="data">
@@ -398,6 +421,7 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 				</table>
 				</blockquote>
 			</li>
+			<br>
 
 			<li><h3><a id="format"></a>Formatting Navigation Text</h3>
 				To use the <code>navigationFormatter</code> option, you must have a function that accepts two parameters, and returns a string of HTML text.<br>
@@ -421,6 +445,19 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 		</ul>
 
 		<h2>Changelog</h2>
+
+		<h3>Version 1.5.1</h3>
+		<ul>
+			<li>Added <code>enableKeyboard</code> option which will allow you to disable keyboard navigation controls. Added because if you have a slideshow with no clickable controls, using the keyboard will stop the slideshow and there is no way to start it back up.</li>
+			<li>Added <code>enableNavigation</code> option which, when false, will allow visible navigation links to be unclickable. You'll have to change the CSS to stop the hover effect.</li>
+			<li>Added <code>enablePlay</code> option which, when false, will allow a visible play/stop button to be unclickable. You'll have to change the CSS to stop the hover effect.</li>
+			<li>Fixed a problem with clicking control links inside a slider (links that take the slider to other panels). This also required that all links in the cloned panels are modified (changed into spans) - this will mess up any FX you add to these links but only in the first and last panels.</li>
+			<li>Added the following four changes that <a href="https://github.com/midu/AnythingSlider">Midu</a> (Stefano B) made in his branch. Thanks for the great mods! I would have just merged your changes into the core, but I still suck at using git LOL :P</li>
+			<li>Added <code>appendControlsTo</code> which allows you to attach the slider controls (navigation tabs &amp; play/stop button) to another object on the page. This wasn't throughly tested, but I know you'll need to include custom CSS to style these links outside the slider.</li>
+			<li>Added event hook & callback <code>before_initialize</code> (<code>onBeforeInitialize</code>) which is triggered immediately after the slider is initialized, <a href="#note-before-init">see the note</a> above for more details.</li>
+			<li>Added event hook & callback <code>initialized</code> (<code>onInitialized</code>) which is triggered after the AnythingSlider has completed its setup.</li>
+			<li>Optimized how callbacks functions are called - you shouldn't notice a difference.</li>
+		</ul>
 
 		<h3>Version 1.5</h3>
 		<ul>

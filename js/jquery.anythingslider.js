@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5
+	AnythingSlider v1.5.1
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -36,12 +36,15 @@
 
 			base.options = $.extend({}, $.anythingSlider.defaults, options);
 
+			if ($.isFunction(base.options.onBeforeInitialize)) { base.$el.bind('before_initialize', base.options.onBeforeInitialize); }
+			base.$el.trigger('before_initialize', base);
+
 			// Cache existing DOM elements for later
 			// base.$el = original ul
 			// for wrap - get parent() then closest in case the ul has "anythingSlider" class
 			base.$wrapper = base.$el.parent().closest('div.anythingSlider').addClass('anythingSlider-' + base.options.theme);
 			base.$window = base.$el.closest('div.anythingWindow');
-			base.$controls = $('<div class="anythingControls"></div>').appendTo(base.$wrapper);
+			base.$controls = $('<div class="anythingControls"></div>').appendTo( $(base.options.appendControlsTo).length ? $(base.options.appendControlsTo) : base.$wrapper);
 			base.$nav = $('<ul class="thumbNav" />').appendTo(base.$controls);
 
 			// Set up a few defaults & get details
@@ -77,13 +80,11 @@
 				base.$wrapper.hover(function() {
 					if (base.playing) {
 						base.$el.trigger('slideshow_paused', base);
-						if ($.isFunction(base.options.onShowPause)) { base.options.onShowPause(base); }
 						base.clearTimer(true);
 					}
 				}, function() {
 					if (base.playing) {
 						base.$el.trigger('slideshow_unpaused', base);
-						if ($.isFunction(base.options.onShowUnpause)) { base.options.onShowUnpause(base); }
 						base.startStop(base.playing, true);
 					}
 				});
@@ -101,18 +102,36 @@
 			});
 
 			// Add keyboard navigation
-			$(document).keyup(function(e){
-				if (base.$wrapper.is('.activeSlider')) {
-					switch (e.which) {
-						case 39: // right arrow
-							base.goForward();
-							break;
-						case 37: //left arrow
-							base.goBack();
-							break;
+			if (base.options.enableKeyboard) {
+				$(document).keyup(function(e){
+					if (base.$wrapper.is('.activeSlider')) {
+						switch (e.which) {
+							case 39: // right arrow
+								base.goForward();
+								break;
+							case 37: //left arrow
+								base.goBack();
+								break;
+						}
 					}
-				}
-			});
+				});
+			}
+
+			// Binds events
+			if ($.isFunction(base.options.onShowPause))   { base.$el.bind('slideshow_paused', base.options.onShowPause); }
+			if ($.isFunction(base.options.onShowUnpause)) { base.$el.bind('slideshow_unpaused', base.options.onShowUnpause); }
+			if ($.isFunction(base.options.onSlideInit))   { base.$el.bind('slide_init', base.options.onSlideInit); }
+			if ($.isFunction(base.options.onSlideBegin))  { base.$el.bind('slide_begin', base.options.onSlideBegin); }
+			if ($.isFunction(base.options.onShowStop))    { base.$el.bind('slideshow_stop', base.options.onShowStop); }
+			if ($.isFunction(base.options.onShowStart))   { base.$el.bind('slideshow_start', base.options.onShowStart); }
+			if ($.isFunction(base.options.onInitialized)) { base.$el.bind('initialized', base.options.onInitialized); }
+			if ($.isFunction(base.options.onSlideComplete)){
+				// Added setTimeout (zero time) to ensure animation is complete... see this bug report: http://bugs.jquery.com/ticket/7157
+				base.$el.bind('slide_complete', function(){
+					setTimeout(function(){ base.options.onSlideComplete(base); }, 0);
+				});
+			}
+			base.$el.trigger('initialized', base);
 
 		};
 
@@ -165,6 +184,9 @@
 			// This supports the "infinite" scrolling, also ensures any cloned elements don't duplicate an ID
 			base.$el.prepend( base.$items.filter(':last').clone().addClass('cloned').removeAttr('id') );
 			base.$el.append( base.$items.filter(':first').clone().addClass('cloned').removeAttr('id') );
+			base.$el.find('li.cloned').find('a').each(function(){ // disable all links in the cloned panels
+				$(this).replaceWith('<span>' + $(this).text() + '</a>');
+			});
 
 			// We just added two items, time to re-cache the list, then get the dimensions of each panel
 
@@ -194,15 +216,14 @@
 			}
 
 			// Fix tabbing through the page
-			base.$items.find('a').unbind('focus').bind('focus', function(){
+			base.$items.find('a').unbind('focus').bind('focus', function(e){
 				base.$items.find('.focusedLink').removeClass('focusedLink');
 				$(this).addClass('focusedLink');
-				base.$items.each(function(i){
-					if ($(this).find('a.focusedLink').length) {
-						base.gotoPage(i);
-						return false;
-					}
-				});
+				var panel = $(this).closest('.panel');
+				if (!panel.is('.activePage')) {
+					base.gotoPage(base.$items.index(panel));
+					e.preventDefault();
+				}
 			});
 
 		};
@@ -227,7 +248,7 @@
 					}
 
 					$a.bind(base.options.clickControls, function(e) {
-						if (!base.flag) {
+						if (!base.flag && base.options.enableNavigation) {
 							// prevent running functions twice (once for click, second time for focusin)
 							base.flag = true; setTimeout(function(){ base.flag = false; }, 100);
 							base.gotoPage(index);
@@ -271,12 +292,14 @@
 			base.$controls.prepend(base.$startStop);
 			base.$startStop
 				.bind(base.options.clickSlideshow, function(e) {
-					base.startStop(!base.playing);
-					if (base.playing) {
-						if (base.options.playRtl) {
-							base.goBack(true);
-						} else {
-							base.goForward(true);
+					if (base.options.enablePlay) {
+						base.startStop(!base.playing);
+						if (base.playing) {
+							if (base.options.playRtl) {
+								base.goBack(true);
+							} else {
+								base.goForward(true);
+							}
 						}
 					}
 					e.preventDefault();
@@ -341,7 +364,6 @@
 			base.$currentPage = base.$items.eq(page);
 			base.currentPage = page; // ensure that event has correct target page
 			base.$el.trigger('slide_init', base);
-			if ($.isFunction(base.options.onSlideInit)) { base.options.onSlideInit(base); }
 
 			base.slideControls(true, false);
 
@@ -351,7 +373,6 @@
 			if (!autoplay || (base.options.stopAtEnd && page == base.pages)) { base.startStop(false); }
 
 			base.$el.trigger('slide_begin', base);
-			if ($.isFunction(base.options.onSlideBegin)) { base.options.onSlideBegin(base); }
 
 			// resize slider if content size varies
 			if (!base.options.resizeContents) {
@@ -393,11 +414,6 @@
 			}
 
 			base.$el.trigger('slide_complete', base);
-			if ($.isFunction(base.options.onSlideComplete)) {
-				// Added setTimeout (zero time) to ensure animation is complete... for some reason this code:
-				// alert(base.$window.is(':animated')); // alerts true - http://bugs.jquery.com/ticket/7157
-				setTimeout(function(){ base.options.onSlideComplete(base); }, 0);
-			}
 		};
 
 		base.setCurrentPage = function(page, move) {
@@ -477,7 +493,6 @@
 				window.clearInterval(base.timer); 
 				if (!paused) {
 					base.$el.trigger('slideshow_stop', base); 
-					if ($.isFunction(base.options.onShowStop)) { base.options.onShowStop(base); }
 				}
 			}
 		};
@@ -489,7 +504,6 @@
 
 			if (playing && !paused) {
 				base.$el.trigger('slideshow_start', base);
-				if ($.isFunction(base.options.onShowStart)) { base.options.onShowStart(base); }
 			}
 
 			// Update variable
@@ -557,15 +571,19 @@
 		// Navigation
 		startPanel          : 1,         // This sets the initial panel
 		hashTags            : true,      // Should links change the hashtag in the URL?
+		enableKeyboard      : true,      // if false, keyboard arrow keys will not work for the current panel.
 		buildArrows         : true,      // If true, builds the forwards and backwards buttons
 		toggleArrows        : false,     // If true, side navigation arrows will slide out on hovering & hide @ other times
 		buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
+		enableNavigation    : true,      // if false, navigation links will still be visible, but not clickable.
 		toggleControls      : false,     // if true, slide in controls (navigation + play/stop button) on hover and slide change, hide @ other times
+		appendControlsTo    : null,      // A HTML element (jQuery Object, selector or HTMLNode) to which the controls will be appended if not null
 		navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
 		forwardText         : "&raquo;", // Link text used to move the slider forward (hidden by CSS, replaced with arrow image)
 		backText            : "&laquo;", // Link text used to move the slider back (hidden by CSS, replace with arrow image)
 
 		// Slideshow options
+		enablePlay          : true,      // if false, the play/stop button will still be visible, but not clickable.
 		autoPlay            : true,      // This turns off the entire slideshow FUNCTIONALY, not just if it starts running or not
 		startStopped        : false,     // If autoPlay is on, this can force it to start stopped
 		pauseOnHover        : true,      // If true & the slideshow is active, the slideshow will pause on hover
@@ -579,6 +597,8 @@
 		easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
 
 		// Callbacks
+		onBeforeInitialize  : null,      // Callback before the plugin initializes
+		onInitialized       : null,      // Callback when the plugin finished initializing
 		onShowStart         : null,      // Callback on slideshow start
 		onShowStop          : null,      // Callback after slideshow stops
 		onShowPause         : null,      // Callback when slideshow pauses

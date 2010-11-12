@@ -30,62 +30,68 @@ h2. Features
 h2. Default Options
 
 <pre>$('#slider1, #slider2').anythingSlider({
-	// Appearance
-	width               : null,      // Override the default CSS width
-	height              : null,      // Override the default CSS height
-	resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
-	tooltipClass        : 'tooltip', // Class added to navigation & start/stop button (text copied to title if it is hidden by a negative text indent)
-	theme               : 'default', // Theme name
-	themeDirectory      : 'css/theme-{themeName}.css', // Theme directory & filename {themeName} is replaced by the theme value above
+  // Appearance
+  width               : null,      // Override the default CSS width
+  height              : null,      // Override the default CSS height
+  resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
+  tooltipClass        : 'tooltip', // Class added to navigation & start/stop button (text copied to title if it is hidden by a negative text indent)
+  theme               : 'default', // Theme name
+  themeDirectory      : 'css/theme-{themeName}.css', // Theme directory & filename {themeName} is replaced by the theme value above
 
-	// Navigation
-	startPanel          : 1,         // This sets the initial panel
-	hashTags            : true,      // Should links change the hashtag in the URL?
-	buildArrows         : true,      // If true, builds the forwards and backwards buttons
-	toggleArrows        : false,     // if true, side navigation arrows will slide out on hovering & hide @ other times
-	buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
-	toggleControls      : false,     // if true, slide in controls (navigation + play/stop button) on hover and slide change, hide @ other times
-	navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
-	forwardText         : "&raquo;", // Link text used to move the slider forward (hidden by CSS, replaced with arrow image)
-	backText            : "&laquo;", // Link text used to move the slider back (hidden by CSS, replace with arrow image)
+  // Navigation
+  startPanel          : 1,         // This sets the initial panel
+  hashTags            : true,      // Should links change the hashtag in the URL?
+  enableKeyboard      : true,      // if false, keyboard arrow keys will not work for the current panel.
+  buildArrows         : true,      // If true, builds the forwards and backwards buttons
+  toggleArrows        : false,     // if true, side navigation arrows will slide out on hovering & hide @ other times
+  buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
+  enableNavigation    : true,      // if false, navigation links will still be visible, but not clickable.
+  toggleControls      : false,     // if true, slide in controls (navigation + play/stop button) on hover and slide change, hide @ other times
+  appendControlsTo    : null,      // A HTML element (jQuery Object, selector or HTMLNode) to which the controls will be appended if not null
+  navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
+  forwardText         : "&raquo;", // Link text used to move the slider forward (hidden by CSS, replaced with arrow image)
+  backText            : "&laquo;", // Link text used to move the slider back (hidden by CSS, replace with arrow image)
 
-	// Slideshow options
-	autoPlay            : true,      // This turns off the entire slideshow FUNCTIONALY, not just if it starts running or not
-	startStopped        : false,     // If autoPlay is on, this can force it to start stopped
-	pauseOnHover        : true,      // If true & the slideshow is active, the slideshow will pause on hover
-	resumeOnVideoEnd    : true,      // If true & the slideshow is active & a youtube video is playing, it will pause the autoplay until the video is complete
-	stopAtEnd           : false,     // If true & the slideshow is active, the slideshow will stop on the last page
-	playRtl             : false,     // If true, the slideshow will move right-to-left
-	startText           : "Start",   // Start button text
-	stopText            : "Stop",    // Stop button text
-	delay               : 3000,      // How long between slideshow transitions in AutoPlay mode (in milliseconds)
-	animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
-	easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
+  // Slideshow options
+  enablePlay          : true,      // if false, the play/stop button will still be visible, but not clickable.
+  autoPlay            : true,      // This turns off the entire slideshow FUNCTIONALY, not just if it starts running or not
+  startStopped        : false,     // If autoPlay is on, this can force it to start stopped
+  pauseOnHover        : true,      // If true & the slideshow is active, the slideshow will pause on hover
+  resumeOnVideoEnd    : true,      // If true & the slideshow is active & a youtube video is playing, it will pause the autoplay until the video is complete
+  stopAtEnd           : false,     // If true & the slideshow is active, the slideshow will stop on the last page
+  playRtl             : false,     // If true, the slideshow will move right-to-left
+  startText           : "Start",   // Start button text
+  stopText            : "Stop",    // Stop button text
+  delay               : 3000,      // How long between slideshow transitions in AutoPlay mode (in milliseconds)
+  animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
+  easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
 
-	// Callbacks
-	onShowStart         : null,      // Callback on slideshow start
-	onShowStop          : null,      // Callback after slideshow stops
-	onShowPause         : null,      // Callback when slideshow pauses
-	onShowUnpause       : null,      // Callback when slideshow unpauses - may not trigger properly if user clicks on any controls
-	onSlideInit         : null,      // Callback when slide initiates, before control animation
-	onSlideBegin        : null,      // Callback before slide animates
-	onSlideComplete     : null,      // Callback when slide completes
+  // Callbacks
+  onBeforeInitialize  : null,      // Callback before the plugin initializes
+  onInitialized       : null,      // Callback when the plugin finished initializing
+  onShowStart         : null,      // Callback on slideshow start
+  onShowStop          : null,      // Callback after slideshow stops
+  onShowPause         : null,      // Callback when slideshow pauses
+  onShowUnpause       : null,      // Callback when slideshow unpauses - may not trigger properly if user clicks on any controls
+  onSlideInit         : null,      // Callback when slide initiates, before control animation
+  onSlideBegin        : null,      // Callback before slide animates
+  onSlideComplete     : null,      // Callback when slide completes
 
-	// Interactivity
-	clickArrows         : "click",         // Event used to activate arrow functionality (e.g. "click" or "mouseenter")
-	clickControls       : "click focusin", // Events used to activate navigation control functionality
-	clickSlideshow      : "click",         // Event used to activate slideshow play/stop button
+  // Interactivity
+  clickArrows         : "click",         // Event used to activate arrow functionality (e.g. "click" or "mouseenter")
+  clickControls       : "click focusin", // Events used to activate navigation control functionality
+  clickSlideshow      : "click",         // Event used to activate slideshow play/stop button
 
-	// Misc options
-	addWmodeToObject    : "opaque",  // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting, if swfobject.js is active
-	maxOverallWidth     : 32766      // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
+  // Misc options
+  addWmodeToObject    : "opaque",  // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting, if swfobject.js is active
+  maxOverallWidth     : 32766      // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
 });</pre>
 
 h2. Setup
 
 h3. Add the following inside the <code><head></head></code> of your page
 
-<pre><!-- Required -->
+<pre><code><!-- Required -->
 <link type="text/css" href="css/anythingslider.css" rel="stylesheet" media="screen" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.anythingslider.js"></script>
@@ -97,7 +103,7 @@ $(function () {
 
 <!-- Optional -->
 <script type="text/javascript" src="js/jquery.easing.1.2.js"></script>
-<script type="text/javascript" src="js/swfobject.js"></script></pre>
+<script type="text/javascript" src="js/swfobject.js"></script></code></pre>
 
 h3. Example HTML
 
@@ -141,8 +147,10 @@ $('#slider1').data('AnythingSlider').goForward();      // go forward one slide
 $('#slider1').data('AnythingSlider').goBack();         // go back one slide</pre>
 
 h3. Extending - Event Hooks (callback functions)
-*Note: Changed bind function returned arguments to make more straightforward values available, see callback arguments below.*
+span{color:red}*Note: Changed bind function returned arguments to make more straightforward values available, see "callback arguments":"#callback" below.*
 
+* <code>before_initialize</code> (<code>onBeforeInitialize</code>) - triggered right after creating the anythingSlider object. "Read note":"#note-before-init".
+* <code>initialized</code> (<code>onInitialized</code>) - triggered after creating the anythingSlider object.
 * <code>slideshow_start</code> (<code>onShowStart</code>) - slideshow started.
 * <code>slideshow_stop</code> (<code>onShowStop</code>) - slideshow stopped.
 * <code>slideshow_paused</code> (<code>onShowPause</code>) - slideshow paused.
@@ -151,6 +159,14 @@ h3. Extending - Event Hooks (callback functions)
 * <code>slide_begin</code> (<code>onSlideBegin</code>) - triggered before panel slide animation.
 * <code>slide_complete</code> (<code>onSlideComplete</code>) - triggered after panel slide animation.
 
+p(#note-before-init). Please note that at when the <code>onBeforeInitialize</code> event triggers/callback is called, almost nothing has been set:
+# The <code>anythingSlider</code> object has been attached to the <code>ul</code>.
+# The class <code>anythingBase</code> was added to the <code>ul</code>.
+# The <code>ul</code> was wrapped in two <code>div</code>s (<code>div.anythingSlider div.anythingWindow</code>).
+
+That's it! If you want to use some anythingSlider functionalities, you probably want to wait for the initialization to be completed (and register to the event <code>initialized</code> or use the <code>onInitialized</code> option).
+
+**Binding to Events and using Callbacks:**
 You can bind to any of the custom event triggers as follows (see this page source for another example):
 
 <pre>$('#slider1').bind('slide_complete', function(e, slider){
@@ -171,7 +187,7 @@ or use one of the callback functions:
  }
 })</pre>
 
-Callback Arguments ( examples are if you use "slider" in the callback function, e.g. function(slider){...}, or in the trigger function, e.g. function(e, slider){...} )
+**Callback Arguments** ( examples are if you use "slider" in the callback function, e.g. function(slider){...}, or in the trigger function, e.g. function(e, slider){...} )
 
 *Callback Argument - Description*
 * slider.$currentPage - jQuery object of the Target page - not the same page as "slider.currentPage".
@@ -197,6 +213,17 @@ h3. Formatting Navigation Text
 
 h2. Changelog
 
+h3. Version 1.5.1
+* Added <code>enableKeyboard</code> option which will allow you to disable keyboard navigation controls. Added because if you have a slideshow with no clickable controls, using the keyboard will stop the slideshow and there is no way to start it back up.
+* Added <code>enableNavigation</code> option which, when false, will allow visible navigation links to be unclickable. You'll have to change the CSS to stop the hover effect.
+* Added <code>enablePlay</code> option which, when false, will allow a visible play/stop button to be unclickable. You'll have to change the CSS to stop the hover effect.
+* Fixed a problem with clicking control links inside a slider (links that take the slider to other panels). This also required that all links in the cloned panels are modified (changed into spans) - this will mess up any FX you add to these links but only in the first and last panels.
+* Added the following changes that "Midu":"https://github.com/midu/AnythingSlider" (Stefano B) made in his branch. Thanks for the great mods! I would have just merged your changes into the core, but I still suck at using git LOL :P
+* Added <code>appendControlsTo</code> which allows you to attach the slider controls (navigation tabs &amp; play/stop button) to another object on the page. This wasn't throughly tested, but I know you'll need to include custom CSS to style these links outside the slider.
+* Added event hook & callback <code>before_initialize</code> (<code>onBeforeInitialize</code>) which is triggered immediately after the slider is initialized, "see the note":"#note-before-init" above for more details.
+* Added event hook & callback <code>initialized</code> (<code>onInitialized</code>) which is triggered after the AnythingSlider has completed its setup.
+* Optimized how callbacks functions are called - you shouldn't notice a difference.
+
 h3. Version 1.5
 * Modified core to allow updating the AnythingSlider content (change the number of slides).
 
@@ -215,7 +242,7 @@ h3. Version 1.4.6
 * Commented out previous code which added the above YouTube functionality to non-IE browsers. Will consider completely removing it if users are okay with the SWFObject script dependency.
 
 h3. Version 1.4.5
-* Added Curtis Scott's Portfolio theme from <a href="http://www.curtisscott.com/portfolio.html">his site</a>. Thanks for sharing! - don't use the control toggle option as it messes up the page layout.
+* Added Curtis Scott's Portfolio theme from "his site":"http://www.curtisscott.com/portfolio.html". Thanks for sharing! - don't use the control toggle option as it messes up the page layout.
 * Fixed the flickering problem that was occuring when the slider moved from the last slide to the first.
 
 h3. Version 1.4.4

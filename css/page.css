@@ -11,8 +11,8 @@ a, a img               { border: 0; text-decoration: none; }
 h1                     { font: bold 60px Helvetica, Sans-Serif; letter-spacing: -2px; margin: 20px 0; text-align: center; }
 h2                     { font: bold 30px Helvetica, Sans-Serif; letter-spacing: -1px; margin: 0 0 10px 0; color: #002266; }
 h2.title               { text-align: center; }
-h3                     { font: 20px Georgia, Serif; margin: 0 0 10px 0; color: #003388; }
-h5                     { font: 15px Georgia, Serif; text-align: center; }
+h3                     { font: bold 20px Georgia, Serif; margin: 0 0 10px 0; color: #003388; }
+h5, .header            { font: bold 15px Georgia, Serif; text-align: center; }
 pre, code              { font: 13px/1.8 Monaco, MonoSpace; margin: 0 0 15px 0; padding: 5px; background: #f5f5f5; block: inline; }
 blockquote             { margin-left: 30px; }
 
@@ -26,6 +26,7 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 
 #status                { color: #00a; font-weight: bold; }
 .alert                 { color: #f00; font-weight: bold; }
+.alert a               { color: #a00; }
 .data                  { width: 100%; border: #555 1px solid; border-collapse: collapse; }
 .data td, .data th     { border: #555 1px solid; padding: 0 5px; }
 .data th               { background: #eee; }
