@@ -28,8 +28,8 @@
 		$(function(){
 
 			$('#slider1').anythingSlider({
-				startStopped    : true, // If autoPlay is on, this can force it to start stopped
-				width           : 800,  // Override the default CSS width
+				startStopped    : false, // If autoPlay is on, this can force it to start stopped
+				width           : 800,   // Override the default CSS width
 				theme           : 'metallic',
 				onSlideComplete : function(slider){
 					// alert('Welcome to Slide #' + slider.currentPage);
@@ -445,6 +445,11 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 		</ul>
 
 		<h2>Changelog</h2>
+
+		<h3>Version 1.5.2</h3>
+		<ul>
+			<li>Fixed <code>startStopped</code> bug, where the slider stopped autoplaying on initialization.</li>
+		</ul>
 
 		<h3>Version 1.5.1</h3>
 		<ul>

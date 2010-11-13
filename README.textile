@@ -213,6 +213,9 @@ h3. Formatting Navigation Text
 
 h2. Changelog
 
+h3. Version 1.5.2
+* Fixed <code>startStopped</code> bug, where the slider stopped autoplaying on initialization.
+
 h3. Version 1.5.1
 * Added <code>enableKeyboard</code> option which will allow you to disable keyboard navigation controls. Added because if you have a slideshow with no clickable controls, using the keyboard will stop the slideshow and there is no way to start it back up.
 * Added <code>enableNavigation</code> option which, when false, will allow visible navigation links to be unclickable. You'll have to change the CSS to stop the hover effect.
