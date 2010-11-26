@@ -88,8 +88,10 @@
 					.anythingSlider(); // update the slider
 			});
 			$('button.remove').click(function(){
-				$('#slider1 > li:not(.cloned):last').remove();
-				$('#slider1').anythingSlider(); // update the slider
+				if ($('#slider1').data('AnythingSlider').pages > 1) {
+					$('#slider1 > li:not(.cloned):last').remove();
+					$('#slider1').anythingSlider(); // update the slider
+				}
 			});
 
 		});
@@ -204,6 +206,8 @@
 		</ul>
 
 		<h2>Default Options</h2>
+		See the documentation for complete description of these options (<a href="https://github.com/ProLoser/AnythingSlider/wiki/Appearance-Options">appearance</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Navigation-Options">navigation</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Slideshow-Options">slideshow</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Callbacks-and-Events">callbacks &amp; events</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Interactivity-and-Miscellaneous-Options">interativity &amp misc</a>).<br>
+		<br>
 		<blockquote>
 			<pre>$('#slider1, #slider2').anythingSlider({
   // Appearance
@@ -446,179 +450,14 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 
 		<h2>Changelog</h2>
 
-		<h3>Version 1.5.2</h3>
-		<ul>
-			<li>Fixed <code>startStopped</code> bug, where the slider stopped autoplaying on initialization.</li>
-		</ul>
+		Only the latest version will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
+		<br>
 
-		<h3>Version 1.5.1</h3>
+		<h3>Version 1.5.3</h3>
 		<ul>
-			<li>Added <code>enableKeyboard</code> option which will allow you to disable keyboard navigation controls. Added because if you have a slideshow with no clickable controls, using the keyboard will stop the slideshow and there is no way to start it back up.</li>
-			<li>Added <code>enableNavigation</code> option which, when false, will allow visible navigation links to be unclickable. You'll have to change the CSS to stop the hover effect.</li>
-			<li>Added <code>enablePlay</code> option which, when false, will allow a visible play/stop button to be unclickable. You'll have to change the CSS to stop the hover effect.</li>
-			<li>Fixed a problem with clicking control links inside a slider (links that take the slider to other panels). This also required that all links in the cloned panels are modified (changed into spans) - this will mess up any FX you add to these links but only in the first and last panels.</li>
-			<li>Added the following four changes that <a href="https://github.com/midu/AnythingSlider">Midu</a> (Stefano B) made in his branch. Thanks for the great mods! I would have just merged your changes into the core, but I still suck at using git LOL :P</li>
-			<li>Added <code>appendControlsTo</code> which allows you to attach the slider controls (navigation tabs &amp; play/stop button) to another object on the page. This wasn't throughly tested, but I know you'll need to include custom CSS to style these links outside the slider.</li>
-			<li>Added event hook & callback <code>before_initialize</code> (<code>onBeforeInitialize</code>) which is triggered immediately after the slider is initialized, <a href="#note-before-init">see the note</a> above for more details.</li>
-			<li>Added event hook & callback <code>initialized</code> (<code>onInitialized</code>) which is triggered after the AnythingSlider has completed its setup.</li>
-			<li>Optimized how callbacks functions are called - you shouldn't notice a difference.</li>
-		</ul>
-
-		<h3>Version 1.5</h3>
-		<ul>
-			<li>Modified core to allow updating the AnythingSlider content (change the number of slides).</li>
-		</ul>
-
-		<h3>Version 1.4.8</h3>
-		<ul>
-			<li>Added an optional extension "AnythingSlider FX" to add animation effects to each panel.</li>
-			<li>Added an <a href="demos.htm">AnythingSlider FX demo page</a> with examples, code, and multiple methods to achieve the same effects. Thanks to Paal Joachim for input on which demos were needed.</li>
-			<li>Added <code>activePage</code> class to the visible slider; but it is not updated until just before the <code>slide_complete</code> event.</li>
-			<li>Fixed a bug where setting <code>buildArrows</code> to false and <code>toggleArrows</code> to true would cause errors.</li>
-		</ul>
-
-		<h3>Version 1.4.7</h3>
-		<ul>
-			<li>Added jQuery Objects for <code>$currentPage</code> and <code>$lastPage</code> which are accessible to the bind & callback functions for easy access to the pages. Added these callback arguments and more detail to the information above.</li>
-			<li>Improved the hash tag code so it will now work with multiple AnythingSliders on the page. The hash tag will still only update when clicking on the navigation links and not the navigation arrows.</li>
-		</ul>
-
-		<h3>Version 1.4.6</h3>
-		<ul>
-			<li>SWFObject script (swfobject.js) is now a required dependency to make YouTube videos pause when not in view & resume play when in view. This was added so IE will also have this functionality.</li>
-			<li>Commented out previous code which added the above YouTube functionality to non-IE browsers. Will consider completely removing it if users are okay with the SWFObject script dependency.</li>
-		</ul>
-
-		<h3>Version 1.4.5</h3>
-		<ul>
-			<li>Added Curtis Scott's Portfolio theme from <a href="http://www.curtisscott.com/portfolio.html">his site</a>. Thanks for sharing! - don't use the control toggle option as it messes up the page layout.</li>
-			<li>Fixed the flickering problem that was occuring when the slider moved from the last slide to the first.</li>
-		</ul>
-
-		<h3>Version 1.4.4</h3>
-		<ul>
-			<li>Added CSS to fix a problem with CSS3 transitions occurring during the animation. Added <code>noTransitions</code> class to the arrows, navigation and slider.</li>
-			<li>Added callback functions: <code>onShowStart</code>, <code>onShowStop</code>, <code>onShowPause</code>, <code>onShowUnpause</code>, <code>onSlideInit</code>, <code>onSlideBegin</code> &amp; <code>onSlideComplete</code>.</li>
-			<li>Added instructions on callback argument useage as values and access to internal functions.</li>
-			<li>Changed triggered event callback argument to make using them easier - see the Event Hooks section above.</li>
-		</ul>
-
-		<h3>Version 1.4.3</h3>
-		<ul>
-			<li>Added options to modify interactivity: <code>clickArrows</code>, <code>clickControls</code> &amp; <code>clickSlideshow</code>.</li>
-			<li>Added custom events - slideshow start, stop, pause &amp; unpause as well as slide begin, start &amp; stop. See the "Extending - Event Hooks" section above for a more detailed description.</li>
-			<li>Updated instructions on how to use custom events.</li>
-		</ul>
-
-		<h3>Version 1.4.2</h3>
-		<ul>
-			<li>Added <code>addWmodeToObject</code>. When a slider has an embedded object (like a youtube video), the script adds a wmode parameter with the value from this option ("opaque" by default).</li>
-		</ul>
-
-		<h3>Version 1.4.1</h3>
-		<ul>
-			<li>Added <code>theme</code> option and several themes. Themes can now be added to individual AnythingSliders (although they are based largely on CSS).</li>
-			<li>Added <code>tooltipClass</code> option which adds the assigned class name to the navigation and play/stop button only if the text is hidden (negative text-indent). The tooltip plugin must be added separately.</li>
-			<li>Added <code>toggleArrows</code> option. This option (if true) will slide out (reveal) the arrows while hovering &amp; hide them at other times.</li>
-			<li>Added <code>toggleControls</code> option. This option (if true) will slide down (reveal) the navigation links and play/stop button while hovering &amp; hide them at other times. Adding this option required a new "anythingControls" class that wraps both the navigation links and the play/stop button.</li>
-		</ul>
-
-		<h3>Version 1.4</h3>
-		<ul>
-			<li>Added <code>maxOverallWidth</code> option. This sets the max width (in pixels) of all combined sliders (side-to-side) due to problems with Opera.</li>
-			<li>Added new classes to the base UL ("anythingBase") and its immediate children LIs ("panels") to reduce and clarify the CSS.</li>
-			<li>Added hover class to arrows and start/stop button to indicate the link has focus (while tabbing through the page).</li>
-			<li>Fixed flickering problem completely :P - numerous changes made to script &amp; CSS.</li>
-			<li>Bumped version to 1.4 because of significant differences from version 1.3.</li>
-		</ul>
-
-		<h3>Version 1.3.7</h3>
-		<ul>
-			<li>Added <code>startPanel</code> option.</li>
-			<li>Added <code>playRtl</code> option to reverse the play direction.</li>
-			<li>Added back <code>stopAtEnd</code> option (it was added in a previous version).</li>
-			<li>Added <code>resumeOnVideoEnd</code> option to prevent an active slideshow from pausing a video.</li>
-			<li>Changed location of reverse reference from the wrapping div to the original ul - updated instructions (see Getting current slide; previously you had to reference <code>$('.anythingSlider:eq(0)')</code>.</li>
-			<li>Fixed height/width options to accept strings (e.g. "400px" instead of a number, it may not work properly if values are other than the numnber of pixels).</li>
-			<li>Fixed setting to accept strings (e.g. $(slider).anythingSlider(" 1 ")) as well as numbers.</li>
-			<li>Fixed problem with objects (youtube videos) flickering in Firefox by setting <code>resizeContent</code> to false.</li>
-			<li>Fixed problem that occurs when using an incorrect easing function name (<a href="http://dev.jquery.com/ticket/7064">submitted ticket</a>)</li>
-			<li>Reorganized, cleaned up the code and updated the demos &amp; instructions.</li>
-		</ul>
-
-		<h3>Version 1.3.6</h3>
-		<ul>
-			<li>Fixed minor bug with links to specific slides and updated example to reflect changes and be less confusing</li>
-			<li>Tweaked start/stop button css to be more maleable</li>
-		</ul>
-
-		<h3>Version 1.3.5</h3>
-		<ul>
-			<li>Added resizePanel option - does not support percentage sizing.<br><br>
-				<ul>
-					<li>When true, it will resize all panels &amp; solitary content to the size settings (CSS or the script options).</li>
-					<li>When false, the AnythingSlider wrapper will resize to fit the panel (set inline or in the CSS for each panel).</li>
-				</ul>
-			</li>
-			<li>Fixed keyboard navigation to work with multiple AnythingSliders on a page.</li>
-			<li>Added tabbed navigation. Both the links within panels and the thumbnail navigation will activate it.</li>
-		</ul>
-
-		<h3>Version 1.3.4</h3>
-		<ul>
-			<li>Added keyboard navigation</li>
-			<li>Embeded objects will now resize to fit the panel</li>
-			<li>YouTube videos will pause the video when it is not in view and play (if already started) when in view (in non-IE browsers)<br>
-				*Note: this feature only works when the files are hosted on a webserver as the flash player restricts calls between local files and the internet.
-			</li>
-			<li>Modified code according to JSLint &amp; added minified version.</li>
-		</ul>
-
-		<h3>Version 1.3.3</h3>
-		<ul>
-			<li>Previous / Next arrows are now optional</li>
-			<li>Clicking start button immediately begins transition instead of waiting for the delay</li>
-		</ul>
-
-		<h3>Version 1.3.2</h3>
-		<ul>
-			<li>Greatly refactored CSS for a more fluid resizing behavior</li>
-			<li>Dimensions can be passed via javascript or modified at the top of the css file</li>
-			<li>Merged all Github forks</li>
-			<li>Wrapper DIVs (&lt;div class="anythingSlider"&gt;&lt;div class="wrapper"&gt;) no longer required in html. Divs are generated in jquery</li>
-			<li>Improved CSS scope and classes, Javascript degredation is handled differently now however</li>
-			<li>Greatly refactored CSS for a more fluid resizing behavior</li>
-			<li>Hash URLS now work for multiple panels</li>
-		</ul>
-
-		<h3>Version 1.3</h3>
-		<ul>
-			<li>Accessibility improvements by Matt Lawson</li>
-			<li>Some generic JavaScript/HTML/CSS code cleaning</li>
-			<li>Moved to GitHub entirely</li>
-			<li>Ensures unique panel ID's</li>
-			<li>Removes navigation if there is only one panel</li>
-			<li>Added option to stop on the last page when autoPlay is set to true</li>
-		</ul>
-
-		<h3>Version 1.2</h3>
-		<ul>
-			<li>Bug Fix: When autoPlay was set to false, any interaction with the control would cause a javascript error.</li>
-		</ul>
-
-		<h3>Version 1.1</h3>
-		<ul>
-			<li>Changed default easing to "swing" so didn't depend on any other plugins</li>
-			<li>Removed extra junk (other plugins used for design, etc)</li>
-			<li>Added Pause on Hover option</li>
-			<li>Added options for passing in HTML for the start and stop button</li>
-			<li>Added option to use custom function for formatting the titles of the navigation</li>
-			<li>Added public interface for linking directly to certain slides</li>
-		</ul>
-
-		<h3>Version 1.0</h3>
-		<ul>
-			<li>First version</li>
+			<li>Modified to not slide into the first slide on initialization.</li>
+			<li>Removed some documentation from the README.textile and index.html files as they can now be found in the <a href="https://github.com/ProLoser/AnythingSlider/wiki">wiki pages</a>!
+</li>
 		</ul>
 
 	</div>

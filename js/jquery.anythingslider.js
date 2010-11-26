@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.2
+	AnythingSlider v1.5.3
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -92,7 +92,7 @@
 
 			// If a hash can not be used to trigger the plugin, then go to start panel
 			var startPanel = (base.options.hashTags) ? base.gotoHash() || base.options.startPanel : base.options.startPanel;
-			base.gotoPage(startPanel, base.playing); // added to trigger events for FX code
+			base.setCurrentPage(startPanel, false); // added to trigger events for FX code
 
 			// Hide/Show navigation & play/stop controls
 			base.slideControls(false);
