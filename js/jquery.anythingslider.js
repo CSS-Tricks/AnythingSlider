@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.3
+	AnythingSlider v1.5.4
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -184,12 +184,12 @@
 			// This supports the "infinite" scrolling, also ensures any cloned elements don't duplicate an ID
 			base.$el.prepend( base.$items.filter(':last').clone().addClass('cloned').removeAttr('id') );
 			base.$el.append( base.$items.filter(':first').clone().addClass('cloned').removeAttr('id') );
-			base.$el.find('li.cloned').find('a').each(function(){ // disable all links in the cloned panels
-				$(this).replaceWith('<span>' + $(this).text() + '</a>');
+			base.$el.find('li.cloned').each(function(){
+				// replace <a> with <span> in cloned panels to prevent shifting the panels by tabbing
+				$(this).html(function(i,h){ return h.replace(/<a/gi, '<span').replace(/\/a>/gi, '/span>'); });
 			});
 
 			// We just added two items, time to re-cache the list, then get the dimensions of each panel
-
 			base.$items = base.$el.find('> li').addClass('panel');
 			base.setDimensions();
 			if (!base.options.resizeContents) { $(window).load(function(){ base.setDimensions(); }); } // set dimensions after all images load
