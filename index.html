@@ -60,6 +60,13 @@
 				return false;
 			});
 
+			// External Link
+			$("a.muppet").click(function(){
+				$('#slider1').anythingSlider(5);
+				$(document).scrollTop(0);
+				return false;
+			});
+
 			// Report Events to console & features list
 			$('.anythingSlider').bind('slideshow_start slideshow_stop slideshow_paused slideshow_unpaused slide_init slide_begin slide_complete',function(e, slider){
 				// show object ID + event (e.g. "slider1: slide_begin")
@@ -467,7 +474,7 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 
 		<h3>Version 1.5.5</h3>
 		<ul>
-			<li>Modified base code to not resize all YouTube videos to 100% width and height. See the top slider <a href="http://proloser.github.com/AnythingSlider/#&panel1-5">panel #5</a> (Muppet video) for an example.</li>
+			<li>Modified base code to not resize all YouTube videos to 100% width and height. See the top slider <a class="muppet" href="#">panel #5</a> (Muppet video) for an example.</li>
 </li>
 		</ul>
 
