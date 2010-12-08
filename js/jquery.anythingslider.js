@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.4
+	AnythingSlider v1.5.5
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -148,7 +148,6 @@
 			if (base.options.resizeContents) {
 				if (base.options.width) { base.$wrapper.add(base.$items).css('width', base.options.width); }
 				if (base.options.height) { base.$wrapper.add(base.$items).css('height', base.options.height); }
-				if (base.hasEmb){ base.$el.find('object, embed').css({ width : '100%', height: '100%' }); } // this only expands youtube videos
 			}
 
 			// Remove navigation & player if there is only one page
@@ -210,8 +209,9 @@
 					var $tar = ($(this).parent()[0].tagName == "OBJECT") ? $(this).parent() : $(this);
 					$tar.wrap('<div id="ytvideo' + i + '"></div>');
 					// use SWFObject if it exists, it replaces the wrapper with the object/embed
-					swfobject.embedSWF($(this).attr('src') + '&enablejsapi=1&version=3&playerapiid=ytvideo' + i, 'ytvideo' + i, '100%', '100%', '10', null, null,
-						{ allowScriptAccess: "always", wmode : base.options.addWmodeToObject }, {});
+					swfobject.embedSWF($(this).attr('src') + '&enablejsapi=1&version=3&playerapiid=ytvideo' + i, 'ytvideo' + i,
+						$tar.attr('width'), $tar.attr('height'), '10', null, null,
+						{ allowScriptAccess: "always", wmode : base.options.addWmodeToObject }, { 'class' : $tar.attr('class'), 'style' : $tar.attr('style') });
 				});
 			}
 
@@ -325,7 +325,10 @@
 					// resize panel
 					$(this).css({ width: w, height: h });
 					// resize panel contents, if solitary (wrapped content or solitary image)
-					if (c.length == 1){ c.css({ width: '100%', height: '100%' }); }
+					if (c.length == 1){
+						c.css({ width: '100%', height: '100%' });
+						if (c[0].tagName == "OBJECT") { c.find('embed').andSelf().attr({ width: '100%', height: '100%' }); }
+					}
 				} else {
 					// get panel width & height and save it
 					w = $(this).width(); // if not defined, it will return the width of the ul parent
