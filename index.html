@@ -31,6 +31,8 @@
 				startStopped    : false, // If autoPlay is on, this can force it to start stopped
 				width           : 800,   // Override the default CSS width
 				theme           : 'metallic',
+				autoPlayLocked  : true,  // If true, user changing slides will not stop the slideshow
+				resumeDelay     : 10000, // Resume slideshow after user interaction, only if autoplayLocked is true (in milliseconds).
 				onSlideComplete : function(slider){
 					// alert('Welcome to Slide #' + slider.currentPage);
 				}
@@ -263,6 +265,7 @@
   startText           : "Start",   // Start button text
   stopText            : "Stop",    // Stop button text
   delay               : 3000,      // How long between slideshow transitions in AutoPlay mode (in milliseconds)
+  resumeDelay         : 15000,     // Resume slideshow after user interaction, only if autoplayLocked is true (in milliseconds).
   animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
   easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
 
@@ -473,10 +476,15 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 		Only the latest version will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.5.6.1</h3>
+		<ul>
+			<li>Added <code>resumeDelay</code> option which is the amount of time (in milliseconds) that the slider delays until the slideshow is restarted - only active when <code>autoPlayLocked</code> is true.</li>
+			<li>Fixed the slide show stop button so now when it is pressed, the slideshow will now remain stopped. The slideshow will still resume if the user changes the current slide, but it will resume after the <code>resumDelay</code> time has passed.
+		</ul>
+
 		<h3>Version 1.5.6</h3>
 		<ul>
 			<li>Added <code>autoPlayLocked</code> to prevent slideshow from stopping when a user changes the slide. The start/stop button still acts as expected.</li>
-			
 		</ul>
 
 	</div>

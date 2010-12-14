@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.6
+	AnythingSlider v1.5.6.1
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -388,11 +388,11 @@
 			// Animate Slider
 			base.$window.filter(':not(:animated)').animate(
 				{ scrollLeft : base.panelSize[page][2] },
-				{ queue: false, duration: base.options.animationTime, easing: base.options.easing, complete: function(){ base.endAnimation(page); } }
+				{ queue: false, duration: base.options.animationTime, easing: base.options.easing, complete: function(){ base.endAnimation(page, autoplay); } }
 			);
 		};
 
-		base.endAnimation = function(page){
+		base.endAnimation = function(page, autoplay){
 			if (page === 0) {
 				base.$window.scrollLeft(base.panelSize[base.pages][2]);
 				page = base.pages;
@@ -417,7 +417,17 @@
 			}
 
 			base.$el.trigger('slide_complete', base);
-			if (base.options.autoPlayLocked) { base.startStop(true); }
+			// Continue slideshow after a delay
+			if (base.options.autoPlayLocked && !autoplay) {
+				base.startStop(false);
+				setTimeout(function(){
+					if (base.options.playRtl) {
+						base.goBack(true);
+					} else {
+						base.goForward(true);
+					}
+				}, base.options.resumeDelay);
+			}
 		};
 
 		base.setCurrentPage = function(page, move) {
@@ -598,6 +608,7 @@
 		startText           : "Start",   // Start button text
 		stopText            : "Stop",    // Stop button text
 		delay               : 3000,      // How long between slideshow transitions in AutoPlay mode (in milliseconds)
+		resumeDelay         : 15000,     // Resume slideshow after user interaction, only if autoplayLocked is true (in milliseconds).
 		animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
 		easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
 
