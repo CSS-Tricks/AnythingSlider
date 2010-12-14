@@ -254,6 +254,7 @@
   // Slideshow options
   enablePlay          : true,      // if false, the play/stop button will still be visible, but not clickable.
   autoPlay            : true,      // This turns off the entire slideshow FUNCTIONALY, not just if it starts running or not
+  autoPlayLocked      : false,     // If true, user changing slides will not stop the slideshow
   startStopped        : false,     // If autoPlay is on, this can force it to start stopped
   pauseOnHover        : true,      // If true &amp; the slideshow is active, the slideshow will pause on hover
   resumeOnVideoEnd    : true,      // If true &amp; the slideshow is active &amp; a youtube video is playing, the autoplay will pause until the video completes
@@ -472,10 +473,10 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 		Only the latest version will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
-		<h3>Version 1.5.5</h3>
+		<h3>Version 1.5.6</h3>
 		<ul>
-			<li>Modified base code to not resize all YouTube videos to 100% width and height. See the top slider <a class="muppet" href="#">panel #5</a> (Muppet video) for an example.</li>
-</li>
+			<li>Added <code>autoPlayLocked</code> to prevent slideshow from stopping when a user changes the slide. The start/stop button still acts as expected.</li>
+			
 		</ul>
 
 	</div>
