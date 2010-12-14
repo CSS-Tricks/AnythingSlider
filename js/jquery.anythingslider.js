@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.5
+	AnythingSlider v1.5.6
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -417,6 +417,7 @@
 			}
 
 			base.$el.trigger('slide_complete', base);
+			if (base.options.autoPlayLocked) { base.startStop(true); }
 		};
 
 		base.setCurrentPage = function(page, move) {
@@ -588,6 +589,7 @@
 		// Slideshow options
 		enablePlay          : true,      // if false, the play/stop button will still be visible, but not clickable.
 		autoPlay            : true,      // This turns off the entire slideshow FUNCTIONALY, not just if it starts running or not
+		autoPlayLocked      : false,     // If true, user changing slides will not stop the slideshow
 		startStopped        : false,     // If autoPlay is on, this can force it to start stopped
 		pauseOnHover        : true,      // If true & the slideshow is active, the slideshow will pause on hover
 		resumeOnVideoEnd    : true,      // If true & the slideshow is active & a youtube video is playing, it will pause the autoplay until the video is complete
