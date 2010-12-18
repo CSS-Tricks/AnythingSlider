@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.6.1
+	AnythingSlider v1.5.6.2
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -392,7 +392,7 @@
 			);
 		};
 
-		base.endAnimation = function(page, autoplay){
+		base.endAnimation = function(page){
 			if (page === 0) {
 				base.$window.scrollLeft(base.panelSize[base.pages][2]);
 				page = base.pages;
@@ -418,15 +418,11 @@
 
 			base.$el.trigger('slide_complete', base);
 			// Continue slideshow after a delay
-			if (base.options.autoPlayLocked && !autoplay) {
-				base.startStop(false);
+			if (base.options.autoPlayLocked && !base.playing) {
 				setTimeout(function(){
-					if (base.options.playRtl) {
-						base.goBack(true);
-					} else {
-						base.goForward(true);
-					}
-				}, base.options.resumeDelay);
+					base.startStop(true);
+				// subtract out slide delay as the slideshow waits that additional time.
+				}, base.options.resumeDelay - base.options.delay);
 			}
 		};
 
