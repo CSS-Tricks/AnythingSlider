@@ -134,13 +134,14 @@
    </div>
 
    <h3><a href="#">Script</a></h3>
-   <div><pre><code> $('#slider1')
+   <div><pre><code>$(document).ready(function(){
+ $('#slider1')
   .anythingSlider({
    width          : 400,
    height         : 300,
    toggleControls : true,
    startStopped   : true,
-   theme          : 'metallic'
+   theme          : 'metallic',
    navigationFormatter : function(i, panel){ // add thumbnails as navigation links
     return '&lt;img src="images/th-slide-' + ['civil-1', 'env-1', 'civil-2', 'env-2'][i - 1] + '.jpg"&gt;';
    }
@@ -156,7 +157,8 @@
      // use $(this).attr('title') for specific image captions
      title: 'Press escape to close',
      rel: 'group'
-   });</code></pre>
+   });
+});</code></pre>
    </div>
   </div>
 
@@ -342,7 +344,8 @@
    </div>
 
    <h3><a href="#">Script - FX addon, using base FX</a></h3>
-   <div><pre><code> $('#slider2') // Demo 2 code, using FX base effects
+   <div><pre><code>$(document).ready(function(){
+ $('#slider2') // Demo 2 code, using FX base effects
   .anythingSlider({
    width               : 600,
    height              : 350,
@@ -361,12 +364,14 @@
     '.textSlide h3'       : [ 'top fade', '200px', '500', 'easeOutBounce' ],
     '.textSlide img,.fade': [ 'fade' ],
     '.textSlide li'       : [ 'listLR' ]
-  });</code></pre>
+  });
+});</code></pre>
    * Note: Each definition should end with a comma except for the last - see examples above.
    </div>
 
    <h3><a href="#">Script - FX addon, using custom FX</a></h3>
-   <div><pre><code> $('#slider2') // Demo 2 code, using FX full control
+   <div><pre><code>$(document).ready(function(){
+ $('#slider2') // Demo 2 code, using FX full control
   .anythingSlider({
    width               : 600,
    height              : 350,
@@ -400,7 +405,8 @@
     '.quoteSlide:last'   : { top : '500px', time: 350 },
     '.expand'            : { width: '10%', top: '50%', left: '50%', time: 350 }
    }
-  });</code></pre>
+  });
+});</code></pre>
    * Note: Each definition should end with a comma except for the last - see examples above.
    </div>
   </div>
@@ -571,7 +577,8 @@
    </div>
 
    <h3><a href="#">Script - Caption appears on hover (FX extension not required)</a></h3>
-   <div><pre><code> $('#slider3')
+   <div><pre><code>$(document).ready(function(){
+ $('#slider3')
   .anythingSlider({
    width        : 500,
    height       : 400,
@@ -635,11 +642,13 @@
   };
 
   // hide all captions initially
-  hideCaptions( $('#slider3 .panel') );</code></pre>
+  hideCaptions( $('#slider3 .panel') );
+});</code></pre>
    </div>
 
    <h3><a href="#">Script - FX addon, using base FX</a></h3>
-   <div><pre><code> $('#slider3')
+   <div><pre><code>$(document).ready(function(){
+ $('#slider3')
   .anythingSlider({
    width        : 500,
    height       : 400,
@@ -664,11 +673,13 @@
       if (cap.is('.caption-left')) { ani = { left: -150 }; }
       if (cap.is('.caption-right')) { ani = { right: -150 }; }
       cap.animate(ani, 400, function(){ cap.hide(); } );
-    });</code></pre>
+    });
+});</code></pre>
    </div>
 
    <h3><a href="#">Script - FX addon, using custom FX</a></h3>
-   <div><pre><code> $('#slider3')
+   <div><pre><code>$(document).ready(function(){
+ $('#slider3')
   .anythingSlider({
    width        : 500,
    height       : 400,
@@ -700,7 +711,8 @@
       if (cap.is('.caption-left')) { ani = { left: -150 }; }
       if (cap.is('.caption-right')) { ani = { right: -150 }; }
       cap.animate(ani, 400, function(){ cap.hide(); } );
-    });</code></pre>
+    });
+});</code></pre>
    </div>
 
   </div>
