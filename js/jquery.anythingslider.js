@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.6.2
+	AnythingSlider v1.5.6.3
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -351,7 +351,7 @@
 			base.$el.css('width', (leftEdge < base.options.maxOverallWidth) ? leftEdge : base.options.maxOverallWidth);
 		};
 
-		base.gotoPage = function(page, autoplay) {
+		base.gotoPage = function(page, autoplay, callback) {
 			if (base.pages === 1) { return; }
 			base.$lastPage = base.$items.eq(base.currentPage);
 			if (typeof(page) === "undefined" || page === null) {
@@ -388,11 +388,11 @@
 			// Animate Slider
 			base.$window.filter(':not(:animated)').animate(
 				{ scrollLeft : base.panelSize[page][2] },
-				{ queue: false, duration: base.options.animationTime, easing: base.options.easing, complete: function(){ base.endAnimation(page, autoplay); } }
+				{ queue: false, duration: base.options.animationTime, easing: base.options.easing, complete: function(){ base.endAnimation(page, callback); } }
 			);
 		};
 
-		base.endAnimation = function(page){
+		base.endAnimation = function(page, callback){
 			if (page === 0) {
 				base.$window.scrollLeft(base.panelSize[base.pages][2]);
 				page = base.pages;
@@ -417,6 +417,8 @@
 			}
 
 			base.$el.trigger('slide_complete', base);
+			// callback from external slide control: $('#slider').anythingSlider(4, function(slider){ })
+			if (typeof callback === 'function') { callback(base); }
 			// Continue slideshow after a delay
 			if (base.options.autoPlayLocked && !base.playing) {
 				setTimeout(function(){
@@ -629,7 +631,7 @@
 		maxOverallWidth     : 32766     // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
 	};
 
-	$.fn.anythingSlider = function(options) {
+	$.fn.anythingSlider = function(options, callback) {
 
 		return this.each(function(i){
 			var anySlide = $(this).data('AnythingSlider');
@@ -646,7 +648,7 @@
 				var page = (typeof(options) == "number") ? options : parseInt($.trim(options),10); // accepts "  2  "
 				// ignore out of bound pages
 				if ( page >= 1 && page <= anySlide.pages ) {
-					anySlide.gotoPage(page);
+					anySlide.gotoPage(page, false, callback); // page #, autoplay, one time callback
 				}
 			}
 		});
