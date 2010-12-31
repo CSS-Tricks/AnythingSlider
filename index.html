@@ -56,9 +56,9 @@
 		// **************
 		$(function(){
 
-			// External Link
+			// External Link with callback function
 			$("#slide-jump").click(function(){
-				$('#slider2').anythingSlider(4);
+				$('#slider2').anythingSlider(4, function(slider){ /* alert('Now on page ' + slider.currentPage); */ });
 				return false;
 			});
 
@@ -475,6 +475,19 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 
 		Only the latest version will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.5.6.3</h3>
+		<ul>
+			<li>Added a callback function to the external slider controller, so this is now possible:<br>
+				<br>
+				<blockquote>
+					<pre>$('#slider').anythingSlider(4, function(slider){
+ // "slider" is the same object used in the other callbacks and event triggers
+ alert('Now on page ' + slider.currentPage);
+});</pre>
+				</blockquote>
+			</li>
+		</ul>
 
 		<h3>Version 1.5.6.2</h3>
 		<ul>
