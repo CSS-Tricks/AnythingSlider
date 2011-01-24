@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.6.3
+	AnythingSlider v1.5.6.4
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -234,7 +234,8 @@
 			if (base.options.buildNavigation && (base.pages > 1)) {
 				base.$items.filter(':not(.cloned)').each(function(i,el) {
 					var index = i + 1,
-						$a = $("<a href='#'></a>").addClass('panel' + index).wrap("<li />");
+						klass = ((index == 1) ? 'first' : '') + ((index == base.pages) ? 'last' : ''),
+						$a = $('<a href="#"></a>').addClass('panel' + index).wrap('<li class="' + klass + '" />');
 					base.$nav.append($a.parent()); // use $a.parent() so IE will add <li> instead of only the <a> to the <ul>
 
 					// If a formatter function is present, use it
@@ -493,7 +494,7 @@
 				base.$controls.stop(true,true).delay(t1)[dir](base.options.animationTime/2).delay(t2); 
 			}
 			if (base.options.buildArrows && base.options.toggleArrows) {
-				if (!base.hovered && base.playing) { sign = 1; }
+				if (!base.hovered && base.playing) { sign = 1; t2 = 0; } // don't animate arrows during slideshow
 				base.$forward.stop(true,true).delay(t1).animate({ right: sign * base.$arrowWidth, opacity: t2 }, base.options.animationTime/2);
 				base.$back.stop(true,true).delay(t1).animate({ left: sign * base.$arrowWidth, opacity: t2 }, base.options.animationTime/2);
 			}
