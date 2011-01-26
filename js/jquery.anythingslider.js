@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.6.4
+	AnythingSlider v1.5.6.5
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -125,6 +125,7 @@
 			if ($.isFunction(base.options.onShowStop))    { base.$el.bind('slideshow_stop', base.options.onShowStop); }
 			if ($.isFunction(base.options.onShowStart))   { base.$el.bind('slideshow_start', base.options.onShowStart); }
 			if ($.isFunction(base.options.onInitialized)) { base.$el.bind('initialized', base.options.onInitialized); }
+			if ($.isFunction(base.options.onSWFComplete)) { base.$el.bind('swf_completed', base.options.onSWFComplete); }
 			if ($.isFunction(base.options.onSlideComplete)){
 				// Added setTimeout (zero time) to ensure animation is complete... see this bug report: http://bugs.jquery.com/ticket/7157
 				base.$el.bind('slide_complete', function(){
@@ -199,7 +200,7 @@
 			}
 			base.$nav.find('a').eq(base.currentPage - 1).addClass('cur'); // update current selection
 
-			base.hasEmb = !!base.$items.find('embed[src*=youtube]').length; // embedded youtube objects exist in the slider
+			base.hasEmb = base.$items.find('embed[src*=youtube]').length; // embedded youtube objects exist in the slider
 			base.hasSwfo = (typeof(swfobject) !== 'undefined' && swfobject.hasOwnProperty('embedSWF') && $.isFunction(swfobject.embedSWF)) ? true : false; // is swfobject loaded?
 
 			// Initialize YouTube javascript api, if YouTube video is present
@@ -211,7 +212,9 @@
 					// use SWFObject if it exists, it replaces the wrapper with the object/embed
 					swfobject.embedSWF($(this).attr('src') + '&enablejsapi=1&version=3&playerapiid=ytvideo' + i, 'ytvideo' + i,
 						$tar.attr('width'), $tar.attr('height'), '10', null, null,
-						{ allowScriptAccess: "always", wmode : base.options.addWmodeToObject }, { 'class' : $tar.attr('class'), 'style' : $tar.attr('style') });
+						{ allowScriptAccess: "always", wmode : base.options.addWmodeToObject }, { 'class' : $tar.attr('class'), 'style' : $tar.attr('style') }, 
+						function(){ if (i >= base.hasEmb - 1) { base.$el.trigger('swf_completed', base); } } // swf callback
+					);
 				});
 			}
 
@@ -614,6 +617,7 @@
 		// Callbacks
 		onBeforeInitialize  : null,      // Callback before the plugin initializes
 		onInitialized       : null,      // Callback when the plugin finished initializing
+		onSWFComplete       : null,      // Callback when SWFObject completes setting up embedded objects
 		onShowStart         : null,      // Callback on slideshow start
 		onShowStop          : null,      // Callback after slideshow stops
 		onShowPause         : null,      // Callback when slideshow pauses
