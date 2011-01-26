@@ -23,35 +23,6 @@
 	<script type="text/javascript" src="js/jquery.anythingslider.js"></script>
 
 	<script type="text/javascript">
-		// Set up Sliders
-		// **************
-		$(function(){
-
-			$('#slider1').anythingSlider({
-				startStopped    : false, // If autoPlay is on, this can force it to start stopped
-				width           : 800,   // Override the default CSS width
-				theme           : 'metallic',
-				autoPlayLocked  : true,  // If true, user changing slides will not stop the slideshow
-				resumeDelay     : 10000, // Resume slideshow after user interaction, only if autoplayLocked is true (in milliseconds).
-				onSlideComplete : function(slider){
-					// alert('Welcome to Slide #' + slider.currentPage);
-				}
-			});
-
-			$('#slider2').anythingSlider({
-				width               : 600,   // if resizeContent is false, this is the default width if panel size is not defined
-				height              : 350,   // if resizeContent is false, this is the default height if panel size is not defined
-				resizeContents      : false, // If true, solitary images/objects in the panel will expand to fit the viewport
-				startStopped        : true,  // If autoPlay is on, this can force it to start stopped
-				navigationFormatter : function(index, panel){ // Format navigation labels with text
-					return ['Recipe', 'Quote', 'Image', 'Quote #2', 'Image #2'][index - 1];
-				}
-			});
-
-		});
-	</script>
-
-	<script type="text/javascript">
 		// Demo functions
 		// **************
 		$(function(){
@@ -70,7 +41,7 @@
 			});
 
 			// Report Events to console & features list
-			$('.anythingSlider').bind('slideshow_start slideshow_stop slideshow_paused slideshow_unpaused slide_init slide_begin slide_complete',function(e, slider){
+			$('#slider1, #slider2').bind('before_initialize initialized swf_completed slideshow_start slideshow_stop slideshow_paused slideshow_unpaused slide_init slide_begin slide_complete', function(e, slider){
 				// show object ID + event (e.g. "slider1: slide_begin")
 				var txt = slider.$el[0].id + ': ' + e.type + ', now on panel #' + slider.currentPage;
 				$('#status').text(txt);
@@ -105,6 +76,36 @@
 
 		});
 	</script>
+
+	<script type="text/javascript">
+		// Set up Sliders
+		// **************
+		$(function(){
+
+			$('#slider1').anythingSlider({
+				startStopped    : false, // If autoPlay is on, this can force it to start stopped
+				width           : 800,   // Override the default CSS width
+				theme           : 'metallic',
+				autoPlayLocked  : true,  // If true, user changing slides will not stop the slideshow
+				resumeDelay     : 10000, // Resume slideshow after user interaction, only if autoplayLocked is true (in milliseconds).
+				onSlideComplete : function(slider){
+					// alert('Welcome to Slide #' + slider.currentPage);
+				}
+			});
+
+			$('#slider2').anythingSlider({
+				width               : 600,   // if resizeContent is false, this is the default width if panel size is not defined
+				height              : 350,   // if resizeContent is false, this is the default height if panel size is not defined
+				resizeContents      : false, // If true, solitary images/objects in the panel will expand to fit the viewport
+				startStopped        : true,  // If autoPlay is on, this can force it to start stopped
+				navigationFormatter : function(index, panel){ // Format navigation labels with text
+					return ['Recipe', 'Quote', 'Image', 'Quote #2', 'Image #2'][index - 1];
+				}
+			});
+
+		});
+	</script>
+
 </head>
 
 <body>
@@ -379,6 +380,7 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 				<ul>
 					<li><code>before_initialize</code> (<code>onBeforeInitialize</code>) - triggered right after creating the anythingSlider object. *<a href="#note-before-init">See Note</a>.</li>
 					<li><code>initialized</code> (<code>onInitialized</code>) - triggered after creating the anythingSlider object.</li>
+					<li><code>swf_completed</code> (<code>onSWFComplete</code>) - triggered when SWFObject completes setting up embedded objects.</li>
 					<li><code>slideshow_start</code> (<code>onShowStart</code>) - slideshow started.</li>
 					<li><code>slideshow_stop</code> (<code>onShowStop</code>) - slideshow stopped.</li>
 					<li><code>slideshow_paused</code> (<code>onShowPause</code>) - slideshow paused.</li>
@@ -476,10 +478,16 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 		Only the latest version will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.5.6.5</h3>
+		<ul>
+			<li>Added a callback (<code>onSWFComplete</code>) and triggered event (<code>swf_completed</code>) that is run when SWFObject completes its processing.</li>
+			<li>Rearranged the scripting in the index.html page so the "initialized" and "swf_completed" events now show up in the console log.</li>
+		</ul>
+
 		<h3>Version 1.5.6.4</h3>
 		<ul>
-			<li>Fixed a problem with the `toggleArrow` functionality. It will now only animate the arrows when hovering over the Slide and not at all during the slideshow.</li>
-			<li>Added "first" and "last" classes to the navigation control `<li>`'s to allow for unique css styling.</li>
+			<li>Fixed a problem with the <code>toggleArrow</code> functionality. It will now only animate the arrows when hovering over the Slide and not at all during the slideshow.</li>
+			<li>Added "first" and "last" classes to the navigation control <code><li></code>'s to allow for unique css styling.</li>
 		</ul>
 
 		<h3>Version 1.5.6.3</h3>
