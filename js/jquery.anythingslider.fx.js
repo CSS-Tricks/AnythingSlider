@@ -1,5 +1,5 @@
 /*
- * AnythingSlider Slide FX
+ * AnythingSlider Slide FX 1.1
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
  */
@@ -22,10 +22,10 @@
 				'listLR' : [{ inFx: { left: 0, opacity: 1 }, outFx: [{ left: (size || sliderWidth), opacity: 0 }, { left: '-' + (size || sliderWidth), opacity: 0 }], selector: [':odd', ':even'] }],
 				'listRL' : [{ inFx: { left: 0, opacity: 1 }, outFx: [{ left: (size || sliderWidth), opacity: 0 }, { left: '-' + (size || sliderWidth), opacity: 0 }], selector: [':even', ':odd'] }],
 
-				'caption-Top'    : [{ inFx: { top: 0, opacity: 0.8, zIndex: 10 }, outFx: { top: ( '-' + size || -50 ), opacity: 0, zIndex: 0 } }],
-				'caption-Right'  : [{ inFx: { right: 0, opacity: 0.8, zIndex: 10 }, outFx: { right: ( '-' + size || -150 ), opacity: 0, zIndex: 0 } }],
-				'caption-Bottom' : [{ inFx: { bottom: 0, opacity: 0.8, zIndex: 10 }, outFx: { bottom: ( '-' + size || -50 ), opacity: 0, zIndex: 0 } }],
-				'caption-Left'   : [{ inFx: { left: 0, opacity: 0.8, zIndex: 10 }, outFx: { left: ( '-' + size || -150 ), opacity: 0, zIndex: 0 } }]
+				'caption-Top'    : [{ inFx: { top: 0, opacity: 0.8 }, outFx: { top: ( '-' + size || -50 ), opacity: 0 } }],
+				'caption-Right'  : [{ inFx: { right: 0, opacity: 0.8 }, outFx: { right: ( '-' + size || -150 ), opacity: 0 } }],
+				'caption-Bottom' : [{ inFx: { bottom: 0, opacity: 0.8 }, outFx: { bottom: ( '-' + size || -50 ), opacity: 0 } }],
+				'caption-Left'   : [{ inFx: { left: 0, opacity: 0.8 }, outFx: { left: ( '-' + size || -150 ), opacity: 0 } }]
 			};
 		};
 
