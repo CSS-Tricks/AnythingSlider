@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.6.5
+	AnythingSlider v1.5.6.6
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -118,14 +118,12 @@
 			}
 
 			// Binds events
-			if ($.isFunction(base.options.onShowPause))   { base.$el.bind('slideshow_paused', base.options.onShowPause); }
-			if ($.isFunction(base.options.onShowUnpause)) { base.$el.bind('slideshow_unpaused', base.options.onShowUnpause); }
-			if ($.isFunction(base.options.onSlideInit))   { base.$el.bind('slide_init', base.options.onSlideInit); }
-			if ($.isFunction(base.options.onSlideBegin))  { base.$el.bind('slide_begin', base.options.onSlideBegin); }
-			if ($.isFunction(base.options.onShowStop))    { base.$el.bind('slideshow_stop', base.options.onShowStop); }
-			if ($.isFunction(base.options.onShowStart))   { base.$el.bind('slideshow_start', base.options.onShowStart); }
-			if ($.isFunction(base.options.onInitialized)) { base.$el.bind('initialized', base.options.onInitialized); }
-			if ($.isFunction(base.options.onSWFComplete)) { base.$el.bind('swf_completed', base.options.onSWFComplete); }
+			var triggers = "slideshow_paused slideshow_unpaused slide_init slide_begin slideshow_stop slideshow_start initialized swf_completed".split(" ");
+			$.each( "onShowPause onShowUnpause onSlideInit onSlideBegin onShowStop onShowStart onInitialized onSWFComplete".split(" "), function(i,o){
+				if ($.isFunction(base.options[o])){
+					base.$el.bind(triggers[i], base.options[o]);
+				}
+			});
 			if ($.isFunction(base.options.onSlideComplete)){
 				// Added setTimeout (zero time) to ensure animation is complete... see this bug report: http://bugs.jquery.com/ticket/7157
 				base.$el.bind('slide_complete', function(){
@@ -212,7 +210,8 @@
 					// use SWFObject if it exists, it replaces the wrapper with the object/embed
 					swfobject.embedSWF($(this).attr('src') + '&enablejsapi=1&version=3&playerapiid=ytvideo' + i, 'ytvideo' + i,
 						$tar.attr('width'), $tar.attr('height'), '10', null, null,
-						{ allowScriptAccess: "always", wmode : base.options.addWmodeToObject }, { 'class' : $tar.attr('class'), 'style' : $tar.attr('style') }, 
+						{ allowScriptAccess: "always", wmode : base.options.addWmodeToObject, allowfullscreen : true },
+						{ 'class' : $tar.attr('class'), 'style' : $tar.attr('style') }, 
 						function(){ if (i >= base.hasEmb - 1) { base.$el.trigger('swf_completed', base); } } // swf callback
 					);
 				});
