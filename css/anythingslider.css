@@ -78,6 +78,7 @@ ul.anythingBase {
 ul.anythingBase li.panel {
 	background: transparent;
 	display: block;
+	overflow: hidden;
 	float: left;
 	padding: 0;
 	margin: 0;
