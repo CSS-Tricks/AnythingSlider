@@ -1,10 +1,10 @@
 /*
-	AnythingSlider v1.5.6.6
+	AnythingSlider v1.5.7
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
 	based on work by Remy Sharp: http://jqueryfordesigners.com/
-	crazy mods by Rob Garrison (aka Mottie)
+	crazy mods by Rob Garrison (aka Mottie): https://github.com/ProLoser/AnythingSlider
 
 	To use the navigationFormatter function, you must have a function that
 	accepts two paramaters, and returns a string of HTML text.
@@ -44,7 +44,10 @@
 			// for wrap - get parent() then closest in case the ul has "anythingSlider" class
 			base.$wrapper = base.$el.parent().closest('div.anythingSlider').addClass('anythingSlider-' + base.options.theme);
 			base.$window = base.$el.closest('div.anythingWindow');
-			base.$controls = $('<div class="anythingControls"></div>').appendTo( $(base.options.appendControlsTo).length ? $(base.options.appendControlsTo) : base.$wrapper);
+			base.$controls = $('<div class="anythingControls"></div>').appendTo( (base.options.appendControlsTo !== null && $(base.options.appendControlsTo).length) ? $(base.options.appendControlsTo) : base.$wrapper); // change so this works in jQuery 1.3.2
+			base.win = window;
+			base.$win = $(base.win);
+
 			base.$nav = $('<ul class="thumbNav" />').appendTo(base.$controls);
 
 			// Set up a few defaults & get details
@@ -54,6 +57,7 @@
 			base.hovered = false; // actively hovering over the slider
 			base.panelSize = [];  // will contain dimensions and left position of each panel
 			base.currentPage = base.options.startPanel;
+			base.adjustLimit = (base.options.infiniteSlides) ? 0 : 1; // adjust page limits for infinite or limited modes
 			if (base.options.playRtl) { base.$wrapper.addClass('rtl'); }
 
 			// save some options
@@ -71,7 +75,7 @@
 			if (!$.isFunction($.easing[base.options.easing])) { base.options.easing = "swing"; }
 
 			// Add theme stylesheet, if it isn't already loaded
-			if (base.options.theme != 'default' && !$('link[href*=' + base.options.theme + ']').length){
+			if (base.options.theme !== 'default' && !$('link[href*=' + base.options.theme + ']').length){
 				$('body').append('<link rel="stylesheet" href="' + base.options.themeDirectory.replace(/\{themeName\}/g, base.options.theme) + '" type="text/css" />');
 			}
 
@@ -96,8 +100,8 @@
 
 			// Hide/Show navigation & play/stop controls
 			base.slideControls(false);
-			base.$wrapper.hover(function(e){
-				base.hovered = (e.type=="mouseenter") ? true : false;
+			base.$wrapper.bind('mouseenter mouseleave', function(e){
+				base.hovered = (e.type === "mouseenter") ? true : false;
 				base.slideControls( base.hovered, false );
 			});
 
@@ -119,7 +123,7 @@
 
 			// Binds events
 			var triggers = "slideshow_paused slideshow_unpaused slide_init slide_begin slideshow_stop slideshow_start initialized swf_completed".split(" ");
-			$.each( "onShowPause onShowUnpause onSlideInit onSlideBegin onShowStop onShowStart onInitialized onSWFComplete".split(" "), function(i,o){
+			$.each("onShowPause onShowUnpause onSlideInit onSlideBegin onShowStop onShowStart onInitialized onSWFComplete".split(" "), function(i,o){
 				if ($.isFunction(base.options[o])){
 					base.$el.bind(triggers[i], base.options[o]);
 				}
@@ -180,17 +184,17 @@
 
 			// Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
 			// This supports the "infinite" scrolling, also ensures any cloned elements don't duplicate an ID
-			base.$el.prepend( base.$items.filter(':last').clone().addClass('cloned').removeAttr('id') );
-			base.$el.append( base.$items.filter(':first').clone().addClass('cloned').removeAttr('id') );
+			base.$el.prepend( (base.options.infiniteSlides) ? base.$items.filter(':last').clone().addClass('cloned').removeAttr('id') : $('<li class="cloned" />') );
+			base.$el.append( (base.options.infiniteSlides) ? base.$items.filter(':first').clone().addClass('cloned').removeAttr('id') : $('<li class="cloned" />') );
 			base.$el.find('li.cloned').each(function(){
-				// replace <a> with <span> in cloned panels to prevent shifting the panels by tabbing
-				$(this).html(function(i,h){ return h.replace(/<a/gi, '<span').replace(/\/a>/gi, '/span>'); });
+				// replace <a> with <span> in cloned panels to prevent shifting the panels by tabbing - modified so this will work with jQuery 1.3.2
+				$(this).html( $(this).html().replace(/<a/gi, '<span').replace(/\/a>/gi, '/span>') );
 			});
 
 			// We just added two items, time to re-cache the list, then get the dimensions of each panel
 			base.$items = base.$el.find('> li').addClass('panel');
 			base.setDimensions();
-			if (!base.options.resizeContents) { $(window).load(function(){ base.setDimensions(); }); } // set dimensions after all images load
+			if (!base.options.resizeContents) { base.$win.load(function(){ base.setDimensions(); }); } // set dimensions after all images load
 
 			if (base.currentPage > base.pages) {
 				base.currentPage = base.pages;
@@ -205,7 +209,7 @@
 			if (base.hasEmb && base.hasSwfo) {
 				base.$items.find('embed[src*=youtube]').each(function(i){
 					// Older IE doesn't have an object - just make sure we are wrapping the correct element
-					var $tar = ($(this).parent()[0].tagName == "OBJECT") ? $(this).parent() : $(this);
+					var $tar = ($(this).parent()[0].tagName === "OBJECT") ? $(this).parent() : $(this);
 					$tar.wrap('<div id="ytvideo' + i + '"></div>');
 					// use SWFObject if it exists, it replaces the wrapper with the object/embed
 					swfobject.embedSWF($(this).attr('src') + '&enablejsapi=1&version=3&playerapiid=ytvideo' + i, 'ytvideo' + i,
@@ -236,7 +240,7 @@
 			if (base.options.buildNavigation && (base.pages > 1)) {
 				base.$items.filter(':not(.cloned)').each(function(i,el) {
 					var index = i + 1,
-						klass = ((index == 1) ? 'first' : '') + ((index == base.pages) ? 'last' : ''),
+						klass = ((index === 1) ? 'first' : '') + ((index === base.pages) ? 'last' : ''),
 						$a = $('<a href="#"></a>').addClass('panel' + index).wrap('<li class="' + klass + '" />');
 					base.$nav.append($a.parent()); // use $a.parent() so IE will add <li> instead of only the <a> to the <ul>
 
@@ -318,7 +322,7 @@
 
 		// Set panel dimensions to either resize content or adjust panel to content
 		base.setDimensions = function(){
-			var w, h, c, cw, dw, leftEdge = 0, bww = base.$window.width(), winw = $(window).width();
+			var w, h, c, cw, dw, leftEdge = 0, bww = base.$window.width(), winw = base.$win.width();
 			base.$items.each(function(i){
 				c = $(this).children('*');
 				if (base.options.resizeContents){
@@ -328,15 +332,15 @@
 					// resize panel
 					$(this).css({ width: w, height: h });
 					// resize panel contents, if solitary (wrapped content or solitary image)
-					if (c.length == 1){
+					if (c.length === 1){
 						c.css({ width: '100%', height: '100%' });
-						if (c[0].tagName == "OBJECT") { c.find('embed').andSelf().attr({ width: '100%', height: '100%' }); }
+						if (c[0].tagName === "OBJECT") { c.find('embed').andSelf().attr({ width: '100%', height: '100%' }); }
 					}
 				} else {
 					// get panel width & height and save it
 					w = $(this).width(); // if not defined, it will return the width of the ul parent
 					dw = (w >= winw) ? true : false; // width defined from css?
-					if (c.length == 1 && dw){
+					if (c.length === 1 && dw){
 						cw = (c.width() >= winw) ? bww : c.width(); // get width of solitary child
 						$(this).css('width', cw); // set width of panel
 						c.css('max-width', cw);   // set max width for all children
@@ -357,16 +361,15 @@
 		base.gotoPage = function(page, autoplay, callback) {
 			if (base.pages === 1) { return; }
 			base.$lastPage = base.$items.eq(base.currentPage);
-			if (typeof(page) === "undefined" || page === null) {
+			if (typeof(page) !== "number") {
 				page = base.options.startPage;
 				base.setCurrentPage(base.options.startPage);
 			}
 
 			// pause YouTube videos before scrolling or prevent change if playing
 			if (base.hasEmb && base.checkVideo(base.playing)) { return; }
-
-			if (page > base.pages + 1) { page = base.pages; }
-			if (page < 0 ) { page = 1; }
+			if (page > base.pages + 1 - base.adjustLimit) { page = (!base.options.infiniteSlides && !base.options.stopAtEnd) ? 1 : base.pages; }
+			if (page < base.adjustLimit ) { page = (!base.options.infiniteSlides && !base.options.stopAtEnd) ? base.pages : 1; }
 			base.$currentPage = base.$items.eq(page);
 			base.currentPage = page; // ensure that event has correct target page
 			base.$el.trigger('slide_init', base);
@@ -376,7 +379,7 @@
 			// When autoplay isn't passed, we stop the timer
 			if (autoplay !== true) { autoplay = false; }
 			// Stop the slider when we reach the last page, if the option stopAtEnd is set to true
-			if (!autoplay || (base.options.stopAtEnd && page == base.pages)) { base.startStop(false); }
+			if (!autoplay || (base.options.stopAtEnd && page === base.pages)) { base.startStop(false); }
 
 			base.$el.trigger('slide_begin', base);
 
@@ -388,6 +391,7 @@
 					{ queue: false, duration: base.options.animationTime, easing: base.options.easing }
 				);
 			}
+
 			// Animate Slider
 			base.$window.filter(':not(:animated)').animate(
 				{ scrollLeft : base.panelSize[page][2] },
@@ -414,7 +418,7 @@
 			if (base.hasEmb){
 				var emb = base.$currentPage.find('object[id*=ytvideo], embed[id*=ytvideo]');
 				// player states: unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
-				if (emb.length && $.isFunction(emb[0].getPlayerState) && emb[0].getPlayerState() > 0 && emb[0].getPlayerState() != 5) {
+				if (emb.length && $.isFunction(emb[0].getPlayerState) && emb[0].getPlayerState() > 0 && emb[0].getPlayerState() !== 5) {
 					emb[0].playVideo();
 				}
 			}
@@ -432,13 +436,20 @@
 		};
 
 		base.setCurrentPage = function(page, move) {
-			if (page > base.pages + 1) { page = base.pages; }
-			if (page < 0 ) { page = 1; }
+			if (page > base.pages + 1 - base.adjustLimit) { page = base.pages - base.adjustLimit; }
+			if (page < base.adjustLimit ) { page = 1; }
 
 			// Set visual
 			if (base.options.buildNavigation){
 				base.$nav.find('.cur').removeClass('cur');
 				base.$nav.find('a').eq(page - 1).addClass('cur');
+			}
+
+			// hide/show arrows based on infinite scroll mode
+			if (!base.options.infiniteSlides && base.options.stopAtEnd){
+				base.$wrapper.find('span.forward')[ page === base.pages ? 'addClass' : 'removeClass']('disabled');
+				base.$wrapper.find('span.back')[ page === 1 ? 'addClass' : 'removeClass']('disabled');
+				if (page === base.pages && base.playing) { base.startStop(); }
 			}
 
 			// Only change left if move does not equal false
@@ -474,15 +485,15 @@
 		// If found, it tries to find a matching item
 		// If that is found as well, then that item starts visible
 		base.gotoHash = function(){
-			var n = window.location.hash.match(base.regex);
+			var n = base.win.location.hash.match(base.regex);
 			return (n===null) ? '' : parseInt(n[1],10);
 		};
 
 		base.setHash = function(n){
 			var s = 'panel' + base.runTimes + '-',
-				h = window.location.hash;
+				h = base.win.location.hash;
 			if ( typeof h !== 'undefined' ) {
-				window.location.hash = (h.indexOf(s) > 0) ? h.replace(base.regex, s + n) : h + "&" + s + n;
+				base.win.location.hash = (h.indexOf(s) > 0) ? h.replace(base.regex, s + n) : h + "&" + s + n;
 			}
 		};
 
@@ -505,7 +516,7 @@
 		base.clearTimer = function(paused){
 			// Clear the timer only if it is set
 			if (base.timer) { 
-				window.clearInterval(base.timer); 
+				base.win.clearInterval(base.timer); 
 				if (!paused) {
 					base.$el.trigger('slideshow_stop', base); 
 				}
@@ -535,7 +546,7 @@
 
 			if (playing){
 				base.clearTimer(true); // Just in case this was triggered twice in a row
-				base.timer = window.setInterval(function() {
+				base.timer = base.win.setInterval(function() {
 					// prevent autoplay if video is playing
 					if (!(base.hasEmb && base.checkVideo(playing))) {
 						if (base.options.playRtl) {
@@ -559,7 +570,7 @@
 					// player states: unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
 					ps = emb[0].getPlayerState();
 					// if autoplay, video playing, video is in current panel and resume option are true, then don't advance
-					if (playing && (ps == 1 || ps > 2) && base.$items.index(emb.closest('li.panel')) == base.currentPage && base.options.resumeOnVideoEnd) {
+					if (playing && (ps === 1 || ps > 2) && base.$items.index(emb.closest('li.panel')) === base.currentPage && base.options.resumeOnVideoEnd) {
 						stopAdvance = true;
 					} else {
 						// pause video if not autoplaying (if already initialized)
@@ -586,6 +597,7 @@
 		// Navigation
 		startPanel          : 1,         // This sets the initial panel
 		hashTags            : true,      // Should links change the hashtag in the URL?
+		infiniteSlides      : true,      // if false, the slider will not wrap
 		enableKeyboard      : true,      // if false, keyboard arrow keys will not work for the current panel.
 		buildArrows         : true,      // If true, builds the forwards and backwards buttons
 		toggleArrows        : false,     // If true, side navigation arrows will slide out on hovering & hide @ other times
@@ -604,7 +616,7 @@
 		startStopped        : false,     // If autoPlay is on, this can force it to start stopped
 		pauseOnHover        : true,      // If true & the slideshow is active, the slideshow will pause on hover
 		resumeOnVideoEnd    : true,      // If true & the slideshow is active & a youtube video is playing, it will pause the autoplay until the video is complete
-		stopAtEnd           : false,     // If true & the slideshow is active, the slideshow will stop on the last page
+		stopAtEnd           : false,     // If true & the slideshow is active, the slideshow will stop on the last page. This also stops the rewind effect when infiniteSlides is false.
 		playRtl             : false,     // If true, the slideshow will move right-to-left
 		startText           : "Start",   // Start button text
 		stopText            : "Stop",    // Stop button text
@@ -613,17 +625,7 @@
 		animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
 		easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
 
-		// Callbacks
-		onBeforeInitialize  : null,      // Callback before the plugin initializes
-		onInitialized       : null,      // Callback when the plugin finished initializing
-		onSWFComplete       : null,      // Callback when SWFObject completes setting up embedded objects
-		onShowStart         : null,      // Callback on slideshow start
-		onShowStop          : null,      // Callback after slideshow stops
-		onShowPause         : null,      // Callback when slideshow pauses
-		onShowUnpause       : null,      // Callback when slideshow unpauses - may not trigger properly if user clicks on any controls
-		onSlideInit         : null,      // Callback when slide initiates, before control animation
-		onSlideBegin        : null,      // Callback before slide animates
-		onSlideComplete     : null,      // Callback when slide completes
+		// Callbacks - removed from options to reduce size - they still work
 
 		// Interactivity
 		clickArrows         : "click",         // Event used to activate arrow functionality (e.g. "click" or "mouseenter")
@@ -649,7 +651,7 @@
 				}
 			// If options is a number, process as an external link to page #: $(element).anythingSlider(#)
 			} else if (/\d/.test(options) && !isNaN(options) && anySlide) {
-				var page = (typeof(options) == "number") ? options : parseInt($.trim(options),10); // accepts "  2  "
+				var page = (typeof(options) === "number") ? options : parseInt($.trim(options),10); // accepts "  2  "
 				// ignore out of bound pages
 				if ( page >= 1 && page <= anySlide.pages ) {
 					anySlide.gotoPage(page, false, callback); // page #, autoplay, one time callback
@@ -659,3 +661,17 @@
 	};
 
 })(jQuery);
+
+/* AnythingSlider works with works with jQuery 1.4+, but you can uncomment the code below to make it
+   work with jQuery 1.3.2. You'll have to manually add the code below to the minified copy if needed */
+/*
+ // Copied from jQuery 1.4.4 to make AnythingSlider backwards compatible to jQuery 1.3.2
+ if (typeof jQuery.fn.delay === 'undefined') {
+  jQuery.fn.extend({
+   delay: function( time, type ) {
+    time = jQuery.fx ? jQuery.fx.speeds[time] || time : time; type = type || "fx";
+    return this.queue( type, function() { var elem = this; setTimeout(function() { jQuery.dequeue( elem, type ); }, time ); });
+   }
+  });
+ }
+*/

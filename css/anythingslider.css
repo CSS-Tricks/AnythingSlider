@@ -106,6 +106,8 @@ div.anythingSlider .forward a { background-position: 0 -40px; }
 div.anythingSlider .back a { background-position: -88px -40px; }
 div.anythingSlider .forward a:hover, div.anythingSlider .forward a.hover { background-position: 0 -240px; }
 div.anythingSlider .back a:hover, div.anythingSlider .back a.hover { background-position: -88px -240px; }
+div.anythingSlider .forward.disabled { display: none; } /* disabled arrows, hide or reduce opacity: opacity: .5; filter: alpha(opacity=50); */
+div.anythingSlider .back.disabled { display: none; }
 
 /* Navigation Links */
 div.anythingSlider .anythingControls { outline: 0; }

@@ -212,19 +212,20 @@
 			<li>Multiple AnythingSliders allowable per-page.</li>
 			<li>Add or remove content, then easily update the slider.</li>
 			<li>Themes can be applied to individual sliders.</li>
-			<li>Infinite/Continuous sliding (always slides in the direction you are going, even at "last" slide).</li>
+			<li>Infinite/Continuous sliding (always slides in the direction you are going, even at "last" slide). This can be disabled.</li>
 			<li>Optionally resize each panel (specified per panel in css).</li>
 			<li>Optional Next / Previous Panel Arrows.</li>
 			<li>Use keyboard navigation or tabs that are built and added dynamically (any number of panels).</li>
 			<li>Link to specific slides or go forward or back one slide from static text links - go to <a href="#" id="slide-jump">Slide 4</a> (Quote #2) in second example.</li>
 			<li>Each panel has a hashtag (can link directly to specific panels).</li>
 			<li>Optional custom function for <a href="#format">formatting navigation text</a>.</li>
-			<li>Auto-playing slideshow (optional feature, can start playing or stopped)</li>
+			<li>Auto-playing slideshow (optional feature, can start playing or stopped).</li>
 			<li>Pauses playing YouTube videos when not in view and resumes them when in view (if files are hosted on the web).</li>
 			<li>Pauses slideshow on hover (optional).</li>
 			<li>Optionally play the slideshow once through, stopping on the last page.</li>
 			<li>Extend the script by binding to custom events, last triggered event: <span id="status">none</span></li>
 			<li>Optional FX extension to add animation to panels elements as they scroll into and out of view. See the <a href="demos.htm">demo page</a>.</li>
+			<li>Works with jQuery 1.4+, but can be made to work with jQuery v1.3.2 by uncommenting code (in the non-minified version).</li>
 		</ul>
 
 		<h2>Default Options</h2>
@@ -243,6 +244,7 @@
   // Navigation
   startPanel          : 1,         // This sets the initial panel
   hashTags            : true,      // Should links change the hashtag in the URL?
+  infiniteSlides      : true,      // if false, the slider will not wrap
   enableKeyboard      : true,      // if false, keyboard arrow keys will not work for the current panel.
   buildArrows         : true,      // If true, builds the forwards and backwards buttons
   toggleArrows        : false,     // if true, side navigation arrows will slide out on hovering &amp; hide @ other times
@@ -261,7 +263,7 @@
   startStopped        : false,     // If autoPlay is on, this can force it to start stopped
   pauseOnHover        : true,      // If true &amp; the slideshow is active, the slideshow will pause on hover
   resumeOnVideoEnd    : true,      // If true &amp; the slideshow is active &amp; a youtube video is playing, the autoplay will pause until the video completes
-  stopAtEnd           : false,     // If true &amp; the slideshow is active, the slideshow will stop on the last page
+  stopAtEnd           : false,     // If true &amp; the slideshow is active, the slideshow will stop on the last page. This also stops the rewind effect when infiniteSlides is false.
   playRtl             : false,     // If true, the slideshow will move right-to-left
   startText           : "Start",   // Start button text
   stopText            : "Stop",    // Stop button text
@@ -477,6 +479,21 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 
 		Only the latest version will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.5.7</h3>
+		<ul>
+			<li>Added <code>infiniteSlides</code> option. Fix for issue #58.
+				<ul>
+					<li>When true, the slider acts like an infinite slider.</li>
+					<li>When false, the slides stop at the first and last panel, even the slideshow.</li>
+					<li>The first and last panels are no longer cloned when this option is false. Blank panels were added in place.</li>
+					<li>When the slider is on the first or last panel, the slider will display a &quot;rewind&quot; effect if the <code>stopAtEnd</code> option is false.</li>
+					<li>When the slider is on the first or last panel and the <code>stopAtEnd</code> option is true, the back and forward arrow keys (respectively) will have a &quot;disabled&quot; class applied - modified in the css.</li>
+				</ul>
+			<li>Replace appropriate code to make AnythingSlider backwards compatible with jQuery 1.3.2, but you'll need to uncomment out the portion at the end. You'll have to add it manually to the minified version. Sort of fix for issue #38.</li>
+			<li>Removed callback functions set to &quot;null&quot; in the default options to reduce the file size. The callbacks will still work.</li>
+			<li>Modified bits of the code to appease the JSLint gods.</li>
+		</ul>
 
 		<h3>Version 1.5.6.6</h3>
 		<ul>
