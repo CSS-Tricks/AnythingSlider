@@ -11,6 +11,7 @@ div.anythingSlider {
 	width: 700px;
 	height: 390px;
 	margin: 0 auto;
+	overflow: hidden; /* needed for Opera and Safari */
 }
 
 /****** SET COLORS HERE *******/
@@ -135,6 +136,10 @@ div.anythingSlider .thumbNav a:hover {
 /* slider autoplay right-to-left, reverse order of nav links to look better */
 div.anythingSlider.rtl .thumbNav a { float: right; } /* reverse order of nav links */
 div.anythingSlider.rtl .thumbNav { float: left; }    /* move nav link group to left */
+div.anythingSlider.rtl .anythingWindow {
+	direction: ltr;
+	unicode-bidi: bidi-override;
+}
 /* div.anythingSlider.rtl .start-stop { float: right; } */ /* move start/stop button - in case you want to switch sides */
 
 /* Autoplay Start/Stop button */
