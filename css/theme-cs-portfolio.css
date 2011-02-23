@@ -30,7 +30,7 @@ div.anythingSlider-cs-portfolio .start-stop.playing:hover {
 
 /* Overall */
 div.anythingSlider-cs-portfolio {
-	margin-bottom: 50px; /* add 50px to fit bar below the slider */
+	/*margin-bottom: 50px;  add 50px to fit bar below the slider */
 }
 div.anythingSlider-cs-portfolio .anythingWindow, div.anythingSlider-cs-portfolio.activeSlider .anythingWindow {
 	border: 0;
@@ -44,7 +44,7 @@ div.anythingSlider-cs-portfolio .arrow {
 }
 div.anythingSlider-cs-portfolio .arrow a {
 	display: block;
-	bottom: 0;
+	bottom: 50px;
 	position: absolute;
 	height: 35px;
 	width: 35px;
@@ -122,5 +122,5 @@ div.anythingSlider-cs-portfolio .start-stop.playing:hover {
 
 /* Extra - replace defaults */
 div.anythingSlider-cs-portfolio {
-	padding: 0 23px;
+	padding: 0 23px 50px 0;
 }
