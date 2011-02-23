@@ -480,6 +480,12 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 		Only the latest version will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.5.7.2</h3>
+		<ul>
+			<li>Adjusted some css to replace the bottom border in other themes when the slider is not at default size.</li>
+			<li>Adjusted Portfolio css theme to not hide the control bar.</li>
+		</ul>
+
 		<h3>Version 1.5.7.1</h3>
 		<ul>
 			<li>Added css to fix RTL pages breaking the slider - fix for issue #57.</li>
@@ -499,59 +505,6 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 			<li>Replace appropriate code to make AnythingSlider backwards compatible with jQuery 1.3.2, but you'll need to uncomment out the portion at the end. You'll have to add it manually to the minified version. Sort of fix for issue #38.</li>
 			<li>Removed callback functions set to &quot;null&quot; in the default options to reduce the file size. The callbacks will still work.</li>
 			<li>Modified bits of the code to appease the JSLint gods.</li>
-		</ul>
-
-		<h3>Version 1.5.6.6</h3>
-		<ul>
-			<li>Added overflow:hidden to each panel - fix for issue #51.</li>
-			<li>Added swf parameter to allow fullscreen videos - fix for issue #53.</li>
-			<li>Compressed callback function script.</li>
-		</ul>
-
-		<h3>Version 1.5.6.5a</h3>
-		<ul>
-			<li>Removed z-index from caption animation in the FX extension to fix an error it was causing in IE.</li>
-		</ul>
-
-		<h3>Version 1.5.6.5</h3>
-		<ul>
-			<li>Added a callback (<code>onSWFComplete</code>) and triggered event (<code>swf_completed</code>) that is run when SWFObject completes its processing.</li>
-			<li>Rearranged the scripting in the index.html page so the "initialized" and "swf_completed" events now show up in the console log.</li>
-		</ul>
-
-		<h3>Version 1.5.6.4</h3>
-		<ul>
-			<li>Fixed a problem with the <code>toggleArrow</code> functionality. It will now only animate the arrows when hovering over the Slide and not at all during the slideshow.</li>
-			<li>Added "first" and "last" classes to the navigation control <code><li></code>'s to allow for unique css styling.</li>
-		</ul>
-
-		<h3>Version 1.5.6.3</h3>
-		<ul>
-			<li>Added a callback function to the external slider controller, so this is now possible:<br>
-				<br>
-				<blockquote>
-					<pre>$('#slider').anythingSlider(4, function(slider){
- // "slider" is the same object used in the other callbacks and event triggers
- alert('Now on page ' + slider.currentPage);
-});</pre>
-				</blockquote>
-			</li>
-		</ul>
-
-		<h3>Version 1.5.6.2</h3>
-		<ul>
-			<li>Fixed a problem with the locked slide show - it should continue with all slides now after a user interacts with it.</li>
-		</ul>
-
-		<h3>Version 1.5.6.1</h3>
-		<ul>
-			<li>Added <code>resumeDelay</code> option which is the amount of time (in milliseconds) that the slider delays until the slideshow is restarted - only active when <code>autoPlayLocked</code> is true.</li>
-			<li>Fixed the slide show stop button so now when it is pressed, the slideshow will now remain stopped. The slideshow will still resume if the user changes the current slide, but it will resume after the <code>resumDelay</code> time has passed.
-		</ul>
-
-		<h3>Version 1.5.6</h3>
-		<ul>
-			<li>Added <code>autoPlayLocked</code> to prevent slideshow from stopping when a user changes the slide. The start/stop button still acts as expected.</li>
 		</ul>
 
 	</div>
