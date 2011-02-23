@@ -71,8 +71,8 @@ div.anythingSlider-minimalist-square .back a:hover, div.anythingSlider-minimalis
 div.anythingSlider-minimalist-square .anythingControls {
 	position: absolute;
 	width: 80%;
-	bottom: -2px;
-	right: 10%;
+	bottom: 5px;
+	right: 15%;
 	z-index: 100;
 	opacity: 0.75;
 	filter: alpha(opacity=75);
@@ -122,5 +122,5 @@ div.anythingSlider-minimalist-square .start-stop {
 
 /* Extra - replace defaults */
 div.anythingSlider-minimalist-square {
-	padding: 0 30px;
+	padding: 6px 30px;
 }

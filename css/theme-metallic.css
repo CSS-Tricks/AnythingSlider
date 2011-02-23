@@ -67,8 +67,8 @@ div.anythingSlider-metallic .back a:hover, div.anythingSlider-metallic .back a.h
 div.anythingSlider-metallic .anythingControls {
 	position: absolute;
 	width: 80%;
-	bottom: -2px;
-	right: 10%;
+	bottom: 5px;
+	right: 15%;
 	z-index: 100;
 	opacity: 0.90;
 	filter: alpha(opacity=90);
@@ -123,5 +123,5 @@ div.anythingSlider-metallic .start-stop {
 
 /* Extra - replace defaults */
 div.anythingSlider-metallic {
-	padding: 0 23px;
+	padding: 6px 23px;
 }
