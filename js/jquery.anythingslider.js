@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.7
+	AnythingSlider v1.5.7.3
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -189,6 +189,7 @@
 			base.$el.find('li.cloned').each(function(){
 				// replace <a> with <span> in cloned panels to prevent shifting the panels by tabbing - modified so this will work with jQuery 1.3.2
 				$(this).html( $(this).html().replace(/<a/gi, '<span').replace(/\/a>/gi, '/span>') );
+				$(this).find('[id]').removeAttr('id');
 			});
 
 			// We just added two items, time to re-cache the list, then get the dimensions of each panel
