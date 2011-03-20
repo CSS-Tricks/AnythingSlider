@@ -4,8 +4,23 @@
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
 	based on work by Remy Sharp: http://jqueryfordesigners.com/
-	crazy mods by Rob Garrison (aka Mottie): https://github.com/ProLoser/AnythingSlider
+	and crazy mods by Rob Garrison (aka Mottie): https://github.com/ProLoser/AnythingSlider
+	
+		This file is part of AnythingSlider.
 
+	    AnythingSlider is free software: you can redistribute it and/or modify
+	    it under the terms of the GNU General Public License as published by
+	    the Free Software Foundation, either version 3 of the License, or
+	    (at your option) any later version.
+
+	    AnythingSlider is distributed in the hope that it will be useful,
+	    but WITHOUT ANY WARRANTY; without even the implied warranty of
+	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	    GNU General Public License for more details.
+
+	    You should have received a copy of the GNU General Public License
+	    along with AnythingSlider.  If not, see <http://www.gnu.org/licenses/>.
+	
 	To use the navigationFormatter function, you must have a function that
 	accepts two paramaters, and returns a string of HTML text.
 
