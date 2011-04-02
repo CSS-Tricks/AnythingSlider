@@ -1,0 +1,23 @@
+/*
+	AnythingSlider v1.4.8+ Print style sheet
+
+	Note: This is a work in progress, it's not pretty but
+	it is based on the results of Firefox's print preview
+*/
+
+/* needed to hide extra content */
+div.anythingSlider, div.anythingSlider .anythingWindow {
+	overflow: hidden;
+	border: 0 !important;
+}
+ul.anythingBase { list-style: none; position: relative; }
+ul.anythingBase li.panel {
+	overflow: hidden;
+}
+
+/* hide images, arrows & controls */
+ul.anythingBase li img, div.anythingSlider .arrow, .anythingControls, ul.thumbNav, a.start-stop { display: none; visibility: hidden; }
+
+/* show only the active slide */
+ul.anythingBase li.activePage { display: block; left: 0; top: 0; position: absolute; }
+ul.anythingBase li.activePage img { display: block; visibility: visible; }

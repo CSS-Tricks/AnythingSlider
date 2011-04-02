@@ -71,7 +71,7 @@ div.anythingSlider-minimalist-square .back a:hover, div.anythingSlider-minimalis
 div.anythingSlider-minimalist-square .anythingControls {
 	position: absolute;
 	width: 80%;
-	bottom: 5px;
+	bottom: 0;
 	right: 15%;
 	z-index: 100;
 	opacity: 0.75;
@@ -83,16 +83,18 @@ div.anythingSlider-minimalist-square .thumbNav {
 	z-index: 100;
 }
 div.anythingSlider-minimalist-square .thumbNav li {
-	display: inline;
+	display: block;
+	float: left;
 }
 div.anythingSlider-minimalist-square .thumbNav a {
-	display: inline-block;
+	display: block;
 	height: 10px;
-  width: 10px;
-  margin: 3px;
-  padding: 0;
+	width: 10px;
+	margin: 3px;
+	padding: 0;
 	text-indent: -9999px;
 	outline: 0;
+	border-radius: 0;
 	-moz-border-radius: 0;
 	-webkit-border-radius: 0;
 }
@@ -116,6 +118,7 @@ div.anythingSlider-minimalist-square .start-stop {
 	text-align: center;
 	text-decoration: none;
 	float: right;
+	border-radius: 0;
 	-moz-border-radius: 0;
 	-webkit-border-radius: 0;
 }

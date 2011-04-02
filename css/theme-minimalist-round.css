@@ -1,6 +1,6 @@
 /*
-    AnythingSlider v1.41 Minimalist Round Theme
-    By Rob Garrison
+	AnythingSlider v1.41 Minimalist Round Theme
+	By Rob Garrison
 */
 
 /****** SET COLORS HERE *******/
@@ -71,7 +71,7 @@ div.anythingSlider-minimalist-round .back a:hover, div.anythingSlider-minimalist
 div.anythingSlider-minimalist-round .anythingControls {
 	position: absolute;
 	width: 80%;
-	bottom: 5px;
+	bottom: 0;
 	right: 15%;
 	z-index: 100;
 	opacity: 0.90;
@@ -83,16 +83,18 @@ div.anythingSlider-minimalist-round .thumbNav {
 	z-index: 100;
 }
 div.anythingSlider-minimalist-round .thumbNav li {
-	display: inline;
+	display: block;
+	float: left;
 }
 div.anythingSlider-minimalist-round .thumbNav a {
-	display: inline-block;
+	display: block;
 	height: 10px;
-  width: 10px;
-  margin: 3px;
-  padding: 0;
+	width: 10px;
+	margin: 3px;
+	padding: 0;
 	text-indent: -9999px;
 	outline: 0;
+	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 }
@@ -116,6 +118,7 @@ div.anythingSlider-minimalist-round .start-stop {
 	text-align: center;
 	text-decoration: none;
 	float: right;
+	border-radius: 7px;
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
 }

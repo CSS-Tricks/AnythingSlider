@@ -111,7 +111,7 @@ div.anythingSlider .forward.disabled { display: none; } /* disabled arrows, hide
 div.anythingSlider .back.disabled { display: none; }
 
 /* Navigation Links */
-div.anythingSlider .anythingControls { outline: 0; }
+div.anythingSlider .anythingControls { outline: 0; display: none; }
 div.anythingSlider .thumbNav { margin: 0; }
 div.anythingSlider .thumbNav li { display: inline; }
 div.anythingSlider .thumbNav a {

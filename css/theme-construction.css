@@ -65,7 +65,7 @@ div.anythingSlider-construction .back a:hover, div.anythingSlider-construction .
 div.anythingSlider-construction .anythingControls {
 	position: absolute;
 	width: 80%;
-	bottom: 5px;
+	bottom: 0;
 	right: 15%;
 	z-index: 100;
 	opacity: 0.90;
@@ -77,10 +77,11 @@ div.anythingSlider-construction .thumbNav {
 	z-index: 100;
 }
 div.anythingSlider-construction .thumbNav li {
-	display: inline;
+	display: block;
+	float: left;
 }
 div.anythingSlider-construction .thumbNav a, div.anythingSlider-construction.activeSlider .thumbNav a {
-	display: inline-block;
+	display: block;
 	background: transparent url(../images/nav-construction.png) center -60px no-repeat;
 	border: 0;
 	height: 30px;
