@@ -67,7 +67,7 @@ div.anythingSlider-metallic .back a:hover, div.anythingSlider-metallic .back a.h
 div.anythingSlider-metallic .anythingControls {
 	position: absolute;
 	width: 80%;
-	bottom: 5px;
+	bottom: 0;
 	right: 15%;
 	z-index: 100;
 	opacity: 0.90;
@@ -79,10 +79,11 @@ div.anythingSlider-metallic .thumbNav {
 	z-index: 100;
 }
 div.anythingSlider-metallic .thumbNav li {
-	display: inline;
+	display: block;
+	float: left;
 }
 div.anythingSlider-metallic .thumbNav a {
-	display: inline-block;
+	display: block;
 	background: transparent url(../images/arrows-metallic.png) -68px -136px no-repeat;
 	height: 10px;
 	width: 10px;

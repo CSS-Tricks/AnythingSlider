@@ -8,7 +8,7 @@
 	<title>AnythingSlider</title>
 
 	<!-- jQuery (required) -->
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
 	<!-- Anything Slider optional plugins -->
 	<script type="text/javascript" src="js/jquery.easing.1.2.js"></script>
@@ -20,6 +20,7 @@
 
 	<!-- Anything Slider -->
 	<link rel="stylesheet" href="css/anythingslider.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
 	<script type="text/javascript" src="js/jquery.anythingslider.js"></script>
 
 	<script type="text/javascript">
@@ -83,11 +84,12 @@
 		$(function(){
 
 			$('#slider1').anythingSlider({
-				startStopped    : false, // If autoPlay is on, this can force it to start stopped
+				startStopped    : true, // If autoPlay is on, this can force it to start stopped
 				width           : 800,   // Override the default CSS width
 				theme           : 'metallic',
-				autoPlayLocked  : true,  // If true, user changing slides will not stop the slideshow
-				resumeDelay     : 10000, // Resume slideshow after user interaction, only if autoplayLocked is true (in milliseconds).
+				easing: 'easeInOutBack',
+//				autoPlayLocked  : true,  // If true, user changing slides will not stop the slideshow
+//				resumeDelay     : 10000, // Resume slideshow after user interaction, only if autoplayLocked is true (in milliseconds).
 				onSlideComplete : function(slider){
 					// alert('Welcome to Slide #' + slider.currentPage);
 				}
@@ -105,7 +107,9 @@
 
 		});
 	</script>
+<style type="text/css" media="print">
 
+</style>
 </head>
 
 <body>
@@ -133,6 +137,9 @@
 
 			<br><br>
 
+<!--[if lte IE 7]> <style type="text/css"> .thumbNav a { display: inline !important; } </style> <![endif]--> 
+
+
 			<!-- AnythingSlider #1 -->
 			<ul id="slider1">
 
@@ -146,7 +153,7 @@
 
 				<li class="panel5">
 					<div class="textSlide">
-						<object class="rightside" width="500" height="325" style="padding-right: 50px;"><param name="movie" value="http://www.youtube.com/v/2Qj8PhxSnhg&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/2Qj8PhxSnhg&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="500" height="325"></embed></object>
+					<span class="rightside" style="padding-right: 50px;"><object width="500" height="325"><param name="movie" value="http://www.youtube.com/v/2Qj8PhxSnhg&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/2Qj8PhxSnhg&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="500" height="325"></embed></object></span>
 						<h3>Other Information</h3>
 						<br>
 						<ul>
@@ -475,10 +482,51 @@ $('#slider1').data('AnythingSlider').goBack();         // go back one slide
 			</li>
 		</ul>
 
+		<h2>Known Issues</h2>
+		<ul>
+			<li>Themes (non-default) in IE7 don't show the navigation buttons properly.</li>
+		</ul>
+
 		<h2>Changelog</h2>
 
 		Only the latest version will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.5.8</h3>
+		<ul>
+			<li>Added a primitive print stylesheet. Optimized using Firefox & IE9 print preview. But when using IE9 compatibility modes, it works IE7, but not IE8 (entire slider is hidden).</li>
+			<li>Slider controls are now hidden in the css, to prevent the flash seen before a theme stylesheet is loaded. This can be prevented by added the theme stylesheet into the head of your document.</li>
+			<li>Changed theme stylesheet to be appended into the document head.</li>
+			<li>Fixed some of the theme stylesheets so the navigtion links now show in IE8, but still not in IE7 - see known issues above.</li>
+			<li>Fixed a problem where the active slider would move when using arrow keys inside a text area or input.</li>
+			<li>Fixed animating arrow opacity bug - fix for issue #60.</li>
+			<li>Fixed easing on the first slide. Fix for issue #61.</li>
+			<li>`currentPage` now shows the correct number during events. Fix for issue #69.(</li>
+			<li>Fixed a minor problem with the FX extension fade. Regular base FX expect a size to be the second parameter, and since there is no size for 'fade' it now uses the second parameter for time. So, now this is possible:
+				<blockquote>
+					<pre>$('#slider1')
+ .anythingSlider({
+  animationTime : 0
+ })
+ .anythingSliderFx({
+  '.panel' : [ 'fade', 1000, 'easeOutCirc' ] // target the entire panel
+ });</pre>
+				</blockquote>
+				The above code will fade out the current panel and fade in the next. But it does require some extra CSS to set the opacity of all panels to zero, otherwise the fading animation won't occur until the second time through the panels.
+				<blockquote>
+					<pre>&lt;style type="text/css"&gt;
+#slider1 .panel { opacity: 0; }
+#slider1 .panel.activePage { opacity: 1; } /* make sure active panel is visible */
+&lt;/style&gt;</pre>
+				</blockquote>
+				It's not ideal, but it does make it possible to have a fade transition between slides, just not a crossfade transition.
+			</li>
+		</ul>
+
+		<h3>Version 1.5.7.4</h3>
+		<ul>
+			<li>Added a license.</li>
+		</ul>
 
 		<h3>Version 1.5.7.3</h3>
 		<ul>
