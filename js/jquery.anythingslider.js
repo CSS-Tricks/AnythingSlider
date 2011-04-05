@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.8
+	AnythingSlider v1.5.9
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -240,10 +240,10 @@
 
 		// Creates the numbered navigation links
 		base.buildNavigation = function() {
-			var tmp, index, klass, $a;
+			var tmp, klass, $a;
 			if (base.options.buildNavigation && (base.pages > 1)) {
 				base.$items.filter(':not(.cloned)').each(function(i,el) {
-					index = i + 1;
+					var index = i + 1;
 					klass = ((index === 1) ? 'first' : '') + ((index === base.pages) ? 'last' : '');
 					$a = $('<a href="#"></a>').addClass('panel' + index).wrap('<li class="' + klass + '" />');
 					base.$nav.append($a.parent()); // use $a.parent() so IE will add <li> instead of only the <a> to the <ul>
