@@ -1,5 +1,5 @@
 /*
- * AnythingSlider Slide FX 1.2 for AnythingSlider v1.5.8+
+ * AnythingSlider Slide FX 1.3 for AnythingSlider v1.5.8+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
  */
@@ -67,7 +67,7 @@
 					}
 				}
 				// animation for no extra selectors
-				if (!isOut) { el.css('visibility','visible'); }
+				if (!isOut) { el.css('visibility','visible').show(); }
 				el.animate(o, { queue : false, duration : t, easing : o.easing, complete: function(){
 					if (isOut) { setTimeout(function(){ hideOffscreen(el); }, defaults.timeOut); }
 				} });
@@ -112,18 +112,19 @@
 
 			// bind events for "OUT" effects - occur when leaving a page
 			.bind('slide_init', function(e, slider){
-				var el, elOut, page = slider.$lastPage.add( slider.$items.eq(slider.exactPage)[0] );
+				var el, elOut, page = slider.$lastPage.add( slider.$items.eq(slider.exactPage) );
+				if (slider.exactPage === 0) { page = page.add( slider.$items.eq( slider.pages ) ); } // add last (non-cloned) page if on first
 				page = page.find('*').andSelf(); // include the panel in the selectors
 				for (el in options) {
 					if (el === 'outFx') {
 						// process "out" custom effects
 						for (elOut in options.outFx) {
 							// animate current/last slide, unless it's a clone, then effect the original
-							animateFx( page.filter(elOut), options.outFx[elOut], true);
+							if (page.filter(elOut).length) { animateFx( page.filter(elOut), options.outFx[elOut], true); }
 						}
 					} else if (el !== 'inFx') {
 						// Use built-in effects
-						if ($.isArray(options[el])) {
+						if ($.isArray(options[el]) && page.filter(el).length) {
 							animateFx( page.filter(el), getFx(options[el],true), true);
 						}
 					}
@@ -132,17 +133,17 @@
 
 			// bind events for "IN" effects - occurs on target page
 			.bind('slide_complete', function(e, slider){
-				var el, elIn, page = slider.$currentPage.add( slider.$items.eq(slider.exactPage)[0] );
+				var el, elIn, page = slider.$currentPage.add( slider.$items.eq(slider.exactPage) );
 				page = page.find('*').andSelf(); // include the panel in the selectors
 				for (el in options) {
 					if (el === 'inFx') {
 						// process "in" custom effects
 						for (elIn in options.inFx) {
 							// animate current page
-							animateFx( page.filter(elIn), options.inFx[elIn], false);
+							if (page.filter(elIn).length) { animateFx( page.filter(elIn), options.inFx[elIn], false); }
 						}
 						// Use built-in effects
-					} else if (el !== 'outFx' && $.isArray(options[el])) {
+					} else if (el !== 'outFx' && $.isArray(options[el]) && page.filter(el).length) {
 						animateFx( page.filter(el), getFx(options[el],false), false);
 					}
 				}

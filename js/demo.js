@@ -50,22 +50,22 @@ $(document).ready(function(){
 		// for more precise control, use the "in" and "out" definitions
 		// in = the animation that occurs when you slide "in" to a panel
 		    inFx  : {
-		     '.textSlide h3'  : { opacity: 1, top  : 0, time: 400, easing : 'easeOutBounce' },
-		     '.textSlide li'  : { opacity: 1, left : 0, time: 400 },
-		     '.textSlide img' : { opacity: 1, time: 400 },
-		     '.quoteSlide'    : { top : 0, time: 400, easing : 'easeOutElastic' },
-		     '.expand'        : { width: '100%', top: '0%', left: '0%', time: 400, easing : 'easeOutBounce' }
+		     '.textSlide h3'  : { opacity: 1, top  : 0, duration: 400, easing : 'easeOutBounce' },
+		     '.textSlide li'  : { opacity: 1, left : 0, duration: 400 },
+		     '.textSlide img' : { opacity: 1, duration: 400 },
+		     '.quoteSlide'    : { top : 0, duration: 400, easing : 'easeOutElastic' },
+		     '.expand'        : { width: '100%', top: '0%', left: '0%', duration: 400, easing : 'easeOutBounce' }
 		    },
 		// out = the animation that occurs when you slide "out" of a panel
 		// (it also occurs before the "in" animation)
 		     outFx : {
-		     '.textSlide h3'      : { opacity: 0, top  : '-100px', time: 350 },
-		     '.textSlide li:odd'  : { opacity: 0, left : '-200px', time: 350 },
-		     '.textSlide li:even' : { opacity: 0, left : '200px',  time: 350 },
-		     '.textSlide img'     : { opacity: 0, time: 350 },
-		     '.quoteSlide:first'  : { top : '-500px', time: 350 },
-		     '.quoteSlide:last'   : { top : '500px', time: 350 },
-		     '.expand'            : { width: '10%', top: '50%', left: '50%', time: 350 },
+		     '.textSlide h3'      : { opacity: 0, top  : '-100px', duration: 350 },
+		     '.textSlide li:odd'  : { opacity: 0, left : '-200px', duration: 350 },
+		     '.textSlide li:even' : { opacity: 0, left : '200px',  duration: 350 },
+		     '.textSlide img'     : { opacity: 0, duration: 350 },
+		     '.quoteSlide:first'  : { top : '-500px', duration: 350 },
+		     '.quoteSlide:last'   : { top : '500px', duration: 350 },
+		     '.expand'            : { width: '10%', top: '50%', left: '50%', duration: 350 },
 		    } */
 	});
 
@@ -80,23 +80,23 @@ $(document).ready(function(){
 	})
 	.anythingSliderFx({
 		'.caption-top'    : [ 'caption-Top', '50px' ],
-		'.caption-right'  : [ 'caption-Right', '130px' ],
+		'.caption-right'  : [ 'caption-Right', '130px', '1000', 'easeOutBounce' ],
 		'.caption-bottom' : [ 'caption-Bottom', '50px' ],
-		'.caption-left'   : [ 'caption-Left', '130px' ]
+		'.caption-left'   : [ 'caption-Left', '130px', '1000', 'easeOutBounce' ]
 	})
 	/* use this code to have the caption slide in and out from the bottom with each panel
 	.anythingSliderFx({
 		inFx: {
-			'.caption-top'    : { top: 0, opacity: 1, time: 400 },
-			'.caption-right'  : { right: 0, opacity: 1, time: 400 },
-			'.caption-bottom' : { bottom: 0, opacity: 1, time: 400 },
-			'.caption-left'   : { left: 0, opacity: 1, time: 400 }
+			'.caption-top'    : { top: 0, opacity: 0.8, duration: 400 },
+			'.caption-right'  : { right: 0, opacity: 0.8, duration: 400 },
+			'.caption-bottom' : { bottom: 0, opacity: 0.8, duration: 400 },
+			'.caption-left'   : { left: 0, opacity: 0.8, duration: 400 }
 		},
 		outFx: {
-			'.caption-top'    : { top: -50, opacity: 0, time: 350 },
-			'.caption-right'  : { right: -150, opacity: 0, time: 350 },
-			'.caption-bottom' : { bottom: -50, opacity: 0, time: 350 },
-			'.caption-left'   : { left: -150, opacity: 0, time: 350 }
+			'.caption-top'    : { top: -50, opacity: 0, duration: 350 },
+			'.caption-right'  : { right: -150, opacity: 0, duration: 350 },
+			'.caption-bottom' : { bottom: -50, opacity: 0, duration: 350 },
+			'.caption-left'   : { left: -150, opacity: 0, duration: 350 }
 		}
 	}) */
 	// add a close button (x) to the caption

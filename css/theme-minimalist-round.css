@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.41 Minimalist Round Theme
+	AnythingSlider v1.5.10 Minimalist Round Theme
 	By Rob Garrison
 */
 
@@ -18,7 +18,6 @@ div.anythingSlider-minimalist-round .thumbNav a:hover, div.anythingSlider-minima
 }
 div.anythingSlider-minimalist-round .start-stop {
 	border: 1px solid #000;
-	text-indent: -9999px;
 }
 div.anythingSlider-minimalist-round .start-stop.playing {
 	background-color: #300;
@@ -58,7 +57,6 @@ div.anythingSlider-minimalist-round .arrow a {
 	text-align: center;
 	outline: 0;
 	background: url(../images/arrows-minimalist.png) no-repeat;
-	text-indent: -9999px;
 }
 div.anythingSlider-minimalist-round .forward { right: 0; }
 div.anythingSlider-minimalist-round .back { left: 0; }
@@ -92,7 +90,6 @@ div.anythingSlider-minimalist-round .thumbNav a {
 	width: 10px;
 	margin: 3px;
 	padding: 0;
-	text-indent: -9999px;
 	outline: 0;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -126,4 +123,11 @@ div.anythingSlider-minimalist-round .start-stop {
 /* Extra - replace defaults */
 div.anythingSlider-minimalist-round {
 	padding: 6px 30px;
+}
+
+/* text indent moved to span inside "a", for IE7; apparently, a negative text-indent on an "a" link moves the link as well as the text */
+div.anythingSlider-minimalist-round .arrow a span, div.anythingSlider-minimalist-round .thumbNav a span, div.anythingSlider-minimalist-round .start-stop span {
+	display: block;
+	line-height: 1px; /* needed for IE7 */
+	text-indent: -9999px;
 }

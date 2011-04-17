@@ -1,6 +1,7 @@
-/* AnythingSlider v1.41 cs-portfolio
-   By Curtis Scott (http://www.curtisscott.com/portfolio.html)
-   updated to work with the new themes
+/*
+	AnythingSlider v1.5.10 cs-portfolio
+	By Curtis Scott (http://www.curtisscott.com/portfolio.html)
+	updated to work with the new themes
 */
 
 /*** Note: the nav-cs-portfolio.png used for navigation and slideshow buttons uses a semi-transparent png,
@@ -29,28 +30,25 @@ div.anythingSlider-cs-portfolio .start-stop.playing:hover {
 }
 
 /* Overall */
-div.anythingSlider-cs-portfolio {
-	/*margin-bottom: 50px;  add 50px to fit bar below the slider */
-}
+div.anythingSlider-cs-portfolio {}
 div.anythingSlider-cs-portfolio .anythingWindow, div.anythingSlider-cs-portfolio.activeSlider .anythingWindow {
 	border: 0;
 }
 /* Navigation Arrows */
 div.anythingSlider-cs-portfolio .arrow {
 	display: block;
-	bottom: -43px;
+	bottom: 7px; /* this is -18px for IE7 */
 	position: absolute;
 	z-index: 100;
 }
 div.anythingSlider-cs-portfolio .arrow a {
 	display: block;
-	bottom: 50px;
+	bottom: 0;
 	position: absolute;
 	height: 35px;
 	width: 35px;
 	outline: 0;
 	background: url(../images/arrows-cs-portfolio.jpg) no-repeat;
-	text-indent: -9999px;
 }
 div.anythingSlider-cs-portfolio .forward { right: 70px; }
 div.anythingSlider-cs-portfolio .back { left: 50px; }
@@ -82,7 +80,6 @@ div.anythingSlider-cs-portfolio .thumbNav a, div.anythingSlider-cs-portfolio.act
 	height: 15px;
 	margin: 20px 5px 0 0;
 	padding: 0;
-	text-indent: -9999px;
 	outline: 0;
 	border: 0;
 }
@@ -109,7 +106,6 @@ div.anythingSlider-cs-portfolio .start-stop, div.anythingSlider-cs-portfolio .st
 	width: 18px;
 	height: 18px;
 	z-index: 100;
-	text-indent: -9999px;
 	border: 0;
 }
 div.anythingSlider-cs-portfolio .start-stop, div.anythingSlider-cs-portfolio .start-stop.hover,
@@ -123,4 +119,11 @@ div.anythingSlider-cs-portfolio .start-stop.playing:hover {
 /* Extra - replace defaults */
 div.anythingSlider-cs-portfolio {
 	padding: 0 23px 50px 0;
+}
+
+/* text indent moved to span inside "a", for IE7; apparently, a negative text-indent on an "a" link moves the link as well as the text */
+div.anythingSlider-cs-portfolio .arrow a span, div.anythingSlider-cs-portfolio .thumbNav a span, div.anythingSlider-cs-portfolio .start-stop span {
+	display: block;
+	line-height: 1px; /* needed for IE7 */
+	text-indent: -9999px;
 }

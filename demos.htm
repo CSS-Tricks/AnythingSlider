@@ -21,6 +21,15 @@
  <link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
  <script type="text/javascript" src="js/jquery.anythingslider.js"></script>
 
+	<!-- Ideally, add the stylesheet(s) you are going to use here,
+	 otherwise they are loaded and appended to the <head> automatically and will over-ride the IE stylesheet below -->
+	<link rel="stylesheet" href="css/theme-metallic.css" type="text/css" media="screen" />
+
+	<!-- Older IE stylesheet, to reposition navigation arrows, added AFTER the theme stylesheet above -->
+	<!--[if lte IE 7]>
+	<link rel="stylesheet" href="css/anythingslider-ie.css" type="text/css" media="screen" />
+	<![endif]-->
+
  <!-- AnythingSlider optional FX extension -->
  <script type="text/javascript" src="js/jquery.anythingslider.fx.js"></script>
  
@@ -257,13 +266,13 @@
        <li>Standard setup for custom effects is as follows (there is no specific order required):<br /><br />
         <pre><code> $('#slider1').anythingSliderFx({
   inFx : {
-   '.selector1' : { top : 0, time: 400, easing : 'easeOutBounce' },
-   '.selector2' : { left: 0, time: 400 }
+   '.selector1' : { top : 0, duration: 400, easing : 'easeOutBounce' },
+   '.selector2' : { left: 0, duration: 400 }
   },
    // out = the animation that occurs when you slide "out" of a panel
    // (it also occurs before the "in" animation)
   outFx : {
-   '.selector1' : { top  : '-100px', time: 350 },
+   '.selector1' : { top  : '-100px', duration: 350 },
    '.selector2' : { left : '-200px' }
   }</code></pre></li>
        <li>Defaults: if 'time' or 'easing' is not defined in the custom effects code, it will be set to its default value:<br /><br />
@@ -389,22 +398,22 @@
    // for more precise control, use the "inFx" and "outFx" definitions
    // inFx = the animation that occurs when you slide "in" to a panel
    inFx : {
-    '.textSlide h3'  : { opacity: 1, top  : 0, time: 400, easing : 'easeOutBounce' },
-    '.textSlide li'  : { opacity: 1, left : 0, time: 400 },
-    '.textSlide img' : { opacity: 1, time: 400 },
-    '.quoteSlide'    : { top : 0, time: 400, easing : 'easeOutElastic' },
-    '.expand'        : { width: '100%', top: '0%', left: '0%', time: 400, easing : 'easeOutBounce' }
+    '.textSlide h3'  : { opacity: 1, top  : 0, duration: 400, easing : 'easeOutBounce' },
+    '.textSlide li'  : { opacity: 1, left : 0, duration: 400 },
+    '.textSlide img' : { opacity: 1, duration: 400 },
+    '.quoteSlide'    : { top : 0, duration: 400, easing : 'easeOutElastic' },
+    '.expand'        : { width: '100%', top: '0%', left: '0%', duration: 400, easing : 'easeOutBounce' }
    },
    // out = the animation that occurs when you slide "out" of a panel
    // (it also occurs before the "in" animation)
    outFx : {
-    '.textSlide h3'      : { opacity: 0, top  : '-100px', time: 350 },
-    '.textSlide li:odd'  : { opacity: 0, left : '-200px', time: 350 },
-    '.textSlide li:even' : { opacity: 0, left : '200px',  time: 350 },
-    '.textSlide img'     : { opacity: 0, time: 350 },
-    '.quoteSlide:first'  : { top : '-500px', time: 350 },
-    '.quoteSlide:last'   : { top : '500px', time: 350 },
-    '.expand'            : { width: '10%', top: '50%', left: '50%', time: 350 }
+    '.textSlide h3'      : { opacity: 0, top  : '-100px', duration: 350 },
+    '.textSlide li:odd'  : { opacity: 0, left : '-200px', duration: 350 },
+    '.textSlide li:even' : { opacity: 0, left : '200px',  duration: 350 },
+    '.textSlide img'     : { opacity: 0, duration: 350 },
+    '.quoteSlide:first'  : { top : '-500px', duration: 350 },
+    '.quoteSlide:last'   : { top : '500px', duration: 350 },
+    '.expand'            : { width: '10%', top: '50%', left: '50%', duration: 350 }
    }
   });
 });</code></pre>
@@ -659,9 +668,9 @@
    // '.selector' : [ 'caption', 'distance/size', 'time', 'easing' ]
    // 'distance/size', 'time' and 'easing' are optional parameters
    '.caption-top'    : [ 'caption-Top', '50px' ],
-   '.caption-right'  : [ 'caption-Right', '130px' ],
+   '.caption-right'  : [ 'caption-Right', '130px', '1000', 'easeOutBounce' ],
    '.caption-bottom' : [ 'caption-Bottom', '50px' ],
-   '.caption-left'   : [ 'caption-Left', '130px' ]
+   '.caption-left'   : [ 'caption-Left', '130px', '1000', 'easeOutBounce' ]
   })
   /* add a close button (x) to the caption */
   .find('div[class*=caption]')
@@ -689,16 +698,16 @@
   /* this "custom" code is the equivalent of the base caption functions */
   .anythingSliderFx({
    inFx: {
-    '.caption-top'    : { top: 0, opacity: 0.8, time: 400 },
-    '.caption-right'  : { right: 0, opacity: 0.8, time: 400 },
-    '.caption-bottom' : { bottom: 0, opacity: 0.8, time: 400 },
-    '.caption-left'   : { left: 0, opacity: 0.8, time: 400 }
+    '.caption-top'    : { top: 0, opacity: 0.8, duration: 400 },
+    '.caption-right'  : { right: 0, opacity: 0.8, duration: 400 },
+    '.caption-bottom' : { bottom: 0, opacity: 0.8, duration: 400 },
+    '.caption-left'   : { left: 0, opacity: 0.8, duration: 400 }
    },
    outFx: {
-    '.caption-top'    : { top: -50, opacity: 0, time: 350 },
-    '.caption-right'  : { right: -150, opacity: 0, time: 350 },
-    '.caption-bottom' : { bottom: -50, opacity: 0, time: 350 },
-    '.caption-left'   : { left: -150, opacity: 0, time: 350 }
+    '.caption-top'    : { top: -50, opacity: 0, duration: 350 },
+    '.caption-right'  : { right: -150, opacity: 0, duration: 350 },
+    '.caption-bottom' : { bottom: -50, opacity: 0, duration: 350 },
+    '.caption-left'   : { left: -150, opacity: 0, duration: 350 }
    }
   })
   /* add a close button (x) to the caption */

@@ -23,6 +23,19 @@
 	<link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
 	<script type="text/javascript" src="js/jquery.anythingslider.js"></script>
 
+	<!-- Ideally, add the stylesheet(s) you are going to use here,
+	 otherwise they are loaded and appended to the <head> automatically and will over-ride the IE stylesheet below -->
+	<link rel="stylesheet" href="css/theme-metallic.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="css/theme-minimalist-round.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="css/theme-minimalist-square.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="css/theme-construction.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="css/theme-cs-portfolio.css" type="text/css" media="screen" />
+
+	<!-- Older IE stylesheet, to reposition navigation arrows, added AFTER the theme stylesheet above -->
+	<!--[if lte IE 7]>
+	<link rel="stylesheet" href="css/anythingslider-ie.css" type="text/css" media="screen" />
+	<![endif]-->
+
 	<script type="text/javascript">
 		// Demo functions
 		// **************
@@ -87,11 +100,17 @@
 				startStopped    : true, // If autoPlay is on, this can force it to start stopped
 				width           : 800,   // Override the default CSS width
 				theme           : 'metallic',
-				easing: 'easeInOutBack',
+				easing          : 'easeInOutBack',
 //				autoPlayLocked  : true,  // If true, user changing slides will not stop the slideshow
 //				resumeDelay     : 10000, // Resume slideshow after user interaction, only if autoplayLocked is true (in milliseconds).
 				onSlideComplete : function(slider){
 					// alert('Welcome to Slide #' + slider.currentPage);
+				},
+				stopAtEnd : true,
+				onShowStop : function(e, slider){
+					setTimeout(function(){
+						if (slider.currentPage === slider.pages) { slider.gotoPage(1); }
+					}, 5000);
 				}
 			});
 
@@ -301,196 +320,44 @@
 });</pre>
 		</blockquote>
 
-		<h2>Setup</h2>
-		<ul>
-			<li><h3>Add the following inside the <code>&lt;head&gt;&lt;/head&gt;</code> of your page</h3>
-				<blockquote>
-					<pre>&lt;!-- Required --&gt;
-&lt;link type=&quot;text/css&quot; href=&quot;css/anythingslider.css&quot; rel=&quot;stylesheet&quot; media=&quot;screen&quot; /&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.anythingslider.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot;&gt;
-$(function () {
- $('#slider1').anythingSlider(); // add any non-default options here
-});
-&lt;/script&gt;
-
-&lt;!-- Optional --&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.easing.1.2.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;js/swfobject.js&quot;&gt;&lt;/script&gt;</pre>
-				</blockquote>
-			</li>
-		</ul>
-
-		<ul>
-			<li><h3>Example HTML</h3>
-				<blockquote>
-					<pre> &lt;ul id=&quot;slider1&quot;&gt;
-  &lt;li&gt;&lt;div class=&quot;text&quot&gt;Put anything you want here&lt;/div&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;img src=&quot;image1.jpg&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;object&gt;...&lt;/object&gt;&lt;/li&gt;
-  &lt;li&gt;
-   &lt;div class=&quot;list&quot&gt;
-    &lt;h4&gt;Title&lt;/h4&gt;
-    &lt;ul&gt;
-     &lt;li&gt;List item #1&lt;/li&gt;
-     &lt;li&gt;List item #2&lt;/li&gt;
-    &lt;/ul&gt;
-   &lt;/div&gt;
-  &lt;/li&gt;
- &lt;/ul&gt;</pre>
-				</blockquote>
-			</li>
-		</ul>
-
-		<h2>Usage</h2>
-		<ul>
-			<li><h3>Updating the Slider (content added or removed)</h3>
-			<ul>
-				<li>Any options added inside the anythingSlider call will be ignored.</li>
-				<li>Note that if you are removing any panels from AnythingSlider, make sure your script ignores the cloned panels (they have a 'cloned' class). See this page's source for an example.</li>
-			</ul>
-				<blockquote>
-					<pre>$('#slider1')
-  .append('&lt;li&gt;&lt;img src=&quot;some-image.jpg&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;') // add a new panel to the slider
-  .anythingSlider(); // update the slider</pre>
-				</blockquote>
-			</li>
-
-			<li><h3>Getting Current Slide Number:</h3>
-				<blockquote>
-					<pre>var current = $('#slider1').data('AnythingSlider').currentPage; // returns page #</pre>
-				</blockquote>
-			</li>
-
-			<li><h3>Setting Current Slide (external link example):</h3>
-				<blockquote>
-					<pre>&lt;a href="#" id="slide-jump"&gt;Slide 4&lt;/a&gt;</pre>
-				<pre>$("#slide-jump").click(function(){
-  $('#slider2').anythingSlider(4);
-});</pre>
-				</blockquote>
-			</li>
-
-			<li><h3>External Slideshow Control</h3>
-				<blockquote>
-					<pre>$('#slider1').data('AnythingSlider').startStop(true);  // start the slideshow
-$('#slider2').data('AnythingSlider').startStop(false); // stops the slideshow
-$('#slider1').data('AnythingSlider').goForward();      // go forward one slide
-$('#slider1').data('AnythingSlider').goBack();         // go back one slide
-</pre>
-				</blockquote>
-			</li>
-
-			<li><h3>Extending - Event Hooks (callback functions)</h3>
-				<div class="alert"><b>Note:</b> In version 1.4.4, the bind function returned arguments were changed to make more straightforward values available, see the <a href="#callbacks">callback arguments</a> section below.</div>
-				<br>
-				<blockquote>
-				<ul>
-					<li><code>before_initialize</code> (<code>onBeforeInitialize</code>) - triggered right after creating the anythingSlider object. *<a href="#note-before-init">See Note</a>.</li>
-					<li><code>initialized</code> (<code>onInitialized</code>) - triggered after creating the anythingSlider object.</li>
-					<li><code>swf_completed</code> (<code>onSWFComplete</code>) - triggered when SWFObject completes setting up embedded objects.</li>
-					<li><code>slideshow_start</code> (<code>onShowStart</code>) - slideshow started.</li>
-					<li><code>slideshow_stop</code> (<code>onShowStop</code>) - slideshow stopped.</li>
-					<li><code>slideshow_paused</code> (<code>onShowPause</code>) - slideshow paused.</li>
-					<li><code>slideshow_unpaused</code> (<code>onShowUnpause</code>) - slideshow unpaused - may not trigger properly or match a pause event if user clicks play/stop button.</li>
-					<li><code>slide_init</code> (<code>onSlideInit</code>) - triggered when panel slide is initialized (before controls animate).</li>
-					<li><code>slide_begin</code> (<code>onSlideBegin</code>) - triggered before panel slide animation.</li>
-					<li><code>slide_complete</code> (<code>onSlideComplete</code>) - triggered after panel slide animation.</li>
-				</ul>
-
-				<a id="note-before-init"></a>
-				* Please note that at when the <code>onBeforeInitialize</code> event triggers/callback is called, almost nothing has been set:
-					<blockquote>
-						<ol>
-							<li>The <code>anythingSlider</code> object has been attached to the <code>ul</code>.</li>
-							<li>The class <code>anythingBase</code> was added to the <code>ul</code>.</li>
-							<li>The <code>ul</code> was wrapped in two <code>div</code>s (<code>div.anythingSlider div.anythingWindow</code>).</li>
-						</ol>
-
-						That's it! If you want to use some anythingSlider functionalities, you probably want to wait for the initialization to be completed (and register to the event <code>initialized</code> or use the <code>onInitialized</code> option).
-					</blockquote>
-				</blockquote>
-				<br>
-
-				<span class="header">Binding to Events and using Callbacks:</span>
-				<br>You can bind to any of the custom event triggers as follows (see this page source for another example):<br>
-				<br>
-				<blockquote>
-					<pre>$('#slider1').bind('slide_complete', function(e, slider){
- $('#status').text( 'Now on page #' + slider.currentPage );
- // Do something else
-});
-</pre>
-				</blockquote>
-				<br>
-				<blockquote>
-					<pre>$('.anythingSlider').bind('slideshow_start slideshow_stop', function(e, slider){
- var msg = (e.type == "slideshow_start") ? 'Someone started the #^&%$! slideshow!' : 'Whew, thanks for stopping the slideshow';
- $('#status').text( msg );
-});
-</pre>
-				</blockquote>
-
-				or use one of the callback functions:
-				<br><br>
-
-				<blockquote>
-					<pre>$('#slider').anythingSlider({
- onSlideComplete : function(slider){
-  alert('Welcome to Slide #' + slider.currentPage);
- }
-})
-</pre>
-				</blockquote>
-				<a id="callbacks"></a>
-				<span class="header">Callback Arguments</span> ( examples are if you use "slider" in the callback function, e.g. function(slider){...}, or in the trigger function, e.g. function(e, slider){...} )
-				<br><br>
-				<blockquote>
-				<table class="data">
-					<tr><th class="col">Argument</th><th>Description</th></tr>
-					<tr><td>slider.$currentPage</td><td>jQuery object of the Target page - not the same page as "slider.currentPage".</td></tr>
-					<tr><td>slider.$lastPage</td><td>jQuery object of the starting page - same page as "slider.currentPage" until "slide_complete" is called.</td></tr>
-					<tr><td>slider.currentPage</td><td>Currently displayed page/slide number. Updated when the animation completes.</td></tr>
-					<tr><td>slider.pages</td><td>Number of pages contained in the slider.</td></tr>
-					<tr><td>slider.playing</td><td>Is true if the slideshow is currently playing (is false when slideshow is paused, but true while youtube video is playing).</td></tr>
-					<tr><td>slider.hovered</td><td>Is true if the slider is currently being hovered.</td></tr>
-					<tr><td>slider.options.{name}</td><td>Access any of the options (e.g. slider.options.theme). Trying to set the options this way may break the slider.</td></tr>
-				</table>
-				</blockquote>
-			</li>
-			<br>
-
-			<li><h3><a id="format"></a>Formatting Navigation Text</h3>
-				To use the <code>navigationFormatter</code> option, you must have a function that accepts two parameters, and returns a string of HTML text.<br>
-				<br>
-				<ul>
-					<li><code>index</code> = integer index (1 based);</li>
-					<li><code>panel</code> = jQuery wrapped LI item this tab references.</li>
-					<li>Function must return a string of HTML/Text.</li>
-					<li>Here is a sample formatter (view this page source for another example):<br>
-						<br>
-						<blockquote>
-							<pre>$('#slider').anythingSlider({
- navigationFormatter : function(index, panel){
-  return " Panel #" + index; // This would have each tab with the text 'Panel #X' where X = index
- }
-})</pre>
-						</blockquote>
-					</li>
-				</ul>
-			</li>
-		</ul>
-
 		<h2>Known Issues</h2>
 		<ul>
-			<li>Themes (non-default) in IE7 don't show the navigation buttons properly.</li>
+			<li>When AnythingSlider is initialized on a hidden element, the last slide will show instead of the first. This is because a <code>scrollLeft</code> value cannot be applied to a hidden element. So either initialize it with visibility hidden, or if that isn't possible, then set the scrollLeft when it becomes visible:
+					<blockquote>
+						<br>
+						<pre>var s = $('#slider1').data('AnythingSlider');
+s.$window.scrollLeft( s.$window.width() + s.easingMargin ); // may not work if resizeContents is false (width will vary)</pre>
+					</blockquote>
+			</li>
 		</ul>
 
 		<h2>Changelog</h2>
 
 		Only the latest version will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.5.10</h3>
+			<ul>
+				<li>Fixed a bug that triggers the <code>slideshow_stop</code> event and <code>onShowStop</code> callback after each slide change. It now properly triggers after a running slideshow has stopped.</li>
+				<li>Changed code to completely remove the empty slides when <code>infiniteSlides</code> is false. It was code that was unnecessarily left in.</li> 
+				<li>Changed code that replaced links in the cloned panels with code that disables the links - fix for issue #59.</li>
+				<li>Added a stylesheet to fix the theme problems in IE7 - fix for issue #71.
+					<ul>
+						<li>I'm not sure if this solution works for IE6.</li>
+						<li>One problem was that the navigation links have a negative text-indent. IE7 sends the entire link off-screen instead of just the text inside.</li>
+						<li>Fixed by wrapping all link text in a span and applying the negative text indent to the span instead of the link.</li>
+						<li>The second problem with the navigation arrows being cut off was due to the negative top marginl. So a separate conditionally loaded stylesheet was added with the top margin set to zero and a specific top percentage for each style.</li>
+					</ul>
+				</li>
+				<li>Added <code>width: 100%</code> to the second slider's fourth panel instead of leaving the width/height undefined. In IE7, it would make the panel 20 pixels wide - fix for issue #73.</li>
+				<li>Fx Extension changes:
+					<ul>
+						<li>Fixed Fx Caption problem with FX not working when moving from first panel to last panel - fix for issue #75.</li>
+						<li>Fixed Fx caption to now show hidden ("display:none") captions. When clicking on the "x" in the caption, it was hiding the captions permanently, now it doesn't.</li>
+						<li>Changed FX Extension custom FX <code>time</code> to what it should have been, <code>duration</code>. To match the animation option.</li>
+					</ul>
+				</li>
+			</ul>
 
 		<h3>Version 1.5.9</h3>
 			<ul>
