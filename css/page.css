@@ -52,7 +52,7 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 #slider2 .panel1       { width: 500px; height: 350px; }
 #slider2 .panel2       { width: 450px; height: 420px; }
 #slider2 .panel3       { width: 680px; height: 317px; }
-#slider2 .panel4       { } /* left undefined to show it defaults to wrapper size */
+#slider2 .panel4       { width: 100%; } /* With no specific size, it defaults to wrapper size; except in IE7, it needs a width defined, so set to 100% */
 #slider2 .panel5       { width: 680px; height: 317px; }
 #slider2 .panel6       { width: 450px; height: 300px; }
 
@@ -74,8 +74,9 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
  border-radius: 2px;
  -moz-border-radius: 2px;
  -webkit-border-radius: 2px;
- text-indent: 0;
 }
+#demo2 div.anythingSlider-metallic .thumbNav a span { text-indent: 0; }
+
 /* border around image to show current page */
 #demo2 div.anythingSlider-metallic .thumbNav a:hover,
 #demo2 div.anythingSlider-metallic .thumbNav a.cur {

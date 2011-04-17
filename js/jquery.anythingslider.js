@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.9
+	AnythingSlider v1.5.10
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -54,13 +54,16 @@
 			base.timer   = null;  // slideshow timer (setInterval) container
 			base.flag    = false; // event flag to prevent multiple calls (used in control click/focusin)
 			base.playing = false; // slideshow state
+			base.slideshow = false; // slideshow flag
 			base.hovered = false; // actively hovering over the slider
 			base.panelSize = [];  // will contain dimensions and left position of each panel
 			base.currentPage = base.options.startPanel;
 			base.adjustLimit = (base.options.infiniteSlides) ? 0 : 1; // adjust page limits for infinite or limited modes
 			if (base.options.playRtl) { base.$wrapper.addClass('rtl'); }
-			// add extra margin on the left so easing functions like "easeInOutBounce" will work; because scrollLeft tries to go less than zero
-			if (base.options.easing !== "swing") { base.$el.css('margin-left', '100px'); }
+
+			// add extra margin on the left so easing functions like "easeInOutBounce" will work; because scrollLeft cannot go less than zero
+			base.easingMargin = (base.options.easing.match('swing|linear')) ? 0 : 100;
+			base.$el.css('margin-left', base.easingMargin + 'px');
 
 			// save some options
 			base.original = [ base.options.autoPlay, base.options.buildNavigation, base.options.buildArrows];
@@ -186,13 +189,15 @@
 
 			// Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
 			// This supports the "infinite" scrolling, also ensures any cloned elements don't duplicate an ID
-			base.$el.prepend( (base.options.infiniteSlides) ? base.$items.filter(':last').clone().addClass('cloned').removeAttr('id') : $('<li class="cloned" />') );
-			base.$el.append( (base.options.infiniteSlides) ? base.$items.filter(':first').clone().addClass('cloned').removeAttr('id') : $('<li class="cloned" />') );
-			base.$el.find('li.cloned').each(function(){
-				// replace <a> with <span> in cloned panels to prevent shifting the panels by tabbing - modified so this will work with jQuery 1.3.2
-				$(this).html( $(this).html().replace(/<a/gi, '<span').replace(/\/a>/gi, '/span>') );
-				$(this).find('[id]').removeAttr('id');
-			});
+			if (base.options.infiniteSlides) {
+				base.$el.prepend( base.$items.filter(':last').clone().addClass('cloned').removeAttr('id') );
+				base.$el.append( base.$items.filter(':first').clone().addClass('cloned').removeAttr('id') );
+				base.$el.find('li.cloned').each(function(){
+					// disable all <a> in cloned panels to prevent shifting the panels by tabbing
+					$(this).find('a').attr('disabled', 'disabled');
+					$(this).find('[id]').removeAttr('id');
+				});
+			}
 
 			// We just added two items, time to re-cache the list, then get the dimensions of each panel
 			base.$items = base.$el.find('> li').addClass('panel');
@@ -251,11 +256,11 @@
 					// If a formatter function is present, use it
 					if ($.isFunction(base.options.navigationFormatter)) {
 						tmp = base.options.navigationFormatter(index, $(this));
-						$a.html(tmp);
+						$a.html('<span>' + tmp + '</span>');
 						// Add formatting to title attribute if text is hidden
-						if (parseInt($a.css('text-indent'),10) < 0) { $a.addClass(base.options.tooltipClass).attr('title', tmp); }
+						if (parseInt($a.find('span').css('text-indent'),10) < 0) { $a.addClass(base.options.tooltipClass).attr('title', tmp); }
 					} else {
-						$a.text(index);
+						$a.html('<span>' + index + '</span>');
 					}
 
 					$a.bind(base.options.clickControls, function(e) {
@@ -274,8 +279,8 @@
 		// Creates the Forward/Backward buttons
 		base.buildNextBackButtons = function() {
 			if (base.$forward) { return; }
-			base.$forward = $('<span class="arrow forward"><a href="#">' + base.options.forwardText + '</a></span>');
-			base.$back = $('<span class="arrow back"><a href="#">' + base.options.backText + '</a></span>');
+			base.$forward = $('<span class="arrow forward"><a href="#"><span>' + base.options.forwardText + '</span></a></span>');
+			base.$back = $('<span class="arrow back"><a href="#"><span>' + base.options.backText + '</span></a></span>');
 
 			// Bind to the forward and back buttons
 			base.$back.bind(base.options.clickArrows, function(e) {
@@ -299,7 +304,7 @@
 		// Creates the Start/Stop button
 		base.buildAutoPlay = function(){
 			if (base.$startStop) { return; }
-			base.$startStop = $("<a href='#' class='start-stop'></a>").html(base.playing ? base.options.stopText : base.options.startText);
+			base.$startStop = $("<a href='#' class='start-stop'></a>").html('<span>' + (base.playing ? base.options.stopText : base.options.startText) + '</span>');
 			base.$controls.prepend(base.$startStop);
 			base.$startStop
 				.bind(base.options.clickSlideshow, function(e) {
@@ -326,7 +331,8 @@
 
 		// Set panel dimensions to either resize content or adjust panel to content
 		base.setDimensions = function(){
-			var w, h, c, cw, dw, leftEdge = parseInt(base.$el.css('margin-left'),10), bww = base.$window.width(), winw = base.$win.width();
+			var w, h, c, cw, dw, leftEdge = base.easingMargin,
+			 bww = base.$window.width(), winw = base.$win.width();
 			base.$items.each(function(i){
 				c = $(this).children('*');
 				if (base.options.resizeContents){
@@ -392,14 +398,14 @@
 			if (!base.options.resizeContents) {
 				// animating the wrapper resize before the window prevents flickering in Firefox
 				base.$wrapper.filter(':not(:animated)').animate(
-					{ width: base.panelSize[page][0], height: base.panelSize[page][1] },
+					{ width: base.panelSize[(base.options.infiniteSlides) ? page : page - 1][0], height: base.panelSize[(base.options.infiniteSlides) ? page : page - 1][1] },
 					{ queue: false, duration: base.options.animationTime, easing: base.options.easing }
 				);
 			}
 
 			// Animate Slider
 			base.$window.filter(':not(:animated)').animate(
-				{ scrollLeft : base.panelSize[page][2] },
+				{ scrollLeft : base.panelSize[(base.options.infiniteSlides) ? page : page - 1][2] },
 				{ queue: false, duration: base.options.animationTime, easing: base.options.easing, complete: function(){ base.endAnimation(page, callback); } }
 			);
 		};
@@ -461,11 +467,11 @@
 			// Only change left if move does not equal false
 			if (!move) {
 				base.$wrapper.css({
-					width: base.panelSize[page][0],
-					height: base.panelSize[page][1]
+					width: base.panelSize[(base.options.infiniteSlides) ? page : page - 1][0],
+					height: base.panelSize[(base.options.infiniteSlides) ? page : page - 1][1]
 				});
 				base.$wrapper.scrollLeft(0); // reset in case tabbing changed this scrollLeft
-				base.$window.scrollLeft( base.panelSize[page][2] );
+				base.$window.scrollLeft( base.panelSize[(base.options.infiniteSlides) ? page : page - 1][2] );
 			}
 			// Update local variable
 			base.currentPage = page;
@@ -525,8 +531,9 @@
 			// Clear the timer only if it is set
 			if (base.timer) { 
 				base.win.clearInterval(base.timer); 
-				if (!paused) {
+				if (!paused && base.slideshow) {
 					base.$el.trigger('slideshow_stop', base); 
+					base.slideshow = false;
 				}
 			}
 		};
@@ -538,6 +545,7 @@
 
 			if (playing && !paused) {
 				base.$el.trigger('slideshow_start', base);
+				base.slideshow = true;
 			}
 
 			// Update variable
@@ -545,9 +553,9 @@
 
 			// Toggle playing and text
 			if (base.options.autoPlay) {
-				base.$startStop.toggleClass('playing', playing).html( playing ? base.options.stopText : base.options.startText );
+				base.$startStop.toggleClass('playing', playing).html('<span>' + (playing ? base.options.stopText : base.options.startText) + '</span>');
 				// add button text to title attribute if it is hidden by text-indent
-				if (parseInt(base.$startStop.css('text-indent'),10) < 0) {
+				if (parseInt(base.$startStop.find('span').css('text-indent'),10) < 0) {
 					base.$startStop.addClass(base.options.tooltipClass).attr('title', playing ? 'Stop' : 'Start');
 				}
 			}

@@ -1,13 +1,13 @@
 /*
-    AnythingSlider v1.4.1+ Default (base) theme
-
-    By Chris Coyier: http://css-tricks.com
-    with major improvements by Doug Neiner: http://pixelgraphics.us/
-    based on work by Remy Sharp: http://jqueryfordesigners.com/
+	AnythingSlider v1.5.10+ Default (base) theme
+	By Chris Coyier: http://css-tricks.com
+	with major improvements by Doug Neiner: http://pixelgraphics.us/
+	based on work by Remy Sharp: http://jqueryfordesigners.com/
 */
 
 /******* SET DEFAULT DIMENSIONS HERE ********/
 div.anythingSlider {
+	display: block;
 	width: 700px;
 	height: 390px;
 	margin: 0 auto;
@@ -94,13 +94,13 @@ div.anythingSlider .arrow {
 div.anythingSlider .arrow a {
 	display: block;
 	height: 120px;
-	margin: -60px 0 0 0;
+	margin: -60px 0 0 0; /* half height of image */
 	width: 45px;
 	text-align: center;
 	outline: 0;
 	background: url(../images/arrows-default.png) no-repeat;
-	text-indent: -9999px;
 }
+div.anythingSlider .arrow a span { display: block; text-indent: -9999px; }
 div.anythingSlider .forward { right: 0; }
 div.anythingSlider .back { left: 0; }
 div.anythingSlider .forward a { background-position: 0 -40px; }
