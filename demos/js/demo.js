@@ -14,7 +14,7 @@ $(document).ready(function(){
 		toggleControls : true,
 		theme          : 'metallic',
 		navigationFormatter : function(i, panel){
-			return '<img src="images/th-slide-' + ['civil-1', 'env-1', 'civil-2', 'env-2'][i-1] + '.jpg">';
+			return '<img src="demos/images/th-slide-' + ['civil-1', 'env-1', 'civil-2', 'env-2'][i-1] + '.jpg">';
 		}
 	})
 	.find('.panel:not(.cloned) img') // ignore the cloned panels

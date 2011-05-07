@@ -24,3 +24,5 @@ div.anythingSlider-construction .arrow a,
 div.anythingSlider-minimalist-round .arrow a {
 	margin: 0 !important;
 }
+
+div.anythingSlider .thumbNav a { display: inline !important; }

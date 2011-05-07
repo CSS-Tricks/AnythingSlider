@@ -1,62 +1,68 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html>
 
 <head>
- <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8">
 
- <title>AnythingSlider FX Demos</title>
+	<title>AnythingSlider FX Demos</title>
 
- <!-- jQuery (required) & jQuery UI (for this demo only) -->
- <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" type="text/css" />
- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+	<!-- jQuery (required) & jQuery UI (for this demo only) -->
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
- <!-- Anything Slider optional plugins -->
- <script type="text/javascript" src="js/jquery.easing.1.2.js"></script>
- <script type="text/javascript" src="js/swfobject.js"></script> <!-- http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js -->
- 
- <!-- Anything Slider -->
- <link rel="stylesheet" href="css/anythingslider.css" type="text/css" media="screen" />
- <link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
- <script type="text/javascript" src="js/jquery.anythingslider.js"></script>
+	<!-- Anything Slider optional plugins -->
+	<script src="js/jquery.easing.1.2.js"></script>
+	<script src="js/swfobject.js"></script> <!-- http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js -->
+
+	<!-- Anything Slider -->
+	<link rel="stylesheet" href="css/anythingslider.css">
+	<script src="js/jquery.anythingslider.js"></script>
 
 	<!-- Ideally, add the stylesheet(s) you are going to use here,
-	 otherwise they are loaded and appended to the <head> automatically and will over-ride the IE stylesheet below -->
-	<link rel="stylesheet" href="css/theme-metallic.css" type="text/css" media="screen" />
+	otherwise they are loaded and appended to the <head> automatically and will over-ride the IE stylesheet below -->
+	<link rel="stylesheet" href="css/theme-metallic.css" media="screen">
 
 	<!-- Older IE stylesheet, to reposition navigation arrows, added AFTER the theme stylesheet above -->
 	<!--[if lte IE 7]>
 	<link rel="stylesheet" href="css/anythingslider-ie.css" type="text/css" media="screen" />
 	<![endif]-->
 
- <!-- AnythingSlider optional FX extension -->
- <script type="text/javascript" src="js/jquery.anythingslider.fx.js"></script>
- 
- <!-- Demos page only -->
- <link rel="stylesheet" href="css/page.css" type="text/css" media="screen" />
- <link rel="stylesheet" href="colorbox/colorbox.css" type="text/css" media="screen" />
- <script type="text/javascript" src="js/demo.js"></script>
- <script type="text/javascript" src="colorbox/jquery.colorbox-min.js"></script>
+	<!-- AnythingSlider optional FX extension -->
+	<script src="js/jquery.anythingslider.fx.js"></script>
+
+	<!-- Demos page only -->
+	<link rel="stylesheet" href="demos/css/page.css">
+	<link rel="stylesheet" href="demos/colorbox/colorbox.css">
+	<script src="demos/js/demo.js"></script>
+	<script src="demos/colorbox/jquery.colorbox-min.js"></script>
 
 </head>
 
 <body>
 
- <a id="ribbon2" href="index.html"></a>
  <div id="demo2">
-  <a href="http://github.com/ProLoser/AnythingSlider/downloads" id="dl">Download Latest on Github</a>
 
-  <h1>AnythingSlider Demos</h1>
+  <div id="nav">
+    <a href="index.html">Main Demo</a>
+    <a href="simple.html">Simple Demo</a>
+    <a class="current" href="demos.html">FX Demos</a>
+    <a class="play" href="http://jsfiddle.net/Mottie/JMgeC/">Playground</a>
+    <a class="git" href="https://github.com/ProLoser/AnythingSlider/wiki">Documentation</a>
+    <a class="git" href="http://github.com/ProLoser/AnythingSlider/downloads">Download</a>
+    <a class="issue" href="https://github.com/ProLoser/AnythingSlider/issues">Issues</a>
+  </div>
+
+  <h1>AnythingSlider FX Demos</h1>
 
   <h2 class="title">Demo 1: Thumbnails &amp; A Lightbox</h2>
 
   <!-- AnythingSlider #1 -->
   <ul id="slider1">
-   <li><img src="images/slide-civil-1.jpg" alt="" /></li>
-   <li><img src="images/slide-env-1.jpg" alt="" /></li>
-   <li><img src="images/slide-civil-2.jpg" alt="" /></li>
-   <li><img src="images/slide-env-2.jpg" alt="" /></li>
+   <li><img src="demos/images/slide-civil-1.jpg" alt=""></li>
+   <li><img src="demos/images/slide-env-1.jpg" alt=""></li>
+   <li><img src="demos/images/slide-civil-2.jpg" alt=""></li>
+   <li><img src="demos/images/slide-env-2.jpg" alt=""></li>
   </ul>
   <!-- END AnythingSlider #1 -->
   <br />
@@ -72,7 +78,7 @@
        <li>CSS is required to override the metallic theme CSS for thumbnail images to be visible (resize and remove negative text indentation), or you can make a new theme.</li>
        <li>Add images using the <code>navigationFormatter</code> option as follows:<br /><br />
         <pre><code> navigationFormatter : function(i, panel){
-  return '&lt;img src="images/th-slide-' + ['civil-1', 'env-1', 'civil-2', 'env-2'][i-1] + '.jpg"&gt;';
+  return '&lt;img src="demos/images/th-slide-' + ['civil-1', 'env-1', 'civil-2', 'env-2'][i-1] + '.jpg"&gt;';
  }</code></pre>
        </li>
       </ul>
@@ -92,7 +98,7 @@
    <h3><a href="#">Header</a></h3>
    <div>
     <pre><code> &lt;!-- jQuery --&gt;
- &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+ &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
 
  &lt;!-- Anything Slider optional plugins --&gt;
  &lt;script src=&quot;js/jquery.easing.1.2.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
@@ -104,8 +110,8 @@
  &lt;script src=&quot;js/jquery.anythingslider.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
 
  &lt;!-- ColorBox --&gt;
- &lt;link href=&quot;colorbox/colorbox.css&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot; /&gt;
- &lt;script src=&quot;colorbox/jquery.colorbox-min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</code></pre>
+ &lt;link href=&quot;demos/colorbox/colorbox.css&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot; /&gt;
+ &lt;script src=&quot;demos/colorbox/jquery.colorbox-min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</code></pre>
    </div>
 
    <h3><a href="#">CSS &amp; HTML</a></h3>
@@ -136,10 +142,10 @@
  }</code></pre>
     <br />
     <pre><code> &lt;ul id=&quot;slider1&quot;&gt;
-  &lt;li&gt;&lt;img src=&quot;images/slide-civil-1.jpg&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;img src=&quot;images/slide-env-1.jpg&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;img src=&quot;images/slide-civil-2.jpg&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;img src=&quot;images/slide-env-2.jpg&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;img src=&quot;demos/images/slide-civil-1.jpg&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;img src=&quot;demos/images/slide-env-1.jpg&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;img src=&quot;demos/images/slide-civil-2.jpg&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;img src=&quot;demos/images/slide-env-2.jpg&quot; /&gt;&lt;/li&gt;
  &lt;/ul&gt;</code></pre>
    </div>
 
@@ -153,7 +159,7 @@
    startStopped   : true,
    theme          : 'metallic',
    navigationFormatter : function(i, panel){ // add thumbnails as navigation links
-    return '&lt;img src="images/th-slide-' + ['civil-1', 'env-1', 'civil-2', 'env-2'][i - 1] + '.jpg"&gt;';
+    return '&lt;img src="demos/images/th-slide-' + ['civil-1', 'env-1', 'civil-2', 'env-2'][i - 1] + '.jpg"&gt;';
    }
   })
   // target all images inside the current slider
@@ -180,7 +186,7 @@
    <ul id="slider2">
     <li class="panel1">
      <div class="textSlide">
-      <img src="images/251356.jpg" alt="tomato sandwich" style="float: right; margin: 0 0 2px 10px;" />
+      <img src="demos/images/251356.jpg" alt="tomato sandwich" style="float: right; margin: 0 0 2px 10px;" />
       <h3>Queenie's Killer Tomato Bagel Sandwich</h3>
       <h4>Ingredients</h4>
       <ul>
@@ -198,7 +204,7 @@
      </div>
     </li>
     <li class="panel3">
-     <img class="expand" src="images/slide-tele-1.jpg" alt="" />
+     <img class="expand" src="demos/images/slide-tele-1.jpg" alt="" />
     </li>
     <li class="panel4">
      <div class="quoteSlide">
@@ -207,7 +213,7 @@
      </div>
     </li>
     <li class="panel5">
-     <img class="fade" src="images/slide-tele-2.jpg" alt="" />
+     <img class="fade" src="demos/images/slide-tele-2.jpg" alt="" />
     </li>
    </ul>
    <!-- END AnythingSlider #2 -->
@@ -290,7 +296,7 @@
    <h3><a href="#">Header</a></h3>
    <div>
     <pre><code> &lt;!-- jQuery --&gt;
- &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+ &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
 
  &lt;!-- Anything Slider optional plugins --&gt;
  &lt;script src=&quot;js/jquery.easing.1.2.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
@@ -310,7 +316,7 @@
     <pre><code> &lt;ul id=&quot;slider2&quot;&gt;
   &lt;li class=&quot;panel1&quot;&gt;
    &lt;div class=&quot;textSlide&quot;&gt;
-    &lt;img src=&quot;images/251356.jpg&quot; alt=&quot;tomato sandwich&quot; style=&quot;float: right;
+    &lt;img src=&quot;demos/images/251356.jpg&quot; alt=&quot;tomato sandwich&quot; style=&quot;float: right;
      margin: 0 0 2px 10px;&quot; /&gt;
     &lt;h3&gt;Queenie's Killer Tomato Bagel Sandwich&lt;/h3&gt;
     &lt;h4&gt;Ingredients&lt;/h4&gt;
@@ -333,7 +339,7 @@
    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li class=&quot;panel3&quot;&gt;
-   &lt;img class=&quot;expand&quot; src=&quot;images/slide-tele-1.jpg&quot; alt=&quot;&quot; /&gt;
+   &lt;img class=&quot;expand&quot; src=&quot;demos/images/slide-tele-1.jpg&quot; alt=&quot;&quot; /&gt;
   &lt;/li&gt;
   &lt;li class=&quot;panel4&quot;&gt;
    &lt;div class=&quot;quoteSlide&quot;&gt;
@@ -348,7 +354,7 @@
    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li class=&quot;panel5&quot;&gt;
-   &lt;img class=&quot;fade&quot; src=&quot;images/slide-tele-2.jpg&quot; alt=&quot;&quot; /&gt;
+   &lt;img class=&quot;fade&quot; src=&quot;demos/images/slide-tele-2.jpg&quot; alt=&quot;&quot; /&gt;
   &lt;/li&gt;
  &lt;/ul&gt;</code></pre>
    </div>
@@ -429,18 +435,18 @@
    <li class="panel1">
     <!-- Note this caption is before the image, all others it is after -->
     <div class="caption-top">In Soviet Russia, concrete pours you!</div>
-    <img src="images/slide-civil-1.jpg" alt="" />
+    <img src="demos/images/slide-civil-1.jpg" alt="" />
    </li>
    <li class="panel2">
-    <img src="images/slide-env-1.jpg" alt="" />
+    <img src="demos/images/slide-env-1.jpg" alt="" />
     <div class="caption-right">How many supervisors are there? Wrong! 5, who is taking the picture?</div>
    </li>
    <li class="panel3">
-    <img src="images/slide-civil-2.jpg" alt="" />
+    <img src="demos/images/slide-civil-2.jpg" alt="" />
     <div class="caption-bottom">Alas, the pylon would never make it to the hydrant, her true love.</div>
    </li>
    <li class="panel4">
-    <img src="images/slide-env-2.jpg" alt="" />
+    <img src="demos/images/slide-env-2.jpg" alt="" />
     <div class="caption-left">Take a left at the traffic circle.</div>
    </li>
   </ul>
@@ -486,7 +492,7 @@
    <h3><a href="#">Header</a></h3>
    <div>
     <pre><code> &lt;!-- jQuery --&gt;
- &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+ &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
 
  &lt;!-- Anything Slider optional plugins --&gt;
  &lt;script src=&quot;js/jquery.easing.1.2.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
@@ -563,22 +569,22 @@
    &lt;div class=&quot;caption-top&quot;&gt;
     In Soviet Russia, concrete pours you!
    &lt;/div&gt;
-   &lt;img src=&quot;images/slide-civil-1.jpg&quot; alt=&quot;&quot; /&gt;
+   &lt;img src=&quot;demos/images/slide-civil-1.jpg&quot; alt=&quot;&quot; /&gt;
   &lt;/li&gt;
   &lt;li&gt;
-   &lt;img src=&quot;images/slide-env-1.jpg&quot; alt=&quot;&quot; /&gt;
+   &lt;img src=&quot;demos/images/slide-env-1.jpg&quot; alt=&quot;&quot; /&gt;
    &lt;div class=&quot;caption-right&quot;&gt;
     How many supervisors are there? Wrong! 5, who is taking the picture?
    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
-   &lt;img src=&quot;images/slide-civil-2.jpg&quot; alt=&quot;&quot; /&gt;
+   &lt;img src=&quot;demos/images/slide-civil-2.jpg&quot; alt=&quot;&quot; /&gt;
    &lt;div class=&quot;caption-bottom&quot;&gt;
     Alas, the pylon would never make it to the hydrant, her true love.
    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
-   &lt;img src=&quot;images/slide-env-2.jpg&quot; alt=&quot;&quot; /&gt;
+   &lt;img src=&quot;demos/images/slide-env-2.jpg&quot; alt=&quot;&quot; /&gt;
    &lt;div class=&quot;caption-left&quot;&gt;
     Take a left at the traffic circle.
    &lt;/div&gt;
@@ -728,6 +734,7 @@
   </div>
 
  </div>
+
 </body>
 
 </html>
