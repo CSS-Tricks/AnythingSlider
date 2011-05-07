@@ -15,7 +15,7 @@
 	<script src="js/swfobject.js"></script>
 
 	<!-- Demo stuff -->
-	<link rel="stylesheet" href="css/page.css" media="screen">
+	<link rel="stylesheet" href="demos/css/page.css" media="screen">
 
 	<!-- Anything Slider -->
 	<link rel="stylesheet" href="css/anythingslider.css">
@@ -64,9 +64,6 @@
 			var themes = ['minimalist-round','minimalist-square','metallic','construction','cs-portfolio'];
 			$('#currentTheme').change(function(){
 				var theme = $(this).val();
-				if (!$('link[href*=' + theme + ']').length) {
-					$('body').append('<link rel="stylesheet" href="css/theme-' + theme + '.css" type="text/css" media="screen" />');
-				}
 				$('#slider1').closest('div.anythingSlider')
 					.removeClass( $.map(themes, function(t){ return 'anythingSlider-' + t; }).join(' ') )
 					.addClass('anythingSlider-' + theme);
@@ -76,7 +73,7 @@
 			var imageNumber = 1;
 			$('button.add').click(function(){
 				$('#slider1')
-					.append('<li><img src="images/slide-tele-' + (++imageNumber%2 + 1)  + '.jpg" alt="" /></li>')
+					.append('<li><img src="demos/images/slide-tele-' + (++imageNumber%2 + 1)  + '.jpg" alt="" /></li>')
 					.anythingSlider(); // update the slider
 			});
 			$('button.remove').click(function(){
@@ -127,41 +124,49 @@
 </head>
 
 <body>
-	<a id="ribbon1" href="demos.htm"></a>
-	<div id="page-wrap">
-		<a href="http://github.com/ProLoser/AnythingSlider/downloads" id="dl">Download Latest on Github</a>
 
-		<h5><a href="http://css-tricks.com/examples/AnythingSlider/">Original</a> By <a href="http://css-tricks.com">Chris Coyier</a>, based upon lots of smart stuff by <a href="http://jqueryfordesigners.com/">Remy Sharp</a>,<br />
-		significantly improved by <a href="http://pixelgraphics.us/">Douglas Neiner</a></h5>
+	<div id="page-wrap">
+
+		<div id="nav">
+			<a class="current" href="index.html">Main Demo</a>
+			<a href="simple.html">Simple Demo</a>
+			<a href="demos.html">FX Demos</a>
+			<a class="play" href="http://jsfiddle.net/Mottie/JMgeC/">Playground</a>
+			<a class="git" href="https://github.com/ProLoser/AnythingSlider/wiki">Documentation</a>
+			<a class="git" href="http://github.com/ProLoser/AnythingSlider/downloads">Download</a>
+			<a class="issue" href="https://github.com/ProLoser/AnythingSlider/issues">Issues</a>
+		</div>
+
+		<h5><a href="http://css-tricks.com/examples/AnythingSlider/">Original</a> By <a href="http://css-tricks.com">Chris Coyier</a>, based upon lots of smart stuff by <a href="http://jqueryfordesigners.com/">Remy Sharp</a>,<br>
+		significantly improved by <a href="http://pixelgraphics.us/">Douglas Neiner<br></a>
+		improved again by <a href="http://github.com/ProLoser/">ProLoser</a> and <a href="http://github.com/Mottie/">Mottie</a></h5>
 
 		<h1>AnythingSlider</h1>
 
 			<div class="themeselector">
-				Theme: <select id="currentTheme">
-								<option value="default">Default</option>
-								<option value="minimalist-round">Minimalist-Round</option>
-								<option value="minimalist-square">Minimalist-Square</option>
-								<option value="metallic" selected="selected">Metallic</option>
-								<option value="construction">Construction</option>
-								<option value="cs-portfolio">CS-Portfolio</option>
-							</select>
+				Theme: 
+				<select id="currentTheme">
+					<option value="default">Default</option>
+					<option value="minimalist-round">Minimalist-Round</option>
+					<option value="minimalist-square">Minimalist-Square</option>
+					<option value="metallic" selected="selected">Metallic</option>
+					<option value="construction">Construction</option>
+					<option value="cs-portfolio">CS-Portfolio</option>
+				</select>
 				<button class="add">Add Slide</button>
 				<button class="remove">Remove Slide</button>
 			</div>
 
 			<br><br>
 
-<!--[if lte IE 7]> <style type="text/css"> .thumbNav a { display: inline !important; } </style> <![endif]--> 
-
-
 			<!-- AnythingSlider #1 -->
 			<ul id="slider1">
 
-				<li><img src="images/slide-civil-1.jpg" alt=""></li>
+				<li><img src="demos/images/slide-civil-1.jpg" alt=""></li>
 
-				<li><img src="images/slide-env-1.jpg" alt=""></li>
+				<li><img src="demos/images/slide-env-1.jpg" alt=""></li>
 
-				<li><img src="images/slide-civil-2.jpg" alt=""></li>
+				<li><img src="demos/images/slide-civil-2.jpg" alt=""></li>
 
 				<li><object width="480" height="385"><param name="movie" value="http://www.youtube.com/v/zSgiXGELjbc&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/zSgiXGELjbc&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></embed></object></li>
 
@@ -179,7 +184,7 @@
 					</div>
 				</li>
 
-				<li><img src="images/slide-env-2.jpg" alt=""></li>
+				<li><img src="demos/images/slide-env-2.jpg" alt=""></li>
 
 			</ul>  <!-- END AnythingSlider #1 -->
 
@@ -190,7 +195,7 @@
 
 				<li class="panel1">
 					<div class="textSlide">
-						<img src="images/251356.jpg" alt="tomato sandwich" style="float: right; margin: 0 0 2px 10px;" />
+						<img src="demos/images/251356.jpg" alt="tomato sandwich" style="float: right; margin: 0 0 2px 10px;" />
 						<h3>Queenie's Killer Tomato Bagel Sandwich</h3>
 						<h4>Ingredients</h4>
 						<ul>
@@ -210,7 +215,7 @@
 				</li>
 
 				<li class="panel3">
-					<img src="images/slide-tele-1.jpg" alt="">
+					<img src="demos/images/slide-tele-1.jpg" alt="">
 				</li>
 
 				<li class="panel4">
@@ -221,7 +226,7 @@
 				</li>
 
 				<li class="panel5">
-					<img src="images/slide-tele-2.jpg" alt="">
+					<img src="demos/images/slide-tele-2.jpg" alt="">
 				</li>
 
 			</ul>
@@ -241,16 +246,16 @@
 			<li>Each panel has a hashtag (can link directly to specific panels).</li>
 			<li>Optional custom function for <a href="#format">formatting navigation text</a>.</li>
 			<li>Auto-playing slideshow (optional feature, can start playing or stopped).</li>
-			<li>Pauses playing YouTube videos when not in view and resumes them when in view (if files are hosted on the web).</li>
 			<li>Pauses slideshow on hover (optional).</li>
 			<li>Optionally play the slideshow once through, stopping on the last page.</li>
 			<li>Extend the script by binding to custom events, last triggered event: <span id="status">none</span></li>
-			<li>Optional FX extension to add animation to panels elements as they scroll into and out of view. See the <a href="demos.htm">demo page</a>.</li>
+			<li>Optional FX extension to add animation to panels elements as they scroll into and out of view. See the <a href="demos.html">demo page</a>.</li>
+			<li>Optional Video extension allows video to pauses playing when not in view and resumes when in view (if files are hosted on the web). This currently works for YouTube, Vimeo and HTML5 video.</li>
 			<li>Works with jQuery 1.4+, but can be made to work with jQuery v1.3.2 by uncommenting code (in the non-minified version).</li>
 		</ul>
 
 		<h2>Default Options</h2>
-		See the documentation for complete description of these options (<a href="https://github.com/ProLoser/AnythingSlider/wiki/Appearance-Options">appearance</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Navigation-Options">navigation</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Slideshow-Options">slideshow</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Callbacks-and-Events">callbacks &amp; events</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Interactivity-and-Miscellaneous-Options">interativity &amp misc</a>).<br>
+		See the documentation for complete description of these options (<a href="https://github.com/ProLoser/AnythingSlider/wiki/Appearance-Options">appearance</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Navigation-Options">navigation</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Slideshow-Options">slideshow</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Callbacks-and-Events">callbacks &amp; events</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Interactivity-and-Miscellaneous-Options">interativity &amp; misc</a>).<br>
 		<br>
 		<blockquote>
 			<pre>$('#slider1, #slider2').anythingSlider({
@@ -330,6 +335,15 @@ s.$window.scrollLeft( s.$window.width() + s.easingMargin ); // may not work if r
 
 		Only the latest version will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.5.11</h3>
+			<ul>
+				<li>Updated all demos files to a HTML5 doctype with jQuery v1.6.</li>
+				<li>Removed print stylesheet.</li>
+				<li>Made file extension .html consistent.</li>
+				<li>Added "simple.html", which is the simplest possible demo so it is easier for people to build from.</li>
+				<li>Added a menu to each page for easier navigation to other demos and documentation.</li>
+			</ul>
 
 		<h3>Version 1.5.10</h3>
 			<ul>
