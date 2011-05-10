@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.10
+	AnythingSlider v1.5.12
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -422,7 +422,7 @@
 			base.exactPage = page;
 			base.setCurrentPage(page, false);
 			// Add active panel class
-			base.$items.removeClass('activePage').eq(page).addClass('activePage');
+			base.$items.removeClass('activePage').eq(page - base.adjustLimit).addClass('activePage');
 
 			if (!base.hovered) { base.slideControls(false); }
 
