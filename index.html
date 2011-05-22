@@ -333,8 +333,20 @@ s.$window.scrollLeft( s.$window.width() + s.easingMargin ); // may not work if r
 
 		<h2>Changelog</h2>
 
-		Only the latest version will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
+		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.5.13</h3>
+			<ul>
+				<li>Fixed a bug where an empty UL would cause javascript errors - fix for issue #91.</li>
+				<li>Changed the panel positioning from using `scrollLeft` to `left`. This small change fixed a couple of problems including:
+					<ul>
+						<li>Print preview now shows the current panel without any additional css changes. The navigation arrows and tabs will need additonal print css styling.</li>
+						<li>Easing that required a negative margin using scrollLeft no longer needs any special handling - see issue #61.</li>
+						<li>A hidden AnythingSlider will now position properly. When attempting to set the panel with the slider hidden, scrollLeft would always return zero and not set properly. Updated Wiki FAQ with this information as well.</li>
+					</ul>
+				</li>
+			</ul>
 
 		<h3>Version 1.5.12</h3>
 			<ul>
@@ -407,43 +419,6 @@ s.$window.scrollLeft( s.$window.width() + s.easingMargin ); // may not work if r
 				</blockquote>
 				It's not ideal, but it does make it possible to have a fade transition between slides, just not a crossfade transition.
 			</li>
-		</ul>
-
-		<h3>Version 1.5.7.4</h3>
-		<ul>
-			<li>Added a license.</li>
-		</ul>
-
-		<h3>Version 1.5.7.3</h3>
-		<ul>
-			<li>Remove all ids in cloned panels - attempt to fix issue #59.</li>
-		</ul>
-
-		<h3>Version 1.5.7.2</h3>
-		<ul>
-			<li>Adjusted some css to replace the bottom border in other themes when the slider is not at default size.</li>
-			<li>Adjusted Portfolio css theme to not hide the control bar.</li>
-		</ul>
-
-		<h3>Version 1.5.7.1</h3>
-		<ul>
-			<li>Added css to fix RTL pages breaking the slider - fix for issue #57.</li>
-			<li>Added <code>overflow:hidden</code> to the anythingslider wrapper to prevent Opera and Safari from adding a horizontal scrollbar.</li>
-		</ul>
-
-		<h3>Version 1.5.7</h3>
-		<ul>
-			<li>Added <code>infiniteSlides</code> option. Fix for issue #58.
-				<ul>
-					<li>When true, the slider acts like an infinite slider.</li>
-					<li>When false, the slides stop at the first and last panel, even the slideshow.</li>
-					<li>The first and last panels are no longer cloned when this option is false. Blank panels were added in place.</li>
-					<li>When the slider is on the first or last panel, the slider will display a &quot;rewind&quot; effect if the <code>stopAtEnd</code> option is false.</li>
-					<li>When the slider is on the first or last panel and the <code>stopAtEnd</code> option is true, the back and forward arrow keys (respectively) will have a &quot;disabled&quot; class applied - modified in the css.</li>
-				</ul>
-			<li>Replace appropriate code to make AnythingSlider backwards compatible with jQuery 1.3.2, but you'll need to uncomment out the portion at the end. You'll have to add it manually to the minified version. Sort of fix for issue #38.</li>
-			<li>Removed callback functions set to &quot;null&quot; in the default options to reduce the file size. The callbacks will still work.</li>
-			<li>Modified bits of the code to appease the JSLint gods.</li>
 		</ul>
 
 	</div>

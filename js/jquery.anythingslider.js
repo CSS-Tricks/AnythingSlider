@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.12
+	AnythingSlider v1.5.13
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -60,10 +60,6 @@
 			base.currentPage = base.options.startPanel;
 			base.adjustLimit = (base.options.infiniteSlides) ? 0 : 1; // adjust page limits for infinite or limited modes
 			if (base.options.playRtl) { base.$wrapper.addClass('rtl'); }
-
-			// add extra margin on the left so easing functions like "easeInOutBounce" will work; because scrollLeft cannot go less than zero
-			base.easingMargin = (base.options.easing.match('swing|linear')) ? 0 : 100;
-			base.$el.css('margin-left', base.easingMargin + 'px');
 
 			// save some options
 			base.original = [ base.options.autoPlay, base.options.buildNavigation, base.options.buildArrows];
@@ -246,11 +242,11 @@
 		base.buildNavigation = function() {
 			var tmp, klass, $a;
 			if (base.options.buildNavigation && (base.pages > 1)) {
-				base.$items.filter(':not(.cloned)').each(function(i,el) {
+				base.$items.filter(':not(.cloned)').each(function(i) {
 					var index = i + 1;
 					klass = ((index === 1) ? 'first' : '') + ((index === base.pages) ? 'last' : '');
 					$a = $('<a href="#"></a>').addClass('panel' + index).wrap('<li class="' + klass + '" />');
-					base.$nav.append($a.parent()); // use $a.parent() so IE will add <li> instead of only the <a> to the <ul>
+					base.$nav.append($a.parent()); // use $a.parent() so it will add <li> instead of only the <a> to the <ul>
 
 					// If a formatter function is present, use it
 					if ($.isFunction(base.options.navigationFormatter)) {
@@ -330,7 +326,7 @@
 
 		// Set panel dimensions to either resize content or adjust panel to content
 		base.setDimensions = function(){
-			var w, h, c, cw, dw, leftEdge = base.easingMargin,
+			var w, h, c, cw, dw, leftEdge = 0,
 			 bww = base.$window.width(), winw = base.$win.width();
 			base.$items.each(function(i){
 				c = $(this).children('*');
@@ -403,19 +399,19 @@
 			}
 
 			// Animate Slider
-			base.$window.filter(':not(:animated)').animate(
-				{ scrollLeft : base.panelSize[(base.options.infiniteSlides) ? page : page - 1][2] },
+			base.$el.filter(':not(:animated)').animate(
+				{ left : -base.panelSize[(base.options.infiniteSlides) ? page : page - 1][2] },
 				{ queue: false, duration: base.options.animationTime, easing: base.options.easing, complete: function(){ base.endAnimation(page, callback); } }
 			);
 		};
 
 		base.endAnimation = function(page, callback){
 			if (page === 0) {
-				base.$window.scrollLeft(base.panelSize[base.pages][2]);
+				base.$el.css('left', -base.panelSize[base.pages][2]);
 				page = base.pages;
 			} else if (page > base.pages) {
 				// reset back to start position
-				base.$window.scrollLeft(base.panelSize[1][2]);
+				base.$el.css('left', -base.panelSize[1][2]);
 				page = 1;
 			}
 			base.exactPage = page;
@@ -471,7 +467,7 @@
 					height: base.panelSize[(base.options.infiniteSlides) ? page : page - 1][1]
 				});
 				base.$wrapper.scrollLeft(0); // reset in case tabbing changed this scrollLeft
-				base.$window.scrollLeft( base.panelSize[(base.options.infiniteSlides) ? page : page - 1][2] );
+				base.$el.css('left', -base.panelSize[(base.options.infiniteSlides) ? page : page - 1][2] );
 			}
 			// Update local variable
 			base.currentPage = page;
@@ -511,7 +507,7 @@
 		};
 
 		// Slide controls (nav and play/stop button up or down)
-		base.slideControls = function(toggle, playing){
+		base.slideControls = function(toggle){
 			var dir = (toggle) ? 'slideDown' : 'slideUp',
 				t1 = (toggle) ? 0 : base.options.animationTime,
 				t2 = (toggle) ? base.options.animationTime: 0,
@@ -655,7 +651,7 @@
 
 	$.fn.anythingSlider = function(options, callback) {
 
-		return this.each(function(i){
+		return this.each(function(){
 			var page, anySlide = $(this).data('AnythingSlider');
 
 			// initialize the slider but prevent multiple initializations
