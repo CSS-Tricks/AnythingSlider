@@ -159,7 +159,7 @@
 			}
 
 			// Remove navigation & player if there is only one page
-			if (base.pages === 1) {
+			if (base.pages <= 1) {
 				base.options.autoPlay = false;
 				base.options.buildNavigation = false;
 				base.options.buildArrows = false;
@@ -173,23 +173,23 @@
 				base.$controls.show();
 				base.$nav.show();
 				if (base.$forward) { base.$forward.add(base.$back).show(); }
+
+				// Build navigation tabs
+				base.buildNavigation();
+
+				// If autoPlay functionality is included, then initialize the settings
+				if (base.options.autoPlay) {
+					base.playing = !base.options.startStopped; // Sets the playing variable to false if startStopped is true
+					base.buildAutoPlay();
+				}
+
+				// Build forwards/backwards buttons
+				if (base.options.buildArrows) { base.buildNextBackButtons(); }
 			}
-
-			// Build navigation tabs
-			base.buildNavigation();
-
-			// If autoPlay functionality is included, then initialize the settings
-			if (base.options.autoPlay) {
-				base.playing = !base.options.startStopped; // Sets the playing variable to false if startStopped is true
-				base.buildAutoPlay();
-			}
-
-			// Build forwards/backwards buttons
-			if (base.options.buildArrows) { base.buildNextBackButtons(); }
 
 			// Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
 			// This supports the "infinite" scrolling, also ensures any cloned elements don't duplicate an ID
-			if (base.options.infiniteSlides) {
+			if (base.options.infiniteSlides && base.pages > 1) {
 				base.$el.prepend( base.$items.filter(':last').clone().addClass('cloned').removeAttr('id') );
 				base.$el.append( base.$items.filter(':first').clone().addClass('cloned').removeAttr('id') );
 				base.$el.find('li.cloned').each(function(){
@@ -209,7 +209,6 @@
 				base.setCurrentPage(base.pages, false);
 			}
 			base.$nav.find('a').eq(base.currentPage - 1).addClass('cur'); // update current selection
-			base.$controls.show();
 
 			base.hasEmb = base.$items.find('embed[src*=youtube]').length; // embedded youtube objects exist in the slider
 			base.hasSwfo = (typeof(swfobject) !== 'undefined' && swfobject.hasOwnProperty('embedSWF') && $.isFunction(swfobject.embedSWF)) ? true : false; // is swfobject loaded?
@@ -303,7 +302,7 @@
 
 		// Creates the Start/Stop button
 		base.buildAutoPlay = function(){
-			if (base.$startStop) { return; }
+			if (base.$startStop || base.pages < 2) { return; }
 			base.$startStop = $("<a href='#' class='start-stop'></a>").html('<span>' + (base.playing ? base.options.stopText : base.options.startText) + '</span>');
 			base.$controls.prepend(base.$startStop);
 			base.$startStop
@@ -369,7 +368,7 @@
 		};
 
 		base.gotoPage = function(page, autoplay, callback) {
-			if (base.pages === 1) { return; }
+			if (base.pages <= 1) { return; }
 			base.$lastPage = base.$currentPage;
 			if (typeof(page) !== "number") {
 				page = base.options.startPage;
@@ -448,6 +447,7 @@
 		};
 
 		base.setCurrentPage = function(page, move) {
+			if (base.pages <= 1) { return; }
 			if (page > base.pages + 1 - base.adjustLimit) { page = base.pages - base.adjustLimit; }
 			if (page < base.adjustLimit ) { page = 1; }
 
