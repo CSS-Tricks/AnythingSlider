@@ -131,7 +131,7 @@
 			<a class="current" href="index.html">Main Demo</a>
 			<a href="simple.html">Simple Demo</a>
 			<a href="demos.html">FX Demos</a>
-			<a class="play" href="http://jsfiddle.net/Mottie/JMgeC/">Playground</a>
+			<a class="play" href="http://jsfiddle.net/Mottie/S8Je5/">Playground</a>
 			<a class="git" href="https://github.com/ProLoser/AnythingSlider/wiki">Documentation</a>
 			<a class="git" href="http://github.com/ProLoser/AnythingSlider/downloads">Download</a>
 			<a class="issue" href="https://github.com/ProLoser/AnythingSlider/issues">Issues</a>
@@ -239,6 +239,7 @@
 			<li>Add or remove content, then easily update the slider.</li>
 			<li>Themes can be applied to individual sliders.</li>
 			<li>Infinite/Continuous sliding (always slides in the direction you are going, even at "last" slide). This can be disabled.</li>
+			<li>Show multiple slides within AnythingSlider at once. *New in version 1.5.14*</li>
 			<li>Optionally resize each panel (specified per panel in css).</li>
 			<li>Optional Next / Previous Panel Arrows.</li>
 			<li>Use keyboard navigation or tabs that are built and added dynamically (any number of panels).</li>
@@ -263,6 +264,7 @@
   width               : null,      // Override the default CSS width
   height              : null,      // Override the default CSS height
   resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
+  showMultiple        : false,     // Set this value to a number and it will show that many slides at once
   tooltipClass        : 'tooltip', // Class added to navigation &amp; start/stop button (text copied to title if it is hidden by a negative text indent)
   theme               : 'default', // Theme name
   themeDirectory      : 'css/theme-{themeName}.css', // Theme directory &amp; filename {themeName} is replaced by the theme value above
@@ -322,13 +324,7 @@
 
 		<h2>Known Issues</h2>
 		<ul>
-			<li>When AnythingSlider is initialized on a hidden element, the last slide will show instead of the first. This is because a <code>scrollLeft</code> value cannot be applied to a hidden element. So either initialize it with visibility hidden, or if that isn't possible, then set the scrollLeft when it becomes visible:
-					<blockquote>
-						<br>
-						<pre>var s = $('#slider1').data('AnythingSlider');
-s.$window.scrollLeft( s.$window.width() + s.easingMargin ); // may not work if resizeContents is false (width will vary)</pre>
-					</blockquote>
-			</li>
+			<li>None that we know of!</li>
 		</ul>
 
 		<h2>Changelog</h2>
@@ -336,13 +332,27 @@ s.$window.scrollLeft( s.$window.width() + s.easingMargin ); // may not work if r
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.5.14</h3>
+			<ul>
+				<li>Added <code>showMultiple</code> option - A enhancement proposed in <a href="https://github.com/ProLoser/AnythingSlider/issues/72">issue #72</a>.
+					<ul>
+						<li>When set to a number, AnythingSlider will show that number of slides within the view port.</li>
+						<li>When showing multiple slides, width of the slider MUST be included - well actually it is the width of one slide, so the plugin can figure out how big to make the view port.</li>
+						<li>The maximum number of slides showing is set to the number of slides.</li>
+						<li>If slides have different dimensions and <code>resizeContents</code> is set to <code>false</code>, the slider will resize to the height of the taller slide.</li>
+						<li>Updated the playground with this option. Check it this <a href="http://jsfiddle.net/Mottie/S8Je5/1/">demo</a> with two slides showing!</li>
+						<li>Thanks to <a href="https://github.com/caseybecking">caseybecking</a> for the idea. And a ton more thanks to <a href="https://github.com/poebel">Poebel</a> for sharing the code to do this.</li>
+					</ul>
+				</li>
+			</ul>
+
 		<h3>Version 1.5.13</h3>
 			<ul>
-				<li>Fixed a bug where an empty UL would cause javascript errors - fix for issue #91.</li>
+				<li>Fixed a bug where an empty UL would cause javascript errors - fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/91">issue #91</a>.</li>
 				<li>Changed the panel positioning from using `scrollLeft` to `left`. This small change fixed a couple of problems including:
 					<ul>
 						<li>Print preview now shows the current panel without any additional css changes. The navigation arrows and tabs will need additonal print css styling.</li>
-						<li>Easing that required a negative margin using scrollLeft no longer needs any special handling - see issue #61.</li>
+						<li>Easing that required a negative margin using scrollLeft no longer needs any special handling - see <a href="https://github.com/ProLoser/AnythingSlider/issues/61">issue #61</a>.</li>
 						<li>A hidden AnythingSlider will now position properly. When attempting to set the panel with the slider hidden, scrollLeft would always return zero and not set properly. Updated Wiki FAQ with this information as well.</li>
 					</ul>
 				</li>
@@ -366,8 +376,8 @@ s.$window.scrollLeft( s.$window.width() + s.easingMargin ); // may not work if r
 			<ul>
 				<li>Fixed a bug that triggers the <code>slideshow_stop</code> event and <code>onShowStop</code> callback after each slide change. It now properly triggers after a running slideshow has stopped.</li>
 				<li>Changed code to completely remove the empty slides when <code>infiniteSlides</code> is false. It was code that was unnecessarily left in.</li> 
-				<li>Changed code that replaced links in the cloned panels with code that disables the links - fix for issue #59.</li>
-				<li>Added a stylesheet to fix the theme problems in IE7 - fix for issue #71.
+				<li>Changed code that replaced links in the cloned panels with code that disables the links - fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/59">issue #59</a>.</li>
+				<li>Added a stylesheet to fix the theme problems in IE7 - fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/71">issue #71</a>.
 					<ul>
 						<li>I'm not sure if this solution works for IE6.</li>
 						<li>One problem was that the navigation links have a negative text-indent. IE7 sends the entire link off-screen instead of just the text inside.</li>
@@ -375,10 +385,10 @@ s.$window.scrollLeft( s.$window.width() + s.easingMargin ); // may not work if r
 						<li>The second problem with the navigation arrows being cut off was due to the negative top marginl. So a separate conditionally loaded stylesheet was added with the top margin set to zero and a specific top percentage for each style.</li>
 					</ul>
 				</li>
-				<li>Added <code>width: 100%</code> to the second slider's fourth panel instead of leaving the width/height undefined. In IE7, it would make the panel 20 pixels wide - fix for issue #73.</li>
+				<li>Added <code>width: 100%</code> to the second slider's fourth panel instead of leaving the width/height undefined. In IE7, it would make the panel 20 pixels wide - fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/73">issue #73</a>.</li>
 				<li>Fx Extension changes:
 					<ul>
-						<li>Fixed Fx Caption problem with FX not working when moving from first panel to last panel - fix for issue #75.</li>
+						<li>Fixed Fx Caption problem with FX not working when moving from first panel to last panel - fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/75">issue #75</a>.</li>
 						<li>Fixed Fx caption to now show hidden ("display:none") captions. When clicking on the "x" in the caption, it was hiding the captions permanently, now it doesn't.</li>
 						<li>Changed FX Extension custom FX <code>time</code> to what it should have been, <code>duration</code>. To match the animation option.</li>
 					</ul>
@@ -397,9 +407,9 @@ s.$window.scrollLeft( s.$window.width() + s.easingMargin ); // may not work if r
 			<li>Changed theme stylesheet to be appended into the document head.</li>
 			<li>Fixed some of the theme stylesheets so the navigtion links now show in IE8, but still not in IE7 - see known issues above.</li>
 			<li>Fixed a problem where the active slider would move when using arrow keys inside a text area or input.</li>
-			<li>Fixed animating arrow opacity bug - fix for issue #60.</li>
-			<li>Fixed easing on the first slide. Fix for issue #61.</li>
-			<li>`currentPage` now shows the correct number during events. Fix for issue #69.(</li>
+			<li>Fixed animating arrow opacity bug - fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/60">issue #60</a>.</li>
+			<li>Fixed easing on the first slide. Fix for issue <a href="https://github.com/ProLoser/AnythingSlider/issues/61">#61</a>.</li>
+			<li>`currentPage` now shows the correct number during events. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/69">issue #69</a>.(</li>
 			<li>Fixed a minor problem with the FX extension fade. Regular base FX expect a size to be the second parameter, and since there is no size for 'fade' it now uses the second parameter for time. So, now this is possible:
 				<blockquote>
 					<pre>$('#slider1')

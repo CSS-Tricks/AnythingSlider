@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.13
+	AnythingSlider v1.5.14
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -148,10 +148,10 @@
 			base.$items = base.$el.find('> li'); 
 			base.pages = base.$items.length;
 
-			// Set the dimensions of each panel
-			if (base.options.resizeContents) {
-				if (base.options.width) { base.$wrapper.add(base.$items).css('width', base.options.width); }
-				if (base.options.height) { base.$wrapper.add(base.$items).css('height', base.options.height); }
+			if (base.options.showMultiple > 1) {
+				if (base.options.showMultiple > base.pages) { base.options.showMultiple = base.pages; }
+				base.adjustMultiple = (base.options.infiniteSlides) ? 0 : parseInt(base.options.showMultiple, 10) - 1;
+				base.pages = base.$items.length - base.adjustMultiple;
 			}
 
 			// Remove navigation & player if there is only one page
@@ -186,11 +186,16 @@
 			// Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
 			// This supports the "infinite" scrolling, also ensures any cloned elements don't duplicate an ID
 			if (base.options.infiniteSlides && base.pages > 1) {
-				base.$el.prepend( base.$items.filter(':last').clone().addClass('cloned').removeAttr('id') );
-				base.$el.append( base.$items.filter(':first').clone().addClass('cloned').removeAttr('id') );
+				base.$el.prepend( base.$items.last().clone().addClass('cloned').removeAttr('id') );
+				// Add support for multiple sliders shown at the same time
+				if (base.options.showMultiple > 1) {
+					base.$el.append( base.$items.filter(':lt(' + base.options.showMultiple + ')').clone().addClass('cloned').addClass('multiple').removeAttr('id') );
+				} else {
+					base.$el.append( base.$items.first().clone().addClass('cloned').removeAttr('id') );
+				}
 				base.$el.find('li.cloned').each(function(){
 					// disable all <a> in cloned panels to prevent shifting the panels by tabbing
-					$(this).find('a').attr('disabled', 'disabled');
+					$(this).find('a,input,textarea,select').attr('disabled', 'disabled');
 					$(this).find('[id]').removeAttr('id');
 				});
 			}
@@ -199,6 +204,15 @@
 			base.$items = base.$el.find('> li').addClass('panel');
 			base.setDimensions();
 			if (!base.options.resizeContents) { base.$win.load(function(){ base.setDimensions(); }); } // set dimensions after all images load
+
+			// Set the dimensions of each panel
+			if (base.options.resizeContents) {
+				if (base.options.width) {
+					base.$items.css('width', base.options.width);
+					base.$wrapper.css('width', base.getDim(base.currentPage)[0]);
+				}
+				if (base.options.height) { base.$wrapper.add(base.$items).css('height', base.options.height); }
+			}
 
 			if (base.currentPage > base.pages) {
 				base.currentPage = base.pages;
@@ -327,7 +341,9 @@
 		// Set panel dimensions to either resize content or adjust panel to content
 		base.setDimensions = function(){
 			var w, h, c, cw, dw, leftEdge = 0,
-			 bww = base.$window.width(), winw = base.$win.width();
+				// showMultiple must have base.options.width set!!
+				bww = (base.options.showMultiple > 1) ? base.options.width || base.$window.width() : base.$window.width(),
+				winw = base.$win.width();
 			base.$items.each(function(i){
 				c = $(this).children('*');
 				if (base.options.resizeContents){
@@ -363,6 +379,21 @@
 			base.$el.css('width', (leftEdge < base.options.maxOverallWidth) ? leftEdge : base.options.maxOverallWidth);
 		};
 
+		// get dimension of multiple panels, as needed
+		base.getDim = function(page){
+			page = (base.options.infiniteSlides) ? page : page - 1;
+			var i,
+				w = base.panelSize[page][0],
+				h = base.panelSize[page][1];
+			if (base.options.showMultiple > 1) {
+				for (i=1; i < base.options.showMultiple; i++) {
+					w += base.panelSize[(page + i)%base.options.showMultiple][0];
+					h = Math.max(h, base.panelSize[page + i][1]);
+				}
+			}
+			return [w,h];
+		};
+
 		base.gotoPage = function(page, autoplay, callback) {
 			if (base.pages <= 1) { return; }
 			base.$lastPage = base.$currentPage;
@@ -373,6 +404,7 @@
 
 			// pause YouTube videos before scrolling or prevent change if playing
 			if (base.hasEmb && base.checkVideo(base.playing)) { return; }
+
 			if (page > base.pages + 1 - base.adjustLimit) { page = (!base.options.infiniteSlides && !base.options.stopAtEnd) ? 1 : base.pages; }
 			if (page < base.adjustLimit ) { page = (!base.options.infiniteSlides && !base.options.stopAtEnd) ? base.pages : 1; }
 			base.currentPage = ( page > base.pages ) ? base.pages : ( page < 1 ) ? 1 : base.currentPage;
@@ -392,8 +424,9 @@
 			// resize slider if content size varies
 			if (!base.options.resizeContents) {
 				// animating the wrapper resize before the window prevents flickering in Firefox
+				var d = base.getDim(page);
 				base.$wrapper.filter(':not(:animated)').animate(
-					{ width: base.panelSize[(base.options.infiniteSlides) ? page : page - 1][0], height: base.panelSize[(base.options.infiniteSlides) ? page : page - 1][1] },
+					{ width: d[0], height: d[1] },
 					{ queue: false, duration: base.options.animationTime, easing: base.options.easing }
 				);
 			}
@@ -462,10 +495,8 @@
 
 			// Only change left if move does not equal false
 			if (!move) {
-				base.$wrapper.css({
-					width: base.panelSize[(base.options.infiniteSlides) ? page : page - 1][0],
-					height: base.panelSize[(base.options.infiniteSlides) ? page : page - 1][1]
-				});
+				var d = base.getDim(page);
+				base.$wrapper.css({ width: d[0], height: d[1] });
 				base.$wrapper.scrollLeft(0); // reset in case tabbing changed this scrollLeft
 				base.$el.css('left', -base.panelSize[(base.options.infiniteSlides) ? page : page - 1][2] );
 			}
@@ -602,6 +633,7 @@
 		width               : null,      // Override the default CSS width
 		height              : null,      // Override the default CSS height
 		resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
+		showMultiple        : false,     // Set this value to a number and it will show that many slides at once
 		tooltipClass        : 'tooltip', // Class added to navigation & start/stop button (text copied to title if it is hidden by a negative text indent)
 		theme               : 'default', // Theme name
 		themeDirectory      : 'css/theme-{themeName}.css', // Theme directory & filename {themeName} is replaced by the theme value above
