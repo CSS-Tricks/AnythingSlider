@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.14
+	AnythingSlider v1.5.15
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -57,7 +57,7 @@
 			base.slideshow = false; // slideshow flag
 			base.hovered = false; // actively hovering over the slider
 			base.panelSize = [];  // will contain dimensions and left position of each panel
-			base.currentPage = base.options.startPanel;
+			base.currentPage = base.options.startPanel = parseInt(base.options.startPanel,10) || 1; // make sure this isn't a string
 			base.adjustLimit = (base.options.infiniteSlides) ? 0 : 1; // adjust page limits for infinite or limited modes
 			if (base.options.playRtl) { base.$wrapper.addClass('rtl'); }
 
@@ -398,8 +398,8 @@
 			if (base.pages <= 1) { return; }
 			base.$lastPage = base.$currentPage;
 			if (typeof(page) !== "number") {
-				page = base.options.startPage;
-				base.setCurrentPage(base.options.startPage);
+				page = base.options.startPanel;
+				base.setCurrentPage(page);
 			}
 
 			// pause YouTube videos before scrolling or prevent change if playing
@@ -477,6 +477,7 @@
 
 		base.setCurrentPage = function(page, move) {
 			if (base.pages <= 1) { return; }
+			page = parseInt(page, 10);
 			if (page > base.pages + 1 - base.adjustLimit) { page = base.pages - base.adjustLimit; }
 			if (page < base.adjustLimit ) { page = 1; }
 
