@@ -131,7 +131,7 @@
 			<a class="current" href="index.html">Main Demo</a>
 			<a href="simple.html">Simple Demo</a>
 			<a href="demos.html">FX Demos</a>
-			<a class="play" href="http://jsfiddle.net/Mottie/S8Je5/">Playground</a>
+			<a class="play" href="http://jsfiddle.net/Mottie/pbbYP/">Playground</a>
 			<a class="git" href="https://github.com/ProLoser/AnythingSlider/wiki">Documentation</a>
 			<a class="git" href="http://github.com/ProLoser/AnythingSlider/downloads">Download</a>
 			<a class="issue" href="https://github.com/ProLoser/AnythingSlider/issues">Issues</a>
@@ -331,6 +331,21 @@
 
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.5.16</h3>
+			<ul>
+				<li>Added the <code>expand</code> option:
+					<ul>
+						<li>When true, the slider will expand to fit into the parent element.</li>
+						<li>This option allows you to apply a percentage width to the parent element for a fluid layout and have the slider resize automatically.</li>
+						<li>One example would be to have a div set to say "100%" browser width. The slider will expand to fit inside this div (width and height).</li>
+						<li>Please do not have the parent element of the slider be the body of the page. It won't break anything, but the height is difficult to determine since the body height measured doesn't include other elements on the page</li>
+						<li>There is a slight delay while resizing (500 millisecond) as the plugin resizes and repositions the panels. You'll just have to live with it :(</li>
+						<li>There is one bug in *Opera* where the height isn't set until the parent element is resized... I'll try to find it.</li>
+					</ul>
+				</li>
+				<li>Also fixed the <code>showMultiple</code> code so that a width is no longer required if and only if all the panels are the same width. It simply divides the slider width by the number of slides to show... so you see why this may not work so well with different width panels.</li>
+			</ul>
 
 		<h3>Version 1.5.15</h3>
 			<ul>

@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.15
+	AnythingSlider v1.5.16
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -36,6 +36,7 @@
 
 			base.options = $.extend({}, $.anythingSlider.defaults, options);
 
+			base.initialized = false;
 			if ($.isFunction(base.options.onBeforeInitialize)) { base.$el.bind('before_initialize', base.options.onBeforeInitialize); }
 			base.$el.trigger('before_initialize', base);
 
@@ -51,7 +52,6 @@
 			base.$nav = $('<ul class="thumbNav" />').appendTo(base.$controls);
 
 			// Set up a few defaults & get details
-			base.timer   = null;  // slideshow timer (setInterval) container
 			base.flag    = false; // event flag to prevent multiple calls (used in control click/focusin)
 			base.playing = false; // slideshow state
 			base.slideshow = false; // slideshow flag
@@ -59,10 +59,20 @@
 			base.panelSize = [];  // will contain dimensions and left position of each panel
 			base.currentPage = base.options.startPanel = parseInt(base.options.startPanel,10) || 1; // make sure this isn't a string
 			base.adjustLimit = (base.options.infiniteSlides) ? 0 : 1; // adjust page limits for infinite or limited modes
+			base.outerPad = [ base.$wrapper.innerWidth() - base.$wrapper.width(), base.$wrapper.innerHeight() - base.$wrapper.height() ];
 			if (base.options.playRtl) { base.$wrapper.addClass('rtl'); }
 
 			// save some options
 			base.original = [ base.options.autoPlay, base.options.buildNavigation, base.options.buildArrows];
+
+			// Expand slider to fit parent
+			if (base.options.expand) {
+				base.$outer = base.$wrapper.parent();
+				base.$window.css({ width: '100%', height: '100%' }); // needed for Opera
+				base.outerDim = [ base.$outer.width(), base.$outer.height() ];
+				base.checkResize();
+			}
+
 			base.updateSlider();
 
 			base.$lastPage = base.$currentPage;
@@ -135,6 +145,7 @@
 					setTimeout(function(){ base.options.onSlideComplete(base); }, 0);
 				});
 			}
+			base.initialized = true;
 			base.$el.trigger('initialized', base);
 
 		};
@@ -147,6 +158,7 @@
 
 			base.$items = base.$el.find('> li'); 
 			base.pages = base.$items.length;
+			base.options.showMultiple = parseInt(base.options.showMultiple,10) || 1; // only integers allowed
 
 			if (base.options.showMultiple > 1) {
 				if (base.options.showMultiple > base.pages) { base.options.showMultiple = base.pages; }
@@ -338,12 +350,33 @@
 			base.startStop(base.playing);
 		};
 
+		// Adjust slider dimensions on parent element resize
+		base.checkResize = function(stopTimer){
+			clearTimeout(base.resizeTimer);
+			base.resizeTimer = setTimeout(function(){
+				var w = base.$outer.width(), h = (base.$outer[0].tagName === "BODY") ? base.$win.height() : base.$outer.height(), dim = base.outerDim;
+				if (dim[0] !== w || dim[1] !== h) {
+					base.outerDim = [ w, h ];
+					base.setDimensions(); // adjust panel sizes
+					// make sure page is lined up (use 1 millisecond animation time, because "0||x" ignores zeros)
+					base.gotoPage(base.currentPage, base.playing, null, 1);
+				}
+				if (typeof(stopTimer) === 'undefined'){ base.checkResize(); }
+			}, 500);
+		};
+
 		// Set panel dimensions to either resize content or adjust panel to content
 		base.setDimensions = function(){
 			var w, h, c, cw, dw, leftEdge = 0,
 				// showMultiple must have base.options.width set!!
-				bww = (base.options.showMultiple > 1) ? base.options.width || base.$window.width() : base.$window.width(),
+				bww = (base.options.showMultiple > 1) ? base.options.width || base.$window.width()/base.options.showMultiple : base.$window.width(),
 				winw = base.$win.width();
+			if (base.options.expand){
+				w = base.$outer.width() - base.outerPad[0];
+				h = base.$outer.height() - base.outerPad[1];
+				base.$wrapper.add(base.$window).add(base.$items).css({ width: w, height: h });
+				bww = (base.options.showMultiple > 1) ? w/base.options.showMultiple : w;
+			}
 			base.$items.each(function(i){
 				c = $(this).children('*');
 				if (base.options.resizeContents){
@@ -353,7 +386,7 @@
 					// resize panel
 					$(this).css({ width: w, height: h });
 					// resize panel contents, if solitary (wrapped content or solitary image)
-					if (c.length === 1){
+					if (!base.initialized && c.length === 1){
 						c.css({ width: '100%', height: '100%' });
 						if (c[0].tagName === "OBJECT") { c.find('embed').andSelf().attr({ width: '100%', height: '100%' }); }
 					}
@@ -394,7 +427,7 @@
 			return [w,h];
 		};
 
-		base.gotoPage = function(page, autoplay, callback) {
+		base.gotoPage = function(page, autoplay, callback, time) {
 			if (base.pages <= 1) { return; }
 			base.$lastPage = base.$currentPage;
 			if (typeof(page) !== "number") {
@@ -427,14 +460,14 @@
 				var d = base.getDim(page);
 				base.$wrapper.filter(':not(:animated)').animate(
 					{ width: d[0], height: d[1] },
-					{ queue: false, duration: base.options.animationTime, easing: base.options.easing }
+					{ queue: false, duration: time || base.options.animationTime, easing: base.options.easing }
 				);
 			}
 
 			// Animate Slider
 			base.$el.filter(':not(:animated)').animate(
 				{ left : -base.panelSize[(base.options.infiniteSlides) ? page : page - 1][2] },
-				{ queue: false, duration: base.options.animationTime, easing: base.options.easing, complete: function(){ base.endAnimation(page, callback); } }
+				{ queue: false, duration: time || base.options.animationTime, easing: base.options.easing, complete: function(){ base.endAnimation(page, callback); } }
 			);
 		};
 
@@ -633,6 +666,7 @@
 		// Appearance
 		width               : null,      // Override the default CSS width
 		height              : null,      // Override the default CSS height
+		expand              : false,     // If true, the entire slider will expand to fit the parent element
 		resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
 		showMultiple        : false,     // Set this value to a number and it will show that many slides at once
 		tooltipClass        : 'tooltip', // Class added to navigation & start/stop button (text copied to title if it is hidden by a negative text indent)
