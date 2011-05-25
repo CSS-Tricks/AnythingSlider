@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>AnythingSlider Simple Demo</title>
+	<title>AnythingSlider Expanding Demo</title>
 
 	<!-- jQuery (required) -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
@@ -16,49 +16,76 @@
 	<link rel="stylesheet" href="css/anythingslider.css">
 	<script src="js/jquery.anythingslider.js"></script>
 	<script>
-		// DOM Ready
-		$(function(){
-			$('#slider').anythingSlider();
+	$(function () {
+		$('#slider1').anythingSlider({
+//			theme : 'metallic',
+			expand       : true,
+			startStopped    : false
 		});
-	</script>
 
+		$('#slider2').anythingSlider({
+//			theme : 'metallic',
+			expand       : true,
+			showMultiple    : 2,
+			startStopped    : true
+		});
+
+	});
+	</script>
 	<!-- Older IE stylesheet, to reposition navigation arrows, added AFTER the theme stylesheet -->
 	<!--[if lte IE 7]>
 	<link rel="stylesheet" href="css/anythingslider-ie.css" type="text/css" media="screen" />
 	<![endif]-->
 </head>
 
-<body>
+<body id="expand">
 
 	<!-- Links to other demo pages & docs -->
 	<div id="nav">
 		<a href="index.html">Main Demo</a>
-		<a class="current" href="simple.html">Simple Demo</a>
-		<a href="expand.html">Expand Demo</a>
+		<a href="simple.html">Simple Demo</a>
+		<a class="current" href="expand.html">Expand Demo</a>
 		<a href="demos.html">FX Demos</a>
 		<a class="play" href="http://jsfiddle.net/Mottie/pbbYP/">Playground</a>
 		<a class="git" href="https://github.com/ProLoser/AnythingSlider/wiki">Documentation</a>
 		<a class="git" href="http://github.com/ProLoser/AnythingSlider/downloads">Download</a>
-		<a class="issue" href="https://github.com/ProLoser/AnythingSlider/issues">Issues</a><br><br>
+		<a class="issue" href="https://github.com/ProLoser/AnythingSlider/issues">Issues</a>
 	</div>
 	<!-- End Links -->
 
-	<!-- Simple AnythingSlider -->
+<h1>Expanding Slider Demo</h1>
 
-	<ul id="slider">
+<h2>Full width</h2>
 
+	<!-- Expanding AnythingSlider 100% width -->
+
+<div id="wrapper1">
+	<ul id="slider1">
 		<li><img src="demos/images/slide-civil-1.jpg" alt=""></li>
-
 		<li><img src="demos/images/slide-env-1.jpg" alt=""></li>
-
 		<li><img src="demos/images/slide-civil-2.jpg" alt=""></li>
-
 		<li><img src="demos/images/slide-env-2.jpg" alt=""></li>
-
 	</ul>
+</div>
 
 	<!-- END AnythingSlider -->
 
+<br>
+
+<h2>Half width with two images showing</h2>
+	<!-- Expanding AnythingSlider 50% width -->
+
+<div id="wrapper2">
+	<ul id="slider2">
+		<li><img src="demos/images/slide-tele-1.jpg" alt=""></li>
+		<li><img src="demos/images/slide-env-1.jpg" alt=""></li>
+		<li><img src="demos/images/slide-tele-2.jpg" alt=""></li>
+		<li><img src="demos/images/slide-env-2.jpg" alt=""></li>
+	</ul>
+</div>
+
+	<!-- END AnythingSlider -->
+	
 </body>
 
 </html>

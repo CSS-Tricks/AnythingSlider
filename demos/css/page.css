@@ -2,7 +2,7 @@
 body                   { font: 12px Georgia, Serif; background: #fff; color: #000; }
 a, a img               { border: 0; text-decoration: none; }
 
-#page-wrap, #demo2     { width: 90%; padding: 15px; margin: 0 auto 50px; position: relative; }
+#page-wrap, #demo2     { width: 90%; padding: 0 15px; margin: 0 auto 50px; position: relative; }
 
 h1                     { font: bold 60px Helvetica, Sans-Serif; letter-spacing: -2px; margin: 20px 0; text-align: center; }
 h2                     { font: bold 30px Helvetica, Sans-Serif; letter-spacing: -1px; margin: 0 0 10px 0; color: #002266; }
@@ -26,7 +26,7 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 
 #status                { color: #00a; font-weight: bold; }
 .alert                 { color: #f00; font-weight: bold; }
-.alert a               { color: #a00; }
+.alert a, .attention   { color: #a00; }
 .data                  { width: 100%; border: #555 1px solid; border-collapse: collapse; }
 .data td, .data th     { border: #555 1px solid; padding: 0 5px; }
 .data th               { background: #eee; }
@@ -105,3 +105,8 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 
 /* Left caption - padding is included in the width (130px here, 150px in the script), same for height */
 #slider3 .caption-left   { left: 0; bottom: 0; width: 130px; height: 180px;  }
+
+/* Expand Demo Page */
+#wrapper1 { width: 100%; height: 300px; margin: 0 auto; }
+#wrapper2 { width: 50%; height: 300px; margin: 0 auto; }
+body#expand h2 { text-align: center; }

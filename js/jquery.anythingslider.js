@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.16
+	AnythingSlider v1.5.17
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -198,12 +198,12 @@
 			// Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
 			// This supports the "infinite" scrolling, also ensures any cloned elements don't duplicate an ID
 			if (base.options.infiniteSlides && base.pages > 1) {
-				base.$el.prepend( base.$items.last().clone().addClass('cloned').removeAttr('id') );
+				base.$el.prepend( base.$items.filter(':last').clone().addClass('cloned').removeAttr('id') );
 				// Add support for multiple sliders shown at the same time
 				if (base.options.showMultiple > 1) {
 					base.$el.append( base.$items.filter(':lt(' + base.options.showMultiple + ')').clone().addClass('cloned').addClass('multiple').removeAttr('id') );
 				} else {
-					base.$el.append( base.$items.first().clone().addClass('cloned').removeAttr('id') );
+					base.$el.append( base.$items.filter(':first').clone().addClass('cloned').removeAttr('id') );
 				}
 				base.$el.find('li.cloned').each(function(){
 					// disable all <a> in cloned panels to prevent shifting the panels by tabbing
