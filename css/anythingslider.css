@@ -66,8 +66,8 @@ div.anythingSlider {
 	position: relative;
 	padding: 0 45px 28px 45px;
 }
-/* anythingSlider base UL */
-ul.anythingBase {
+/* anythingSlider base */
+.anythingBase {
 	background: transparent;
 	list-style: none;
 	position: absolute;
@@ -76,7 +76,7 @@ ul.anythingBase {
 	margin: 0;
 	padding: 0;
 }
-ul.anythingBase li.panel {
+.anythingBase .panel {
 	background: transparent;
 	display: block;
 	overflow: hidden;

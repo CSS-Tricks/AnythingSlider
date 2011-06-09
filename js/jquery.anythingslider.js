@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.18
+	AnythingSlider v1.5.19
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -85,11 +85,6 @@
 			// Make sure easing function exists.
 			if (!$.isFunction($.easing[o.easing])) { o.easing = "swing"; }
 
-			// Add theme stylesheet, if it isn't already loaded
-			if (o.theme !== 'default' && !$('link[href*=' + o.theme + ']').length){
-				$('head').append('<link rel="stylesheet" href="' + o.themeDirectory.replace(/\{themeName\}/g, o.theme) + '" type="text/css" />');
-			}
-
 			// If pauseOnHover then add hover effects
 			if (o.pauseOnHover) {
 				base.$wrapper.hover(function() {
@@ -154,10 +149,10 @@
 		// called during initialization & to update the slider if a panel is added or deleted
 		base.updateSlider = function(){
 			// needed for updating the slider
-			base.$el.find('li.cloned').remove();
+			base.$el.children('.cloned').remove();
 			base.$nav.empty();
 
-			base.$items = base.$el.find('> li'); 
+			base.$items = base.$el.children(); 
 			base.pages = base.$items.length;
 			o.showMultiple = parseInt(o.showMultiple,10) || 1; // only integers allowed
 
@@ -206,7 +201,7 @@
 				} else {
 					base.$el.append( base.$items.filter(':first').clone().addClass('cloned').removeAttr('id') );
 				}
-				base.$el.find('li.cloned').each(function(){
+				base.$el.find('.cloned').each(function(){
 					// disable all <a> in cloned panels to prevent shifting the panels by tabbing
 					$(this).find('a,input,textarea,select').attr('disabled', 'disabled');
 					$(this).find('[id]').removeAttr('id');
@@ -214,7 +209,7 @@
 			}
 
 			// We just added two items, time to re-cache the list, then get the dimensions of each panel
-			base.$items = base.$el.find('> li').addClass('panel');
+			base.$items = base.$el.children().addClass('panel');
 			base.setDimensions();
 
 			// Set the dimensions of each panel
@@ -648,7 +643,7 @@
 					// player states: unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
 					ps = emb[0].getPlayerState();
 					// if autoplay, video playing, video is in current panel and resume option are true, then don't advance
-					if (playing && (ps === 1 || ps > 2) && base.$items.index(emb.closest('li.panel')) === base.currentPage && o.resumeOnVideoEnd) {
+					if (playing && (ps === 1 || ps > 2) && base.$items.index(emb.closest('.panel')) === base.currentPage && o.resumeOnVideoEnd) {
 						stopAdvance = true;
 					} else {
 						// pause video if not autoplaying (if already initialized)
@@ -672,7 +667,6 @@
 		showMultiple        : false,     // Set this value to a number and it will show that many slides at once
 		tooltipClass        : 'tooltip', // Class added to navigation & start/stop button (text copied to title if it is hidden by a negative text indent)
 		theme               : 'default', // Theme name
-		themeDirectory      : 'css/theme-{themeName}.css', // Theme directory & filename {themeName} is replaced by the theme value above
 
 		// Navigation
 		startPanel          : 1,         // This sets the initial panel

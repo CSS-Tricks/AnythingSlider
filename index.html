@@ -261,7 +261,7 @@
 		See the documentation for complete description of these options (<a href="https://github.com/ProLoser/AnythingSlider/wiki/Appearance-Options">appearance</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Navigation-Options">navigation</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Slideshow-Options">slideshow</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Callbacks-and-Events">callbacks &amp; events</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Interactivity-and-Miscellaneous-Options">interativity &amp; misc</a>).<br>
 		<br>
 		<blockquote>
-			<pre>$('#slider1, #slider2').anythingSlider({
+			<pre>$('#slider').anythingSlider({
   // Appearance
   width               : null,      // Override the default CSS width
   height              : null,      // Override the default CSS height
@@ -269,8 +269,7 @@
   resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
   showMultiple        : false,     // Set this value to a number and it will show that many slides at once
   tooltipClass        : 'tooltip', // Class added to navigation &amp; start/stop button (text copied to title if it is hidden by a negative text indent)
-  theme               : 'default', // Theme name
-  themeDirectory      : 'css/theme-{themeName}.css', // Theme directory &amp; filename {themeName} is replaced by the theme value above
+  theme               : 'default', // Theme name - adds a class name to the base element "anythingSlider-{theme}" so the loaded theme will work.
 
   // Navigation
   startPanel          : 1,         // This sets the initial panel
@@ -334,6 +333,26 @@
 
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.5.19</h3>
+			<ul>
+				<li>Removed the <code>themeDirectory</code> option.
+					<ul>
+						<li>It is preferred that you add the theme stylesheet manually as described on the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Setup">setup page</a>.</li>
+						<li>This prevents the plugin from appending the stylesheet to the head of the document and overriding the IE stylesheet.</li>
+					</ul>
+				</li>
+				<li>Changed the plugin so that an unordered list is no longer mandatory. The plugin will now look for the immediate children of the slider element. So this is now possible:
+					<blockquote>
+						<pre>&lt;div id="slider"&gt;
+  &lt;div&gt;&lt;!-- slide content --&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;!-- slide content --&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;!-- slide content --&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+					</blockquote>
+					The method to initialize and control the slider hasn't changed.
+				</li>
+			</ul>
 
 		<h3>Version 1.5.18</h3>
 			<ul>
