@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.19
+	AnythingSlider v1.5.20
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -248,16 +248,18 @@
 				});
 			}
 
-			// Fix tabbing through the page
-			base.$items.find('a').unbind('focus').bind('focus', function(e){
-				base.$items.find('.focusedLink').removeClass('focusedLink');
-				$(this).addClass('focusedLink');
-				var panel = $(this).closest('.panel');
-				if (!panel.is('.activePage')) {
-					base.gotoPage(base.$items.index(panel));
-					e.preventDefault();
-				}
-			});
+			// Fix tabbing through the page, but don't include it if multiple slides are showing
+			if (o.showMultiple === false) {
+				base.$items.find('a').unbind('focus').bind('focus', function(e){
+					base.$items.find('.focusedLink').removeClass('focusedLink');
+					$(this).addClass('focusedLink');
+					var panel = $(this).closest('.panel');
+					if (!panel.is('.activePage')) {
+						base.gotoPage(base.$items.index(panel));
+						e.preventDefault();
+					}
+				});
+			}
 
 		};
 
