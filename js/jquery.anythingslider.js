@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.20
+	AnythingSlider v1.5.21
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -440,8 +440,9 @@
 			if (page > base.pages + 1 - base.adjustLimit) { page = (!o.infiniteSlides && !o.stopAtEnd) ? 1 : base.pages; }
 			if (page < base.adjustLimit ) { page = (!o.infiniteSlides && !o.stopAtEnd) ? base.pages : 1; }
 			base.currentPage = ( page > base.pages ) ? base.pages : ( page < 1 ) ? 1 : base.currentPage;
-			base.$currentPage = base.$items.eq(base.currentPage - 1);
+			base.$currentPage = base.$items.eq(base.currentPage - base.adjustLimit);
 			base.exactPage = page;
+			base.$targetPage = base.$items.eq( (page === 0) ? base.pages - base.adjustLimit : (page > base.pages) ? 1 - base.adjustLimit : page - base.adjustLimit ); 
 			base.$el.trigger('slide_init', base);
 
 			base.slideControls(true, false);
@@ -534,7 +535,7 @@
 			}
 			// Update local variable
 			base.currentPage = page;
-			base.$currentPage = base.$items.eq(page).addClass('activePage');
+			base.$currentPage = base.$items.eq(page - base.adjustLimit).addClass('activePage');
 
 			// Set current slider as active so keyboard navigation works properly
 			if (!base.$wrapper.is('.activeSlider')){
