@@ -110,3 +110,14 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 #wrapper1 { width: 100%; height: 300px; margin: 0 auto; }
 #wrapper2 { width: 50%; height: 300px; margin: 0 auto; }
 body#expand h2 { text-align: center; }
+
+/* Video Compatibility table */
+.video-info { width: 700px; margin: 0 auto; margin-top: 50px; font-size: 18px; }
+.video-info h2 { text-align: center; }
+.video-info ul, .video-info li { margin: 0; }
+.video-info sup { font-size: 12px; }
+.video-info th.header { width: 25px; }
+.good { background: #080; }
+.bad { background: #800; }
+.prob { background: #880; }
+.group { border: #000 1px solid; }

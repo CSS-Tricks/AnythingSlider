@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.5.21
+	AnythingSlider v1.6
 
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
@@ -22,8 +22,6 @@
 
 	$.anythingSlider = function(el, options) {
 
-		// To avoid scope issues, use 'base' instead of 'this'
-		// to reference this class from internal events and functions.
 		var base = this, o;
 
 		// Wraps the ul in the necessary divs and then gives Access to jQuery element
@@ -59,7 +57,7 @@
 			base.hovered = false; // actively hovering over the slider
 			base.panelSize = [];  // will contain dimensions and left position of each panel
 			base.currentPage = o.startPanel = parseInt(o.startPanel,10) || 1; // make sure this isn't a string
-			base.adjustLimit = (o.infiniteSlides) ? 0 : 1; // adjust page limits for infinite or limited modes
+			base.adj = (o.infiniteSlides) ? 0 : 1; // adjust page limits for infinite or limited modes
 			base.outerPad = [ base.$wrapper.innerWidth() - base.$wrapper.width(), base.$wrapper.innerHeight() - base.$wrapper.height() ];
 			if (o.playRtl) { base.$wrapper.addClass('rtl'); }
 
@@ -202,7 +200,7 @@
 					base.$el.append( base.$items.filter(':first').clone().addClass('cloned').removeAttr('id') );
 				}
 				base.$el.find('.cloned').each(function(){
-					// disable all <a> in cloned panels to prevent shifting the panels by tabbing
+					// disable all focusable elements in cloned panels to prevent shifting the panels by tabbing
 					$(this).find('a,input,textarea,select').attr('disabled', 'disabled');
 					$(this).find('[id]').removeAttr('id');
 				});
@@ -229,28 +227,9 @@
 			base.setCurrentPage(base.currentPage, false);
 			base.$nav.find('a').eq(base.currentPage - 1).addClass('cur'); // update current selection
 
-			base.hasEmb = base.$items.find('embed[src*=youtube]').length; // embedded youtube objects exist in the slider
-			base.hasSwfo = (typeof(swfobject) !== 'undefined' && swfobject.hasOwnProperty('embedSWF') && $.isFunction(swfobject.embedSWF)) ? true : false; // is swfobject loaded?
-
-			// Initialize YouTube javascript api, if YouTube video is present
-			if (base.hasEmb && base.hasSwfo) {
-				base.$items.find('embed[src*=youtube]').each(function(i){
-					// Older IE doesn't have an object - just make sure we are wrapping the correct element
-					var $tar = ($(this).parent()[0].tagName === "OBJECT") ? $(this).parent() : $(this);
-					$tar.wrap('<div id="ytvideo' + i + '"></div>');
-					// use SWFObject if it exists, it replaces the wrapper with the object/embed
-					swfobject.embedSWF($(this).attr('src') + '&enablejsapi=1&version=3&playerapiid=ytvideo' + i, 'ytvideo' + i,
-						$tar.attr('width'), $tar.attr('height'), '10', null, null,
-						{ allowScriptAccess: "always", wmode : o.addWmodeToObject, allowfullscreen : true },
-						{ 'class' : $tar.attr('class'), 'style' : $tar.attr('style') }, 
-						function(){ if (i >= base.hasEmb - 1) { base.$el.trigger('swf_completed', base); } } // swf callback
-					);
-				});
-			}
-
 			// Fix tabbing through the page, but don't include it if multiple slides are showing
 			if (o.showMultiple === false) {
-				base.$items.find('a').unbind('focus').bind('focus', function(e){
+				base.$items.find('a').unbind('focus.AnythingSlider').bind('focus.AnythingSlider', function(e){
 					base.$items.find('.focusedLink').removeClass('focusedLink');
 					$(this).addClass('focusedLink');
 					var panel = $(this).closest('.panel');
@@ -331,11 +310,7 @@
 					if (o.enablePlay) {
 						base.startStop(!base.playing);
 						if (base.playing) {
-							if (o.playRtl) {
-								base.goBack(true);
-							} else {
-								base.goForward(true);
-							}
+							base.goForward(true);
 						}
 					}
 					e.preventDefault();
@@ -384,10 +359,10 @@
 					h = parseInt(o.height,10) || base.$window.height();
 					// resize panel
 					$(this).css({ width: w, height: h });
+					if (c.length && c[0].tagName === "EMBED") { c.attr({ width: '100%', height: '100%' }); } // needed for IE7; also c.length > 1
 					// resize panel contents, if solitary (wrapped content or solitary image)
 					if (c.length === 1){
 						c.css({ width: '100%', height: '100%' });
-						if (c[0].tagName === "OBJECT") { c.find('embed').andSelf().attr({ width: '100%', height: '100%' }); }
 					}
 				} else {
 					// get panel width & height and save it
@@ -435,14 +410,14 @@
 			}
 
 			// pause YouTube videos before scrolling or prevent change if playing
-			if (base.hasEmb && base.checkVideo(base.playing)) { return; }
+			if (autoplay && base.options.isVideoPlaying(base)) { return; }
 
-			if (page > base.pages + 1 - base.adjustLimit) { page = (!o.infiniteSlides && !o.stopAtEnd) ? 1 : base.pages; }
-			if (page < base.adjustLimit ) { page = (!o.infiniteSlides && !o.stopAtEnd) ? base.pages : 1; }
+			if (page > base.pages + 1 - base.adj) { page = (!o.infiniteSlides && !o.stopAtEnd) ? 1 : base.pages; }
+			if (page < base.adj ) { page = (!o.infiniteSlides && !o.stopAtEnd) ? base.pages : 1; }
 			base.currentPage = ( page > base.pages ) ? base.pages : ( page < 1 ) ? 1 : base.currentPage;
-			base.$currentPage = base.$items.eq(base.currentPage - base.adjustLimit);
+			base.$currentPage = base.$items.eq(base.currentPage - base.adj);
 			base.exactPage = page;
-			base.$targetPage = base.$items.eq( (page === 0) ? base.pages - base.adjustLimit : (page > base.pages) ? 1 - base.adjustLimit : page - base.adjustLimit ); 
+			base.$targetPage = base.$items.eq( (page === 0) ? base.pages - base.adj : (page > base.pages) ? 1 - base.adj : page - base.adj ); 
 			base.$el.trigger('slide_init', base);
 
 			base.slideControls(true, false);
@@ -483,22 +458,14 @@
 			base.exactPage = page;
 			base.setCurrentPage(page, false);
 			// Add active panel class
-			base.$items.removeClass('activePage').eq(page - base.adjustLimit).addClass('activePage');
+			base.$items.removeClass('activePage').eq(page - base.adj).addClass('activePage');
 
 			if (!base.hovered) { base.slideControls(false); }
-
-			// continue YouTube video if in current panel
-			if (base.hasEmb){
-				var emb = base.$currentPage.find('object[id*=ytvideo], embed[id*=ytvideo]');
-				// player states: unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
-				if (emb.length && $.isFunction(emb[0].getPlayerState) && emb[0].getPlayerState() > 0 && emb[0].getPlayerState() !== 5) {
-					emb[0].playVideo();
-				}
-			}
 
 			base.$el.trigger('slide_complete', base);
 			// callback from external slide control: $('#slider').anythingSlider(4, function(slider){ })
 			if (typeof callback === 'function') { callback(base); }
+
 			// Continue slideshow after a delay
 			if (o.autoPlayLocked && !base.playing) {
 				setTimeout(function(){
@@ -510,32 +477,35 @@
 
 		base.setCurrentPage = function(page, move) {
 			page = parseInt(page, 10);
-			if (page > base.pages + 1 - base.adjustLimit) { page = base.pages - base.adjustLimit; }
-			if (page < base.adjustLimit ) { page = 1; }
+			if (page > base.pages + 1 - base.adj) { page = base.pages - base.adj; }
+			if (page < base.adj ) { page = 1; }
 
 			// Set visual
 			if (o.buildNavigation){
-				base.$nav.find('.cur').removeClass('cur');
-				base.$nav.find('a').eq(page - 1).addClass('cur');
+				base.$nav
+					.find('.cur').removeClass('cur').end()
+					.find('a').eq(page - 1).addClass('cur');
 			}
 
 			// hide/show arrows based on infinite scroll mode
 			if (!o.infiniteSlides && o.stopAtEnd){
-				base.$wrapper.find('span.forward')[ page === base.pages ? 'addClass' : 'removeClass']('disabled');
-				base.$wrapper.find('span.back')[ page === 1 ? 'addClass' : 'removeClass']('disabled');
+				base.$wrapper
+					.find('span.forward')[ page === base.pages ? 'addClass' : 'removeClass']('disabled').end()
+					.find('span.back')[ page === 1 ? 'addClass' : 'removeClass']('disabled');
 				if (page === base.pages && base.playing) { base.startStop(); }
 			}
 
 			// Only change left if move does not equal false
 			if (!move) {
 				var d = base.getDim(page);
-				base.$wrapper.css({ width: d[0], height: d[1] });
-				base.$wrapper.scrollLeft(0); // reset in case tabbing changed this scrollLeft
+				base.$wrapper
+					.css({ width: d[0], height: d[1] })
+					.scrollLeft(0); // reset in case tabbing changed this scrollLeft
 				base.$el.css('left', -base.panelSize[(o.infiniteSlides && base.pages > 1) ? page : page - 1][2] );
 			}
 			// Update local variable
 			base.currentPage = page;
-			base.$currentPage = base.$items.eq(page - base.adjustLimit).addClass('activePage');
+			base.$currentPage = base.$items.eq(page - base.adj).addClass('activePage');
 
 			// Set current slider as active so keyboard navigation works properly
 			if (!base.$wrapper.is('.activeSlider')){
@@ -546,12 +516,12 @@
 
 		base.goForward = function(autoplay) {
 			if (autoplay !== true) { autoplay = false; base.startStop(false); }
-			base.gotoPage(base.currentPage + 1, autoplay);
+			base.gotoPage(base.currentPage + (base.options.playRtl ? -1 : 1), autoplay);
 		};
 
 		base.goBack = function(autoplay) {
 			if (autoplay !== true) { autoplay = false; base.startStop(false); }
-			base.gotoPage(base.currentPage - 1, autoplay);
+			base.gotoPage(base.currentPage + (base.options.playRtl ? 1 : -1), autoplay);
 		};
 
 		// This method tries to find a hash that matches panel-X
@@ -575,7 +545,7 @@
 			var dir = (toggle) ? 'slideDown' : 'slideUp',
 				t1 = (toggle) ? 0 : o.animationTime,
 				t2 = (toggle) ? o.animationTime: 0,
-				op = (toggle) ? 1: 0,
+				op = (toggle) ? 1 : 0,
 				sign = (toggle) ? 0 : 1; // 0 = visible, 1 = hidden
 			if (o.toggleControls) {
 				base.$controls.stop(true,true).delay(t1)[dir](o.animationTime/2).delay(t2); 
@@ -620,41 +590,18 @@
 				}
 			}
 
-			if (playing){
+			// Pause slideshow while video is playing
+			if (playing && base.options.resumeOnVideoEnd){
 				base.clearTimer(true); // Just in case this was triggered twice in a row
 				base.timer = base.win.setInterval(function() {
 					// prevent autoplay if video is playing
-					if (!(base.hasEmb && base.checkVideo(playing))) {
-						if (o.playRtl) {
-							base.goBack(true);
-						} else {
-							base.goForward(true);
-						}
+					if ( !base.options.isVideoPlaying(base) ) {
+						base.goForward(true);
 					}
-				}, o.delay);
+				}, o.delay/2);
 			} else {
 				base.clearTimer();
 			}
-		};
-
-		base.checkVideo = function(playing){
-			// pause YouTube videos before scrolling?
-			var emb, ps, stopAdvance = false;
-			base.$items.find('object[id*=ytvideo], embed[id*=ytvideo]').each(function(){ // include embed for IE; if not using SWFObject, old detach/append code needs "object embed" here
-				emb = $(this);
-				if (emb.length && $.isFunction(emb[0].getPlayerState)) {
-					// player states: unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
-					ps = emb[0].getPlayerState();
-					// if autoplay, video playing, video is in current panel and resume option are true, then don't advance
-					if (playing && (ps === 1 || ps > 2) && base.$items.index(emb.closest('.panel')) === base.currentPage && o.resumeOnVideoEnd) {
-						stopAdvance = true;
-					} else {
-						// pause video if not autoplaying (if already initialized)
-						if (ps > 0) { emb[0].pauseVideo(); }
-					}
-				}
-			});
-			return stopAdvance;
 		};
 
 		// Trigger the initialization
@@ -692,7 +639,6 @@
 		autoPlayLocked      : false,     // If true, user changing slides will not stop the slideshow
 		startStopped        : false,     // If autoPlay is on, this can force it to start stopped
 		pauseOnHover        : true,      // If true & the slideshow is active, the slideshow will pause on hover
-		resumeOnVideoEnd    : true,      // If true & the slideshow is active & a youtube video is playing, it will pause the autoplay until the video is complete
 		stopAtEnd           : false,     // If true & the slideshow is active, the slideshow will stop on the last page. This also stops the rewind effect when infiniteSlides is false.
 		playRtl             : false,     // If true, the slideshow will move right-to-left
 		startText           : "Start",   // Start button text
@@ -709,8 +655,12 @@
 		clickControls       : "click focusin", // Events used to activate navigation control functionality
 		clickSlideshow      : "click",         // Event used to activate slideshow play/stop button
 
+		// Video
+		resumeOnVideoEnd    : true,      // If true & the slideshow is active & a supported video is playing, it will pause the autoplay until the video is complete
+		addWmodeToObject    : "opaque",  // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting
+		isVideoPlaying      : function(base){ return false; }, // return true if video is playing or false if not - used by video extension
+
 		// Misc options
-		addWmodeToObject    : "opaque", // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting
 		maxOverallWidth     : 32766     // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
 	};
 

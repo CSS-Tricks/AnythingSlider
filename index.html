@@ -17,9 +17,12 @@
 	<!-- Demo stuff -->
 	<link rel="stylesheet" href="demos/css/page.css" media="screen">
 
-	<!-- Anything Slider -->
+	<!-- AnythingSlider -->
 	<link rel="stylesheet" href="css/anythingslider.css">
 	<script src="js/jquery.anythingslider.js"></script>
+
+	<!-- AnythingSlider video extension; optional, but needed to control video pause/play -->
+	<script src="js/jquery.anythingslider.video.js"></script>
 
 	<!-- Ideally, add the stylesheet(s) you are going to use here,
 	 otherwise they are loaded and appended to the <head> automatically and will over-ride the IE stylesheet below -->
@@ -48,7 +51,7 @@
 			// External Link
 			$("a.muppet").click(function(){
 				$('#slider1').anythingSlider(5);
-				$(document).scrollTop(0);
+				$(document).scrollTop(0); // make the page scroll to the top so you can watch the video
 				return false;
 			});
 
@@ -92,7 +95,7 @@
 		$(function(){
 
 			$('#slider1').anythingSlider({
-				startStopped    : true, // If autoPlay is on, this can force it to start stopped
+				startStopped    : true,  // If autoPlay is on, this can force it to start stopped
 				width           : 800,   // Override the default CSS width
 				theme           : 'metallic',
 				easing          : 'easeInOutBack',
@@ -100,12 +103,6 @@
 //				resumeDelay     : 10000, // Resume slideshow after user interaction, only if autoplayLocked is true (in milliseconds).
 				onSlideComplete : function(slider){
 					// alert('Welcome to Slide #' + slider.currentPage);
-				},
-				stopAtEnd : true,
-				onShowStop : function(e, slider){
-					setTimeout(function(){
-						if (slider.currentPage === slider.pages) { slider.gotoPage(1); }
-					}, 5000);
 				}
 			});
 
@@ -131,6 +128,7 @@
 			<a class="current" href="index.html">Main Demo</a>
 			<a href="simple.html">Simple Demo</a>
 			<a href="expand.html">Expand Demo</a>
+			<a href="video.html">Video Demo</a>
 			<a href="demos.html">FX Demos</a>
 			<a class="play" href="http://jsfiddle.net/Mottie/pbbYP/">Playground</a>
 			<a class="git" href="https://github.com/ProLoser/AnythingSlider/wiki">Documentation</a>
@@ -253,7 +251,7 @@
 			<li>Optionally play the slideshow once through, stopping on the last page.</li>
 			<li>Extend the script by binding to custom events, last triggered event: <span id="status">none</span></li>
 			<li>Optional FX extension to add animation to panels elements as they scroll into and out of view. See the <a href="demos.html">demo page</a>.</li>
-			<li>Optional Video extension allows video to pauses playing when not in view and resumes when in view (if files are hosted on the web). This currently works for YouTube, Vimeo and HTML5 video. <span class="attention">*Coming Soon!*</span></li>
+			<li>Optional Video extension allows video to pauses playing when not in view and resumes when in view (if files are hosted on the web). This currently works for YouTube, Vimeo and HTML5 video. <span class="attention">*New in version 1.6*</span></li>
 			<li>Works with jQuery 1.4+, but can be made to work with jQuery v1.3.2 by uncommenting code (in the non-minified version).</li>
 		</ul>
 
@@ -292,7 +290,6 @@
   autoPlayLocked      : false,     // If true, user changing slides will not stop the slideshow
   startStopped        : false,     // If autoPlay is on, this can force it to start stopped
   pauseOnHover        : true,      // If true &amp; the slideshow is active, the slideshow will pause on hover
-  resumeOnVideoEnd    : true,      // If true &amp; the slideshow is active &amp; a youtube video is playing, the autoplay will pause until the video completes
   stopAtEnd           : false,     // If true &amp; the slideshow is active, the slideshow will stop on the last page. This also stops the rewind effect when infiniteSlides is false.
   playRtl             : false,     // If true, the slideshow will move right-to-left
   startText           : "Start",   // Start button text
@@ -318,8 +315,12 @@
   clickControls       : "click focusin", // Events used to activate navigation control functionality
   clickSlideshow      : "click",         // Event used to activate slideshow play/stop button
 
+  // Video
+  resumeOnVideoEnd    : true,      // If true & the slideshow is active & a supported video is playing, it will pause the autoplay until the video is complete
+  addWmodeToObject    : "opaque",  // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting
+  isVideoPlaying      : function(base){ return false; }, // return true if video is playing or false if not - used by video extension
+
   // Misc options
-  addWmodeToObject    : "opaque", // If there is an embedded object &amp; swfobject.js is active, the script will automatically add this wmode parameter
   maxOverallWidth     : 32766     // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
 });</pre>
 		</blockquote>
@@ -334,166 +335,109 @@
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.6</h3>
+		<ul>
+			<li>Added the Video extension
+					<ul>
+						<li>Moved YouTube code from the AnythingSlider core into the extension, so you will need to load the extension to control videos now.</li>
+						<li>The video extension pauses videos and the slideshow as well as continues playing a video when it becomes visible.</li>
+						<li>Default video support includes YouTube iframe & embed, Vimeo iframe & embed and HTML5 video.</li>
+						<li>Added <code>isVideoPlaying</code> option which is used by the video extension to determine if a video is playing. If you don't use the video extension, you can add your own custom function here where returning true means the video is playing and returning false means the video is not playing.</li>
+						<li>Added "video.html" demo page.</li>
+						<li>Please review the compatibility table on the video.html page to see which browsers are fully supported.</li>
+					</ul>
+			</li>
+			<li>Fixed the problem in IE7 where the an embeded video would not resize properly.</li>
+			<li>Fixed a problem with the plugin causing an error if the panel is empty or only contains a text node.</li>
+		</ul>
+
 		<h3>Version 1.5.21</h3>
-			<ul>
-				<li>Fixed <code>$currentPage</code> returning the incorrect page during the <code>onSlideInit</code> and <code>onSlideBegin</code> events.</li>
-				<li>Added <code>$targetPage</code> which provides the (non-cloned) destination page of the slider.</li>
-			</ul>
+		<ul>
+			<li>Fixed <code>$currentPage</code> returning the incorrect page during the <code>onSlideInit</code> and <code>onSlideBegin</code> events.</li>
+			<li>Added <code>$targetPage</code> which provides the (non-cloned) destination page of the slider.</li>
+		</ul>
 
 		<h3>Version 1.5.20</h3>
-			<ul>
-				<li>Disabled focused links inside of a slider showing multiple slides, so now clicking on a link won't move the slider.</li>
-			</ul>
+		<ul>
+			<li>Disabled focused links inside of a slider showing multiple slides, so now clicking on a link won't move the slider.</li>
+		</ul>
 
 		<h3>Version 1.5.19</h3>
-			<ul>
-				<li>Removed the <code>themeDirectory</code> option.
-					<ul>
-						<li>It is preferred that you add the theme stylesheet manually as described on the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Setup">setup page</a>.</li>
-						<li>This prevents the plugin from appending the stylesheet to the head of the document and overriding the IE stylesheet.</li>
-					</ul>
-				</li>
-				<li>Changed the plugin so that an unordered list is no longer mandatory. The plugin will now look for the immediate children of the slider element. So this is now possible:
-					<blockquote>
-						<pre>&lt;div id="slider"&gt;
+		<ul>
+			<li>Removed the <code>themeDirectory</code> option.
+				<ul>
+					<li>It is preferred that you add the theme stylesheet manually as described on the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Setup">setup page</a>.</li>
+					<li>This prevents the plugin from appending the stylesheet to the head of the document and overriding the IE stylesheet.</li>
+				</ul>
+			</li>
+			<li>Changed the plugin so that an unordered list is no longer mandatory. The plugin will now look for the immediate children of the slider element. So this is now possible:
+				<blockquote>
+					<pre>&lt;div id="slider"&gt;
   &lt;div&gt;&lt;!-- slide content --&gt;&lt;/div&gt;
   &lt;div&gt;&lt;!-- slide content --&gt;&lt;/div&gt;
   &lt;div&gt;&lt;!-- slide content --&gt;&lt;/div&gt;
 &lt;/div&gt;</pre>
-					</blockquote>
-					The method to initialize and control the slider hasn't changed.
-				</li>
-			</ul>
+				</blockquote>
+				The method to initialize and control the slider hasn't changed.
+			</li>
+		</ul>
 
 		<h3>Version 1.5.18</h3>
-			<ul>
-				<li>Fixed a problem with a javascript error occurring when only one slide is present and the width is set.</li>
-				<li>Added an internal variable "o" to replace "base.options" to reduce the code size by about 1k in both the regular and minified versions.</li>
-			</ul>
+		<ul>
+			<li>Fixed a problem with a javascript error occurring when only one slide is present and the width is set.</li>
+			<li>Added an internal variable "o" to replace "base.options" to reduce the code size by about 1k in both the regular and minified versions.</li>
+		</ul>
 
 		<h3>Version 1.5.17</h3>
-			<ul>
-				<li>Added an "Expand Demo" page because apparently the jsFiddle doesn't like to expand.</li>
-				<li>Modified a couple of selectors that are only available in jQuery 1.4+. So as before, if you need the plugin compatible with jQuery 1.3.2, all you need to do is un-comment out the code at the bottom of the "jquery.anythingslider.js" file.</li>
-			</ul>
+		<ul>
+			<li>Added an "Expand Demo" page because apparently the jsFiddle doesn't like to expand.</li>
+			<li>Modified a couple of selectors that are only available in jQuery 1.4+. So as before, if you need the plugin compatible with jQuery 1.3.2, all you need to do is un-comment out the code at the bottom of the "jquery.anythingslider.js" file.</li>
+		</ul>
 
 		<h3>Version 1.5.16</h3>
-			<ul>
-				<li>Added the <code>expand</code> option:
-					<ul>
-						<li>When true, the slider will expand to fit into the parent element.</li>
-						<li>This option allows you to apply a percentage width to the parent element for a fluid layout and have the slider resize automatically.</li>
-						<li>One example would be to have a div set to say "100%" browser width. The slider will expand to fit inside this div (width and height).</li>
-						<li>Please do not have the parent element of the slider be the body of the page. It won't break anything, but the height is difficult to determine since the body height measured doesn't include other elements on the page</li>
-						<li>There is a slight delay while resizing (500 millisecond) as the plugin resizes and repositions the panels. You'll just have to live with it :(</li>
-						<li>There is one bug in *Opera* where the height isn't set until the parent element is resized... I'll try to find it.</li>
-					</ul>
-				</li>
-				<li>Also fixed the <code>showMultiple</code> code so that a width is no longer required if and only if all the panels are the same width. It simply divides the slider width by the number of slides to show... so you see why this may not work so well with different width panels.</li>
-			</ul>
+		<ul>
+			<li>Added the <code>expand</code> option:
+				<ul>
+					<li>When true, the slider will expand to fit into the parent element.</li>
+					<li>This option allows you to apply a percentage width to the parent element for a fluid layout and have the slider resize automatically.</li>
+					<li>One example would be to have a div set to say "100%" browser width. The slider will expand to fit inside this div (width and height).</li>
+					<li>Please do not have the parent element of the slider be the body of the page. It won't break anything, but the height is difficult to determine since the body height measured doesn't include other elements on the page</li>
+					<li>There is a slight delay while resizing (500 millisecond) as the plugin resizes and repositions the panels. You'll just have to live with it :(</li>
+					<li>There is one bug in *Opera* where the height isn't set until the parent element is resized... I'll try to find it.</li>
+				</ul>
+			</li>
+			<li>Also fixed the <code>showMultiple</code> code so that a width is no longer required if and only if all the panels are the same width. It simply divides the slider width by the number of slides to show... so you see why this may not work so well with different width panels.</li>
+		</ul>
 
 		<h3>Version 1.5.15</h3>
-			<ul>
-				<li>Fixed a problem in the code where <code>startPage</code> was used instead of <code>startPanel</code> - DUH.</li>
-				<li>Oh, and also made sure the script was getting a number instead of a string in the start panel option.</li>
-			</ul>
+		<ul>
+			<li>Fixed a problem in the code where <code>startPage</code> was used instead of <code>startPanel</code> - DUH.</li>
+			<li>Oh, and also made sure the script was getting a number instead of a string in the start panel option.</li>
+		</ul>
 
 		<h3>Version 1.5.14</h3>
-			<ul>
-				<li>Added <code>showMultiple</code> option - A enhancement proposed in <a href="https://github.com/ProLoser/AnythingSlider/issues/72">issue #72</a>.
-					<ul>
-						<li>When set to a number, AnythingSlider will show that number of slides within the view port.</li>
-						<li>When showing multiple slides, width of the slider MUST be included - well actually it is the width of one slide, so the plugin can figure out how big to make the view port.</li>
-						<li>The maximum number of slides showing is set to the number of slides.</li>
-						<li>If slides have different dimensions and <code>resizeContents</code> is set to <code>false</code>, the slider will resize to the height of the taller slide.</li>
-						<li>Updated the playground with this option. Check it this <a href="http://jsfiddle.net/Mottie/S8Je5/1/">demo</a> with two slides showing!</li>
-						<li>Thanks to <a href="https://github.com/caseybecking">caseybecking</a> for the idea. And a ton more thanks to <a href="https://github.com/poebel">Poebel</a> for sharing the code to do this.</li>
-					</ul>
-				</li>
-			</ul>
+		<ul>
+			<li>Added <code>showMultiple</code> option - A enhancement proposed in <a href="https://github.com/ProLoser/AnythingSlider/issues/72">issue #72</a>.
+				<ul>
+					<li>When set to a number, AnythingSlider will show that number of slides within the view port.</li>
+					<li>When showing multiple slides, width of the slider MUST be included - well actually it is the width of one slide, so the plugin can figure out how big to make the view port.</li>
+					<li>The maximum number of slides showing is set to the number of slides.</li>
+					<li>If slides have different dimensions and <code>resizeContents</code> is set to <code>false</code>, the slider will resize to the height of the taller slide.</li>
+					<li>Updated the playground with this option. Check it this <a href="http://jsfiddle.net/Mottie/S8Je5/1/">demo</a> with two slides showing!</li>
+					<li>Thanks to <a href="https://github.com/caseybecking">caseybecking</a> for the idea. And a ton more thanks to <a href="https://github.com/poebel">Poebel</a> for sharing the code to do this.</li>
+				</ul>
+			</li>
+		</ul>
 
 		<h3>Version 1.5.13</h3>
-			<ul>
-				<li>Fixed a bug where an empty UL would cause javascript errors - fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/91">issue #91</a>.</li>
-				<li>Changed the panel positioning from using `scrollLeft` to `left`. This small change fixed a couple of problems including:
-					<ul>
-						<li>Print preview now shows the current panel without any additional css changes. The navigation arrows and tabs will need additonal print css styling.</li>
-						<li>Easing that required a negative margin using scrollLeft no longer needs any special handling - see <a href="https://github.com/ProLoser/AnythingSlider/issues/61">issue #61</a>.</li>
-						<li>A hidden AnythingSlider will now position properly. When attempting to set the panel with the slider hidden, scrollLeft would always return zero and not set properly. Updated Wiki FAQ with this information as well.</li>
-					</ul>
-				</li>
-			</ul>
-
-		<h3>Version 1.5.12</h3>
-			<ul>
-				<li>Fixed a problem with the "activePage" class being added to the wrong page/panel when the <code>infiniteSlides</code> option is <code>false</code>.</li>
-			</ul>
-
-		<h3>Version 1.5.11</h3>
-			<ul>
-				<li>Updated all demos files to a HTML5 doctype with jQuery v1.6.</li>
-				<li>Removed print stylesheet.</li>
-				<li>Made file extension .html consistent.</li>
-				<li>Added "simple.html", which is the simplest possible demo so it is easier for people to build from.</li>
-				<li>Added a menu to each page for easier navigation to other demos and documentation.</li>
-			</ul>
-
-		<h3>Version 1.5.10</h3>
-			<ul>
-				<li>Fixed a bug that triggers the <code>slideshow_stop</code> event and <code>onShowStop</code> callback after each slide change. It now properly triggers after a running slideshow has stopped.</li>
-				<li>Changed code to completely remove the empty slides when <code>infiniteSlides</code> is false. It was code that was unnecessarily left in.</li> 
-				<li>Changed code that replaced links in the cloned panels with code that disables the links - fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/59">issue #59</a>.</li>
-				<li>Added a stylesheet to fix the theme problems in IE7 - fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/71">issue #71</a>.
-					<ul>
-						<li>I'm not sure if this solution works for IE6.</li>
-						<li>One problem was that the navigation links have a negative text-indent. IE7 sends the entire link off-screen instead of just the text inside.</li>
-						<li>Fixed by wrapping all link text in a span and applying the negative text indent to the span instead of the link.</li>
-						<li>The second problem with the navigation arrows being cut off was due to the negative top marginl. So a separate conditionally loaded stylesheet was added with the top margin set to zero and a specific top percentage for each style.</li>
-					</ul>
-				</li>
-				<li>Added <code>width: 100%</code> to the second slider's fourth panel instead of leaving the width/height undefined. In IE7, it would make the panel 20 pixels wide - fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/73">issue #73</a>.</li>
-				<li>Fx Extension changes:
-					<ul>
-						<li>Fixed Fx Caption problem with FX not working when moving from first panel to last panel - fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/75">issue #75</a>.</li>
-						<li>Fixed Fx caption to now show hidden ("display:none") captions. When clicking on the "x" in the caption, it was hiding the captions permanently, now it doesn't.</li>
-						<li>Changed FX Extension custom FX <code>time</code> to what it should have been, <code>duration</code>. To match the animation option.</li>
-					</ul>
-				</li>
-			</ul>
-
-		<h3>Version 1.5.9</h3>
-			<ul>
-				<li>Silly bug fix that broke the navigation tabs - thanks to Hyland3r for pointing it out!</li>
-			</ul>
-
-		<h3>Version 1.5.8</h3>
 		<ul>
-			<li>Added a primitive print stylesheet. Optimized using Firefox & IE9 print preview. But when using IE9 compatibility modes, it works IE7, but not IE8 (entire slider is hidden).</li>
-			<li>Slider controls are now hidden in the css, to prevent the flash seen before a theme stylesheet is loaded. This can be prevented by added the theme stylesheet into the head of your document.</li>
-			<li>Changed theme stylesheet to be appended into the document head.</li>
-			<li>Fixed some of the theme stylesheets so the navigtion links now show in IE8, but still not in IE7 - see known issues above.</li>
-			<li>Fixed a problem where the active slider would move when using arrow keys inside a text area or input.</li>
-			<li>Fixed animating arrow opacity bug - fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/60">issue #60</a>.</li>
-			<li>Fixed easing on the first slide. Fix for issue <a href="https://github.com/ProLoser/AnythingSlider/issues/61">#61</a>.</li>
-			<li>`currentPage` now shows the correct number during events. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/69">issue #69</a>.(</li>
-			<li>Fixed a minor problem with the FX extension fade. Regular base FX expect a size to be the second parameter, and since there is no size for 'fade' it now uses the second parameter for time. So, now this is possible:
-				<blockquote>
-					<pre>$('#slider1')
- .anythingSlider({
-  animationTime : 0
- })
- .anythingSliderFx({
-  '.panel' : [ 'fade', 1000, 'easeOutCirc' ] // target the entire panel
- });</pre>
-				</blockquote>
-				The above code will fade out the current panel and fade in the next. But it does require some extra CSS to set the opacity of all panels to zero, otherwise the fading animation won't occur until the second time through the panels.
-				<blockquote>
-					<pre>&lt;style type="text/css"&gt;
-#slider1 .panel { opacity: 0; }
-#slider1 .panel.activePage { opacity: 1; } /* make sure active panel is visible */
-&lt;/style&gt;</pre>
-				</blockquote>
-				It's not ideal, but it does make it possible to have a fade transition between slides, just not a crossfade transition.
+			<li>Fixed a bug where an empty UL would cause javascript errors - fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/91">issue #91</a>.</li>
+			<li>Changed the panel positioning from using `scrollLeft` to `left`. This small change fixed a couple of problems including:
+				<ul>
+					<li>Print preview now shows the current panel without any additional css changes. The navigation arrows and tabs will need additonal print css styling.</li>
+					<li>Easing that required a negative margin using scrollLeft no longer needs any special handling - see <a href="https://github.com/ProLoser/AnythingSlider/issues/61">issue #61</a>.</li>
+					<li>A hidden AnythingSlider will now position properly. When attempting to set the panel with the slider hidden, scrollLeft would always return zero and not set properly. Updated Wiki FAQ with this information as well.</li>
+				</ul>
 			</li>
 		</ul>
 
