@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.6.1
+	AnythingSlider v1.6.2
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -130,12 +130,11 @@
 				}
 			});
 
-
 			// Binds events
 			triggers = "slideshow_paused slideshow_unpaused slide_init slide_begin slideshow_stop slideshow_start initialized swf_completed".split(" ");
-			$.each("onShowPause onShowUnpause onSlideInit onSlideBegin onShowStop onShowStart onInitialized onSWFComplete".split(" "), function(i,o){
-				if ($.isFunction(o[o])){
-					base.$el.bind(triggers[i], o[o]);
+			$.each("onShowPause onShowUnpause onSlideInit onSlideBegin onShowStop onShowStart onInitialized onSWFComplete".split(" "), function(i,f){
+				if ($.isFunction(o[f])){
+					base.$el.bind(triggers[i], o[f]);
 				}
 			});
 			if ($.isFunction(o.onSlideComplete)){
