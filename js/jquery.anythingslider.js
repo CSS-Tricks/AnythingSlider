@@ -1,10 +1,7 @@
 /*
-	AnythingSlider v1.6
-
-	By Chris Coyier: http://css-tricks.com
-	with major improvements by Doug Neiner: http://pixelgraphics.us/
-	based on work by Remy Sharp: http://jqueryfordesigners.com/
-	and crazy mods by Rob Garrison (aka Mottie): https://github.com/ProLoser/AnythingSlider
+	AnythingSlider v1.6.1
+	Original by Chris Coyier: http://css-tricks.com
+	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
 	To use the navigationFormatter function, you must have a function that
 	accepts two paramaters, and returns a string of HTML text.
@@ -110,27 +107,35 @@
 			});
 
 			// Add keyboard navigation
-			if (o.enableKeyboard) {
-				$(document).keyup(function(e){
-					// Stop arrow keys from working when focused on form items
-					if (base.$wrapper.is('.activeSlider') && !e.target.tagName.match('TEXTAREA|INPUT|SELECT')) {
-						switch (e.which) {
-							case 39: // right arrow
-								base.goForward();
-								break;
-							case 37: //left arrow
-								base.goBack();
-								break;
+			$(document).keyup(function(e){
+				// Stop arrow keys from working when focused on form items
+				var lnk, slider,
+					active = base.$wrapper.is('.activeSlider') && !e.target.tagName.match('TEXTAREA|INPUT|SELECT') && o.showMultiple === false;
+				switch (e.which) {
+					case 9: // tab
+						lnk = $(':focus');
+						slider = lnk.closest('.anythingSlider');
+						if (slider[0] === base.$wrapper[0]) {
+							base.makeActive();
+							base.$window.scrollLeft(0);
+							base.gotoPage(lnk.closest('.panel').index() + base.adj);
 						}
-					}
-				});
-			}
+						break;
+					case 39: // right arrow
+						if (active && o.enableKeyboard) { base.goForward(); }
+						break;
+					case 37: //left arrow
+						if (active && o.enableKeyboard) { base.goBack(); }
+						break;
+				}
+			});
+
 
 			// Binds events
 			triggers = "slideshow_paused slideshow_unpaused slide_init slide_begin slideshow_stop slideshow_start initialized swf_completed".split(" ");
 			$.each("onShowPause onShowUnpause onSlideInit onSlideBegin onShowStop onShowStart onInitialized onSWFComplete".split(" "), function(i,o){
-				if ($.isFunction(base.options[o])){
-					base.$el.bind(triggers[i], base.options[o]);
+				if ($.isFunction(o[o])){
+					base.$el.bind(triggers[i], o[o]);
 				}
 			});
 			if ($.isFunction(o.onSlideComplete)){
@@ -226,19 +231,6 @@
 			}
 			base.setCurrentPage(base.currentPage, false);
 			base.$nav.find('a').eq(base.currentPage - 1).addClass('cur'); // update current selection
-
-			// Fix tabbing through the page, but don't include it if multiple slides are showing
-			if (o.showMultiple === false) {
-				base.$items.find('a').unbind('focus.AnythingSlider').bind('focus.AnythingSlider', function(e){
-					base.$items.find('.focusedLink').removeClass('focusedLink');
-					$(this).addClass('focusedLink');
-					var panel = $(this).closest('.panel');
-					if (!panel.is('.activePage')) {
-						base.gotoPage(base.$items.index(panel));
-						e.preventDefault();
-					}
-				});
-			}
 
 		};
 
@@ -401,7 +393,20 @@
 			return [w,h];
 		};
 
+		base.goForward = function(autoplay) {
+			base.gotoPage(base.currentPage + parseInt(o.changeBy, 10) * (o.playRtl ? -1 : 1), autoplay);
+		};
+
+		base.goBack = function(autoplay) {
+			base.gotoPage(base.currentPage + parseInt(o.changeBy, 10) * (o.playRtl ? 1 : -1), autoplay);
+		};
+
 		base.gotoPage = function(page, autoplay, callback, time) {
+			if (autoplay !== true) { autoplay = false; base.startStop(false); }
+			if (o.changeBy !== 1){
+				if (page < 0) { page += base.pages; }
+				if (page > base.pages) { page -= base.pages; }
+			}
 			if (base.pages <= 1) { return; } // prevents animation
 			base.$lastPage = base.$currentPage;
 			if (typeof(page) !== "number") {
@@ -410,7 +415,7 @@
 			}
 
 			// pause YouTube videos before scrolling or prevent change if playing
-			if (autoplay && base.options.isVideoPlaying(base)) { return; }
+			if (autoplay && o.isVideoPlaying(base)) { return; }
 
 			if (page > base.pages + 1 - base.adj) { page = (!o.infiniteSlides && !o.stopAtEnd) ? 1 : base.pages; }
 			if (page < base.adj ) { page = (!o.infiniteSlides && !o.stopAtEnd) ? base.pages : 1; }
@@ -500,28 +505,23 @@
 				var d = base.getDim(page);
 				base.$wrapper
 					.css({ width: d[0], height: d[1] })
-					.scrollLeft(0); // reset in case tabbing changed this scrollLeft
+					.add(base.$window).scrollLeft(0); // reset in case tabbing changed this scrollLeft - probably overly redundant
 				base.$el.css('left', -base.panelSize[(o.infiniteSlides && base.pages > 1) ? page : page - 1][2] );
 			}
 			// Update local variable
 			base.currentPage = page;
 			base.$currentPage = base.$items.eq(page - base.adj).addClass('activePage');
 
+			base.makeActive();
+
+		};
+
+		base.makeActive = function(){
 			// Set current slider as active so keyboard navigation works properly
 			if (!base.$wrapper.is('.activeSlider')){
 				$('.activeSlider').removeClass('activeSlider');
 				base.$wrapper.addClass('activeSlider');
 			}
-		};
-
-		base.goForward = function(autoplay) {
-			if (autoplay !== true) { autoplay = false; base.startStop(false); }
-			base.gotoPage(base.currentPage + (base.options.playRtl ? -1 : 1), autoplay);
-		};
-
-		base.goBack = function(autoplay) {
-			if (autoplay !== true) { autoplay = false; base.startStop(false); }
-			base.gotoPage(base.currentPage + (base.options.playRtl ? 1 : -1), autoplay);
 		};
 
 		// This method tries to find a hash that matches panel-X
@@ -591,11 +591,11 @@
 			}
 
 			// Pause slideshow while video is playing
-			if (playing && base.options.resumeOnVideoEnd){
+			if (playing && o.resumeOnVideoEnd){
 				base.clearTimer(true); // Just in case this was triggered twice in a row
 				base.timer = base.win.setInterval(function() {
 					// prevent autoplay if video is playing
-					if ( !base.options.isVideoPlaying(base) ) {
+					if ( !o.isVideoPlaying(base) ) {
 						base.goForward(true);
 					}
 				}, o.delay/2);
@@ -620,6 +620,7 @@
 
 		// Navigation
 		startPanel          : 1,         // This sets the initial panel
+		changeBy            : 1,         // Amount to go forward or back when changing panels.
 		hashTags            : true,      // Should links change the hashtag in the URL?
 		infiniteSlides      : true,      // if false, the slider will not wrap
 		enableKeyboard      : true,      // if false, keyboard arrow keys will not work for the current panel.

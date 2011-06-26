@@ -5,6 +5,8 @@
 	<meta charset="utf-8">
 
 	<title>AnythingSlider Expanding Demo</title>
+	<link rel="shortcut icon" href="demos/images/favicon.ico">
+	<link rel="apple-touch-icon" href="demos/images/apple-touch-icon.png">
 
 	<!-- jQuery (required) -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
@@ -24,10 +26,10 @@
 		});
 
 		$('#slider2').anythingSlider({
-//			theme : 'metallic',
 			expand       : true,
-			showMultiple    : 2,
-			startStopped    : true
+			showMultiple : 2,
+			changeBy     : 2,
+			startStopped : true
 		});
 
 	});
@@ -47,16 +49,17 @@
 		<a class="current" href="expand.html">Expand Demo</a>
 		<a href="video.html">Video Demo</a>
 		<a href="demos.html">FX Demos</a>
-		<a class="play" href="http://jsfiddle.net/Mottie/pbbYP/">Playground</a>
+		<a class="play" href="http://jsfiddle.net/Mottie/uVN7J/">Playground</a>
 		<a class="git" href="https://github.com/ProLoser/AnythingSlider/wiki">Documentation</a>
 		<a class="git" href="http://github.com/ProLoser/AnythingSlider/downloads">Download</a>
 		<a class="issue" href="https://github.com/ProLoser/AnythingSlider/issues">Issues</a>
 	</div>
 	<!-- End Links -->
 
-<h1>Expanding Slider Demo</h1>
-
-<h2>Full width</h2>
+<h1>Expanding Slider Demo*</h1>
+<h3>* Resize the browser window</h3>
+<br>
+<h2>Full page width</h2>
 
 	<!-- Expanding AnythingSlider 100% width -->
 
@@ -73,15 +76,17 @@
 
 <br>
 
-<h2>Half width with two images showing</h2>
+<h2>Half page width with two images showing</h2>
 	<!-- Expanding AnythingSlider 50% width -->
 
 <div id="wrapper2">
 	<ul id="slider2">
 		<li><img src="demos/images/slide-tele-1.jpg" alt=""></li>
-		<li><img src="demos/images/slide-env-1.jpg" alt=""></li>
 		<li><img src="demos/images/slide-tele-2.jpg" alt=""></li>
+		<li><img src="demos/images/slide-env-1.jpg" alt=""></li>
 		<li><img src="demos/images/slide-env-2.jpg" alt=""></li>
+		<li><img src="demos/images/slide-civil-1.jpg" alt=""></li>
+		<li><img src="demos/images/slide-civil-2.jpg" alt=""></li>
 	</ul>
 </div>
 

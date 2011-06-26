@@ -6,7 +6,8 @@ Here on CSS-Tricks, I’ve created a number of different sliders. Three, in fact
 
 This new AnythingSlider is an attempt at bringing together the functionality of all of those previous sliders and adding new features. In other words, to create a really “full featured” slider that could be widely useful. This is the first time (on CSS-Tricks) that one of these sliders is an actual plugin as well, which should make implementing it and customizing it much easier.
 
-* "Documentation":https://github.com/ProLoser/AnythingSlider/wiki now maintained in the wiki pages.
+* "Documentation Wiki":https://github.com/ProLoser/AnythingSlider/wiki
 * "Keep Reading":http://css-tricks.com/anythingslider-1-4/
-* "Demo!":http://proloser.github.com/AnythingSlider/
+* "Main Demo":http://proloser.github.com/AnythingSlider/
+* "More Demos":https://github.com/ProLoser/AnythingSlider/wiki
 * Having an issue? Submit it "here":https://github.com/ProLoser/AnythingSlider/issues

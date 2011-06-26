@@ -5,6 +5,8 @@
 	<meta charset="utf-8">
 
 	<title>AnythingSlider</title>
+	<link rel="shortcut icon" href="demos/images/favicon.ico">
+	<link rel="apple-touch-icon" href="demos/images/apple-touch-icon.png">
 
 	<!-- jQuery (required) -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
@@ -130,15 +132,14 @@
 			<a href="expand.html">Expand Demo</a>
 			<a href="video.html">Video Demo</a>
 			<a href="demos.html">FX Demos</a>
-			<a class="play" href="http://jsfiddle.net/Mottie/pbbYP/">Playground</a>
+			<a class="play" href="http://jsfiddle.net/Mottie/uVN7J/">Playground</a>
 			<a class="git" href="https://github.com/ProLoser/AnythingSlider/wiki">Documentation</a>
 			<a class="git" href="http://github.com/ProLoser/AnythingSlider/downloads">Download</a>
 			<a class="issue" href="https://github.com/ProLoser/AnythingSlider/issues">Issues</a>
 		</div>
 
-		<h5><a href="http://css-tricks.com/examples/AnythingSlider/">Original</a> By <a href="http://css-tricks.com">Chris Coyier</a>, based upon lots of smart stuff by <a href="http://jqueryfordesigners.com/">Remy Sharp</a>,<br>
-		significantly improved by <a href="http://pixelgraphics.us/">Douglas Neiner<br></a>
-		improved again by <a href="http://github.com/ProLoser/">ProLoser</a> and <a href="http://github.com/Mottie/">Mottie</a></h5>
+		<h5><a href="http://css-tricks.com/examples/AnythingSlider/">Original</a> By <a href="http://css-tricks.com">Chris Coyier</a>,
+		expanded upon by <a href="https://github.com/ProLoser/AnythingSlider/wiki/Credits">many others</a></h5>
 
 		<h1>AnythingSlider</h1>
 
@@ -231,6 +232,8 @@
 			</ul>
 			<!-- END AnythingSlider #2 -->
 
+		<br>
+
 		<h2>Features</h2>
 		<ul>
 			<li>Panels are HTML Content (can be anything).</li>
@@ -256,7 +259,7 @@
 		</ul>
 
 		<h2>Default Options</h2>
-		See the documentation for complete description of these options (<a href="https://github.com/ProLoser/AnythingSlider/wiki/Appearance-Options">appearance</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Navigation-Options">navigation</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Slideshow-Options">slideshow</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Callbacks-and-Events">callbacks &amp; events</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Interactivity-and-Miscellaneous-Options">interativity &amp; misc</a>).<br>
+		See the documentation for complete description of these options (<a href="https://github.com/ProLoser/AnythingSlider/wiki/Appearance-Options">appearance</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Navigation-Options">navigation</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Slideshow-Options">slideshow</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Callbacks-and-Events">callbacks &amp; events</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Video">video</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Interactivity-and-Miscellaneous-Options">interativity &amp; misc</a>).<br>
 		<br>
 		<blockquote>
 			<pre>$('#slider').anythingSlider({
@@ -271,6 +274,7 @@
 
   // Navigation
   startPanel          : 1,         // This sets the initial panel
+  changeBy            : 1,         // Amount to go forward or back when changing panels.
   hashTags            : true,      // Should links change the hashtag in the URL?
   infiniteSlides      : true,      // if false, the slider will not wrap
   enableKeyboard      : true,      // if false, keyboard arrow keys will not work for the current panel.
@@ -334,6 +338,12 @@
 
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.6.1</h3>
+		<ul>
+			<li>Added <code>changeBy</code> which sets how many panels to go forward or back by when the slideshow is active or when using the navigation arrows.</li>
+			<li>Rewrote the code that brings a focused link into view. This new code should be less problematic.</li>
+		</ul>
 
 		<h3>Version 1.6</h3>
 		<ul>

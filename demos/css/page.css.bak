@@ -109,7 +109,7 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 /* Expand Demo Page */
 #wrapper1 { width: 100%; height: 300px; margin: 0 auto; }
 #wrapper2 { width: 50%; height: 300px; margin: 0 auto; }
-body#expand h2, body#expand h3 { text-align: center; }
+body#expand h2, body#expand p { text-align: center; }
 
 /* Video Compatibility table */
 .video-info { width: 700px; margin: 0 auto; margin-top: 50px; font-size: 18px; }
