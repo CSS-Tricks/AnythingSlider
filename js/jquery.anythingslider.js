@@ -373,8 +373,8 @@
 				base.panelSize[i] = [w,h,leftEdge];
 				leftEdge += w;
 			});
-			// Set total width of slider, but don't go beyond the set max overall width (limited by Opera)
-			base.$el.css('width', (leftEdge < o.maxOverallWidth) ? leftEdge : o.maxOverallWidth);
+			// Set total width of slider, Note that this is limited to 32766 by Opera - option removed
+			base.$el.css('width', leftEdge);
 		};
 
 		// get dimension of multiple panels, as needed
@@ -660,8 +660,6 @@
 		addWmodeToObject    : "opaque",  // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting
 		isVideoPlaying      : function(base){ return false; }, // return true if video is playing or false if not - used by video extension
 
-		// Misc options
-		maxOverallWidth     : 32766     // Max width (in pixels) of combined sliders (side-to-side); set to 32766 to prevent problems with Opera
 	};
 
 	$.fn.anythingSlider = function(options, callback) {
