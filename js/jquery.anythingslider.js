@@ -509,7 +509,7 @@
 			}
 			// Update local variable
 			base.currentPage = page;
-			base.$currentPage = base.$items.eq(page - base.adj).addClass('activePage');
+			base.$currentPage = base.$items.removeClass('activePage').eq(page - base.adj).addClass('activePage');
 
 			base.makeActive();
 
