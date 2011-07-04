@@ -64,7 +64,6 @@ div.anythingSlider-construction .back a:hover, div.anythingSlider-construction .
 /* Navigation Links */
 div.anythingSlider-construction .anythingControls {
 	position: absolute;
-	width: 80%;
 	bottom: 0;
 	right: 15%;
 	z-index: 100;
