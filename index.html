@@ -98,7 +98,6 @@
 
 			$('#slider1').anythingSlider({
 				startStopped    : true,  // If autoPlay is on, this can force it to start stopped
-				width           : 800,   // Override the default CSS width
 				theme           : 'metallic',
 				easing          : 'easeInOutBack',
 //				autoPlayLocked  : true,  // If true, user changing slides will not stop the slideshow
@@ -109,8 +108,6 @@
 			});
 
 			$('#slider2').anythingSlider({
-				width               : 600,   // if resizeContent is false, this is the default width if panel size is not defined
-				height              : 350,   // if resizeContent is false, this is the default height if panel size is not defined
 				resizeContents      : false, // If true, solitary images/objects in the panel will expand to fit the viewport
 				startStopped        : true,  // If autoPlay is on, this can force it to start stopped
 				navigationFormatter : function(index, panel){ // Format navigation labels with text
@@ -122,7 +119,7 @@
 	</script>
 </head>
 
-<body>
+<body id="main">
 
 	<div id="page-wrap">
 
@@ -264,8 +261,6 @@
 		<blockquote>
 			<pre>$('#slider').anythingSlider({
   // Appearance
-  width               : null,      // Override the default CSS width
-  height              : null,      // Override the default CSS height
   expand              : false,     // If true, the entire slider will expand to fit the parent element
   resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
   showMultiple        : false,     // Set this value to a number and it will show that many slides at once
@@ -331,13 +326,27 @@
 
 		<h2>Known Issues</h2>
 		<ul>
-			<li>None that we know of!</li>
+			<li>Please refer to the <a href="https://github.com/ProLoser/AnythingSlider/wiki">documentation</a>.</li>
 		</ul>
 
 		<h2>Changelog</h2>
 
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.6.3</h3>
+		<ul>
+			<li>Removed <code>width</code> and <code>height</code> options. These are now required and set by the css.</li>
+			<li>Removed <code>maxOverallWidth</code> option.
+				<ul>
+					<li>This option was in place to ensure that the slider did not exceed Opera's 32766 pixel maximum width restriction.</li>
+					<li>Added <code>.anythingBase { max-width: 32766px; }</code> to the css.</li>
+				</ul>
+			</li>
+			<li></li>
+			<li>Fixed video source tags - removed unnecessary closing slash.</li>
+			<li>Fixed a bug where multiple "activePage" classes were applied.</li>
+		</ul>
 
 		<h3>Version 1.6.2</h3>
 		<ul>
@@ -364,96 +373,6 @@
 			</li>
 			<li>Fixed the problem in IE7 where the an embeded video would not resize properly.</li>
 			<li>Fixed a problem with the plugin causing an error if the panel is empty or only contains a text node.</li>
-		</ul>
-
-		<h3>Version 1.5.21</h3>
-		<ul>
-			<li>Fixed <code>$currentPage</code> returning the incorrect page during the <code>onSlideInit</code> and <code>onSlideBegin</code> events.</li>
-			<li>Added <code>$targetPage</code> which provides the (non-cloned) destination page of the slider.</li>
-		</ul>
-
-		<h3>Version 1.5.20</h3>
-		<ul>
-			<li>Disabled focused links inside of a slider showing multiple slides, so now clicking on a link won't move the slider.</li>
-		</ul>
-
-		<h3>Version 1.5.19</h3>
-		<ul>
-			<li>Removed the <code>themeDirectory</code> option.
-				<ul>
-					<li>It is preferred that you add the theme stylesheet manually as described on the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Setup">setup page</a>.</li>
-					<li>This prevents the plugin from appending the stylesheet to the head of the document and overriding the IE stylesheet.</li>
-				</ul>
-			</li>
-			<li>Changed the plugin so that an unordered list is no longer mandatory. The plugin will now look for the immediate children of the slider element. So this is now possible:
-				<blockquote>
-					<pre>&lt;div id="slider"&gt;
-  &lt;div&gt;&lt;!-- slide content --&gt;&lt;/div&gt;
-  &lt;div&gt;&lt;!-- slide content --&gt;&lt;/div&gt;
-  &lt;div&gt;&lt;!-- slide content --&gt;&lt;/div&gt;
-&lt;/div&gt;</pre>
-				</blockquote>
-				The method to initialize and control the slider hasn't changed.
-			</li>
-		</ul>
-
-		<h3>Version 1.5.18</h3>
-		<ul>
-			<li>Fixed a problem with a javascript error occurring when only one slide is present and the width is set.</li>
-			<li>Added an internal variable "o" to replace "base.options" to reduce the code size by about 1k in both the regular and minified versions.</li>
-		</ul>
-
-		<h3>Version 1.5.17</h3>
-		<ul>
-			<li>Added an "Expand Demo" page because apparently the jsFiddle doesn't like to expand.</li>
-			<li>Modified a couple of selectors that are only available in jQuery 1.4+. So as before, if you need the plugin compatible with jQuery 1.3.2, all you need to do is un-comment out the code at the bottom of the "jquery.anythingslider.js" file.</li>
-		</ul>
-
-		<h3>Version 1.5.16</h3>
-		<ul>
-			<li>Added the <code>expand</code> option:
-				<ul>
-					<li>When true, the slider will expand to fit into the parent element.</li>
-					<li>This option allows you to apply a percentage width to the parent element for a fluid layout and have the slider resize automatically.</li>
-					<li>One example would be to have a div set to say "100%" browser width. The slider will expand to fit inside this div (width and height).</li>
-					<li>Please do not have the parent element of the slider be the body of the page. It won't break anything, but the height is difficult to determine since the body height measured doesn't include other elements on the page</li>
-					<li>There is a slight delay while resizing (500 millisecond) as the plugin resizes and repositions the panels. You'll just have to live with it :(</li>
-					<li>There is one bug in *Opera* where the height isn't set until the parent element is resized... I'll try to find it.</li>
-				</ul>
-			</li>
-			<li>Also fixed the <code>showMultiple</code> code so that a width is no longer required if and only if all the panels are the same width. It simply divides the slider width by the number of slides to show... so you see why this may not work so well with different width panels.</li>
-		</ul>
-
-		<h3>Version 1.5.15</h3>
-		<ul>
-			<li>Fixed a problem in the code where <code>startPage</code> was used instead of <code>startPanel</code> - DUH.</li>
-			<li>Oh, and also made sure the script was getting a number instead of a string in the start panel option.</li>
-		</ul>
-
-		<h3>Version 1.5.14</h3>
-		<ul>
-			<li>Added <code>showMultiple</code> option - A enhancement proposed in <a href="https://github.com/ProLoser/AnythingSlider/issues/72">issue #72</a>.
-				<ul>
-					<li>When set to a number, AnythingSlider will show that number of slides within the view port.</li>
-					<li>When showing multiple slides, width of the slider MUST be included - well actually it is the width of one slide, so the plugin can figure out how big to make the view port.</li>
-					<li>The maximum number of slides showing is set to the number of slides.</li>
-					<li>If slides have different dimensions and <code>resizeContents</code> is set to <code>false</code>, the slider will resize to the height of the taller slide.</li>
-					<li>Updated the playground with this option. Check it this <a href="http://jsfiddle.net/Mottie/S8Je5/1/">demo</a> with two slides showing!</li>
-					<li>Thanks to <a href="https://github.com/caseybecking">caseybecking</a> for the idea. And a ton more thanks to <a href="https://github.com/poebel">Poebel</a> for sharing the code to do this.</li>
-				</ul>
-			</li>
-		</ul>
-
-		<h3>Version 1.5.13</h3>
-		<ul>
-			<li>Fixed a bug where an empty UL would cause javascript errors - fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/91">issue #91</a>.</li>
-			<li>Changed the panel positioning from using `scrollLeft` to `left`. This small change fixed a couple of problems including:
-				<ul>
-					<li>Print preview now shows the current panel without any additional css changes. The navigation arrows and tabs will need additonal print css styling.</li>
-					<li>Easing that required a negative margin using scrollLeft no longer needs any special handling - see <a href="https://github.com/ProLoser/AnythingSlider/issues/61">issue #61</a>.</li>
-					<li>A hidden AnythingSlider will now position properly. When attempting to set the panel with the slider hidden, scrollLeft would always return zero and not set properly. Updated Wiki FAQ with this information as well.</li>
-				</ul>
-			</li>
 		</ul>
 
 	</div>

@@ -8,8 +8,6 @@ $(document).ready(function(){
 
 	$('#slider1')
 	.anythingSlider({
-		width          : 400,
-		height         : 300,
 		startStopped   : true,
 		toggleControls : true,
 		theme          : 'metallic',
@@ -30,8 +28,6 @@ $(document).ready(function(){
 
 	$('#slider2')
 	.anythingSlider({
-		width               : 600,
-		height              : 350,
 		startStopped        : true,
 		resizeContents      : false,
 		navigationFormatter : function(i, panel){
@@ -71,8 +67,6 @@ $(document).ready(function(){
 
 	$('#slider3')
 	.anythingSlider({
-		width               : 500,
-		height              : 400,
 		startStopped        : true,
 		navigationFormatter : function(i, panel){
 			return ['Top', 'Right', 'Bottom', 'Left'][i - 1];

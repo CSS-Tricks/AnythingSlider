@@ -55,6 +55,8 @@
 			base.panelSize = [];  // will contain dimensions and left position of each panel
 			base.currentPage = o.startPanel = parseInt(o.startPanel,10) || 1; // make sure this isn't a string
 			base.adj = (o.infiniteSlides) ? 0 : 1; // adjust page limits for infinite or limited modes
+			base.width = base.$el.width();
+			base.height = base.$el.height();
 			base.outerPad = [ base.$wrapper.innerWidth() - base.$wrapper.width(), base.$wrapper.innerHeight() - base.$wrapper.height() ];
 			if (o.playRtl) { base.$wrapper.addClass('rtl'); }
 
@@ -65,7 +67,6 @@
 			if (o.expand) {
 				base.$outer = base.$wrapper.parent();
 				base.$window.css({ width: '100%', height: '100%' }); // needed for Opera
-				base.outerDim = [ base.$outer.width(), base.$outer.height() ];
 				base.checkResize();
 			}
 
@@ -110,7 +111,7 @@
 			$(document).keyup(function(e){
 				// Stop arrow keys from working when focused on form items
 				var lnk, slider,
-					active = base.$wrapper.is('.activeSlider') && !e.target.tagName.match('TEXTAREA|INPUT|SELECT') && o.showMultiple === false;
+					active = base.$wrapper.is('.activeSlider') && !e.target.tagName.match('TEXTAREA|INPUT|SELECT');
 				switch (e.which) {
 					case 9: // tab
 						lnk = $(':focus');
@@ -160,7 +161,7 @@
 
 			if (o.showMultiple > 1) {
 				if (o.showMultiple > base.pages) { o.showMultiple = base.pages; }
-				base.adjustMultiple = (o.infiniteSlides && base.pages > 1) ? 0 : parseInt(o.showMultiple, 10) - 1;
+				base.adjustMultiple = (o.infiniteSlides && base.pages > 1) ? 0 : o.showMultiple - 1;
 				base.pages = base.$items.length - base.adjustMultiple;
 			}
 
@@ -216,11 +217,9 @@
 
 			// Set the dimensions of each panel
 			if (o.resizeContents) {
-				if (o.width) {
-					base.$items.css('width', o.width);
-					base.$wrapper.css('width', base.getDim(base.currentPage)[0]);
-				}
-				if (o.height) { base.$wrapper.add(base.$items).css('height', o.height); }
+				base.$items.css('width', base.width);
+				base.$wrapper.css('width', base.getDim(base.currentPage)[0]);
+				base.$wrapper.add(base.$items).css('height', base.height);
 			} else {
 				base.$win.load(function(){ base.setDimensions(); }); // set dimensions after all images load
 			}
@@ -319,9 +318,10 @@
 		base.checkResize = function(stopTimer){
 			clearTimeout(base.resizeTimer);
 			base.resizeTimer = setTimeout(function(){
-				var w = base.$outer.width(), h = (base.$outer[0].tagName === "BODY") ? base.$win.height() : base.$outer.height(), dim = base.outerDim;
-				if (dim[0] !== w || dim[1] !== h) {
-					base.outerDim = [ w, h ];
+				var w = base.$outer.width() - base.outerPad[0],
+					h = (base.$outer[0].tagName === "BODY" ? base.$win.height() : base.$outer.height()) - base.outerPad[1];
+				// base.width = width of one panel, so multiply by # of panels; outerPad is padding added for arrows.
+				if (base.width * o.showMultiple !== w || base.height !== h) {
 					base.setDimensions(); // adjust panel sizes
 					// make sure page is lined up (use 1 millisecond animation time, because "0||x" ignores zeros)
 					base.gotoPage(base.currentPage, base.playing, null, 1);
@@ -332,25 +332,23 @@
 
 		// Set panel dimensions to either resize content or adjust panel to content
 		base.setDimensions = function(){
-			var w, h, c, cw, dw, leftEdge = 0,
-				// showMultiple must have o.width set!!
-				bww = (o.showMultiple > 1) ? o.width || base.$window.width()/o.showMultiple : base.$window.width(),
+			var w, h, c, leftEdge = 0,
+				// determine panel width
+				pw = (o.showMultiple > 1) ? base.width || base.$window.width()/o.showMultiple : base.$window.width(),
 				winw = base.$win.width();
 			if (o.expand){
 				w = base.$outer.width() - base.outerPad[0];
-				h = base.$outer.height() - base.outerPad[1];
+				base.height = h = base.$outer.height() - base.outerPad[1];
 				base.$wrapper.add(base.$window).add(base.$items).css({ width: w, height: h });
-				bww = (o.showMultiple > 1) ? w/o.showMultiple : w;
+				base.width = pw = (o.showMultiple > 1) ? w/o.showMultiple : w;
 			}
 			base.$items.each(function(i){
-				c = $(this).children('*');
+				c = $(this).children();
 				if (o.resizeContents){
-					// get viewport width & height from options (if set), or css
-					w = parseInt(o.width,10) || bww;
-					h = parseInt(o.height,10) || base.$window.height();
 					// resize panel
-					$(this).css({ width: w, height: h });
-					if (c.length && c[0].tagName === "EMBED") { c.attr({ width: '100%', height: '100%' }); } // needed for IE7; also c.length > 1
+					w = base.width;
+					$(this).css({ width: w, height: base.height });
+					if (c.length && c[0].tagName === "EMBED") { c.attr({ width: '100%', height: '100%' }); } // needed for IE7; also c.length > 1 in IE7
 					// resize panel contents, if solitary (wrapped content or solitary image)
 					if (c.length === 1){
 						c.css({ width: '100%', height: '100%' });
@@ -358,15 +356,11 @@
 				} else {
 					// get panel width & height and save it
 					w = $(this).width(); // if not defined, it will return the width of the ul parent
-					dw = (w >= winw) ? true : false; // width defined from css?
-					if (c.length === 1 && dw){
-						cw = (c.width() >= winw) ? bww : c.width(); // get width of solitary child
-						$(this).css('width', cw); // set width of panel
-						c.css('max-width', cw);   // set max width for all children
-						w = cw;
+					if (c.length === 1 && w >= winw){
+						w = (c.width() >= winw) ? pw : c.width(); // get width of solitary child
+						c.css('max-width', w);   // set max width for all children
 					}
-					w = (dw) ? o.width || bww : w;
-					$(this).css('width', w);
+					$(this).css('width', w); // set width of panel
 					h = $(this).outerHeight(); // get height after setting width
 					$(this).css('height', h);
 				}
@@ -609,8 +603,6 @@
 
 	$.anythingSlider.defaults = {
 		// Appearance
-		width               : null,      // Override the default CSS width
-		height              : null,      // Override the default CSS height
 		expand              : false,     // If true, the entire slider will expand to fit the parent element
 		resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
 		showMultiple        : false,     // Set this value to a number and it will show that many slides at once

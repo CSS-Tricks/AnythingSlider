@@ -1,59 +1,84 @@
 /*
-	AnythingSlider v1.5.10+ Default (base) theme
+	AnythingSlider v1.7+ Default (base) theme
 	By Chris Coyier: http://css-tricks.com
 	with major improvements by Doug Neiner: http://pixelgraphics.us/
 	based on work by Remy Sharp: http://jqueryfordesigners.com/
 */
 
-/******* SET DEFAULT DIMENSIONS HERE ********/
-div.anythingSlider {
-	display: block;
+/*****************************
+  SET DEFAULT DIMENSIONS HERE
+ *****************************/
+/* change the ID to match your slider */
+#slider {
 	width: 700px;
 	height: 390px;
-	margin: 0 auto;
-	overflow: hidden; /* needed for Opera and Safari */
+	list-style: none;
 }
+/* Opera width restriction */
+.anythingBase { max-width: 32766px; }
 
-/****** SET COLORS HERE *******/
-/* Default State */
-div.anythingSlider .thumbNav a.cur, div.anythingSlider .thumbNav a {
-	background: #777;
-	color: #000;
-}
+/*****************
+  SET COLORS HERE
+ *****************/
+/**** Default state (no keyboard focus) ****/
+/* slider window - top & bottom borders, default state */
 div.anythingSlider .anythingWindow {
 	border-top: 3px solid #777;
 	border-bottom: 3px solid #777;
 }
+/* Navigation buttons, default state */
+div.anythingSlider .thumbNav a.cur, div.anythingSlider .thumbNav a {
+	background: #777;
+	color: #000;
+}
+/* start-stop button, stopped, default state */
 div.anythingSlider .start-stop {
 	background-color: #040;
 	color: #fff;
 }
+/* start-stop button, playing, default state */
 div.anythingSlider .start-stop.playing {
 	background-color: #800;
 }
+/* start-stop button, default hovered text color (when visible) */
 div.anythingSlider .start-stop:hover, div.anythingSlider .start-stop.hover {
 	color: #ddd;
 }
 
-/* Active State */
+/**** Active State (slider has keyboard focus) ****/
+/* slider window - top & bottom borders, active state */
 div.anythingSlider.activeSlider .anythingWindow {
 	border-color: #7C9127;
 }
+/* Navigation buttons, active state */
 div.anythingSlider.activeSlider .thumbNav a.cur, div.anythingSlider.activeSlider .thumbNav a {
 	background-color: #7C9127;
 }
+/* start-stop button, stopped, active state */
 div.anythingSlider .start-stop {
 	background-color: #080;
 	color: #fff;
 }
+/* start-stop button, playing, active state */
 div.anythingSlider .start-stop.playing {
 	background-color: #d00;
 }
+/* start-stop button, active slider hovered text color (when visible) */
 div.anythingSlider .start-stop:hover, div.anythingSlider .start-stop.hover {
 	color: #fff;
 }
 
-/**** DO NOT CHANGE BELOW THIS LINE ****/
+/***********************
+  COMMON SLIDER STYLING
+ ***********************/
+/* Overall Wrapper: 45px right & left padding for the arrows, 28px @ bottom for navigation */
+div.anythingSlider {
+	display: block;
+	margin: 0 auto;
+	overflow: hidden; /* needed for Opera and Safari */
+	position: relative;
+	padding: 0 45px 28px 45px;
+}
 /* anythingSlider viewport window */
 div.anythingSlider .anythingWindow {
 	overflow: hidden;
@@ -61,12 +86,7 @@ div.anythingSlider .anythingWindow {
 	width: 100%;
 	height: 100%;
 }
-/* wrapper: 45px right & left padding for the arrows, 28px @ bottom for navigation */
-div.anythingSlider {
-	position: relative;
-	padding: 0 45px 28px 45px;
-}
-/* anythingSlider base */
+/* anythingSlider base (original element) */
 .anythingBase {
 	background: transparent;
 	list-style: none;
@@ -76,6 +96,7 @@ div.anythingSlider {
 	margin: 0;
 	padding: 0;
 }
+/* all panels inside the slider */
 .anythingBase .panel {
 	background: transparent;
 	display: block;
@@ -100,15 +121,18 @@ div.anythingSlider .arrow a {
 	outline: 0;
 	background: url(../images/arrows-default.png) no-repeat;
 }
+/* hide text, target the span so IE7 doesn't text-indent the link */
 div.anythingSlider .arrow a span { display: block; text-indent: -9999px; }
-div.anythingSlider .forward { right: 0; }
+/* back arrow */
 div.anythingSlider .back { left: 0; }
-div.anythingSlider .forward a { background-position: 0 -40px; }
 div.anythingSlider .back a { background-position: -88px -40px; }
-div.anythingSlider .forward a:hover, div.anythingSlider .forward a.hover { background-position: 0 -240px; }
 div.anythingSlider .back a:hover, div.anythingSlider .back a.hover { background-position: -88px -240px; }
+div.anythingSlider .back.disabled { display: none; } /* disabled arrows, hide or reduce opacity: opacity: .5; filter: alpha(opacity=50); */
+/* forward arrow */
+div.anythingSlider .forward { right: 0; }
+div.anythingSlider .forward a { background-position: 0 -40px; }
+div.anythingSlider .forward a:hover, div.anythingSlider .forward a.hover { background-position: 0 -240px; }
 div.anythingSlider .forward.disabled { display: none; } /* disabled arrows, hide or reduce opacity: opacity: .5; filter: alpha(opacity=50); */
-div.anythingSlider .back.disabled { display: none; }
 
 /* Navigation Links */
 div.anythingSlider .anythingControls { outline: 0; display: none; }
@@ -158,8 +182,10 @@ div.anythingSlider .start-stop {
 	-moz-border-radius: 0 0 5px 5px;
 	-webkit-border-radius: 0 0 5px 5px;
 }
+/* hide cell shading on hover - makes the button appear to come forward */
 div.anythingSlider .start-stop:hover, div.anythingSlider .start-stop.hover { background-image: none; }
 
+/* probably not necessary, but added just in case */
 div.anythingSlider, div.anythingSlider .anythingWindow, div.anythingSlider .thumbNav a, div.anythingSlider .arrow a, div.anythingSlider .start-stop {
 	transition-duration: 0;
 	-o-transition-duration: 0;
