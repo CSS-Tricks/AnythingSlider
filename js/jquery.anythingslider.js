@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.6.2
+	AnythingSlider v1.7
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -41,11 +41,15 @@
 			// for wrap - get parent() then closest in case the ul has "anythingSlider" class
 			base.$wrapper = base.$el.parent().closest('div.anythingSlider').addClass('anythingSlider-' + o.theme);
 			base.$window = base.$el.closest('div.anythingWindow');
-			base.$controls = $('<div class="anythingControls"></div>').appendTo( (o.appendControlsTo !== null && $(o.appendControlsTo).length) ? $(o.appendControlsTo) : base.$wrapper); // change so this works in jQuery 1.3.2
 			base.win = window;
 			base.$win = $(base.win);
 
-			base.$nav = $('<ul class="thumbNav" />').appendTo(base.$controls);
+			base.$controls = $('<div class="anythingControls"></div>').appendTo( (o.appendControlsTo !== null && $(o.appendControlsTo).length) ? $(o.appendControlsTo) : base.$wrapper);
+			base.$startStop = $('<a href="#" class="start-stop"></a>');
+			if (o.buildStartStop) {
+				base.$startStop.appendTo( (o.appendStartStopTo !== null && $(o.appendStartStopTo).length) ? $(o.appendStartStopTo) : base.$controls );
+			}
+			base.$nav = $('<ul class="thumbNav" />').appendTo( (o.appendNavigationTo !== null && $(o.appendNavigationTo).length) ? $(o.appendNavigationTo) : base.$controls );
 
 			// Set up a few defaults & get details
 			base.flag    = false; // event flag to prevent multiple calls (used in control click/focusin)
@@ -60,15 +64,23 @@
 			base.outerPad = [ base.$wrapper.innerWidth() - base.$wrapper.width(), base.$wrapper.innerHeight() - base.$wrapper.height() ];
 			if (o.playRtl) { base.$wrapper.addClass('rtl'); }
 
-			// save some options
-			base.original = [ o.autoPlay, o.buildNavigation, o.buildArrows];
-
 			// Expand slider to fit parent
 			if (o.expand) {
 				base.$outer = base.$wrapper.parent();
 				base.$window.css({ width: '100%', height: '100%' }); // needed for Opera
 				base.checkResize();
 			}
+
+			// If autoPlay functionality is included, then initialize the settings
+			if (o.buildStartStop) {
+				base.playing = o.autoPlay; // Sets the playing variable; removed "startStopped" option
+				base.buildAutoPlay();
+			} else {
+				o.autoPlayLocked = false; // prevent autoPlayLocked from working if there is no start stop
+			}
+
+			// Build forwards/backwards buttons
+			if (o.buildArrows) { base.buildNextBackButtons(); }
 
 			base.updateSlider();
 
@@ -147,6 +159,9 @@
 			base.initialized = true;
 			base.$el.trigger('initialized', base);
 
+			// trigger the slideshow
+			base.startStop(base.playing);
+
 		};
 
 		// called during initialization & to update the slider if a panel is added or deleted
@@ -154,6 +169,8 @@
 			// needed for updating the slider
 			base.$el.children('.cloned').remove();
 			base.$nav.empty();
+			// set currentPage to 1 in case it was zero - occurs when adding slides after removing them all
+			base.currentPage = base.currentPage || 1;
 
 			base.$items = base.$el.children(); 
 			base.pages = base.$items.length;
@@ -165,33 +182,16 @@
 				base.pages = base.$items.length - base.adjustMultiple;
 			}
 
-			// Remove navigation & player if there is only one page
-			if (base.pages <= 1) {
-				o.autoPlay = false;
-				o.buildNavigation = false;
-				o.buildArrows = false;
-				base.$controls.hide();
-				base.$nav.hide();
-				if (base.$forward) { base.$forward.add(base.$back).hide(); }
-			} else {
-				o.autoPlay = base.original[0];
-				o.buildNavigation = base.original[1];
-				o.buildArrows = base.original[2];
-				base.$controls.show();
-				base.$nav.show();
-				if (base.$forward) { base.$forward.add(base.$back).show(); }
-
-				// Build navigation tabs
+			// Hide navigation & player if there is only one page
+			base.$controls
+				.add(base.$nav)
+				.add(base.$startStop)
+				.add(base.$forward)
+				.add(base.$back)
+				[(base.pages <= 1) ? 'hide' : 'show']();
+			if (base.pages > 1) {
+				// Build/update navigation tabs
 				base.buildNavigation();
-
-				// If autoPlay functionality is included, then initialize the settings
-				if (o.autoPlay) {
-					base.playing = !o.startStopped; // Sets the playing variable to false if startStopped is true
-					base.buildAutoPlay();
-				}
-
-				// Build forwards/backwards buttons
-				if (o.buildArrows) { base.buildNextBackButtons(); }
 			}
 
 			// Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
@@ -206,7 +206,7 @@
 				}
 				base.$el.find('.cloned').each(function(){
 					// disable all focusable elements in cloned panels to prevent shifting the panels by tabbing
-					$(this).find('a,input,textarea,select').attr('disabled', 'disabled');
+					$(this).find('a,input,textarea,select,button,area').attr('disabled', 'disabled');
 					$(this).find('[id]').removeAttr('id');
 				});
 			}
@@ -216,7 +216,7 @@
 			base.setDimensions();
 
 			// Set the dimensions of each panel
-			if (o.resizeContents) {
+			if (o.resizeContents && base.pages > 1) {
 				base.$items.css('width', base.width);
 				base.$wrapper.css('width', base.getDim(base.currentPage)[0]);
 				base.$wrapper.add(base.$items).css('height', base.height);
@@ -234,8 +234,8 @@
 
 		// Creates the numbered navigation links
 		base.buildNavigation = function() {
-			var tmp, klass, $a;
 			if (o.buildNavigation && (base.pages > 1)) {
+				var tmp, klass, $a;
 				base.$items.filter(':not(.cloned)').each(function(i) {
 					var index = i + 1;
 					klass = ((index === 1) ? 'first' : '') + ((index === base.pages) ? 'last' : '');
@@ -267,17 +267,24 @@
 
 		// Creates the Forward/Backward buttons
 		base.buildNextBackButtons = function() {
-			if (base.$forward) { return; }
 			base.$forward = $('<span class="arrow forward"><a href="#"><span>' + o.forwardText + '</span></a></span>');
 			base.$back = $('<span class="arrow back"><a href="#"><span>' + o.backText + '</span></a></span>');
 
 			// Bind to the forward and back buttons
-			base.$back.bind(o.clickArrows, function(e) {
-				base.goBack();
+			base.$back.bind(o.clickBackArrow, function(e) {
+				// prevent running functions twice (once for click, second time for swipe)
+				if (o.enableArrows && !base.flag) {
+					base.flag = true; setTimeout(function(){ base.flag = false; }, 100);
+					base.goBack();
+				}
 				e.preventDefault();
 			});
-			base.$forward.bind(o.clickArrows, function(e) {
-				base.goForward();
+			base.$forward.bind(o.clickForwardArrow, function(e) {
+				// prevent running functions twice (once for click, second time for swipe)
+				if (o.enableArrows && !base.flag) {
+					base.flag = true; setTimeout(function(){ base.flag = false; }, 100);
+					base.goForward();
+				}
 				e.preventDefault();
 			});
 			// using tab to get to arrow links will show they have focus (outline is disabled in css)
@@ -286,20 +293,21 @@
 			});
 
 			// Append elements to page
-			base.$wrapper.prepend(base.$forward).prepend(base.$back);
-			base.$arrowWidth = base.$forward.width();
+			base.$forward.appendTo( (o.appendFowardTo !== null && $(o.appendFowardTo).length) ? $(o.appendFowardTo) : base.$wrapper );
+			base.$back.appendTo( (o.appendBackTo !== null && $(o.appendBackTo).length) ? $(o.appendBackTo) : base.$wrapper );
+
+			base.$arrowWidth = base.$forward.width(); // assuming the left & right arrows are the same width - used for toggle
 		};
 
 		// Creates the Start/Stop button
 		base.buildAutoPlay = function(){
-			if (base.$startStop || base.pages < 2) { return; }
-			base.$startStop = $("<a href='#' class='start-stop'></a>").html('<span>' + (base.playing ? o.stopText : o.startText) + '</span>');
-			base.$controls.prepend(base.$startStop);
 			base.$startStop
+				.html('<span>' + (base.playing ? o.stopText : o.startText) + '</span>')
 				.bind(o.clickSlideshow, function(e) {
-					if (o.enablePlay) {
+					if (o.enableStartStop) {
 						base.startStop(!base.playing);
-						if (base.playing) {
+						base.makeActive();
+						if (base.playing && !o.autoPlayDelayed) {
 							base.goForward(true);
 						}
 					}
@@ -309,9 +317,6 @@
 				.bind('focusin focusout',function(){
 					$(this).toggleClass('hover');
 				});
-
-			// Use the same setting, but trigger the start;
-			base.startStop(base.playing);
 		};
 
 		// Adjust slider dimensions on parent element resize
@@ -373,6 +378,7 @@
 
 		// get dimension of multiple panels, as needed
 		base.getDim = function(page){
+			if (base.pages < 1) { return; } // prevent errors when base.panelSize is empty
 			page = (o.infiniteSlides && base.pages > 1) ? page : page - 1;
 			var i,
 				w = base.panelSize[page][0],
@@ -395,7 +401,11 @@
 		};
 
 		base.gotoPage = function(page, autoplay, callback, time) {
-			if (autoplay !== true) { autoplay = false; base.startStop(false); }
+			if (autoplay !== true) {
+				autoplay = false;
+				base.startStop(false);
+				base.makeActive();
+			}
 			if (o.changeBy !== 1){
 				if (page < 0) { page += base.pages; }
 				if (page > base.pages) { page -= base.pages; }
@@ -474,6 +484,7 @@
 		};
 
 		base.setCurrentPage = function(page, move) {
+			if (base.pages < 1 || page === 0) { return; }
 			page = parseInt(page, 10);
 			if (page > base.pages + 1 - base.adj) { page = base.pages - base.adj; }
 			if (page < base.adj ) { page = 1; }
@@ -504,8 +515,6 @@
 			// Update local variable
 			base.currentPage = page;
 			base.$currentPage = base.$items.removeClass('activePage').eq(page - base.adj).addClass('activePage');
-
-			base.makeActive();
 
 		};
 
@@ -575,7 +584,7 @@
 			base.playing = playing;
 
 			// Toggle playing and text
-			if (o.autoPlay) {
+			if (o.buildStartStop) {
 				base.$startStop.toggleClass('playing', playing).html('<span>' + (playing ? o.stopText : o.startText) + '</span>');
 				// add button text to title attribute if it is hidden by text-indent
 				if (parseInt(base.$startStop.find('span').css('text-indent'),10) < 0) {
@@ -602,55 +611,70 @@
 	};
 
 	$.anythingSlider.defaults = {
-		// Appearance
+		// ** Appearance **
+		theme               : "default", // Theme name, add the css stylesheet manually
 		expand              : false,     // If true, the entire slider will expand to fit the parent element
 		resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
 		showMultiple        : false,     // Set this value to a number and it will show that many slides at once
-		tooltipClass        : 'tooltip', // Class added to navigation & start/stop button (text copied to title if it is hidden by a negative text indent)
-		theme               : 'default', // Theme name
+		easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin or jQuery UI
+
+		buildArrows         : true,      // If true, builds the forwards and backwards buttons
+		buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
+		buildStartStop      : true,      // ** If true, builds the start/stop button
+
+		appendFowardTo      : null,      // Append forward arrow to a HTML element (jQuery Object, selector or HTMLNode), if not null
+		appendBackTo        : null,      // Append back arrow to a HTML element (jQuery Object, selector or HTMLNode), if not null
+		appendControlsTo    : null,      // Append controls (navigation + start-stop) to a HTML element (jQuery Object, selector or HTMLNode), if not null
+		appendNavigationTo  : null,      // Append navigation buttons to a HTML element (jQuery Object, selector or HTMLNode), if not null
+		appendStartStopTo   : null,      // Append start-stop button to a HTML element (jQuery Object, selector or HTMLNode), if not null
+
+		toggleArrows        : false,     // If true, side navigation arrows will slide out on hovering & hide @ other times
+		toggleControls      : false,     // if true, slide in controls (navigation + play/stop button) on hover and slide change, hide @ other times
+
+		startText           : "Start",   // Start button text
+		stopText            : "Stop",    // Stop button text
+		forwardText         : "&raquo;", // Link text used to move the slider forward (hidden by CSS, replaced with arrow image)
+		backText            : "&laquo;", // Link text used to move the slider back (hidden by CSS, replace with arrow image)
+		tooltipClass        : "tooltip", // Class added to navigation & start/stop button (text copied to title if it is hidden by a negative text indent)
+
+		// Function
+		enableArrows        : true,      // if false, arrows will be visible, but not clickable.
+		enableNavigation    : true,      // if false, navigation links will still be visible, but not clickable.
+		enableStartStop     : true,      // if false, the play/stop button will still be visible, but not clickable. Previously "enablePlay"
+		enableKeyboard      : true,      // if false, keyboard arrow keys will not work for this slider.
 
 		// Navigation
 		startPanel          : 1,         // This sets the initial panel
 		changeBy            : 1,         // Amount to go forward or back when changing panels.
 		hashTags            : true,      // Should links change the hashtag in the URL?
-		infiniteSlides      : true,      // if false, the slider will not wrap
-		enableKeyboard      : true,      // if false, keyboard arrow keys will not work for the current panel.
-		buildArrows         : true,      // If true, builds the forwards and backwards buttons
-		toggleArrows        : false,     // If true, side navigation arrows will slide out on hovering & hide @ other times
-		buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
-		enableNavigation    : true,      // if false, navigation links will still be visible, but not clickable.
-		toggleControls      : false,     // if true, slide in controls (navigation + play/stop button) on hover and slide change, hide @ other times
-		appendControlsTo    : null,      // A HTML element (jQuery Object, selector or HTMLNode) to which the controls will be appended if not null
+		infiniteSlides      : true,      // if false, the slider will not wrap & not clone any panels
 		navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
-		forwardText         : "&raquo;", // Link text used to move the slider forward (hidden by CSS, replaced with arrow image)
-		backText            : "&laquo;", // Link text used to move the slider back (hidden by CSS, replace with arrow image)
 
 		// Slideshow options
-		enablePlay          : true,      // if false, the play/stop button will still be visible, but not clickable.
-		autoPlay            : true,      // This turns off the entire slideshow FUNCTIONALY, not just if it starts running or not
+		autoPlay            : false,     // If true, the slideshow will start running; replaces "startStopped" option
 		autoPlayLocked      : false,     // If true, user changing slides will not stop the slideshow
-		startStopped        : false,     // If autoPlay is on, this can force it to start stopped
+		autoPlayDelayed     : false,     // If true, starting a slideshow will delay advancing slides; if false, the slider will immediately advance to the next slide when slideshow starts
 		pauseOnHover        : true,      // If true & the slideshow is active, the slideshow will pause on hover
 		stopAtEnd           : false,     // If true & the slideshow is active, the slideshow will stop on the last page. This also stops the rewind effect when infiniteSlides is false.
 		playRtl             : false,     // If true, the slideshow will move right-to-left
-		startText           : "Start",   // Start button text
-		stopText            : "Stop",    // Stop button text
+
+		// Times
 		delay               : 3000,      // How long between slideshow transitions in AutoPlay mode (in milliseconds)
 		resumeDelay         : 15000,     // Resume slideshow after user interaction, only if autoplayLocked is true (in milliseconds).
 		animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
-		easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin
 
 		// Callbacks - removed from options to reduce size - they still work
 
 		// Interactivity
-		clickArrows         : "click",         // Event used to activate arrow functionality (e.g. "click" or "mouseenter")
+		clickForwardArrow   : "click",         // Event used to activate forward arrow functionality (e.g. add jQuery mobile's "swiperight")
+		clickBackArrow      : "click",         // Event used to activate back arrow functionality (e.g. add jQuery mobile's "swipeleft")
 		clickControls       : "click focusin", // Events used to activate navigation control functionality
 		clickSlideshow      : "click",         // Event used to activate slideshow play/stop button
 
 		// Video
 		resumeOnVideoEnd    : true,      // If true & the slideshow is active & a supported video is playing, it will pause the autoplay until the video is complete
 		addWmodeToObject    : "opaque",  // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting
-		isVideoPlaying      : function(base){ return false; }, // return true if video is playing or false if not - used by video extension
+		isVideoPlaying      : function(base){ return false; } // return true if video is playing or false if not - used by video extension
 
 	};
 
