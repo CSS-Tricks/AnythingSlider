@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.7
+	AnythingSlider v1.7.1
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -600,7 +600,7 @@
 					if ( !o.isVideoPlaying(base) ) {
 						base.goForward(true);
 					}
-				}, o.delay/2);
+				}, o.delay);
 			} else {
 				base.clearTimer();
 			}
