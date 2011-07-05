@@ -1,5 +1,5 @@
 /*
- * AnythingSlider Slide FX 1.3 for AnythingSlider v1.5.8+
+ * AnythingSlider Slide FX 1.4 for AnythingSlider v1.5.8+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
  */
@@ -47,7 +47,7 @@
 			},
 
 			// Animate FX
-			animateFx = function(el, opt, isOut){
+			animateFx = function(el, opt, isOut, time){
 				if (el.length === 0 || typeof opt === 'undefined') { return; } // no fx
 				var o = opt[0] || opt,
 					s = o[1] || '',
@@ -59,17 +59,18 @@
 					el.stop();
 					// multiple selectors for out animation
 					if (s !== ''){
-						el.filter(opt[1][0]).animate(o[0], { queue : false, duration : t, easing : o[0].easing });
-						el.filter(opt[1][1]).animate(s, { queue : false, duration : t, easing : o[0].easing, complete: function(){
-							setTimeout(function(){ hideOffscreen(el); }, defaults.timeOut);
+						// Out animation is set to 1/4 of the time of the in animation
+						el.filter(opt[1][0]).animate(o[0], { queue : false, duration : (time || t)/4, easing : o[0].easing });
+						el.filter(opt[1][1]).animate(s, { queue : true, duration : (time || t)/4, easing : o[0].easing, complete: function(){
+							setTimeout(function(){ hideOffscreen(el); }, 0); // animation complete... bug report: http://bugs.jquery.com/ticket/7157
 						} });
 						return;
 					}
 				}
 				// animation for no extra selectors
 				if (!isOut) { el.css('visibility','visible').show(); }
-				el.animate(o, { queue : false, duration : t, easing : o.easing, complete: function(){
-					if (isOut) { setTimeout(function(){ hideOffscreen(el); }, defaults.timeOut); }
+				el.animate(o, { queue : true, duration : time || t, easing : o.easing, complete: function(){
+					if (isOut) { setTimeout(function(){ hideOffscreen(el); }, 0); }
 				} });
 			},
 
@@ -112,8 +113,11 @@
 
 			// bind events for "OUT" effects - occur when leaving a page
 			.bind('slide_init', function(e, slider){
-				var el, elOut, page = slider.$lastPage.add( slider.$items.eq(slider.exactPage) );
+				var el, elOut, time, page = slider.$lastPage.add( slider.$items.eq(slider.exactPage) );
 				if (slider.exactPage === 0) { page = page.add( slider.$items.eq( slider.pages ) ); } // add last (non-cloned) page if on first
+				if (slider.options.animationTime < defaults.timeOut) {
+					time = slider.options.animationTime || 1; // if time = zero, make it 1... (0 || 1 === 1) // true )
+				}
 				page = page.find('*').andSelf(); // include the panel in the selectors
 				for (el in options) {
 					if (el === 'outFx') {
@@ -125,7 +129,7 @@
 					} else if (el !== 'inFx') {
 						// Use built-in effects
 						if ($.isArray(options[el]) && page.filter(el).length) {
-							animateFx( page.filter(el), getFx(options[el],true), true);
+							animateFx( page.filter(el), getFx(options[el],true), true, time);
 						}
 					}
 				}
