@@ -53,7 +53,7 @@
 
 			// Set up a few defaults & get details
 			base.flag    = false; // event flag to prevent multiple calls (used in control click/focusin)
-			base.playing = false; // slideshow state
+			base.playing = o.autoPlay; // slideshow state
 			base.slideshow = false; // slideshow flag
 			base.hovered = false; // actively hovering over the slider
 			base.panelSize = [];  // will contain dimensions and left position of each panel
@@ -71,9 +71,8 @@
 				base.checkResize();
 			}
 
-			// If autoPlay functionality is included, then initialize the settings
+			// Build start/stop buttons
 			if (o.buildStartStop) {
-				base.playing = o.autoPlay; // Sets the playing variable; removed "startStopped" option
 				base.buildAutoPlay();
 			} else {
 				o.autoPlayLocked = false; // prevent autoPlayLocked from working if there is no start stop
