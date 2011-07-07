@@ -8,7 +8,6 @@ $(document).ready(function(){
 
 	$('#slider1')
 	.anythingSlider({
-		startStopped   : true,
 		toggleControls : true,
 		theme          : 'metallic',
 		navigationFormatter : function(i, panel){
@@ -28,7 +27,6 @@ $(document).ready(function(){
 
 	$('#slider2')
 	.anythingSlider({
-		startStopped        : true,
 		resizeContents      : false,
 		navigationFormatter : function(i, panel){
 			return ['Recipe', 'Quote', 'Image', 'Quote #2', 'Image #2', 'Test'][i - 1];
@@ -67,7 +65,6 @@ $(document).ready(function(){
 
 	$('#slider3')
 	.anythingSlider({
-		startStopped        : true,
 		navigationFormatter : function(i, panel){
 			return ['Top', 'Right', 'Bottom', 'Left'][i - 1];
 		}

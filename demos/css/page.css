@@ -14,7 +14,7 @@ h5, .header            { font: bold 15px Georgia, Serif; text-align: center; }
 pre, code              { font: 13px/1.8 Monaco, MonoSpace; margin: 0 0 15px 0; padding: 5px; background: #f5f5f5; block: inline; width: 100%; overflow-x: auto; }
 blockquote             { margin-left: 30px; }
 
-ul                     { margin: 0 0 25px 25px; }
+ul                     { margin: 0; padding-left: 35px; }
 ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 
 #nav                   { display: block; width: auto; margin: 10px auto; text-align: center; white-space: nowrap; line-height: 3em; }

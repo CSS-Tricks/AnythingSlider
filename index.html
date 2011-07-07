@@ -95,7 +95,6 @@
 		$(function(){
 
 			$('#slider1').anythingSlider({
-				startStopped    : true,  // If autoPlay is on, this can force it to start stopped
 				theme           : 'metallic',
 				easing          : 'easeInOutBack',
 //				autoPlayLocked  : true,  // If true, user changing slides will not stop the slideshow
@@ -107,7 +106,6 @@
 
 			$('#slider2').anythingSlider({
 				resizeContents      : false, // If true, solitary images/objects in the panel will expand to fit the viewport
-				startStopped        : true,  // If autoPlay is on, this can force it to start stopped
 				navigationFormatter : function(index, panel){ // Format navigation labels with text
 					return ['Recipe', 'Quote', 'Image', 'Quote #2', 'Image #2'][index - 1];
 				}
@@ -344,6 +342,14 @@
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.7.2</h3>
+		<ul>
+			<li>Removed <code>autoPlay</code>'s dependency on <code>buildStartStop</code> so now they are completely independent. Thanks to <a href="https://github.com/ProLoser/AnythingSlider/pull/136">Helmer</a>.</li>
+			<li>Changed <code>autoPlayLocked</code> being defaulted to <code>false</code> when <code>autoPlay</code> instead of <code>buildStartStop</code> is <code>false</code>. Which was just added in version 1.7.</li>
+			<li>Updated demos.html page code to match changes made in version 1.7.</li>
+			<li>Cleaned up demo pages and made them "more" HTML5 valid. Only the provided iframe and embed codes from YouTube & Vimeo cause errors now.</li>
+		</ul>
+
 		<h3>Version 1.7.1</h3>
 		<ul>
 			<li>Fixed <code>delay</code> option being divided by two. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/131">issue #131</a>.</li>
@@ -352,15 +358,15 @@
 		<h3>Version 1.7</h3>
 		<ul>
 			<li>Removed <code>width</code> and <code>height</code> options. These are now set in the css. Enhancement suggested in <a href="https://github.com/ProLoser/AnythingSlider/issues/125">issue #125</a>.</li>
-			<li>Removed <code>maxOverallWidth</code> option.
-				<ul><br>
+			<li>Removed <code>maxOverallWidth</code> option.<br>
+				<ul>
 					<li>This option was in place to ensure that the slider did not exceed Opera's 32766 pixel maximum width restriction.</li>
 					<li>Added <code>.anythingBase { max-width: 32766px; }</code> to the css.</li>
 				</ul>
 			</li>
 			<li>Removed <code>clickArrows</code> and replaced it with <code>clickForwardArrow</code> &amp; <code>clickBackArrow</code> to allow for jQuery Mobile users to add "swipeLeft" &amp; "swipeRight".</li>
-			<li>Changed <code>autoPlay</code>:
-				<ul><br>
+			<li>Changed <code>autoPlay</code>:<br>
+				<ul>
 					<li>Split <code>autoPlay</code> functionality, so that setting the new <code>buildStartStop</code> option to <code>true</code> will now build the start stop button.</li>
 					<li>Now, when <code>autoPlay</code> is <code>true</code>, the slideshow will now start automatically. Default set to <code>false</code>.</li>
 				</ul>

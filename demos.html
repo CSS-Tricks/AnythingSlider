@@ -15,7 +15,6 @@
 
 	<!-- Anything Slider optional plugins -->
 	<script src="js/jquery.easing.1.2.js"></script>
-	<script src="js/swfobject.js"></script> <!-- http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js -->
 
 	<!-- Anything Slider -->
 	<link rel="stylesheet" href="css/anythingslider.css">
@@ -102,27 +101,30 @@
    <h3><a href="#">Header</a></h3>
    <div>
     <pre><code> &lt;!-- jQuery --&gt;
- &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+ &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js&quot;&gt;&lt;/script&gt;
 
  &lt;!-- Anything Slider optional plugins --&gt;
- &lt;script src=&quot;js/jquery.easing.1.2.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
- &lt;!-- http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js --&gt;
- &lt;script src=&quot;js/swfobject.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+ &lt;script src=&quot;js/jquery.easing.1.2.js&quot;&gt;&lt;/script&gt;
 
  &lt;!-- Anything Slider --&gt;
- &lt;link href=&quot;css/anythingslider.css&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot; /&gt;
- &lt;script src=&quot;js/jquery.anythingslider.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+ &lt;link href=&quot;css/anythingslider.css&quot; rel=&quot;stylesheet&quot;&gt;
+ &lt;script src=&quot;js/jquery.anythingslider.min.js&quot;&gt;&lt;/script&gt;
 
  &lt;!-- ColorBox --&gt;
- &lt;link href=&quot;demos/colorbox/colorbox.css&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot; /&gt;
- &lt;script src=&quot;demos/colorbox/jquery.colorbox-min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</code></pre>
+ &lt;link href=&quot;demos/colorbox/colorbox.css&quot; rel=&quot;stylesheet&quot;&gt;
+ &lt;script src=&quot;demos/colorbox/jquery.colorbox-min.js&quot;&gt;&lt;/script&gt;</code></pre>
    </div>
 
    <h3><a href="#">CSS &amp; HTML</a></h3>
    <div>
-    <pre><code>/* CSS to expand the image to fit inside colorbox */
+    <pre><code>/* New in version 1.7+ */
+ #slider1 {
+  width: 400px;
+  height: 300px;
+  list-style: none;
+ }
+ /* CSS to expand the image to fit inside colorbox */
  #cboxPhoto { width: 100%; height: 100%; margin: 0 !important; }
-
  /* Change metallic theme defaults to show thumbnails -
   using #demo2 (page wrapper) to increase this CSS priority */
  #demo2 div.anythingSlider-metallic .thumbNav a {
@@ -144,23 +146,20 @@
  #demo2 div.anythingSlider-metallic .start-stop {
   margin-top: 15px;
  }</code></pre>
-    <br />
-    <pre><code> &lt;ul id=&quot;slider1&quot;&gt;
-  &lt;li&gt;&lt;img src=&quot;demos/images/slide-civil-1.jpg&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;img src=&quot;demos/images/slide-env-1.jpg&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;img src=&quot;demos/images/slide-civil-2.jpg&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;img src=&quot;demos/images/slide-env-2.jpg&quot; /&gt;&lt;/li&gt;
- &lt;/ul&gt;</code></pre>
+    <br>
+<pre><code>&lt;ul id=&quot;slider1&quot;&gt;
+  &lt;li&gt;&lt;img src=&quot;demos/images/slide-civil-1.jpg&quot;&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;img src=&quot;demos/images/slide-env-1.jpg&quot;&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;img src=&quot;demos/images/slide-civil-2.jpg&quot;&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;img src=&quot;demos/images/slide-env-2.jpg&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
    </div>
 
    <h3><a href="#">Script</a></h3>
-   <div><pre><code>$(document).ready(function(){
+   <div><pre><code>$(function(){
  $('#slider1')
   .anythingSlider({
-   width          : 400,
-   height         : 300,
    toggleControls : true,
-   startStopped   : true,
    theme          : 'metallic',
    navigationFormatter : function(i, panel){ // add thumbnails as navigation links
     return '&lt;img src="demos/images/th-slide-' + ['civil-1', 'env-1', 'civil-2', 'env-2'][i - 1] + '.jpg"&gt;';
@@ -182,7 +181,7 @@
    </div>
   </div>
 
-  <br /><br />
+  <br><br>
 
   <h2 class="title">Demo 2: FX Extension Panel Effects</h2>
 
@@ -222,7 +221,7 @@
    </ul>
    <!-- END AnythingSlider #2 -->
 
-  <br />
+  <br>
 
   <div class="accordion">
 
@@ -231,23 +230,23 @@
     <ul>
      <li>The AnythingSlider FX extension is required to add this functionality.</li>
      <li>No additional CSS is required, unless it is used for a specific element (see the captions section).</li>
-     <li>Effects Methods:<br /><br />
+     <li>Effects Methods:<br><br>
       <ul>
        <li>The effects are set up so that the slider element on each panel is in its default (final) position in the "inFx" definition (element positions to zero, opacity to 1, etc) and the "outFX" definitions are set the other position the element is in to achieve the animation.</li>
        <li>The script binds to the "slide_init" (for "outFx" animation) and "slide_complete" (for "inFx" animation) anythingSlider events.</li>
        <li>The base effects are predefined shortcut methods. I have included the custom effect equivalents to these base effects in the script examples.</li>
       </ul>
      </li>
-     <li>Base effects:<br /><br />
+     <li>Base effects:<br><br>
       <ul>
        <li>Base effects are standard effects: <code>top</code>, <code>bottom</code>, <code>left</code>, <code>right</code>, <code>fade</code>, <code>expand</code>, <code>listLR</code>, <code>listRL</code>, <code>caption-Top</code>, <code>caption-Right</code>, <code>caption-Bottom</code>, <code>caption-Left</code>.</li>
-       <li>Use the base effects as follows:<br /><br />
+       <li>Use the base effects as follows:<br><br>
         <pre><code> $('#slider2').anythingSliderFx({
   '.selector1' : [ 'effect(s)', 'size', 'time', 'easing' ],
   '.selector2' : [ 'effect(s)', 'size', 'time', 'easing' ]
  });</code></pre>
         'size', 'time' and 'easing' are optional, but they must remain in that order. So if you want to add an effect time, you must also set a size - <code>[ 'effect(s)', 'size', 'time' ]</code>. To add an easing, all parameters must be included.</li>
-       <li>Defaults: If 'size', 'time' or 'easing' is not defined, it will be set to its default value:<br /><br />
+       <li>Defaults: If 'size', 'time' or 'easing' is not defined, it will be set to its default value:<br><br>
         <ul>
          <li>size         : based on initial slider height and width</li>
          <li>'inFx' time  : 400 (ms)</li>
@@ -255,7 +254,7 @@
          <li>easing       : 'swing'</li>
         </ul>
        </li>
-       <li>How base effects are setup:<br /><br />
+       <li>How base effects are setup:<br><br>
         <ul>
          <li><code>top</code>, <code>bottom</code>, <code>left</code>, <code>right</code>: Default 'inFx' position is zero, 'outFx' position is based on the initial slider height and width.</li>
          <li><code>fade</code>: Default 'inFx' has an opacity set to one, 'outFx' opacity is zero.</li>
@@ -268,12 +267,12 @@
        <li>Combine any of these standard effects as desired (e.g. "top fade"); but of course, using 'top bottom' will not work as you expect (unless you wanted to blow up your computer ;) LOL).</li>
       </ul>
      </li>
-     <li>Custom effects:<br /><br />
+     <li>Custom effects:<br><br>
       <ul>
        <li>Custom effects allow you to use any of the standard jQuery animation parameters (e.g. top, left, margin, padding, width, height, etc). See the examples below.</li>
        <li>Custom effects can be mixed in with base effects as desired.</li>
        <li>When using custom effects it is important that each element with an 'inFx' method has a matching 'outFx' method, or those elements will be abnormally positioned and/or disappear from view.</li>
-       <li>Standard setup for custom effects is as follows (there is no specific order required):<br /><br />
+       <li>Standard setup for custom effects is as follows (there is no specific order required):<br><br>
         <pre><code> $('#slider1').anythingSliderFx({
   inFx : {
    '.selector1' : { top : 0, duration: 400, easing : 'easeOutBounce' },
@@ -285,7 +284,7 @@
    '.selector1' : { top  : '-100px', duration: 350 },
    '.selector2' : { left : '-200px' }
   }</code></pre></li>
-       <li>Defaults: if 'time' or 'easing' is not defined in the custom effects code, it will be set to its default value:<br /><br />
+       <li>Defaults: if 'time' or 'easing' is not defined in the custom effects code, it will be set to its default value:<br><br>
         <ul>
          <li>'inFx' time  : 400 (ms)</li>
          <li>'outFx' time : 350 (ms)</li>
@@ -300,28 +299,32 @@
    <h3><a href="#">Header</a></h3>
    <div>
     <pre><code> &lt;!-- jQuery --&gt;
- &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+ &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js&quot;&gt;&lt;/script&gt;
 
  &lt;!-- Anything Slider optional plugins --&gt;
- &lt;script src=&quot;js/jquery.easing.1.2.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
- &lt;!-- http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js --&gt;
- &lt;script src=&quot;js/swfobject.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+ &lt;script src=&quot;js/jquery.easing.1.2.js&quot;&gt;&lt;/script&gt;
 
  &lt;!-- Anything Slider --&gt;
- &lt;link href=&quot;css/anythingslider.css&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot; /&gt;
- &lt;script src=&quot;js/jquery.anythingslider.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+ &lt;link href=&quot;css/anythingslider.css&quot; rel=&quot;stylesheet&quot;&gt;
+ &lt;script src=&quot;js/jquery.anythingslider.min.js&quot;&gt;&lt;/script&gt;
 
  &lt;!-- Anything Slider optional FX extension --&gt;
- &lt;script src=&quot;js/jquery.anythingslider.fx.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</code></pre>
+ &lt;script src=&quot;js/jquery.anythingslider.fx.min.js&quot;&gt;&lt;/script&gt;</code></pre>
    </div>
 
-   <h3><a href="#">HTML</a></h3>
-   <div>There is no change from the standard HTML setup, unless you want to add more specific classes so you can target them with effects.<br /><br />
+   <h3><a href="#">CSS &amp; HTML</a></h3>
+    <div><pre><code>/* New in version 1.7+ */
+#slider2 {
+  width: 600px;
+  height: 350px;
+  list-style: none;
+}</code></pre>
+  There is no change from the standard HTML setup, unless you want to add more specific classes so you can target them with effects.<br><br>
     <pre><code> &lt;ul id=&quot;slider2&quot;&gt;
   &lt;li class=&quot;panel1&quot;&gt;
    &lt;div class=&quot;textSlide&quot;&gt;
     &lt;img src=&quot;demos/images/251356.jpg&quot; alt=&quot;tomato sandwich&quot; style=&quot;float: right;
-     margin: 0 0 2px 10px;&quot; /&gt;
+     margin: 0 0 2px 10px;&quot;&gt;
     &lt;h3&gt;Queenie's Killer Tomato Bagel Sandwich&lt;/h3&gt;
     &lt;h4&gt;Ingredients&lt;/h4&gt;
     &lt;ul&gt;
@@ -343,7 +346,7 @@
    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li class=&quot;panel3&quot;&gt;
-   &lt;img class=&quot;expand&quot; src=&quot;demos/images/slide-tele-1.jpg&quot; alt=&quot;&quot; /&gt;
+   &lt;img class=&quot;expand&quot; src=&quot;demos/images/slide-tele-1.jpg&quot; alt=&quot;&quot;&gt;
   &lt;/li&gt;
   &lt;li class=&quot;panel4&quot;&gt;
    &lt;div class=&quot;quoteSlide&quot;&gt;
@@ -358,18 +361,15 @@
    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li class=&quot;panel5&quot;&gt;
-   &lt;img class=&quot;fade&quot; src=&quot;demos/images/slide-tele-2.jpg&quot; alt=&quot;&quot; /&gt;
+   &lt;img class=&quot;fade&quot; src=&quot;demos/images/slide-tele-2.jpg&quot; alt=&quot;&quot;&gt;
   &lt;/li&gt;
  &lt;/ul&gt;</code></pre>
    </div>
 
    <h3><a href="#">Script - FX addon, using base FX</a></h3>
-   <div><pre><code>$(document).ready(function(){
+   <div><pre><code>$(function(){
  $('#slider2') // Demo 2 code, using FX base effects
   .anythingSlider({
-   width               : 600,
-   height              : 350,
-   startStopped        : true,
    resizeContents      : false,
    navigationFormatter : function(i, panel){
     return ['Recipe', 'Quote', 'Image', 'Quote #2', 'Image #2', 'Test'][i - 1];
@@ -390,12 +390,9 @@
    </div>
 
    <h3><a href="#">Script - FX addon, using custom FX</a></h3>
-   <div><pre><code>$(document).ready(function(){
+   <div><pre><code>$(function(){
  $('#slider2') // Demo 2 code, using FX full control
   .anythingSlider({
-   width               : 600,
-   height              : 350,
-   startStopped        : true,
    resizeContents      : false,
    navigationFormatter : function(i, panel){
     return ['Recipe', 'Quote', 'Image', 'Quote #2', 'Image #2', 'Test'][i - 1];
@@ -431,7 +428,7 @@
    </div>
   </div>
 
-  <br /><br />
+  <br><br>
   <h2 class="title">Demo 3: Sliding Captions</h2>
 
   <!-- AnythingSlider #3 -->
@@ -456,14 +453,14 @@
   </ul>
   <!-- END AnythingSlider #3 -->
 
-  <br />
+  <br>
 
   <div class="accordion">
 
    <h3><a href="#">Demo 3 Notes</a></h3>
    <div>
     <ul>
-     <li>CSS<br /><br />
+     <li>CSS<br><br>
       <ul>
        <li>The image needs to be set to 100% height and width because AnythingSlider will only automatically expand solitary objects; but here we have a caption!</li>
        <li>Note the caption widths &amp; heights include the padding, so for example the top &amp; bottom caption height is set to 30px instead of 50px to include the 10px padding... same goes for the height of all the captions.</li>
@@ -471,16 +468,16 @@
       </ul>
      </li>
      <li>In the HTML, note that the top caption comes before the image; whereas the bottom, left and right caption HTML comes after.</li>
-     <li>Script<br /><br />
+     <li>Script<br><br>
       <ul>
-       <li>Hover to show caption<br /><br />
+       <li>Hover to show caption<br><br>
         <ul>
          <li>This code will reveal a caption when hovering over a slider panel, and hide on mouse out.</li>
          <li>There is a lot of extra code, for captions in multiple positions, so ideally remove the unused portions to maximize the efficiency of the code.</li>
          <li>This script does not need the AnythingSlider FX extension.</li>
         </ul>
        </li>
-       <li>Slide in caption on new panel<br /><br />
+       <li>Slide in caption on new panel<br><br>
         <ul>
          <li>This code reveals a caption when a new panel comes into view.</li>
          <li>Code examples are included below to show and reveal captions using base and custom FX. These code examples reveal the caption when the panel comes into view and hide it as it scrolls out of view.</li>
@@ -496,24 +493,31 @@
    <h3><a href="#">Header</a></h3>
    <div>
     <pre><code> &lt;!-- jQuery --&gt;
- &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+ &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js&quot;&gt;&lt;/script&gt;
 
  &lt;!-- Anything Slider optional plugins --&gt;
- &lt;script src=&quot;js/jquery.easing.1.2.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
- &lt;!-- http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js --&gt;
- &lt;script src=&quot;js/swfobject.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+ &lt;script src=&quot;js/jquery.easing.1.2.js&quot;&gt;&lt;/script&gt;
 
  &lt;!-- Anything Slider --&gt;
- &lt;link href=&quot;css/anythingslider.css&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot; /&gt;
- &lt;script src=&quot;js/jquery.anythingslider.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+ &lt;link href=&quot;css/anythingslider.css&quot; rel=&quot;stylesheet&quot;&gt;
+ &lt;script src=&quot;js/jquery.anythingslider.min.js&quot;&gt;&lt;/script&gt;
 
  &lt;!-- Anything Slider optional FX extension --&gt;
- &lt;script src=&quot;js/jquery.anythingslider.fx.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</code></pre>
+ &lt;script src=&quot;js/jquery.anythingslider.fx.min.js&quot;&gt;&lt;/script&gt;</code></pre>
    </div>
 
    <h3><a href="#">CSS</a></h3>
-   <div><pre><code> /* images with caption */
- #slider3 img { width: 100%; height: 100%; }
+   <div><pre><code>/* New in version 1.7+ */
+ #slider3 {
+  width: 500px;
+  height: 400px;
+  list-style: none;
+ }
+ /* images with caption */
+ #slider3 img {
+  width: 100%;
+  height: 100%;
+ }
  /* position the panels so the captions appear correctly */
  #slider3 .panel { position: relative; }
  /* captions */
@@ -573,22 +577,22 @@
    &lt;div class=&quot;caption-top&quot;&gt;
     In Soviet Russia, concrete pours you!
    &lt;/div&gt;
-   &lt;img src=&quot;demos/images/slide-civil-1.jpg&quot; alt=&quot;&quot; /&gt;
+   &lt;img src=&quot;demos/images/slide-civil-1.jpg&quot; alt=&quot;&quot;&gt;
   &lt;/li&gt;
   &lt;li&gt;
-   &lt;img src=&quot;demos/images/slide-env-1.jpg&quot; alt=&quot;&quot; /&gt;
+   &lt;img src=&quot;demos/images/slide-env-1.jpg&quot; alt=&quot;&quot;&gt;
    &lt;div class=&quot;caption-right&quot;&gt;
     How many supervisors are there? Wrong! 5, who is taking the picture?
    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
-   &lt;img src=&quot;demos/images/slide-civil-2.jpg&quot; alt=&quot;&quot; /&gt;
+   &lt;img src=&quot;demos/images/slide-civil-2.jpg&quot; alt=&quot;&quot;&gt;
    &lt;div class=&quot;caption-bottom&quot;&gt;
     Alas, the pylon would never make it to the hydrant, her true love.
    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
-   &lt;img src=&quot;demos/images/slide-env-2.jpg&quot; alt=&quot;&quot; /&gt;
+   &lt;img src=&quot;demos/images/slide-env-2.jpg&quot; alt=&quot;&quot;&gt;
    &lt;div class=&quot;caption-left&quot;&gt;
     Take a left at the traffic circle.
    &lt;/div&gt;
@@ -597,13 +601,9 @@
    </div>
 
    <h3><a href="#">Script - Caption appears on hover (FX extension not required)</a></h3>
-   <div><pre><code>$(document).ready(function(){
+   <div><pre><code>$(function(){
  $('#slider3')
-  .anythingSlider({
-   width        : 500,
-   height       : 400,
-   startStopped : true
-  })
+  .anythingSlider()
   /* this code will make the caption appear when you hover over the panel
     remove the extra statements if you don't have captions in that location */
   .find('.panel')
@@ -667,13 +667,9 @@
    </div>
 
    <h3><a href="#">Script - FX addon, using base FX</a></h3>
-   <div><pre><code>$(document).ready(function(){
+   <div><pre><code>$(function(){
  $('#slider3')
-  .anythingSlider({
-   width        : 500,
-   height       : 400,
-   startStopped : true
-  })
+  .anythingSlider()
   .anythingSliderFx({
    // '.selector' : [ 'caption', 'distance/size', 'time', 'easing' ]
    // 'distance/size', 'time' and 'easing' are optional parameters
@@ -698,13 +694,9 @@
    </div>
 
    <h3><a href="#">Script - FX addon, using custom FX</a></h3>
-   <div><pre><code>$(document).ready(function(){
+   <div><pre><code>$(function(){
  $('#slider3')
-  .anythingSlider({
-   width        : 500,
-   height       : 400,
-   startStopped : true
-  })
+  .anythingSlider()
   /* this "custom" code is the equivalent of the base caption functions */
   .anythingSliderFx({
    inFx: {

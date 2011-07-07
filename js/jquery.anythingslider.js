@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.7.1
+	AnythingSlider v1.7.2
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -53,7 +53,7 @@
 
 			// Set up a few defaults & get details
 			base.flag    = false; // event flag to prevent multiple calls (used in control click/focusin)
-			base.playing = false; // slideshow state
+			base.playing = o.autoPlay; // slideshow state; removed "startStopped" option
 			base.slideshow = false; // slideshow flag
 			base.hovered = false; // actively hovering over the slider
 			base.panelSize = [];  // will contain dimensions and left position of each panel
@@ -71,16 +71,14 @@
 				base.checkResize();
 			}
 
-			// If autoPlay functionality is included, then initialize the settings
-			if (o.buildStartStop) {
-				base.playing = o.autoPlay; // Sets the playing variable; removed "startStopped" option
-				base.buildAutoPlay();
-			} else {
-				o.autoPlayLocked = false; // prevent autoPlayLocked from working if there is no start stop
-			}
+			// Build start/stop button
+			if (o.buildStartStop) { base.buildAutoPlay(); }
 
 			// Build forwards/backwards buttons
 			if (o.buildArrows) { base.buildNextBackButtons(); }
+
+			// can't lock autoplay it if it's not enabled
+			if (!o.autoPlay) { o.autoPlayLocked = false; }
 
 			base.updateSlider();
 
