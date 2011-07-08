@@ -254,8 +254,8 @@
 		<h2>Default Options</h2>
 		See the documentation for complete description of these options (<a href="https://github.com/ProLoser/AnythingSlider/wiki/Appearance-Options">appearance</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Navigation-Options">navigation</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Slideshow-Options">slideshow</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Callbacks-and-Events">callbacks &amp; events</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Video">video</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Interactivity-and-Miscellaneous-Options">interativity &amp; misc</a>).<br>
 		<br>
-		<blockquote>
-			<pre>$('#slider').anythingSlider({
+{% highlight javascript %}
+$('#slider').anythingSlider({
   // ** Appearance **
   theme               : "default", // Theme name
   expand              : false,     // If true, the entire slider will expand to fit the parent element
@@ -329,8 +329,8 @@
   resumeOnVideoEnd    : true,      // If true & the slideshow is active & a supported video is playing, it will pause the autoplay until the video is complete
   addWmodeToObject    : "opaque",  // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting
   isVideoPlaying      : function(base){ return false; } // return true if video is playing or false if not - used by video extension
-});</pre>
-		</blockquote>
+});
+{% endhighlight %}
 
 		<h2>Known Issues</h2>
 		<ul>
@@ -341,6 +341,12 @@
 
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.7.3</h3>
+		<ul>
+			<li>Reverted bring focused link into view code to fix <a href="https://github.com/ProLoser/AnythingSlider/issues/138">issue #138</a>.</li>
+			<li>Modified the above code to now work properly when <code>showMultiple</code> is greater than one.</li>
+		</ul>
 
 		<h3>Version 1.7.2</h3>
 		<ul>

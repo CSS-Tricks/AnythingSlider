@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.7.2
+	AnythingSlider v1.7.3
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -120,24 +120,28 @@
 			// Add keyboard navigation
 			$(document).keyup(function(e){
 				// Stop arrow keys from working when focused on form items
-				var lnk, slider,
-					active = base.$wrapper.is('.activeSlider') && !e.target.tagName.match('TEXTAREA|INPUT|SELECT');
-				switch (e.which) {
-					case 9: // tab
-						lnk = $(':focus');
-						slider = lnk.closest('.anythingSlider');
-						if (slider[0] === base.$wrapper[0]) {
-							base.makeActive();
-							base.$window.scrollLeft(0);
-							base.gotoPage(lnk.closest('.panel').index() + base.adj);
-						}
-						break;
-					case 39: // right arrow
-						if (active && o.enableKeyboard) { base.goForward(); }
-						break;
-					case 37: //left arrow
-						if (active && o.enableKeyboard) { base.goBack(); }
-						break;
+				if (o.enableKeyboard && base.$wrapper.is('.activeSlider') && !e.target.tagName.match('TEXTAREA|INPUT|SELECT')) {
+					switch (e.which) {
+						case 39: // right arrow
+							base.goForward();
+							break;
+						case 37: //left arrow
+							base.goBack();
+							break;
+					}
+				}
+			});
+
+			// Fix tabbing through the page, but don't change the view if the link is in view (showMultiple = true)
+			base.$items.delegate('a', 'focus.AnythingSlider', function(e){
+				var panel = $(this).closest('.panel'),
+				 indx = base.$items.index(panel) + base.adj;
+				base.$items.find('.focusedLink').removeClass('focusedLink');
+				$(this).addClass('focusedLink');
+				base.$window.scrollLeft(0);
+				if (!panel.is('.activePage') && base.currentPage + o.showMultiple - 1 > indx) {
+					base.gotoPage(indx);
+					e.preventDefault();
 				}
 			});
 
