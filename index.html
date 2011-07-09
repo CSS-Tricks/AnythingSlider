@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -267,7 +267,7 @@
   buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
   buildStartStop      : true,      // ** If true, builds the start/stop button
 
-  appendFowardTo      : null,      // Append forward arrow to a HTML element (jQuery Object, selector or HTMLNode), if not null
+  appendForwardTo     : null,      // Append forward arrow to a HTML element (jQuery Object, selector or HTMLNode), if not null
   appendBackTo        : null,      // Append back arrow to a HTML element (jQuery Object, selector or HTMLNode), if not null
   appendControlsTo    : null,      // Append controls (navigation + start-stop) to a HTML element (jQuery Object, selector or HTMLNode), if not null
   appendNavigationTo  : null,      // Append navigation buttons to a HTML element (jQuery Object, selector or HTMLNode), if not null
@@ -342,6 +342,11 @@
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.7.4</h3>
+		<ul>
+			<li>Fixed <code>appendFowardTo</code> to <code>appendForwardTo</code>. Thanks to Helmer!</li>
+		</ul>
+
 		<h3>Version 1.7.3</h3>
 		<ul>
 			<li>Reverted bring focused link into view code to fix <a href="https://github.com/ProLoser/AnythingSlider/issues/138">issue #138</a>.</li>
@@ -377,7 +382,7 @@
 					<li>Now, when <code>autoPlay</code> is <code>true</code>, the slideshow will now start automatically. Default set to <code>false</code>.</li>
 				</ul>
 			</li>
-			<li>Added <code>appendFowardTo</code> &amp; <code>appendBackTo</code> to indicate where to append the forward &amp; back arrows. Enhancement suggested by <a href="https://github.com/ProLoser/AnythingSlider/issues/129">issue #129</a>.</li>
+			<li>Added <code>appendForwardTo</code> &amp; <code>appendBackTo</code> to indicate where to append the forward &amp; back arrows. Enhancement suggested by <a href="https://github.com/ProLoser/AnythingSlider/issues/129">issue #129</a>.</li>
 			<li>Added <code>appendNavigationTo</code> &amp; <code>appendStartStopTo</code> to indicate where to append the navigation tabs &amp; start-stop button.</li>
 			<li>Added <code>enableArrows</code> option. When false, the arrows are visible, but not clickable.</li>
 			<li>Added <code>enableStartStop</code> option. When false, the start-stop button is visible, but not clickable.</li>
