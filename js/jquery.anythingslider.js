@@ -295,7 +295,7 @@
 			});
 
 			// Append elements to page
-			base.$forward.appendTo( (o.appendFowardTo !== null && $(o.appendFowardTo).length) ? $(o.appendFowardTo) : base.$wrapper );
+			base.$forward.appendTo( (o.appendForwardTo !== null && $(o.appendForwardTo).length) ? $(o.appendForwardTo) : base.$wrapper );
 			base.$back.appendTo( (o.appendBackTo !== null && $(o.appendBackTo).length) ? $(o.appendBackTo) : base.$wrapper );
 
 			base.$arrowWidth = base.$forward.width(); // assuming the left & right arrows are the same width - used for toggle
@@ -624,7 +624,7 @@
 		buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
 		buildStartStop      : true,      // ** If true, builds the start/stop button
 
-		appendFowardTo      : null,      // Append forward arrow to a HTML element (jQuery Object, selector or HTMLNode), if not null
+		appendForwardTo     : null,      // Append forward arrow to a HTML element (jQuery Object, selector or HTMLNode), if not null
 		appendBackTo        : null,      // Append back arrow to a HTML element (jQuery Object, selector or HTMLNode), if not null
 		appendControlsTo    : null,      // Append controls (navigation + start-stop) to a HTML element (jQuery Object, selector or HTMLNode), if not null
 		appendNavigationTo  : null,      // Append navigation buttons to a HTML element (jQuery Object, selector or HTMLNode), if not null
