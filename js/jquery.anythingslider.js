@@ -189,8 +189,7 @@
 				.add(base.$nav)
 				.add(base.$startStop)
 				.add(base.$forward)
-				.add(base.$back)
-				[(base.pages <= 1) ? 'hide' : 'show']();
+				.add(base.$back)[(base.pages <= 1) ? 'hide' : 'show']();
 			if (base.pages > 1) {
 				// Build/update navigation tabs
 				base.buildNavigation();
@@ -575,7 +574,7 @@
 		// Handles stopping and playing the slideshow
 		// Pass startStop(false) to stop and startStop(true) to play
 		base.startStop = function(playing, paused) {
-			if (playing !== true) { playing = false; } // Default if not supplied is false
+			if (playing !== true) { playing = false; }  // Default if not supplied is false
 
 			if (playing && !paused) {
 				base.$el.trigger('slideshow_start', base);
@@ -595,12 +594,15 @@
 			}
 
 			// Pause slideshow while video is playing
-			if (playing && o.resumeOnVideoEnd){
+			if (playing){
 				base.clearTimer(true); // Just in case this was triggered twice in a row
 				base.timer = base.win.setInterval(function() {
 					// prevent autoplay if video is playing
 					if ( !o.isVideoPlaying(base) ) {
 						base.goForward(true);
+					// stop slideshow if resume if false
+					} else if (!o.resumeOnVideoEnd) {
+						base.startStop();
 					}
 				}, o.delay);
 			} else {
