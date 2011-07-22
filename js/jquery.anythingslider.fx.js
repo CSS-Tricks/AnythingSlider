@@ -1,5 +1,5 @@
 /*
- * AnythingSlider Slide FX 1.4 for AnythingSlider v1.5.8+
+ * AnythingSlider Slide FX 1.5 for AnythingSlider v1.5.8+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
  */
@@ -38,21 +38,13 @@
 				timeOut : 350
 			},
 
-			// hide caption using setTimeout to ensure slider_complete has fired and activePage class has been added.
-			// this hides element if out of the viewport (prevents captions - right & left only - from overlapping current window)
-			hideOffscreen = function(el){
-				el.each(function(){
-					if (!$(this).closest('.panel').is('.activePage')) { $(this).css('visibility','hidden'); }
-				});
-			},
-
 			// Animate FX
 			animateFx = function(el, opt, isOut, time){
 				if (el.length === 0 || typeof opt === 'undefined') { return; } // no fx
 				var o = opt[0] || opt,
 					s = o[1] || '',
 					// time needs to be a number, not a string
-					t = parseInt( ((s === '') ? o.duration : o[0].duration), 10);
+					t = time || parseInt( ((s === '') ? o.duration : o[0].duration), 10);
 				if (isOut) {
 					// don't change caption position from absolute
 					if (el.css('position') !== 'absolute') { el.css({ position : 'relative' }); }
@@ -61,17 +53,12 @@
 					if (s !== ''){
 						// Out animation is set to 1/4 of the time of the in animation
 						el.filter(opt[1][0]).animate(o[0], { queue : false, duration : (time || t)/4, easing : o[0].easing });
-						el.filter(opt[1][1]).animate(s, { queue : true, duration : (time || t)/4, easing : o[0].easing, complete: function(){
-							setTimeout(function(){ hideOffscreen(el); }, 0); // animation complete... bug report: http://bugs.jquery.com/ticket/7157
-						} });
+						el.filter(opt[1][1]).animate(s, { queue : true, duration : (time || t)/4, easing : o[0].easing });
 						return;
 					}
 				}
 				// animation for no extra selectors
-				if (!isOut) { el.css('visibility','visible').show(); }
-				el.animate(o, { queue : true, duration : time || t, easing : o.easing, complete: function(){
-					if (isOut) { setTimeout(function(){ hideOffscreen(el); }, 0); }
-				} });
+				el.animate(o, { queue : true, duration : time || t, easing : o.easing });
 			},
 
 			// Extract FX from options
@@ -113,7 +100,7 @@
 
 			// bind events for "OUT" effects - occur when leaving a page
 			.bind('slide_init', function(e, slider){
-				var el, elOut, time, page = slider.$lastPage.add( slider.$items.eq(slider.exactPage) );
+				var el, elOut, time, page = slider.$lastPage.add( slider.$items.eq(slider.exactPage) ).add( slider.$targetPage );
 				if (slider.exactPage === 0) { page = page.add( slider.$items.eq( slider.pages ) ); } // add last (non-cloned) page if on first
 				if (slider.options.animationTime < defaults.timeOut) {
 					time = slider.options.animationTime || 1; // if time = zero, make it 1... (0 || 1 === 1) // true )
