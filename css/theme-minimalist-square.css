@@ -9,11 +9,11 @@ div.anythingSlider-minimalist-square .anythingWindow {
 	border-top: 3px solid #333;
 	border-bottom: 3px solid #333;
 }
-div.anythingSlider-minimalist-square .thumbNav a {
+div.anythingSlider-minimalist-square .anythingControls ul a {
 	border: 1px solid #000;
 	background: #333;
 }
-div.anythingSlider-minimalist-square .thumbNav a:hover, div.anythingSlider-minimalist-square .thumbNav a.cur {
+div.anythingSlider-minimalist-square .anythingControls ul a:hover, div.anythingSlider-minimalist-square .anythingControls ul a.cur {
 	background: #777;
 }
 div.anythingSlider-minimalist-square .start-stop {
@@ -30,10 +30,10 @@ div.anythingSlider-minimalist-square .start-stop:hover, div.anythingSlider-minim
 div.anythingSlider-minimalist-square.activeSlider .anythingWindow {
 	border-color: #164054;
 }
-div.anythingSlider-minimalist-square.activeSlider .thumbNav a {
+div.anythingSlider-minimalist-square.activeSlider .anythingControls ul a {
 	background-color: #164054;
 }
-div.anythingSlider-minimalist-square.activeSlider .thumbNav a:hover, div.anythingSlider-minimalist-square.activeSlider .thumbNav a.cur {
+div.anythingSlider-minimalist-square.activeSlider .anythingControls ul a:hover, div.anythingSlider-minimalist-square.activeSlider .anythingControls ul a.cur {
 	background: #fff;
 }
 div.anythingSlider-minimalist-square.activeSlider .start-stop.playing {
@@ -67,6 +67,7 @@ div.anythingSlider-minimalist-square .back a:hover, div.anythingSlider-minimalis
 
 /* Navigation Links */
 div.anythingSlider-minimalist-square .anythingControls {
+	float: right;
 	position: absolute;
 	bottom: 0;
 	right: 15%;
@@ -74,16 +75,15 @@ div.anythingSlider-minimalist-square .anythingControls {
 	opacity: 0.75;
 	filter: alpha(opacity=75);
 }
-div.anythingSlider-minimalist-square .thumbNav {
-	float: right;
+div.anythingSlider-minimalist-square .anythingControls ul {
 	margin: 0;
 	z-index: 100;
 }
-div.anythingSlider-minimalist-square .thumbNav li {
+div.anythingSlider-minimalist-square .anythingControls ul li {
 	display: block;
 	float: left;
 }
-div.anythingSlider-minimalist-square .thumbNav a {
+div.anythingSlider-minimalist-square .anythingControls ul a {
 	display: block;
 	height: 10px;
 	width: 10px;
@@ -95,9 +95,21 @@ div.anythingSlider-minimalist-square .thumbNav a {
 	-webkit-border-radius: 0;
 }
 
+/* Navigation size window arrows */
+div.anythingSlider-minimalist-square .anythingControls li.next a span, div.anythingSlider-minimalist-square .anythingControls li.prev a span {
+	text-indent: 1px;
+	margin-top: 3px;
+}
+div.anythingSlider-minimalist-square .anythingControls li.prev a, div.anythingSlider-minimalist-square .anythingControls li.next a {
+	color: #ddd;
+}
+div.anythingSlider-minimalist-square .anythingControls li.next a:hover, div.anythingSlider-minimalist-square .anythingControls li.prev a:hover {
+	color: #000;
+}
+
 /* slider autoplay right-to-left, reverse order of nav links to look better */
-div.anythingSlider-minimalist-square.rtl .thumbNav a { float: right; } /* reverse order of nav links */
-div.anythingSlider-minimalist-square.rtl .thumbNav { float: left; }    /* move nav link group to left */
+div.anythingSlider-minimalist-square.rtl .anythingControls ul a { float: right; } /* reverse order of nav links */
+div.anythingSlider-minimalist-square.rtl .anythingControls ul { float: left; }    /* move nav link group to left */
 /* div.anythingSlider-minimalist-square.rtl .start-stop { float: right; } */ /* move start/stop button - in case you want to switch sides */
 
 /* Autoplay Start/Stop button */
@@ -125,7 +137,7 @@ div.anythingSlider-minimalist-square {
 }
 
 /* text indent moved to span inside "a", for IE7; apparently, a negative text-indent on an "a" link moves the link as well as the text */
-div.anythingSlider-minimalist-square .arrow a span, div.anythingSlider-minimalist-square .thumbNav a span, div.anythingSlider-minimalist-square .start-stop span {
+div.anythingSlider-minimalist-square .arrow a span, div.anythingSlider-minimalist-square .anythingControls ul a span, div.anythingSlider-minimalist-square .start-stop span {
 	display: block;
 	line-height: 1px; /* needed for IE7 */
 	text-indent: -9999px;

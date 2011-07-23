@@ -72,6 +72,7 @@
 				$('#slider1').closest('div.anythingSlider')
 					.removeClass( $.map(themes, function(t){ return 'anythingSlider-' + t; }).join(' ') )
 					.addClass('anythingSlider-' + theme);
+				$('#slider1').anythingSlider(); // update slider - needed to fix navigation tabs
 			});
 
 			// Add a slide
@@ -106,6 +107,7 @@
 
 			$('#slider2').anythingSlider({
 				resizeContents      : false, // If true, solitary images/objects in the panel will expand to fit the viewport
+				navigationSize      : 3,     // Set this to the maximum number of visible navigation tabs; false to disable
 				navigationFormatter : function(index, panel){ // Format navigation labels with text
 					return ['Recipe', 'Quote', 'Image', 'Quote #2', 'Image #2'][index - 1];
 				}
@@ -164,16 +166,18 @@
 				<li><object width="480" height="385"><param name="movie" value="http://www.youtube.com/v/zSgiXGELjbc&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/zSgiXGELjbc&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></embed></object></li>
 
 				<li class="panel5">
-					<div class="textSlide">
-					<span class="rightside" style="padding-right: 50px;"><object width="500" height="325"><param name="movie" value="http://www.youtube.com/v/2Qj8PhxSnhg&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/2Qj8PhxSnhg&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="500" height="325"></embed></object></span>
-						<h3>Other Information</h3>
-						<br>
-						<ul>
-							<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla aliquet accumsan eros, et iaculis massa fringilla auctor.</li>
-							<li>Proin a mi ante, ut lobortis risus. Sed fringilla augue sed enim faucibus eget aliquam tellus ultricies.</li>
-							<li>Morbi a magna eu ligula scelerisque lobortis vel non nisi.</li>
-							<li>Aliquam condimentum libero eget elit ultrices sit amet ullamcorper felis gravida.</li>
-						</ul>
+					<div>
+						<div class="textSlide">
+						<span class="rightside" style="padding-right: 50px;"><object width="500" height="325"><param name="movie" value="http://www.youtube.com/v/2Qj8PhxSnhg&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/2Qj8PhxSnhg&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="500" height="325"></embed></object></span>
+							<h3>Other Information</h3>
+							<br>
+							<ul>
+								<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla aliquet accumsan eros, et iaculis massa fringilla auctor.</li>
+								<li>Proin a mi ante, ut lobortis risus. Sed fringilla augue sed enim faucibus eget aliquam tellus ultricies.</li>
+								<li>Morbi a magna eu ligula scelerisque lobortis vel non nisi.</li>
+								<li>Aliquam condimentum libero eget elit ultrices sit amet ullamcorper felis gravida.</li>
+							</ul>
+						</div>
 					</div>
 				</li>
 
@@ -187,17 +191,19 @@
 			<ul id="slider2">
 
 				<li class="panel1">
-					<div class="textSlide">
-						<img src="demos/images/251356.jpg" alt="tomato sandwich" style="float: right; margin: 0 0 2px 10px;" />
-						<h3>Queenie's Killer Tomato Bagel Sandwich</h3>
-						<h4>Ingredients</h4>
-						<ul>
-							<li>1 bagel, split and toasted</li>
-							<li>2 tablespoons cream cheese</li>
-							<li>1 roma (plum) tomatoes, thinly sliced</li>
-							<li>salt and pepper to taste</li>
-							<li>4 leaves fresh basil</li>
-						</ul>
+					<div>
+						<div class="textSlide">
+							<img src="demos/images/251356.jpg" alt="tomato sandwich" style="float: right; margin: 0 0 2px 10px;" />
+							<h3>Queenie's Killer Tomato Bagel Sandwich</h3>
+							<h4>Ingredients</h4>
+							<ul>
+								<li>1 bagel, split and toasted</li>
+								<li>2 tablespoons cream cheese</li>
+								<li>1 roma (plum) tomatoes, thinly sliced</li>
+								<li>salt and pepper to taste</li>
+								<li>4 leaves fresh basil</li>
+							</ul>
+						</div>
 					</div>
 				</li>
 
@@ -241,7 +247,7 @@
 			<li>Use keyboard navigation or tabs that are built and added dynamically (any number of panels).</li>
 			<li>Link to specific slides or go forward or back one slide from static text links - go to <a href="#" id="slide-jump">Slide 4</a> (Quote #2) in second example.</li>
 			<li>Each panel has a hashtag (can link directly to specific panels).</li>
-			<li>Optional custom function for <a href="#format">formatting navigation text</a>.</li>
+			<li>Optional custom function for <a href="https://github.com/ProLoser/AnythingSlider/wiki/Navigation-Options">formatting navigation text</a>.</li>
 			<li>Auto-playing slideshow (optional feature, can start playing or stopped).</li>
 			<li>Pauses slideshow on hover (optional).</li>
 			<li>Optionally play the slideshow once through, stopping on the last page.</li>
@@ -256,7 +262,7 @@
 		<br>
 		<blockquote>
 			<pre>$('#slider').anythingSlider({
-  // ** Appearance **
+  // Appearance
   theme               : "default", // Theme name
   expand              : false,     // If true, the entire slider will expand to fit the parent element
   resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
@@ -294,6 +300,7 @@
   hashTags            : true,      // Should links change the hashtag in the URL?
   infiniteSlides      : true,      // if false, the slider will not wrap & not clone any panels
   navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
+  navigationSize      : false,     // Set this to the maximum number of visible navigation tabs; false to disable
 
   // Slideshow options
   autoPlay            : false,     // If true, the slideshow will start running; replaces "startStopped" option
@@ -341,6 +348,28 @@
 
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.7.5</h3>
+		<ul>
+			<li>Added <code>navigationSize</code> option
+				<ul>
+					<li>See the second slider on the main demo page for an example</li>
+					<li>To enable, set this option to the desired number of visible navigation tabs.</li>
+					<li>Set to false when not enabled.</li>
+					<li>Forward and back arrows are set by the value of the <code>backText</code> and <code>forwardText</code> options (also used by the main arrows)</li>
+					<li>Updated CSS styling for all provided themes.</li>
+				</ul>
+			</li>
+			<li>Fixed a problem that broke the slideshow auto play function when <code>resumeOnVideoEnd</code> is <code>false</code>.</li>
+			<li>Updated the FX extension:
+				<ul>
+					<li>Fixed a bug were the FX weren't applied to elements in the next slide. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/147">issue #147</a>.</li>
+					<li>Removed all code that hid or made elements have visibility hidden; no longer needed because each panel has overflow hidden applied.</li>
+				</ul>
+			</li>
+			<li>Modified theme images and stylesheets. Each theme now uses one image sprite. The construction theme navigation images were made smaller as well, but yeah, I know it's still fugly.</li>
+			<li>Removed backward compatibility to jQuery version 1.3.2, the oldest version now supported is 1.4.2. Ideally, use the latest version of jQuery because the <a href="https://github.com/ProLoser/AnythingSlider/wiki">known issues</a> with jQuery versions older than 1.5 still exist.</li>
+		</ul>
 
 		<h3>Version 1.7.4</h3>
 		<ul>
@@ -392,33 +421,6 @@
 			<li>Fixed running slideshow from making the slider active. It will still active when the user interacts with the slider.</li>
 			<li>Fixed video source tags - removed unnecessary closing slash.</li>
 			<li>Fixed a bug where multiple "activePage" classes were applied.</li>
-		</ul>
-
-		<h3>Version 1.6.2</h3>
-		<ul>
-			<li>Fixed broken callbacks. Introduced in version 1.6.1 - Oops!</li>
-		</ul>
-
-		<h3>Version 1.6.1</h3>
-		<ul>
-			<li>Added <code>changeBy</code> which sets how many panels to go forward or back by when the slideshow is active or when using the navigation arrows.</li>
-			<li>Rewrote the code that brings a focused link into view. This new code should be less problematic.</li>
-		</ul>
-
-		<h3>Version 1.6</h3>
-		<ul>
-			<li>Added the Video extension
-					<ul>
-						<li>Moved YouTube code from the AnythingSlider core into the extension, so you will need to load the extension to control videos now.</li>
-						<li>The video extension pauses videos and the slideshow as well as continues playing a video when it becomes visible.</li>
-						<li>Default video support includes YouTube iframe & embed, Vimeo iframe & embed and HTML5 video.</li>
-						<li>Added <code>isVideoPlaying</code> option which is used by the video extension to determine if a video is playing. If you don't use the video extension, you can add your own custom function here where returning true means the video is playing and returning false means the video is not playing.</li>
-						<li>Added "video.html" demo page.</li>
-						<li>Please review the compatibility table on the video.html page to see which browsers are fully supported.</li>
-					</ul>
-			</li>
-			<li>Fixed the problem in IE7 where the an embeded video would not resize properly.</li>
-			<li>Fixed a problem with the plugin causing an error if the panel is empty or only contains a text node.</li>
 		</ul>
 
 	</div>

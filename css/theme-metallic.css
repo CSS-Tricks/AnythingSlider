@@ -9,7 +9,7 @@ div.anythingSlider-metallic .anythingWindow {
 	border-top: 3px solid #333;
 	border-bottom: 3px solid #333;
 }
-div.anythingSlider-metallic .thumbNav a {
+div.anythingSlider-metallic .anythingControls ul a {
 	border: 1px solid #000;
 }
 div.anythingSlider-metallic .start-stop {
@@ -26,11 +26,11 @@ div.anythingSlider-metallic .start-stop:hover, div.anythingSlider-metallic .star
 div.anythingSlider-metallic.activeSlider .anythingWindow {
 	border-color: #0355a3;
 }
-div.anythingSlider-metallic.activeSlider .thumbNav a {
+div.anythingSlider-metallic.activeSlider .anythingControls ul a {
 	background-color: transparent;
 	background-position: -68px -40px;
 }
-div.anythingSlider-metallic.activeSlider .thumbNav a:hover, div.anythingSlider-metallic.activeSlider .thumbNav a.cur {
+div.anythingSlider-metallic.activeSlider .anythingControls ul a:hover, div.anythingSlider-metallic.activeSlider .anythingControls ul a.cur {
 	background-position: -76px -57px;
 /*	background: #fff; */
 }
@@ -66,6 +66,7 @@ div.anythingSlider-metallic .back a:hover, div.anythingSlider-metallic .back a.h
 
 /* Navigation Links */
 div.anythingSlider-metallic .anythingControls {
+	float: right;
 	position: absolute;
 	bottom: 0;
 	right: 15%;
@@ -73,17 +74,15 @@ div.anythingSlider-metallic .anythingControls {
 	opacity: 0.90;
 	filter: alpha(opacity=90);
 }
-div.anythingSlider-metallic .thumbNav {
-	display: block;
-	float: right;
+div.anythingSlider-metallic .anythingControls ul {
 	margin: 0;
 	z-index: 100;
 }
-div.anythingSlider-metallic .thumbNav li {
+div.anythingSlider-metallic .anythingControls ul li {
 	display: block;
 	float: left;
 }
-div.anythingSlider-metallic .thumbNav a {
+div.anythingSlider-metallic .anythingControls ul a {
 	display: block;
 	background: transparent url(../images/arrows-metallic.png) -68px -136px no-repeat;
 	height: 10px;
@@ -96,13 +95,25 @@ div.anythingSlider-metallic .thumbNav a {
 	-webkit-border-radius: 5px;
 }
 
-div.anythingSlider-metallic .thumbNav a:hover, div.anythingSlider-metallic .thumbNav a.cur {
+div.anythingSlider-metallic .anythingControls ul a:hover, div.anythingSlider-metallic .anythingControls ul a.cur {
 	background: transparent url(../images/arrows-metallic.png) -76px -57px no-repeat;
 }
 
+/* Navigation size window arrows */
+div.anythingSlider-metallic .anythingControls li.next a span, div.anythingSlider-metallic .anythingControls li.prev a span {
+	text-indent: 1px;
+	margin-top: 3px;
+}
+div.anythingSlider-metallic .anythingControls li.prev a, div.anythingSlider-metallic .anythingControls li.next a {
+	color: #ddd;
+}
+div.anythingSlider-metallic .anythingControls li.next a:hover, div.anythingSlider-metallic .anythingControls li.prev a:hover {
+	color: #000;
+}
+
 /* slider autoplay right-to-left, reverse order of nav links to look better */
-div.anythingSlider-metallic.rtl .thumbNav a { float: right; } /* reverse order of nav links */
-div.anythingSlider-metallic.rtl .thumbNav { float: left; }    /* move nav link group to left */
+div.anythingSlider-metallic.rtl .anythingControls ul a { float: right; } /* reverse order of nav links */
+div.anythingSlider-metallic.rtl .anythingControls ul { float: left; }    /* move nav link group to left */
 /* div.anythingSlider-metallic.rtl .start-stop { float: right; } */ /* move start/stop button - in case you want to switch sides */
 
 /* Autoplay Start/Stop button */
@@ -128,7 +139,7 @@ div.anythingSlider-metallic {
 }
 
 /* text indent moved to span inside "a", for IE7; apparently, a negative text-indent on an "a" link moves the link as well as the text */
-div.anythingSlider-metallic .arrow a span, div.anythingSlider-metallic .thumbNav a span, div.anythingSlider-metallic .start-stop span {
+div.anythingSlider-metallic .arrow a span, div.anythingSlider-metallic .anythingControls ul a span, div.anythingSlider-metallic .start-stop span {
 	display: block;
 	line-height: 1px; /* needed for IE7 */
 	text-indent: -9999px;

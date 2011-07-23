@@ -51,14 +51,13 @@
 					el.stop();
 					// multiple selectors for out animation
 					if (s !== ''){
-						// Out animation is set to 1/4 of the time of the in animation
-						el.filter(opt[1][0]).animate(o[0], { queue : false, duration : (time || t)/4, easing : o[0].easing });
-						el.filter(opt[1][1]).animate(s, { queue : true, duration : (time || t)/4, easing : o[0].easing });
+						el.filter(opt[1][0]).animate(o[0], { queue : false, duration : t, easing : o[0].easing });
+						el.filter(opt[1][1]).animate(s, { queue : true, duration : t, easing : o[0].easing });
 						return;
 					}
 				}
 				// animation for no extra selectors
-				el.animate(o, { queue : true, duration : time || t, easing : o.easing });
+				el.animate(o, { queue : true, duration : t, easing : o.easing });
 			},
 
 			// Extract FX from options
@@ -89,7 +88,8 @@
 						// if size option is defined, get new base fx
 						tmp = (t) ? baseFx : getBaseFx(opts[1]);
 						$.extend(true, bfx, tmp[f][0][ex]);
-						bfx.duration = opts[n] || bfx.duration || time; // user set time || built-in time || default time set above
+						t = opts[n] || bfx.duration || time; // user set time || built-in time || default time set above
+						bfx.duration = (isOut) ? t/2 : t; // out animation time is 1/2 of in time for predefined fx only
 						bfx.easing = opts[n+1] || defaults.easing;
 					}
 				});

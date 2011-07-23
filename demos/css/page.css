@@ -42,7 +42,7 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 
 /* Set slider1 panel 5 stuff - adding padding directly to the panel will
    shift panels after it, so we need a wrapper */
-#main #slider1 .panel5 ul { width: 225px; margin: 0 5px 0 15px; }
+#main #slider1 .panel5 ul { width: 200px; margin: 0 5px; }
 
 /* Set slider2 panel sizes, Main & FX demo pages */
 #slider2 .panel1 { width: 500px; height: 350px; }
@@ -60,7 +60,7 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 .textSlide ul li       { display: list-item; }
 .rightside             { float: right; margin: 0 0 2px 10px; }
 
-.quoteSlide            { padding: 30px; }
+.quoteSlide            { padding: 20px; }
 .quoteSlide blockquote { font: italic 24px/1.5 Georgia, Serif; text-align: center; color: #444; margin: 0 0 10px 0; }
 .quoteSlide p          { text-align: center; }
 
@@ -75,6 +75,7 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 /* colorbox images to full size */
 #demo2 #slider1        { width: 400px; height: 300px; list-style: none; }
 #cboxPhoto             { width: 100%; height: 100%; margin: 0 !important; }
+#cboxTitle             { color: #000 !important; }
 
 /* Change metallic slider defaults to show thumbnails -
   using #demo2 (page wrapper) to increase this CSS priority */

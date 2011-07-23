@@ -25,4 +25,21 @@ div.anythingSlider-minimalist-round .arrow a {
 	margin: 0 !important;
 }
 
-div.anythingSlider .thumbNav a { display: inline !important; }
+/* When using the navigationSize option, the side margins need to be zero
+   None of the navigation panels look good in IE7 now =( */
+div.anythingSlider .anythingControls ul.thumbNav a {
+	margin: 0;
+}
+div.anythingSlider .anythingControls .anythingNavWindow li {
+	padding: 3px 0 0 0;
+}
+div.anythingSlider-cs-portfolio .anythingControls .anythingNavWindow {
+	margin: 18px 0 0 0;
+}
+div.anythingSlider-metallic .anythingControls,
+div.anythingSlider-minimalist-square .anythingControls,
+div.anythingSlider-construction .anythingControls,
+div.anythingSlider-minimalist-round .anythingControls {
+	width: 70%; /* arbitrary percentage, adjust to fit your slider in IE7 */
+	margin-top: 3px;
+}

@@ -27,7 +27,7 @@ div.anythingSlider .anythingWindow {
 	border-bottom: 3px solid #777;
 }
 /* Navigation buttons, default state */
-div.anythingSlider .thumbNav a.cur, div.anythingSlider .thumbNav a {
+div.anythingSlider .anythingControls ul a.cur, div.anythingSlider .anythingControls ul a {
 	background: #777;
 	color: #000;
 }
@@ -51,7 +51,7 @@ div.anythingSlider.activeSlider .anythingWindow {
 	border-color: #7C9127;
 }
 /* Navigation buttons, active state */
-div.anythingSlider.activeSlider .thumbNav a.cur, div.anythingSlider.activeSlider .thumbNav a {
+div.anythingSlider.activeSlider .anythingControls ul a.cur, div.anythingSlider.activeSlider .anythingControls ul a {
 	background-color: #7C9127;
 }
 /* start-stop button, stopped, active state */
@@ -75,7 +75,7 @@ div.anythingSlider .start-stop:hover, div.anythingSlider .start-stop.hover {
 div.anythingSlider {
 	display: block;
 	margin: 0 auto;
-	overflow: hidden; /* needed for Opera and Safari */
+	overflow: visible !important; /* needed for Opera and Safari */
 	position: relative;
 	padding: 0 45px 28px 45px;
 }
@@ -114,38 +114,39 @@ div.anythingSlider .arrow {
 }
 div.anythingSlider .arrow a {
 	display: block;
-	height: 120px;
-	margin: -60px 0 0 0; /* half height of image */
+	height: 140px;
+	margin: -70px 0 0 0; /* half height of image */
 	width: 45px;
 	text-align: center;
 	outline: 0;
-	background: url(../images/arrows-default.png) no-repeat;
+	background: url(../images/default.png) no-repeat;
 }
 /* hide text, target the span so IE7 doesn't text-indent the link */
 div.anythingSlider .arrow a span { display: block; text-indent: -9999px; }
 /* back arrow */
 div.anythingSlider .back { left: 0; }
-div.anythingSlider .back a { background-position: -88px -40px; }
-div.anythingSlider .back a:hover, div.anythingSlider .back a.hover { background-position: -88px -240px; }
+div.anythingSlider .back a { background-position: left top; }
+div.anythingSlider .back a:hover, div.anythingSlider .back a.hover { background-position: left -140px; }
 div.anythingSlider .back.disabled { display: none; } /* disabled arrows, hide or reduce opacity: opacity: .5; filter: alpha(opacity=50); */
 /* forward arrow */
 div.anythingSlider .forward { right: 0; }
-div.anythingSlider .forward a { background-position: 0 -40px; }
-div.anythingSlider .forward a:hover, div.anythingSlider .forward a.hover { background-position: 0 -240px; }
+div.anythingSlider .forward a { background-position: right top; }
+div.anythingSlider .forward a:hover, div.anythingSlider .forward a.hover { background-position: right -140px; }
 div.anythingSlider .forward.disabled { display: none; } /* disabled arrows, hide or reduce opacity: opacity: .5; filter: alpha(opacity=50); */
 
 /* Navigation Links */
 div.anythingSlider .anythingControls { outline: 0; display: none; }
-div.anythingSlider .thumbNav { margin: 0; padding: 0; }
-div.anythingSlider .thumbNav li { display: inline; }
-div.anythingSlider .thumbNav a {
+div.anythingSlider .anythingControls ul { margin: 0; padding: 0; float: left; }
+div.anythingSlider .anythingControls ul li { display: inline; }
+div.anythingSlider .anythingControls ul a {
 	font: 11px/18px Georgia, Serif;
 	display: inline-block;
 	text-decoration: none;
 	padding: 2px 8px;
 	height: 18px;
 	margin: 0 5px 0 0;
-	background-image: url(../images/cellshade.png);
+	background-image: url(../images/default.png);
+	background-position: center -288px ;
 	background-repeat: repeat-x;
 	text-align: center;
 	outline: 0;
@@ -153,13 +154,15 @@ div.anythingSlider .thumbNav a {
 	-moz-border-radius: 0 0 5px 5px;
 	-webkit-border-radius: 0 0 5px 5px;
 }
-div.anythingSlider .thumbNav a:hover {
+div.anythingSlider .anythingControls ul a:hover {
 	background-image: none;
 }
+/* Navigation size window */
+div.anythingSlider .anythingControls .anythingNavWindow { overflow: hidden; float: left; }
 
 /* slider autoplay right-to-left, reverse order of nav links to look better */
-div.anythingSlider.rtl .thumbNav a { float: right; } /* reverse order of nav links */
-div.anythingSlider.rtl .thumbNav { float: left; }    /* move nav link group to left */
+div.anythingSlider.rtl .anythingControls ul a { float: right; } /* reverse order of nav links */
+div.anythingSlider.rtl .anythingControls ul { float: left; }    /* move nav link group to left */
 div.anythingSlider.rtl .anythingWindow {
 	direction: ltr;
 	unicode-bidi: bidi-override;
@@ -168,9 +171,9 @@ div.anythingSlider.rtl .anythingWindow {
 
 /* Autoplay Start/Stop button */
 div.anythingSlider .start-stop {
-	background-image: url(../images/cellshade.png);
+	background-image: url(../images/default.png);
+	background-position: center -288px;
 	background-repeat: repeat-x;
-	background-position: center top;
 	padding: 2px 5px;
 	width: 40px;
 	text-align: center;
@@ -186,7 +189,7 @@ div.anythingSlider .start-stop {
 div.anythingSlider .start-stop:hover, div.anythingSlider .start-stop.hover { background-image: none; }
 
 /* probably not necessary, but added just in case */
-div.anythingSlider, div.anythingSlider .anythingWindow, div.anythingSlider .thumbNav a, div.anythingSlider .arrow a, div.anythingSlider .start-stop {
+div.anythingSlider, div.anythingSlider .anythingWindow, div.anythingSlider .anythingControls ul a, div.anythingSlider .arrow a, div.anythingSlider .start-stop {
 	transition-duration: 0;
 	-o-transition-duration: 0;
 	-moz-transition-duration: 0;

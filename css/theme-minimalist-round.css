@@ -9,11 +9,11 @@ div.anythingSlider-minimalist-round .anythingWindow {
 	border-top: 3px solid #333;
 	border-bottom: 3px solid #333;
 }
-div.anythingSlider-minimalist-round .thumbNav a {
+div.anythingSlider-minimalist-round .anythingControls ul a {
 	border: 1px solid #000;
 	background: #333;
 }
-div.anythingSlider-minimalist-round .thumbNav a:hover, div.anythingSlider-minimalist-round .thumbNav a.cur {
+div.anythingSlider-minimalist-round .anythingControls ul a:hover, div.anythingSlider-minimalist-round .anythingControls ul a.cur {
 	background: #777;
 }
 div.anythingSlider-minimalist-round .start-stop {
@@ -30,10 +30,10 @@ div.anythingSlider-minimalist-round .start-stop:hover, div.anythingSlider-minima
 div.anythingSlider-minimalist-round.activeSlider .anythingWindow {
 	border-color: #164054;
 }
-div.anythingSlider-minimalist-round.activeSlider .thumbNav a {
+div.anythingSlider-minimalist-round.activeSlider .anythingControls ul a {
 	background-color: #164054;
 }
-div.anythingSlider-minimalist-round.activeSlider .thumbNav a:hover, div.anythingSlider-minimalist-round.activeSlider .thumbNav a.cur {
+div.anythingSlider-minimalist-round.activeSlider .anythingControls ul a:hover, div.anythingSlider-minimalist-round.activeSlider .anythingControls ul a.cur {
 	background: #fff;
 }
 div.anythingSlider-minimalist-round.activeSlider .start-stop.playing {
@@ -67,6 +67,7 @@ div.anythingSlider-minimalist-round .back a:hover, div.anythingSlider-minimalist
 
 /* Navigation Links */
 div.anythingSlider-minimalist-round .anythingControls {
+	float: right;
 	position: absolute;
 	bottom: 0;
 	right: 15%;
@@ -74,16 +75,15 @@ div.anythingSlider-minimalist-round .anythingControls {
 	opacity: 0.90;
 	filter: alpha(opacity=90);
 }
-div.anythingSlider-minimalist-round .thumbNav {
-	float: right;
+div.anythingSlider-minimalist-round .anythingControls ul {
 	margin: 0;
 	z-index: 100;
 }
-div.anythingSlider-minimalist-round .thumbNav li {
+div.anythingSlider-minimalist-round .anythingControls ul li {
 	display: block;
 	float: left;
 }
-div.anythingSlider-minimalist-round .thumbNav a {
+div.anythingSlider-minimalist-round .anythingControls ul a {
 	display: block;
 	height: 10px;
 	width: 10px;
@@ -95,9 +95,21 @@ div.anythingSlider-minimalist-round .thumbNav a {
 	-webkit-border-radius: 5px;
 }
 
+/* Navigation size window arrows */
+div.anythingSlider-minimalist-round .anythingControls li.next a span, div.anythingSlider-minimalist-round .anythingControls li.prev a span {
+	text-indent: 1px;
+	margin-top: 3px;
+}
+div.anythingSlider-minimalist-round .anythingControls li.prev a, div.anythingSlider-minimalist-round .anythingControls li.next a {
+	color: #ddd;
+}
+div.anythingSlider-minimalist-round .anythingControls li.next a:hover, div.anythingSlider-minimalist-round .anythingControls li.prev a:hover {
+	color: #000;
+}
+
 /* slider autoplay right-to-left, reverse order of nav links to look better */
-div.anythingSlider-minimalist-round.rtl .thumbNav a { float: right; } /* reverse order of nav links */
-div.anythingSlider-minimalist-round.rtl .thumbNav { float: left; }    /* move nav link group to left */
+div.anythingSlider-minimalist-round.rtl .anythingControls ul a { float: right; } /* reverse order of nav links */
+div.anythingSlider-minimalist-round.rtl .anythingControls ul { float: left; }    /* move nav link group to left */
 /* div.anythingSlider-minimalist-round.rtl .start-stop { float: right; } */ /* move start/stop button - in case you want to switch sides */
 
 /* Autoplay Start/Stop button */
@@ -125,7 +137,7 @@ div.anythingSlider-minimalist-round {
 }
 
 /* text indent moved to span inside "a", for IE7; apparently, a negative text-indent on an "a" link moves the link as well as the text */
-div.anythingSlider-minimalist-round .arrow a span, div.anythingSlider-minimalist-round .thumbNav a span, div.anythingSlider-minimalist-round .start-stop span {
+div.anythingSlider-minimalist-round .arrow a span, div.anythingSlider-minimalist-round .anythingControls ul a span, div.anythingSlider-minimalist-round .start-stop span {
 	display: block;
 	line-height: 1px; /* needed for IE7 */
 	text-indent: -9999px;
