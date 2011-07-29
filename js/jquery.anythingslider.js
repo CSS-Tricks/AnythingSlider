@@ -1,5 +1,5 @@
 ﻿/*
-	AnythingSlider v1.7.5
+	AnythingSlider v1.7.6
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -22,6 +22,7 @@
 		var base = this, o;
 
 		// Wraps the ul in the necessary divs and then gives Access to jQuery element
+		base.el = el;
 		base.$el = $(el).addClass('anythingBase').wrap('<div class="anythingSlider"><div class="anythingWindow" /></div>');
 
 		// Add a reverse reference to the DOM object
@@ -108,8 +109,7 @@
 			}
 
 			// If a hash can not be used to trigger the plugin, then go to start panel
-			var triggers, startPanel = (o.hashTags) ? base.gotoHash() || o.startPanel : o.startPanel;
-			base.setCurrentPage(startPanel, false); // added to trigger events for FX code
+			base.setCurrentPage(base.gotoHash() || o.startPage, false);
 
 			// Hide/Show navigation & play/stop controls
 			base.slideControls(false);
@@ -147,7 +147,7 @@
 			});
 
 			// Binds events
-			triggers = "slideshow_paused slideshow_unpaused slide_init slide_begin slideshow_stop slideshow_start initialized swf_completed".split(" ");
+			var triggers = "slideshow_paused slideshow_unpaused slide_init slide_begin slideshow_stop slideshow_start initialized swf_completed".split(" ");
 			$.each("onShowPause onShowUnpause onSlideInit onSlideBegin onShowStop onShowStart onInitialized onSWFComplete".split(" "), function(i,f){
 				if ($.isFunction(o[f])){
 					base.$el.bind(triggers[i], o[f]);
@@ -341,8 +341,8 @@
 			});
 
 			// Append elements to page
-			base.$forward.appendTo( (o.appendForwardTo !== null && $(o.appendForwardTo).length) ? $(o.appendForwardTo) : base.$wrapper );
 			base.$back.appendTo( (o.appendBackTo !== null && $(o.appendBackTo).length) ? $(o.appendBackTo) : base.$wrapper );
+			base.$forward.appendTo( (o.appendForwardTo !== null && $(o.appendForwardTo).length) ? $(o.appendForwardTo) : base.$wrapper );
 
 			base.$arrowWidth = base.$forward.width(); // assuming the left & right arrows are the same width - used for toggle
 		};
@@ -426,7 +426,7 @@
 
 		// get dimension of multiple panels, as needed
 		base.getDim = function(page){
-			if (base.pages < 1) { return [ base.width, base.height ]; } // prevent errors when base.panelSize is empty
+			if (base.pages < 1 || isNaN(page)) { return [ base.width, base.height ]; } // prevent errors when base.panelSize is empty
 			page = (o.infiniteSlides && base.pages > 1) ? page : page - 1;
 			var i,
 				w = base.panelSize[page][0],
@@ -536,7 +536,7 @@
 
 		base.setCurrentPage = function(page, move) {
 			page = parseInt(page, 10);
-			if (base.pages < 1 || page === 0) { return; }
+			if (base.pages < 1 || page === 0 || isNaN(page)) { return; }
 			if (page > base.pages + 1 - base.adj) { page = base.pages - base.adj; }
 			if (page < base.adj ) { page = 1; }
 
@@ -577,12 +577,23 @@
 			}
 		};
 
-		// This method tries to find a hash that matches panel-X
-		// If found, it tries to find a matching item
-		// If that is found as well, then that item starts visible
+		// This method tries to find a hash that matches an ID and panel-X
+		// If either found, it tries to find a matching item
+		// If that is found as well, then it returns the page number
 		base.gotoHash = function(){
-			var n = base.win.location.hash.match(base.regex);
-			return (n===null) ? '' : parseInt(n[1],10);
+			var h = base.win.location.hash,
+				i = h.indexOf('&'),
+				n = h.match(base.regex);
+			if (n === null && !/^#&/.test(h)) {
+				// #quote2&panel1-3&panel3-3
+				h = h.substring(0, (i >= 0 ? i : h.length));
+				// ensure the element is in the same slider
+				n = ($(h).closest('.anythingBase')[0] === base.el) ? $(h).closest('.panel').index() : null;
+			} else if (n !== null) {
+				// #&panel1-3&panel3-3
+				n = (o.hashTags) ? parseInt(n[1],10) : null;
+			}
+			return n;
 		};
 
 		base.setHash = function(n){

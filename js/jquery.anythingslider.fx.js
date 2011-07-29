@@ -1,10 +1,10 @@
 /*
- * AnythingSlider Slide FX 1.5 for AnythingSlider v1.5.8+
+ * AnythingSlider Slide FX 1.5.1 for AnythingSlider v1.5.8+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
  */
 (function($) {
-	$.fn.anythingSliderFx = function(options){
+	$.fn.anythingSliderFx = function(FX, options){
 
 		// variable sizes shouldn't matter - it's just to get an idea to get the elements out of view
 		var wrap = $(this).closest('.anythingSlider'),
@@ -31,12 +31,13 @@
 
 		return this.each(function(){
 
-			var baseFx = getBaseFx(), // get base FX with standard sizes
-			defaults = {
+			var defaults = $.extend({
 				easing  : 'swing',
 				timeIn  : 400,
 				timeOut : 350
-			},
+			}, options),
+
+			baseFx = getBaseFx(), // get base FX with standard sizes
 
 			// Animate FX
 			animateFx = function(el, opt, isOut, time){
@@ -60,7 +61,7 @@
 				el.animate(o, { queue : true, duration : t, easing : o.easing });
 			},
 
-			// Extract FX from options
+			// Extract FX
 			getFx = function(opts, isOut){
 				// example: '.textSlide h3' : [ 'top fade', '200px' '500', 'easeOutBounce' ],
 				var tmp, bfx2,
@@ -94,9 +95,9 @@
 					}
 				});
 				return [bfx];
-			};
+			},
 
-			$(this)
+			base = $(this)
 
 			// bind events for "OUT" effects - occur when leaving a page
 			.bind('slide_init', function(e, slider){
@@ -106,17 +107,17 @@
 					time = slider.options.animationTime || 1; // if time = zero, make it 1... (0 || 1 === 1) // true )
 				}
 				page = page.find('*').andSelf(); // include the panel in the selectors
-				for (el in options) {
+				for (el in FX) {
 					if (el === 'outFx') {
 						// process "out" custom effects
-						for (elOut in options.outFx) {
+						for (elOut in FX.outFx) {
 							// animate current/last slide, unless it's a clone, then effect the original
-							if (page.filter(elOut).length) { animateFx( page.filter(elOut), options.outFx[elOut], true); }
+							if (page.filter(elOut).length) { animateFx( page.filter(elOut), FX.outFx[elOut], true); }
 						}
 					} else if (el !== 'inFx') {
 						// Use built-in effects
-						if ($.isArray(options[el]) && page.filter(el).length) {
-							animateFx( page.filter(el), getFx(options[el],true), true, time);
+						if ($.isArray(FX[el]) && page.filter(el).length) {
+							animateFx( page.filter(el), getFx(FX[el],true), true, time);
 						}
 					}
 				}
@@ -126,19 +127,23 @@
 			.bind('slide_complete', function(e, slider){
 				var el, elIn, page = slider.$currentPage.add( slider.$items.eq(slider.exactPage) );
 				page = page.find('*').andSelf(); // include the panel in the selectors
-				for (el in options) {
+				for (el in FX) {
 					if (el === 'inFx') {
 						// process "in" custom effects
-						for (elIn in options.inFx) {
+						for (elIn in FX.inFx) {
 							// animate current page
-							if (page.filter(elIn).length) { animateFx( page.filter(elIn), options.inFx[elIn], false); }
+							if (page.filter(elIn).length) { animateFx( page.filter(elIn), FX.inFx[elIn], false); }
 						}
 						// Use built-in effects
-					} else if (el !== 'outFx' && $.isArray(options[el]) && page.filter(el).length) {
-						animateFx( page.filter(el), getFx(options[el],false), false);
+					} else if (el !== 'outFx' && $.isArray(FX[el]) && page.filter(el).length) {
+						animateFx( page.filter(el), getFx(FX[el],false), false);
 					}
 				}
-			});
+			})
+			.data('AnythingSlider');
+			// call gotoPage to trigger intro animation
+			// (occurs immediately after the slider and FX extension initialize)
+			base.gotoPage(base.currentPage, base.playing);
 
 		});
 	};

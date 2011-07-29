@@ -110,7 +110,11 @@
 				navigationSize      : 3,     // Set this to the maximum number of visible navigation tabs; false to disable
 				navigationFormatter : function(index, panel){ // Format navigation labels with text
 					return ['Recipe', 'Quote', 'Image', 'Quote #2', 'Image #2'][index - 1];
-				}
+				},
+				onSlideComplete: function(slider) {
+					// keep the current navigation tab in view
+					slider.navWindow( slider.currentPage );
+				},
 			});
 
 		});
@@ -246,7 +250,7 @@
 			<li>Optional Next / Previous Panel Arrows.</li>
 			<li>Use keyboard navigation or tabs that are built and added dynamically (any number of panels).</li>
 			<li>Link to specific slides or go forward or back one slide from static text links - go to <a href="#" id="slide-jump">Slide 4</a> (Quote #2) in second example.</li>
-			<li>Each panel has a hashtag (can link directly to specific panels).</li>
+			<li>Each panel has a hashtag (can link directly to specific panels) or use the ID of an element inside the panel.</li>
 			<li>Optional custom function for <a href="https://github.com/ProLoser/AnythingSlider/wiki/Navigation-Options">formatting navigation text</a>.</li>
 			<li>Auto-playing slideshow (optional feature, can start playing or stopped).</li>
 			<li>Pauses slideshow on hover (optional).</li>
@@ -348,6 +352,19 @@
 
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.7.6</h3>
+		<ul>
+			<li>Modified the FX extension to trigger an intro effect which occurs immediately after the slider has initialized. Discussed in <a href="https://github.com/ProLoser/AnythingSlider/issues/130">issue #130</a>.</li>
+			<li>Modified the hash tag functionality
+				<ul>
+					<li>If the hash points to an ID that is inside the slider, that slide will now be visible on page load, this will work even without the <code>hashTags</code> option enabled. For example, the following link (<a href="demos.html#quote2">demos.html#quote2</a>) will go to the FX demo page with the Quote#2 panel inside of Demo #2 in view and at the top of the page.</li>
+					<li>The ID hash will work when other panels are included in the hash (<a href="demos.html#quote2&panel3-3">demos.html#quote2&panel3-3</a>), but the page will not scroll that slider into view; the browser will not bring it into view because the hash is not an ID.</li>
+					<li>The "panelx-#" hash will override the above id hash, so this link <a href="demos.html#quote2&panel2-2">demos.html#quote2&panel2-2</a> will show the first quote panel in demo 2, but the page will not scroll the slider into view.</li>
+				</ul>
+			</li>
+			<li>Reversed the order that the arrows are appended so that the previous arrow is first in the HTML. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/153">issue #153</a>.</li>
+		</ul>
 
 		<h3>Version 1.7.5</h3>
 		<ul>
