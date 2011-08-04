@@ -1,5 +1,5 @@
 ﻿/*
-	AnythingSlider v1.7.6
+	AnythingSlider v1.7.7
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -59,6 +59,7 @@
 			base.hovered = false; // actively hovering over the slider
 			base.panelSize = [];  // will contain dimensions and left position of each panel
 			base.currentPage = o.startPanel = parseInt(o.startPanel,10) || 1; // make sure this isn't a string
+			o.changeBy = parseInt(o.changeBy,10) || 1;
 			base.adj = (o.infiniteSlides) ? 0 : 1; // adjust page limits for infinite or limited modes
 			base.width = base.$el.width();
 			base.height = base.$el.height();
@@ -441,11 +442,11 @@
 		};
 
 		base.goForward = function(autoplay) {
-			base.gotoPage(base.currentPage + parseInt(o.changeBy, 10) * (o.playRtl ? -1 : 1), autoplay);
+			base.gotoPage(base.currentPage + o.changeBy * (o.playRtl ? -1 : 1), autoplay);
 		};
 
 		base.goBack = function(autoplay) {
-			base.gotoPage(base.currentPage + parseInt(o.changeBy, 10) * (o.playRtl ? 1 : -1), autoplay);
+			base.gotoPage(base.currentPage + o.changeBy * (o.playRtl ? 1 : -1), autoplay);
 		};
 
 		base.gotoPage = function(page, autoplay, callback, time) {

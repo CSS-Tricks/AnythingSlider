@@ -1,10 +1,10 @@
 /*
- * AnythingSlider Slide FX 1.5.1 for AnythingSlider v1.5.8+
+ * AnythingSlider Slide FX 1.5.2 for AnythingSlider v1.5.8+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
  */
 (function($) {
-	$.fn.anythingSliderFx = function(FX, options){
+	$.fn.anythingSliderFx = function(effects, options){
 
 		// variable sizes shouldn't matter - it's just to get an idea to get the elements out of view
 		var wrap = $(this).closest('.anythingSlider'),
@@ -14,9 +14,9 @@
 			return {
 				// 'name' : [{ inFx: {effects}, { outFx: {effects} }, selector: []]
 				'top'    : [{ inFx: { top: 0 }, outFx: { top: '-' + (size || sliderHeight) } }],
-				'bottom' : [{ inFx: { bottom: 0 }, outFx: { bottom: (size || sliderHeight) } }],
+				'bottom' : [{ inFx: { top: 0 }, outFx: { top: (size || sliderHeight) } }],
 				'left'   : [{ inFx: { left: 0 }, outFx: { left: '-' + (size || sliderWidth) } }],
-				'right'  : [{ inFx: { right: 0 }, outFx: { right: (size || sliderWidth) } }],
+				'right'  : [{ inFx: { left: 0 }, outFx: { left: (size || sliderWidth) } }],
 				'fade'   : [{ inFx: { opacity: 1 }, outFx: { opacity: 0 } }],
 				'expand' : [{ inFx: { width: '100%', top: '0%', left: '0%' } , outFx: { width: (size || '10%'), top: '50%', left: '50%' } }],
 				'listLR' : [{ inFx: { left: 0, opacity: 1 }, outFx: [{ left: (size || sliderWidth), opacity: 0 }, { left: '-' + (size || sliderWidth), opacity: 0 }], selector: [':odd', ':even'] }],
@@ -30,6 +30,8 @@
 		};
 
 		return this.each(function(){
+
+			$(this).data('AnythingSlider').fx = effects; // store fx list to allow dynamic modification
 
 			var defaults = $.extend({
 				easing  : 'swing',
@@ -84,14 +86,14 @@
 				$.each(fx, function(i,f){
 					// check if built-in effect exists
 					if (baseFx.hasOwnProperty(f)) {
-						var t = typeof opts[1] === 'undefined',
+						var t = typeof opts[1] === 'undefined' || opts[1] === '',
 							n = (f === 'fade') ? 1 : 2; // if 2nd param defined, but it's not a size ('200px'), then use it as time (for fade FX)
 						// if size option is defined, get new base fx
 						tmp = (t) ? baseFx : getBaseFx(opts[1]);
 						$.extend(true, bfx, tmp[f][0][ex]);
 						t = opts[n] || bfx.duration || time; // user set time || built-in time || default time set above
 						bfx.duration = (isOut) ? t/2 : t; // out animation time is 1/2 of in time for predefined fx only
-						bfx.easing = opts[n+1] || defaults.easing;
+						bfx.easing = isNaN(opts[n+1]) ? opts[n+1] || defaults.easing : opts[n+2] || defaults.easing;
 					}
 				});
 				return [bfx];
@@ -101,7 +103,8 @@
 
 			// bind events for "OUT" effects - occur when leaving a page
 			.bind('slide_init', function(e, slider){
-				var el, elOut, time, page = slider.$lastPage.add( slider.$items.eq(slider.exactPage) ).add( slider.$targetPage );
+				var el, elOut, time, page = slider.$lastPage.add( slider.$items.eq(slider.exactPage) ).add( slider.$targetPage ),
+				FX = $(this).data('AnythingSlider').fx; // allow dynamically added FX
 				if (slider.exactPage === 0) { page = page.add( slider.$items.eq( slider.pages ) ); } // add last (non-cloned) page if on first
 				if (slider.options.animationTime < defaults.timeOut) {
 					time = slider.options.animationTime || 1; // if time = zero, make it 1... (0 || 1 === 1) // true )
@@ -125,7 +128,8 @@
 
 			// bind events for "IN" effects - occurs on target page
 			.bind('slide_complete', function(e, slider){
-				var el, elIn, page = slider.$currentPage.add( slider.$items.eq(slider.exactPage) );
+				var el, elIn, page = slider.$currentPage.add( slider.$items.eq(slider.exactPage) ),
+				FX = $(this).data('AnythingSlider').fx; // allow dynamically added FX
 				page = page.find('*').andSelf(); // include the panel in the selectors
 				for (el in FX) {
 					if (el === 'inFx') {
