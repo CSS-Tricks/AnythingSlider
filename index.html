@@ -353,13 +353,24 @@
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.7.7.1</h3>
+		<ul>
+			<li>Added <code>stopRepeat</code> option to the FX extension.
+				<ul>
+					<li>When true, the FX will not repeat when clicking on the current navigation tab.</li>
+					<li>When false (default setting), the FX will animate on any navigation tab.</li>
+					<li>Change the option as follows: <code>$('#slider').anythingSlider(options).anythingSliderFx( effects, { stopRepeat: true });</code></li>
+				</ul>
+			</li>
+		</ul>
+
 		<h3>Version 1.7.7</h3>
 		<ul>
 			<li>Fixed a problem where the slider would rewind if <code>changeBy</code> was a string.</li>
 			<li>Updated the FX extension
 				<ul>
 					<li>Fix problems with "bottom" and "right" effects not working.</li>
-					<li>The fx are now stored so they can be updated and/or modified dynamically</li>
+					<li>The fx are now stored so they can be updated and/or modified dynamically.</li>
 				</ul>
 			</li>
 		</ul>

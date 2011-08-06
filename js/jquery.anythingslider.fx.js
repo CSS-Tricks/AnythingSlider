@@ -1,5 +1,5 @@
 /*
- * AnythingSlider Slide FX 1.5.2 for AnythingSlider v1.5.8+
+ * AnythingSlider Slide FX 1.5.3 for AnythingSlider v1.5.8+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
  */
@@ -34,9 +34,10 @@
 			$(this).data('AnythingSlider').fx = effects; // store fx list to allow dynamic modification
 
 			var defaults = $.extend({
-				easing  : 'swing',
-				timeIn  : 400,
-				timeOut : 350
+				easing     : 'swing', // Default FX easing
+				timeIn     : 400,     // Default time for in FX animation
+				timeOut    : 350,     // Default time for out FX animation - when using predefined FX, this number gets divided by 2
+				stopRepeat : false    // stops repeating FX animation when clicking on the same navigation tab
 			}, options),
 
 			baseFx = getBaseFx(), // get base FX with standard sizes
@@ -103,6 +104,7 @@
 
 			// bind events for "OUT" effects - occur when leaving a page
 			.bind('slide_init', function(e, slider){
+				if (defaults.stopRepeat && slider.$lastPage[0] === slider.$targetPage[0]) { return; }
 				var el, elOut, time, page = slider.$lastPage.add( slider.$items.eq(slider.exactPage) ).add( slider.$targetPage ),
 				FX = $(this).data('AnythingSlider').fx; // allow dynamically added FX
 				if (slider.exactPage === 0) { page = page.add( slider.$items.eq( slider.pages ) ); } // add last (non-cloned) page if on first
@@ -128,6 +130,7 @@
 
 			// bind events for "IN" effects - occurs on target page
 			.bind('slide_complete', function(e, slider){
+				if (defaults.stopRepeat && slider.$lastPage[0] === slider.$targetPage[0]) { return; }
 				var el, elIn, page = slider.$currentPage.add( slider.$items.eq(slider.exactPage) ),
 				FX = $(this).data('AnythingSlider').fx; // allow dynamically added FX
 				page = page.find('*').andSelf(); // include the panel in the selectors
