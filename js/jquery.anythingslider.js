@@ -1,5 +1,5 @@
 ﻿/*
-	AnythingSlider v1.7.7
+	AnythingSlider v1.7.8
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -488,22 +488,24 @@
 
 			if (time > 1) { base.$el.trigger('slide_begin', base); }
 
-			// resize slider if content size varies
-			if (!o.resizeContents) {
-				// animating the wrapper resize before the window prevents flickering in Firefox
-				var d = base.getDim(page);
-				base.$wrapper.filter(':not(:animated)').animate(
-					// prevent animating a dimension to zero
-					{ width: d[0] || base.width, height: d[1] || base.height },
-					{ queue: false, duration: time, easing: o.easing }
+			// delay starting slide animation
+			setTimeout(function(){
+				// resize slider if content size varies
+				if (!o.resizeContents) {
+					// animating the wrapper resize before the window prevents flickering in Firefox
+					var d = base.getDim(page);
+					base.$wrapper.filter(':not(:animated)').animate(
+						// prevent animating a dimension to zero
+						{ width: d[0] || base.width, height: d[1] || base.height },
+						{ queue: false, duration: time, easing: o.easing }
+					);
+				}
+				// Animate Slider
+				base.$el.filter(':not(:animated)').animate(
+					{ left : -base.panelSize[(o.infiniteSlides && base.pages > 1) ? page : page - 1][2] },
+					{ queue: false, duration: time, easing: o.easing, complete: function(){ base.endAnimation(page, callback, time); } }
 				);
-			}
-
-			// Animate Slider
-			base.$el.filter(':not(:animated)').animate(
-				{ left : -base.panelSize[(o.infiniteSlides && base.pages > 1) ? page : page - 1][2] },
-				{ queue: false, duration: time, easing: o.easing, complete: function(){ base.endAnimation(page, callback, time); } }
-			);
+			}, parseInt(o.delayBeforeAnimate, 10) || 0);
 		};
 
 		base.endAnimation = function(page, callback, time){
@@ -726,6 +728,7 @@
 		delay               : 3000,      // How long between slideshow transitions in AutoPlay mode (in milliseconds)
 		resumeDelay         : 15000,     // Resume slideshow after user interaction, only if autoplayLocked is true (in milliseconds).
 		animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
+		delayBeforeAnimate  : 0,         // How long to pause slide animation before going to the desired slide (used if you want your "out" FX to show).
 
 		// Callbacks - removed from options to reduce size - they still work
 

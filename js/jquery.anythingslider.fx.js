@@ -106,7 +106,7 @@
 			.bind('slide_init', function(e, slider){
 				if (defaults.stopRepeat && slider.$lastPage[0] === slider.$targetPage[0]) { return; }
 				var el, elOut, time, page = slider.$lastPage.add( slider.$items.eq(slider.exactPage) ).add( slider.$targetPage ),
-				FX = $(this).data('AnythingSlider').fx; // allow dynamically added FX
+				FX = slider.fx; // allow dynamically added FX
 				if (slider.exactPage === 0) { page = page.add( slider.$items.eq( slider.pages ) ); } // add last (non-cloned) page if on first
 				if (slider.options.animationTime < defaults.timeOut) {
 					time = slider.options.animationTime || 1; // if time = zero, make it 1... (0 || 1 === 1) // true )
@@ -132,7 +132,7 @@
 			.bind('slide_complete', function(e, slider){
 				if (defaults.stopRepeat && slider.$lastPage[0] === slider.$targetPage[0]) { return; }
 				var el, elIn, page = slider.$currentPage.add( slider.$items.eq(slider.exactPage) ),
-				FX = $(this).data('AnythingSlider').fx; // allow dynamically added FX
+				FX = slider.fx; // allow dynamically added FX
 				page = page.find('*').andSelf(); // include the panel in the selectors
 				for (el in FX) {
 					if (el === 'inFx') {
