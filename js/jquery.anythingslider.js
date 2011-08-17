@@ -1,5 +1,5 @@
 ﻿/*
-	AnythingSlider v1.7.8
+	AnythingSlider v1.7.9
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -123,11 +123,12 @@
 			$(document).keyup(function(e){
 				// Stop arrow keys from working when focused on form items
 				if (o.enableKeyboard && base.$wrapper.is('.activeSlider') && !e.target.tagName.match('TEXTAREA|INPUT|SELECT')) {
+					if (!o.vertical && (e.which === 38 || e.which === 40)) { return; }
 					switch (e.which) {
-						case 39: // right arrow
+						case 39: case 40: // right & down arrow
 							base.goForward();
 							break;
-						case 37: //left arrow
+						case 37: case 38: // left & up arrow
 							base.goBack();
 							break;
 					}
@@ -178,7 +179,8 @@
 
 			base.$items = base.$el.children();
 			base.pages = base.$items.length;
-			o.showMultiple = parseInt(o.showMultiple,10) || 1; // only integers allowed
+			base.dir = (o.vertical) ? 'top' : 'left';
+			o.showMultiple = (o.vertical) ? 1 : parseInt(o.showMultiple,10) || 1; // only integers allowed
 
 			if (o.showMultiple > 1) {
 				if (o.showMultiple > base.pages) { o.showMultiple = base.pages; }
@@ -216,7 +218,7 @@
 			}
 
 			// We just added two items, time to re-cache the list, then get the dimensions of each panel
-			base.$items = base.$el.children().addClass('panel');
+			base.$items = base.$el.children().addClass('panel' + (o.vertical ? ' vertical' : ''));
 			base.setDimensions();
 
 			// Set the dimensions of each panel
@@ -386,7 +388,7 @@
 
 		// Set panel dimensions to either resize content or adjust panel to content
 		base.setDimensions = function(){
-			var w, h, c, leftEdge = 0,
+			var w, h, c, edge = 0,
 				// determine panel width
 				pw = (o.showMultiple > 1) ? base.width || base.$window.width()/o.showMultiple : base.$window.width(),
 				winw = base.$win.width();
@@ -401,7 +403,8 @@
 				if (o.resizeContents){
 					// resize panel
 					w = base.width;
-					$(this).css({ width: w, height: base.height });
+					h = base.height;
+					$(this).css({ width: w, height: h });
 					if (c.length && c[0].tagName === "EMBED") { c.attr({ width: '100%', height: '100%' }); } // needed for IE7; also c.length > 1 in IE7
 					// resize panel contents, if solitary (wrapped content or solitary image)
 					if (c.length === 1){
@@ -418,11 +421,11 @@
 					h = $(this).outerHeight(); // get height after setting width
 					$(this).css('height', h);
 				}
-				base.panelSize[i] = [w,h,leftEdge];
-				leftEdge += w;
+				base.panelSize[i] = [w,h,edge];
+				edge += (o.vertical) ? h : w;
 			});
 			// Set total width of slider, Note that this is limited to 32766 by Opera - option removed
-			base.$el.css('width', leftEdge);
+			base.$el.css((o.vertical ? 'height' : 'width'), edge);
 		};
 
 		// get dimension of multiple panels, as needed
@@ -455,6 +458,11 @@
 				base.startStop(false);
 				base.makeActive();
 			}
+			// check if page is an id or class name
+			if (/^[#|.]/.test(page) && $(page).length) {
+				page = $(page).closest('.panel').index() + base.adj;
+			}
+			// rewind effect occurs here when changeBy > 1 
 			if (o.changeBy !== 1){
 				if (page < 0) { page += base.pages; }
 				if (page > base.pages) { page -= base.pages; }
@@ -489,32 +497,33 @@
 			if (time > 1) { base.$el.trigger('slide_begin', base); }
 
 			// delay starting slide animation
-			setTimeout(function(){
+			setTimeout(function(d){
 				// resize slider if content size varies
 				if (!o.resizeContents) {
 					// animating the wrapper resize before the window prevents flickering in Firefox
-					var d = base.getDim(page);
+					d = base.getDim(page);
 					base.$wrapper.filter(':not(:animated)').animate(
 						// prevent animating a dimension to zero
 						{ width: d[0] || base.width, height: d[1] || base.height },
 						{ queue: false, duration: time, easing: o.easing }
 					);
 				}
+				d = {};
+				d[base.dir] = -base.panelSize[(o.infiniteSlides && base.pages > 1) ? page : page - 1][2];
 				// Animate Slider
 				base.$el.filter(':not(:animated)').animate(
-					{ left : -base.panelSize[(o.infiniteSlides && base.pages > 1) ? page : page - 1][2] },
-					{ queue: false, duration: time, easing: o.easing, complete: function(){ base.endAnimation(page, callback, time); } }
+					d, { queue: false, duration: time, easing: o.easing, complete: function(){ base.endAnimation(page, callback, time); } }
 				);
 			}, parseInt(o.delayBeforeAnimate, 10) || 0);
 		};
 
 		base.endAnimation = function(page, callback, time){
 			if (page === 0) {
-				base.$el.css('left', -base.panelSize[base.pages][2]);
+				base.$el.css( base.dir, -base.panelSize[base.pages][2]);
 				page = base.pages;
 			} else if (page > base.pages) {
 				// reset back to start position
-				base.$el.css('left', -base.panelSize[1][2]);
+				base.$el.css( base.dir, -base.panelSize[1][2]);
 				page = 1;
 			}
 			base.exactPage = page;
@@ -564,7 +573,7 @@
 				base.$wrapper
 					.css({ width: d[0], height: d[1] })
 					.add(base.$window).scrollLeft(0); // reset in case tabbing changed this scrollLeft - probably overly redundant
-				base.$el.css('left', -base.panelSize[(o.infiniteSlides && base.pages > 1) ? page : page - 1][2] );
+				base.$el.css( base.dir, -base.panelSize[(o.infiniteSlides && base.pages > 1) ? page : page - 1][2] );
 			}
 			// Update local variable
 			base.currentPage = page;
@@ -680,6 +689,7 @@
 		theme               : "default", // Theme name, add the css stylesheet manually
 		expand              : false,     // If true, the entire slider will expand to fit the parent element
 		resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
+		vertical            : false,     // If true, all panels will slide vertically; they slide horizontally otherwise
 		showMultiple        : false,     // Set this value to a number and it will show that many slides at once
 		easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin or jQuery UI
 
@@ -764,6 +774,9 @@
 				if ( page >= 1 && page <= anySlide.pages ) {
 					anySlide.gotoPage(page, false, callback); // page #, autoplay, one time callback
 				}
+			// Accept id or class name
+			} else if (/^[#|.]/.test(options) && $(options).length) {
+				anySlide.gotoPage(options, false, callback);
 			}
 		});
 	};

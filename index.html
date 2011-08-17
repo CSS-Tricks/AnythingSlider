@@ -270,6 +270,7 @@
   theme               : "default", // Theme name
   expand              : false,     // If true, the entire slider will expand to fit the parent element
   resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
+  vertical            : false,     // If true, all panels will slide vertically; they slide horizontally otherwise
   showMultiple        : false,     // Set this value to a number and it will show that many slides at once
   easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin or jQuery UI
 
@@ -318,6 +319,7 @@
   delay               : 3000,      // How long between slideshow transitions in AutoPlay mode (in milliseconds)
   resumeDelay         : 15000,     // Resume slideshow after user interaction, only if autoplayLocked is true (in milliseconds).
   animationTime       : 600,       // How long the slideshow transition takes (in milliseconds)
+  delayBeforeAnimate  : 0,         // How long to pause slide animation before going to the desired slide (used if you want your "out" FX to show).
 
   // Callbacks
   onBeforeInitialize  : function(e, slider) {}, // Callback before the plugin initializes
@@ -352,6 +354,31 @@
 
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.7.9</h3>
+		<ul>
+			<li>Added <code>vertical</code> option
+				<ul>
+					<li>When true, all of the content in the slider will scroll vertically.</li>
+					<li>Included up &amp; down keyboard keys to navigate, but only when the vertical option is true.</li>
+					<li>The <code>showMultiple</code> option does not currently work when the content is vertical. I may fix this in future versions.</li>
+					<li>Thanks to Caroline-Elisa for the suggestion - in <a href="https://github.com/ProLoser/AnythingSlider/issues/166">issue #166</a>.</li>
+				</ul>
+			</li>
+			<li>AnythingSlider will now accept an ID or classname to target a specific panel in the slider. Callbacks can also be included. Here is an example:
+				<pre><code>// original method
+$('#slider').anythingSlider(4);
+
+// additional method
+$('#slider').anythingSlider('#quotes');</code></pre>
+			</li>
+			<li>Updated FX extension
+				<ul>
+					<li>Fixed a problem with the "expand" effect in the FX extension where the height would not change in some browsers.</li>
+					<li>Added <code>outFxBind</code> and <code>inFxBind</code> options which set which AnythingSlider callbacks are used. This might be more useful if binding FX on slide begin so the element is already animating when the slide comes into view.</li>
+				</ul>
+			</li>
+		</ul>
 
 		<h3>Version 1.7.8</h3>
 		<ul>

@@ -105,6 +105,9 @@ div.anythingSlider .anythingWindow {
 	padding: 0;
 	margin: 0;
 }
+.anythingBase .panel.vertical {
+	float: none;
+}
 
 /* Navigation Arrows */
 div.anythingSlider .arrow {
