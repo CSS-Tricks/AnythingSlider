@@ -355,6 +355,11 @@
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.7.10</h3>
+		<ul>
+			<li>Fixed a problem where setting the <code>animationTime</code> to zero would not trigger any callbacks, thus preventing the FX extension from working.</li>
+		</ul>
+
 		<h3>Version 1.7.9</h3>
 		<ul>
 			<li>Added <code>vertical</code> option
@@ -446,58 +451,6 @@ $('#slider').anythingSlider('#quotes');</code></pre>
 			</li>
 			<li>Modified theme images and stylesheets. Each theme now uses one image sprite. The construction theme navigation images were made smaller as well, but yeah, I know it's still fugly.</li>
 			<li>Removed backward compatibility to jQuery version 1.3.2, the oldest version now supported is 1.4.2. Ideally, use the latest version of jQuery because the <a href="https://github.com/ProLoser/AnythingSlider/wiki">known issues</a> with jQuery versions older than 1.5 still exist.</li>
-		</ul>
-
-		<h3>Version 1.7.4</h3>
-		<ul>
-			<li>Fixed <code>appendFowardTo</code> to <code>appendForwardTo</code>. Thanks to Helmer!</li>
-		</ul>
-
-		<h3>Version 1.7.3</h3>
-		<ul>
-			<li>Reverted bring focused link into view code to fix <a href="https://github.com/ProLoser/AnythingSlider/issues/138">issue #138</a>.</li>
-			<li>Modified the above code to now work properly when <code>showMultiple</code> is greater than one.</li>
-		</ul>
-
-		<h3>Version 1.7.2</h3>
-		<ul>
-			<li>Removed <code>autoPlay</code>'s dependency on <code>buildStartStop</code> so now they are completely independent. Thanks to <a href="https://github.com/ProLoser/AnythingSlider/pull/136">Helmer</a>.</li>
-			<li>Changed <code>autoPlayLocked</code> being defaulted to <code>false</code> when <code>autoPlay</code> instead of <code>buildStartStop</code> is <code>false</code>. Which was just added in version 1.7.</li>
-			<li>Updated demos.html page code to match changes made in version 1.7.</li>
-			<li>Cleaned up demo pages and made them "more" HTML5 valid. Only the provided iframe and embed codes from YouTube & Vimeo cause errors now.</li>
-		</ul>
-
-		<h3>Version 1.7.1</h3>
-		<ul>
-			<li>Fixed <code>delay</code> option being divided by two. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/131">issue #131</a>.</li>
-		</ul>
-
-		<h3>Version 1.7</h3>
-		<ul>
-			<li>Removed <code>width</code> and <code>height</code> options. These are now set in the css. Enhancement suggested in <a href="https://github.com/ProLoser/AnythingSlider/issues/125">issue #125</a>.</li>
-			<li>Removed <code>maxOverallWidth</code> option.<br>
-				<ul>
-					<li>This option was in place to ensure that the slider did not exceed Opera's 32766 pixel maximum width restriction.</li>
-					<li>Added <code>.anythingBase { max-width: 32766px; }</code> to the css.</li>
-				</ul>
-			</li>
-			<li>Removed <code>clickArrows</code> and replaced it with <code>clickForwardArrow</code> &amp; <code>clickBackArrow</code> to allow for jQuery Mobile users to add "swipeLeft" &amp; "swipeRight".</li>
-			<li>Changed <code>autoPlay</code>:<br>
-				<ul>
-					<li>Split <code>autoPlay</code> functionality, so that setting the new <code>buildStartStop</code> option to <code>true</code> will now build the start stop button.</li>
-					<li>Now, when <code>autoPlay</code> is <code>true</code>, the slideshow will now start automatically. Default set to <code>false</code>.</li>
-				</ul>
-			</li>
-			<li>Added <code>appendForwardTo</code> &amp; <code>appendBackTo</code> to indicate where to append the forward &amp; back arrows. Enhancement suggested by <a href="https://github.com/ProLoser/AnythingSlider/issues/129">issue #129</a>.</li>
-			<li>Added <code>appendNavigationTo</code> &amp; <code>appendStartStopTo</code> to indicate where to append the navigation tabs &amp; start-stop button.</li>
-			<li>Added <code>enableArrows</code> option. When false, the arrows are visible, but not clickable.</li>
-			<li>Added <code>enableStartStop</code> option. When false, the start-stop button is visible, but not clickable.</li>
-			<li>Added <code>autoPlayDelayed</code> option. When <code>true</code> clicking to start the slide show will not immediately advance the slider. Enhancement suggested in <a href="https://github.com/ProLoser/AnythingSlider/issues/125">issue #125</a>.</li>
-			<li>Fixed <code>autoPlayLocked</code> true from starting the slideshow if the slideshow button is off (<code>buildStartStop</code>). Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/126">issue #126</a>.</li>
-			<li>Fixed Fx extension not completing the FX out animation when <code>animationTime</code> option is a very small number. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/130">issue #130</a></li>
-			<li>Fixed running slideshow from making the slider active. It will still active when the user interacts with the slider.</li>
-			<li>Fixed video source tags - removed unnecessary closing slash.</li>
-			<li>Fixed a bug where multiple "activePage" classes were applied.</li>
 		</ul>
 
 	</div>

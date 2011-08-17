@@ -1,5 +1,5 @@
 ﻿/*
-	AnythingSlider v1.7.9
+	AnythingSlider v1.7.10
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -379,8 +379,8 @@
 				// base.width = width of one panel, so multiply by # of panels; outerPad is padding added for arrows.
 				if (base.width * o.showMultiple !== w || base.height !== h) {
 					base.setDimensions(); // adjust panel sizes
-					// make sure page is lined up (use 1 millisecond animation time, because "0||x" ignores zeros)
-					base.gotoPage(base.currentPage, base.playing, null, 1);
+					// make sure page is lined up (use -1 animation time, so we can differeniate it from when animationTime = 0)
+					base.gotoPage(base.currentPage, base.playing, null, -1);
 				}
 				if (typeof(stopTimer) === 'undefined'){ base.checkResize(); }
 			}, 500);
@@ -485,7 +485,7 @@
 			base.$targetPage = base.$items.eq( (page === 0) ? base.pages - base.adj : (page > base.pages) ? 1 - base.adj : page - base.adj );
 			time = time || o.animationTime;
 			// don't trigger events when time = 1 - to prevent FX from firing multiple times on page resize
-			if (time > 1) { base.$el.trigger('slide_init', base); }
+			if (time >= 0) { base.$el.trigger('slide_init', base); }
 
 			base.slideControls(true, false);
 
@@ -494,7 +494,7 @@
 			// Stop the slider when we reach the last page, if the option stopAtEnd is set to true
 			if (!autoplay || (o.stopAtEnd && page === base.pages)) { base.startStop(false); }
 
-			if (time > 1) { base.$el.trigger('slide_begin', base); }
+			if (time >= 0) { base.$el.trigger('slide_begin', base); }
 
 			// delay starting slide animation
 			setTimeout(function(d){
@@ -505,7 +505,7 @@
 					base.$wrapper.filter(':not(:animated)').animate(
 						// prevent animating a dimension to zero
 						{ width: d[0] || base.width, height: d[1] || base.height },
-						{ queue: false, duration: time, easing: o.easing }
+						{ queue: false, duration: (time < 0 ? 0 : time), easing: o.easing }
 					);
 				}
 				d = {};
@@ -533,7 +533,7 @@
 
 			if (!base.hovered) { base.slideControls(false); }
 
-			if (time > 1) { base.$el.trigger('slide_complete', base); }
+			if (time >= 0) { base.$el.trigger('slide_complete', base); }
 			// callback from external slide control: $('#slider').anythingSlider(4, function(slider){ })
 			if (typeof callback === 'function') { callback(base); }
 
