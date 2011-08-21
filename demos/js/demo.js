@@ -34,7 +34,8 @@ $(function(){
 	.anythingSliderFx({
 		// base FX definitions
 		// '.selector' : [ 'effect(s)', 'distance/size', 'time', 'easing' ] - 'time' and 'easing' are optional parameters
-		'.quoteSlide'         : [ 'top', '500px', '400', 'easeOutElastic' ],
+		'.quoteSlide:first *' : [ 'grow', '24px', '400', 'easeInOutCirc' ],
+		'.quoteSlide:last'    : [ 'top', '500px', '400', 'easeOutElastic' ],
 		'.expand'             : [ 'expand', '10%', '400', 'easeOutBounce' ],
 		'.textSlide h3'       : [ 'top left', '200px', '500', 'easeOutCirc' ],
 		'.textSlide img,.fade': [ 'fade' ],

@@ -1,5 +1,5 @@
 ﻿/*
-	AnythingSlider v1.7.10
+	AnythingSlider v1.7.11
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -418,7 +418,7 @@
 						c.css('max-width', w);   // set max width for all children
 					}
 					$(this).css('width', w); // set width of panel
-					h = $(this).outerHeight(); // get height after setting width
+					h = (c.length === 1) ? c.outerHeight(true) : $(this).height(); // get height after setting width
 					$(this).css('height', h);
 				}
 				base.panelSize[i] = [w,h,edge];

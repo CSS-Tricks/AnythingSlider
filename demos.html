@@ -378,10 +378,11 @@
    }
   })
   .anythingSliderFx({
-   // base FX definitions
-   // '.selector' : [ 'effect(s)', 'size', 'time', 'easing' ]
-   // 'size', 'time' and 'easing' are optional parameters, but must be kept in order if added
-    '.quoteSlide'         : [ 'top', '500px', '1000', 'easeOutElastic' ],
+    // base FX definitions
+    // '.selector' : [ 'effect(s)', 'size', 'time', 'easing' ]
+    // 'size', 'time' and 'easing' are optional parameters, but must be kept in order if added
+    '.quoteSlide:first *' : [ 'grow', '24px', '400', 'easeInOutCirc' ],
+    '.quoteSlide:last'    : [ 'top', '500px', '400', 'easeOutElastic' ],
     '.expand'             : [ 'expand', '10%', '400', 'easeOutBounce' ],
     '.textSlide h3'       : [ 'top fade', '200px', '500', 'easeOutBounce' ],
     '.textSlide img,.fade': [ 'fade' ],

@@ -1,5 +1,5 @@
 /*
- * AnythingSlider Slide FX 1.5.4 for AnythingSlider v1.5.8+
+ * AnythingSlider Slide FX 1.5.5 for AnythingSlider v1.5.8+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
  */
@@ -10,15 +10,22 @@
 		var wrap = $(this).closest('.anythingSlider'),
 		sliderWidth = wrap.width(),
 		sliderHeight = wrap.height(),
-		getBaseFx = function(size){
+		getBaseFx = function(s){
+			var size = s, size2;
+			// allow for start and end sizes/dimensions
+			if (s && s.indexOf(',') > 0) {
+				s = s.split(',');
+				size = $.trim(s[0]); size2 = $.trim(s[1]);
+			}
 			return {
 				// 'name' : [{ inFx: {effects}, { outFx: {effects} }, selector: []]
 				'top'    : [{ inFx: { top: 0 }, outFx: { top: '-' + (size || sliderHeight) } }],
 				'bottom' : [{ inFx: { top: 0 }, outFx: { top: (size || sliderHeight) } }],
 				'left'   : [{ inFx: { left: 0 }, outFx: { left: '-' + (size || sliderWidth) } }],
 				'right'  : [{ inFx: { left: 0 }, outFx: { left: (size || sliderWidth) } }],
-				'fade'   : [{ inFx: { opacity: 1 }, outFx: { opacity: 0 } }],
-				'expand' : [{ inFx: { width: '100%', height: '100%', top: '0%', left: '0%' } , outFx: { width: (size || '10%'), height: (size || '10%'), top: '50%', left: '50%' } }],
+				'fade'   : [{ inFx: { opacity: size || 1 }, outFx: { opacity: 0 } }],
+				'expand' : [{ inFx: { width: size2 || '100%', height: size2 || '100%', top: '0%', left: '0%' } , outFx: { width: (size || '10%'), height: (size || '10%'), top: '50%', left: '50%' } }],
+				'grow'   : [{ inFx: { top: 0, fontSize: size || '16px', opacity : 1 }, outFx: { top: '-200px', fontSize: size2 || '80px', opacity: 0 } }],
 				'listLR' : [{ inFx: { left: 0, opacity: 1 }, outFx: [{ left: (size || sliderWidth), opacity: 0 }, { left: '-' + (size || sliderWidth), opacity: 0 }], selector: [':odd', ':even'] }],
 				'listRL' : [{ inFx: { left: 0, opacity: 1 }, outFx: [{ left: (size || sliderWidth), opacity: 0 }, { left: '-' + (size || sliderWidth), opacity: 0 }], selector: [':even', ':odd'] }],
 
@@ -150,9 +157,9 @@
 				}
 			})
 			.data('AnythingSlider');
+
 			// call gotoPage to trigger intro animation
-			// (occurs immediately after the slider and FX extension initialize)
-			base.gotoPage(base.currentPage, base.playing);
+			$(window).load(function(){ base.gotoPage(base.currentPage, base.playing); });
 
 		});
 	};

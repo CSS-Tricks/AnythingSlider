@@ -172,7 +172,7 @@
 				<li class="panel5">
 					<div>
 						<div class="textSlide">
-						<span class="rightside" style="padding-right: 50px;"><object width="500" height="325"><param name="movie" value="http://www.youtube.com/v/2Qj8PhxSnhg&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/2Qj8PhxSnhg&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="500" height="325"></embed></object></span>
+						<span class="rightside"><object width="500" height="325"><param name="movie" value="http://www.youtube.com/v/2Qj8PhxSnhg&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/2Qj8PhxSnhg&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="500" height="325"></embed></object></span>
 							<h3>Other Information</h3>
 							<br>
 							<ul>
@@ -354,6 +354,28 @@
 
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.7.11</h3>
+		<ul>
+			<li>Updated the FX extension:
+				<ul>
+					<li>Added <code>grow</code> option that allows for growing text - like in the movies! *popcorn*</li>
+					<li>Allow ability to set multiple sizes for the grow and expand fx by simply separating the two values with a comma. If only one value is present, the fx will use that value (left side of the comma) as described below.
+						<pre><code>// '.selector' : [ 'effect(s)', 'distance/size', 'time', 'easing' ]
+'.selector' : [ 'grow', '24px, 80px' ]   // 'original text size, fx size'
+'.selector' : [ 'expand', '10%, 100%' ], // 'fx size, original size'</code></pre>
+					</li>
+					<li>The difference between grow and expand is that grow changes the font size whereas expand changes the width and height.</li>
+					<li>Added ability to set the <code>fade</code> ending opacity.
+						<pre><code>// '.selector' : [ 'effect(s)', 'distance/size', 'time', 'easing' ]
+'.selector' : [ 'fade', '0.8' ] // opacity number between 0 and 1
+</code></pre>
+					</li>
+					<li>Changed the intro fx from being initialized immediately to occurring when the page has finished loading.</li>
+				</ul>
+			</li>
+			<li>Fixed a problem that occurs when <code>resizeContents</code> is false and the slide content has padding and/or margins.</li>
+		</ul>
 
 		<h3>Version 1.7.10</h3>
 		<ul>
