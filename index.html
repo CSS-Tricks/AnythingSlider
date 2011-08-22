@@ -355,6 +355,20 @@
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.7.11.1</h3>
+		<ul>
+			<li>Fixed a problem with the "fade" fx. See <a href="https://github.com/ProLoser/AnythingSlider/issues/171">issue #171</a>.
+				<ul>
+					<li>In older versions, the size parameter was ignored; but with the changes in 1.7.11, it became required and now follows the same format as all of the other effects.</li>
+					<li>The value is actually an opacity to use and must be included if adding a time or easing effect.
+						<pre><code>// '.selector' : [ 'fade', 'opacity', 'time', 'easing' ]
+'.selector' : [ 'fade', '', 500, 'easeInOutCirc' ] // opacity number between 0 and 1 (default is 1, so using '' will set the value to 1)
+</code></pre>
+					</li>
+				</ul>
+			</li>
+		</ul>
+
 		<h3>Version 1.7.11</h3>
 		<ul>
 			<li>Updated the FX extension:

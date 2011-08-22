@@ -1,5 +1,5 @@
 /*
- * AnythingSlider Slide FX 1.5.5 for AnythingSlider v1.5.8+
+ * AnythingSlider Slide FX 1.5.6 for AnythingSlider v1.7.11+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
  */
@@ -13,7 +13,7 @@
 		getBaseFx = function(s){
 			var size = s, size2;
 			// allow for start and end sizes/dimensions
-			if (s && s.indexOf(',') > 0) {
+			if (s && typeof s === 'string' && s.indexOf(',') > 0) {
 				s = s.split(',');
 				size = $.trim(s[0]); size2 = $.trim(s[1]);
 			}
@@ -97,13 +97,12 @@
 					// check if built-in effect exists
 					if (baseFx.hasOwnProperty(f)) {
 						var t = typeof opts[1] === 'undefined' || opts[1] === '',
-							n = (f === 'fade') ? 1 : 2; // if 2nd param defined, but it's not a size ('200px'), then use it as time (for fade FX)
 						// if size option is defined, get new base fx
 						tmp = (t) ? baseFx : getBaseFx(opts[1]);
 						$.extend(true, bfx, tmp[f][0][ex]);
-						t = opts[n] || bfx.duration || time; // user set time || built-in time || default time set above
+						t = opts[2] || bfx.duration || time; // user set time || built-in time || default time set above
 						bfx.duration = (isOut) ? t/2 : t; // out animation time is 1/2 of in time for predefined fx only
-						bfx.easing = isNaN(opts[n+1]) ? opts[n+1] || defaults.easing : opts[n+2] || defaults.easing;
+						bfx.easing = isNaN(opts[3]) ? opts[3] || defaults.easing : opts[4] || defaults.easing;
 					}
 				});
 				return [bfx];
