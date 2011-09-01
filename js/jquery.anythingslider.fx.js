@@ -1,5 +1,5 @@
 /*
- * AnythingSlider Slide FX 1.5.6 for AnythingSlider v1.7.11+
+ * AnythingSlider Slide FX 1.5.7 for AnythingSlider v1.7.11+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
  */
@@ -117,7 +117,7 @@
 				FX = slider.fx; // allow dynamically added FX
 				if (slider.exactPage === 0) { page = page.add( slider.$items.eq( slider.pages ) ); } // add last (non-cloned) page if on first
 				if (slider.options.animationTime < defaults.timeOut) {
-					time = slider.options.animationTime || 1; // if time = zero, make it 1... (0 || 1 === 1) // true )
+					time = slider.options.animationTime || defaults.timeOut;
 				}
 				page = page.find('*').andSelf(); // include the panel in the selectors
 				for (el in FX) {
