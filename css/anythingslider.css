@@ -13,6 +13,9 @@
 	width: 700px;
 	height: 390px;
 	list-style: none;
+	/* Prevent FOUC (see FAQ page) and keep things readable if javascript is disabled */
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 /* Opera width restriction */
 .anythingBase { max-width: 32766px; }
