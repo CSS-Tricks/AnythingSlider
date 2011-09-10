@@ -1,5 +1,5 @@
 ﻿/*
-	AnythingSlider v1.7.11
+	AnythingSlider v1.7.12
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -142,7 +142,7 @@
 				base.$items.find('.focusedLink').removeClass('focusedLink');
 				$(this).addClass('focusedLink');
 				base.$window.scrollLeft(0);
-				if (!panel.is('.activePage') && base.currentPage + o.showMultiple - 1 > indx) {
+				if ( (indx >= base.currentPage + o.showMultiple || indx < base.currentPage)) {
 					base.gotoPage(indx);
 					e.preventDefault();
 				}
@@ -277,7 +277,10 @@
 							.after('<ul><li class="next"><a href="#"><span>' + o.forwardText + '</span></a></li></ul>')
 							.wrap('<div class="anythingNavWindow"></div>');
 					}
-					base.navWidths = base.$nav.find('li').map(function(){ return $(this).innerWidth(); }).get();
+					// include half of the left position to include extra width from themes like tabs-light and tabs-dark (still not perfect)
+					base.navWidths = base.$nav.find('li').map(function(){
+						return $(this).innerWidth() + Math.ceil(parseInt($(this).find('span').css('left'),10)/2 || 0);
+					}).get();
 					base.navLeft = 1;
 					// add 5 pixels to make sure the tabs don't wrap to the next line
 					base.$nav.width( base.navWidth( 1, base.pages + 1 ) + 5 );
