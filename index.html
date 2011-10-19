@@ -99,8 +99,6 @@
 			$('#slider1').anythingSlider({
 				theme           : 'metallic',
 				easing          : 'easeInOutBack',
-//				autoPlayLocked  : true,  // If true, user changing slides will not stop the slideshow
-//				resumeDelay     : 10000, // Resume slideshow after user interaction, only if autoplayLocked is true (in milliseconds).
 				onSlideComplete : function(slider){
 					// alert('Welcome to Slide #' + slider.currentPage);
 				}
@@ -198,7 +196,7 @@
 				<li class="panel1">
 					<div>
 						<div class="textSlide">
-							<img src="demos/images/251356.jpg" alt="tomato sandwich" style="float: right; margin: 0 0 2px 10px;" />
+							<img src="demos/images/251356.jpg" alt="tomato sandwich" style="float: right; margin: 0 0 2px 10px; width: 250px; height: 250px;" />
 							<h3>Queenie's Killer Tomato Bagel Sandwich</h3>
 							<h4>Ingredients</h4>
 							<ul>
@@ -356,6 +354,17 @@
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.7.13</h3>
+		<ul>
+			<li>Updated the plugin so that if panel sizes aren't defined in the css, it will default to the slider size. This should fix the problem with the slider initializing with a zero width or height.</li>
+			<li>Added a "targetPage" callback variable which contains the targeted page number; "$targetPage" still contains the jQuery object of the targeted page. This can be used in event or callbacks:
+				<pre><code>$('#slider').bind('slide_begin', function(event, slider){
+  console.debug( 'The target page is #' + slider.targetPage );
+  console.debug( 'The title of the target page is: ' + slider.$targetPage.find('h1').text() );
+  // Do something else
+});</code></pre>Note that the targetPage variable contains the correct page before the slider animates, whereas "slider.currentPage" contains the current slide and is not updated until after the animation completes. See the "<a href="https://github.com/ProLoser/AnythingSlider/wiki/Callbacks-and-Events">Callback Arguments</a>" section in the wiki documents for a full list.</li>
+		</ul>
+
 		<h3>Version 1.7.12</h3>
 		<ul>
 			<li>Clicking links inside of a slide when mulitple slides are showing will no longer change the slider. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/187">issue #187</a>.</li>
@@ -452,74 +461,6 @@ $('#slider').anythingSlider('#quotes');</code></pre>
 					<li>Added <code>outFxBind</code> and <code>inFxBind</code> options which set which AnythingSlider callbacks are used. This might be more useful if binding FX on slide begin so the element is already animating when the slide comes into view.</li>
 				</ul>
 			</li>
-		</ul>
-
-		<h3>Version 1.7.8</h3>
-		<ul>
-			<li>Added <code>delayBeforeAnimate</code> option
-				<ul>
-					<li>This value is the amount of time to pause the slider before animating to the targeted slide.</li>
-					<li>Used if you want users to see the "out" effects applied by the FX extension.</li>
-					<li>Default value is zero.</li>
-				</ul>
-			</li>
-		</ul>
-
-		<h3>Version 1.7.7.1</h3>
-		<ul>
-			<li>Added <code>stopRepeat</code> option to the FX extension.
-				<ul>
-					<li>When true, the FX will not repeat when clicking on the current navigation tab.</li>
-					<li>When false (default setting), the FX will animate on any navigation tab.</li>
-					<li>Change the option as follows: <code>$('#slider').anythingSlider(options).anythingSliderFx( effects, { stopRepeat: true });</code></li>
-				</ul>
-			</li>
-		</ul>
-
-		<h3>Version 1.7.7</h3>
-		<ul>
-			<li>Fixed a problem where the slider would rewind if <code>changeBy</code> was a string.</li>
-			<li>Updated the FX extension
-				<ul>
-					<li>Fix problems with "bottom" and "right" effects not working.</li>
-					<li>The fx are now stored so they can be updated and/or modified dynamically.</li>
-				</ul>
-			</li>
-		</ul>
-
-		<h3>Version 1.7.6</h3>
-		<ul>
-			<li>Modified the FX extension to trigger an intro effect which occurs immediately after the slider has initialized. Discussed in <a href="https://github.com/ProLoser/AnythingSlider/issues/130">issue #130</a>.</li>
-			<li>Modified the hash tag functionality
-				<ul>
-					<li>If the hash points to an ID that is inside the slider, that slide will now be visible on page load, this will work even without the <code>hashTags</code> option enabled. For example, the following link (<a href="demos.html#quote2">demos.html#quote2</a>) will go to the FX demo page with the Quote#2 panel inside of Demo #2 in view and at the top of the page.</li>
-					<li>The ID hash will work when other panels are included in the hash (<a href="demos.html#quote2&panel3-3">demos.html#quote2&panel3-3</a>), but the page will not scroll that slider into view; the browser will not bring it into view because the hash is not an ID.</li>
-					<li>The "panelx-#" hash will override the above id hash, so this link <a href="demos.html#quote2&panel2-2">demos.html#quote2&panel2-2</a> will show the first quote panel in demo 2, but the page will not scroll the slider into view.</li>
-				</ul>
-			</li>
-			<li>Reversed the order that the arrows are appended so that the previous arrow is first in the HTML. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/153">issue #153</a>.</li>
-		</ul>
-
-		<h3>Version 1.7.5</h3>
-		<ul>
-			<li>Added <code>navigationSize</code> option
-				<ul>
-					<li>See the second slider on the main demo page for an example</li>
-					<li>To enable, set this option to the desired number of visible navigation tabs.</li>
-					<li>Set to false when not enabled.</li>
-					<li>Forward and back arrows are set by the value of the <code>backText</code> and <code>forwardText</code> options (also used by the main arrows)</li>
-					<li>Updated CSS styling for all provided themes.</li>
-				</ul>
-			</li>
-			<li>Fixed a problem that broke the slideshow auto play function when <code>resumeOnVideoEnd</code> is <code>false</code>.</li>
-			<li>Updated the FX extension:
-				<ul>
-					<li>Fixed a bug were the FX weren't applied to elements in the next slide. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/147">issue #147</a>.</li>
-					<li>Removed all code that hid or made elements have visibility hidden; no longer needed because each panel has overflow hidden applied.</li>
-				</ul>
-			</li>
-			<li>Modified theme images and stylesheets. Each theme now uses one image sprite. The construction theme navigation images were made smaller as well, but yeah, I know it's still fugly.</li>
-			<li>Removed backward compatibility to jQuery version 1.3.2, the oldest version now supported is 1.4.2. Ideally, use the latest version of jQuery because the <a href="https://github.com/ProLoser/AnythingSlider/wiki">known issues</a> with jQuery versions older than 1.5 still exist.</li>
 		</ul>
 
 	</div>

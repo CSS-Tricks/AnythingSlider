@@ -1,5 +1,5 @@
 ﻿/*
-	AnythingSlider v1.7.12
+	AnythingSlider v1.7.13
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -299,11 +299,11 @@
 		};
 
 		base.navWidth = function(x,y){
-			var s = Math.min(x,y),
+			var i, s = Math.min(x,y),
 				e = Math.max(x,y),
 				w = 0;
-			for (; s < e; s++) {
-				w += base.navWidths[s-1] || 0;
+			for (i = s; i < e; i++) {
+				w += base.navWidths[i-1] || 0;
 			}
 			return w;
 		};
@@ -392,6 +392,7 @@
 		// Set panel dimensions to either resize content or adjust panel to content
 		base.setDimensions = function(){
 			var w, h, c, edge = 0,
+				fullsize = { width: '100%', height: '100%' },
 				// determine panel width
 				pw = (o.showMultiple > 1) ? base.width || base.$window.width()/o.showMultiple : base.$window.width(),
 				winw = base.$win.width();
@@ -408,20 +409,22 @@
 					w = base.width;
 					h = base.height;
 					$(this).css({ width: w, height: h });
-					if (c.length && c[0].tagName === "EMBED") { c.attr({ width: '100%', height: '100%' }); } // needed for IE7; also c.length > 1 in IE7
+					if (c.length && c[0].tagName === "EMBED") { c.attr(fullsize); } // needed for IE7; also c.length > 1 in IE7
+					if (c[0].tagName === "OBJECT") { c.find('embed').attr(fullsize); }
 					// resize panel contents, if solitary (wrapped content or solitary image)
 					if (c.length === 1){
-						c.css({ width: '100%', height: '100%' });
+						c.css(fullsize);
 					}
 				} else {
 					// get panel width & height and save it
-					w = $(this).width(); // if not defined, it will return the width of the ul parent
+					w = $(this).width() || base.width; // if image hasn't finished loading, width will be zero, so set it to base width instead
 					if (c.length === 1 && w >= winw){
 						w = (c.width() >= winw) ? pw : c.width(); // get width of solitary child
 						c.css('max-width', w);   // set max width for all children
 					}
 					$(this).css('width', w); // set width of panel
-					h = (c.length === 1) ? c.outerHeight(true) : $(this).height(); // get height after setting width
+					h = (c.length === 1 ? c.outerHeight(true) : $(this).height()); // get height after setting width
+					if (h <= base.outerPad) { h = base.height; } // if height less than the outside padding, then set it to the preset height
 					$(this).css('height', h);
 				}
 				base.panelSize[i] = [w,h,edge];
@@ -465,7 +468,7 @@
 			if (/^[#|.]/.test(page) && $(page).length) {
 				page = $(page).closest('.panel').index() + base.adj;
 			}
-			// rewind effect occurs here when changeBy > 1 
+			// rewind effect occurs here when changeBy > 1
 			if (o.changeBy !== 1){
 				if (page < 0) { page += base.pages; }
 				if (page > base.pages) { page -= base.pages; }
@@ -485,7 +488,8 @@
 			base.currentPage = ( page > base.pages ) ? base.pages : ( page < 1 ) ? 1 : base.currentPage;
 			base.$currentPage = base.$items.eq(base.currentPage - base.adj);
 			base.exactPage = page;
-			base.$targetPage = base.$items.eq( (page === 0) ? base.pages - base.adj : (page > base.pages) ? 1 - base.adj : page - base.adj );
+			base.targetPage = (page === 0) ? base.pages - base.adj : (page > base.pages) ? 1 - base.adj : page - base.adj;
+			base.$targetPage = base.$items.eq( base.targetPage );
 			time = time || o.animationTime;
 			// don't trigger events when time = 1 - to prevent FX from firing multiple times on page resize
 			if (time >= 0) { base.$el.trigger('slide_init', base); }
