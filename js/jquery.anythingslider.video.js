@@ -1,5 +1,5 @@
 /*
- * AnythingSlider Video Controller 1.0 beta for AnythingSlider v1.6+
+ * AnythingSlider Video Controller 1.1 beta for AnythingSlider v1.6+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
  */
@@ -311,12 +311,12 @@ $.fn.anythingSliderVideo.services = {
 				// YouTube ready, add additional event listeners for video status. BUT this never fires off =(
 				// Fixing this may solve the continue problem
 				if (data.event === 'onReady') {
-					base.video.postMsg('{"event":"listening","func":"onStateChange"}', vid); // **** FIX: NEED TO DETERMINE VID ***
+					base.video.postMsg('{"event":"listening","func":"onStateChange"}', vid);
 				}
 				// Update status, so the "isPlaying" function can access it
 				if (data.event === 'onStateChange' && base.video.list[index]) {
-					// update list with current status; data.state = YouTube
-					base.video.list[index].status = data.state;
+					// update list with current status; data.info.playerState = YouTube
+					base.video.list[index].status = data.info.playerState;
 				}
 			}
 		},

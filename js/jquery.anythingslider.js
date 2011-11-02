@@ -1,5 +1,5 @@
 ﻿/*
-	AnythingSlider v1.7.13
+	AnythingSlider v1.7.14
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -138,11 +138,11 @@
 			// Fix tabbing through the page, but don't change the view if the link is in view (showMultiple = true)
 			base.$items.delegate('a', 'focus.AnythingSlider', function(e){
 				var panel = $(this).closest('.panel'),
-				 indx = base.$items.index(panel) + base.adj;
+				 indx = base.$items.index(panel) + base.adj; // index can be -1 in nested sliders - issue #208
 				base.$items.find('.focusedLink').removeClass('focusedLink');
 				$(this).addClass('focusedLink');
 				base.$window.scrollLeft(0);
-				if ( (indx >= base.currentPage + o.showMultiple || indx < base.currentPage)) {
+				if ( ( indx !== -1 && (indx >= base.currentPage + o.showMultiple || indx < base.currentPage) ) ) {
 					base.gotoPage(indx);
 					e.preventDefault();
 				}
@@ -409,11 +409,11 @@
 					w = base.width;
 					h = base.height;
 					$(this).css({ width: w, height: h });
-					if (c.length && c[0].tagName === "EMBED") { c.attr(fullsize); } // needed for IE7; also c.length > 1 in IE7
-					if (c[0].tagName === "OBJECT") { c.find('embed').attr(fullsize); }
-					// resize panel contents, if solitary (wrapped content or solitary image)
-					if (c.length === 1){
-						c.css(fullsize);
+					if (c.length) {
+						if (c[0].tagName === "EMBED") { c.attr(fullsize); } // needed for IE7; also c.length > 1 in IE7
+						if (c[0].tagName === "OBJECT") { c.find('embed').attr(fullsize); }
+						// resize panel contents, if solitary (wrapped content or solitary image)
+						if (c.length === 1){ c.css(fullsize); }
 					}
 				} else {
 					// get panel width & height and save it
@@ -424,7 +424,7 @@
 					}
 					$(this).css('width', w); // set width of panel
 					h = (c.length === 1 ? c.outerHeight(true) : $(this).height()); // get height after setting width
-					if (h <= base.outerPad) { h = base.height; } // if height less than the outside padding, then set it to the preset height
+					if (h <= base.outerPad[1]) { h = base.height; } // if height less than the outside padding, then set it to the preset height
 					$(this).css('height', h);
 				}
 				base.panelSize[i] = [w,h,edge];
