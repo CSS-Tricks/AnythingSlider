@@ -1,5 +1,5 @@
 ﻿/*
-	AnythingSlider v1.7.14
+	AnythingSlider v1.7.15
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -181,6 +181,7 @@
 			base.pages = base.$items.length;
 			base.dir = (o.vertical) ? 'top' : 'left';
 			o.showMultiple = (o.vertical) ? 1 : parseInt(o.showMultiple,10) || 1; // only integers allowed
+			o.navigationSize = (o.navigationSize === false) ? 0 : parseInt(o.navigationSize,10) || 0;
 
 			if (o.showMultiple > 1) {
 				if (o.showMultiple > base.pages) { o.showMultiple = base.pages; }
@@ -269,8 +270,8 @@
 					});
 				});
 
-				// Add navigation tab scrolling
-				if (o.navigationSize !== false && parseInt(o.navigationSize,10) < base.pages) {
+				// Add navigation tab scrolling - use !! in case someone sets the size to zero
+				if (!!o.navigationSize && o.navigationSize < base.pages) {
 					if (!base.$controls.find('.anythingNavWindow').length){
 						base.$nav
 							.before('<ul><li class="prev"><a href="#"><span>' + o.backText + '</span></a></li></ul>')
@@ -309,13 +310,15 @@
 		};
 
 		base.navWindow = function(n){
-			var p = base.pages - o.navigationSize + 1;
-			n = (n <= 1) ? 1 : (n > 1 && n < p) ? n : p;
-			if (n !== base.navLeft) {
-				base.$controls.find('.anythingNavWindow').animate(
-					{ scrollLeft: base.navWidth(1, n), width: base.navWidth(n, n + o.navigationSize) },
-					{ queue: false, duration: o.animationTime });
-				base.navLeft = n;
+			if (!!o.navigationSize && o.navigationSize < base.pages && base.navWidths) {
+				var p = base.pages - o.navigationSize + 1;
+				n = (n <= 1) ? 1 : (n > 1 && n < p) ? n : p;
+				if (n !== base.navLeft) {
+					base.$controls.find('.anythingNavWindow').animate(
+						{ scrollLeft: base.navWidth(1, n), width: base.navWidth(n, n + o.navigationSize) },
+						{ queue: false, duration: o.animationTime });
+					base.navLeft = n;
+				}
 			}
 		};
 
