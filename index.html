@@ -354,6 +354,15 @@
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.7.15.1</h3>
+		<ul>
+			<li>Fixed an issue in the video extension where watching a related YouTube video in the slider would cause javascript errors.</li>
+			<li>Added another known issue with the video extension - Watching a related video breaks the ability if the slider to continue playing and pause the slideshow while playing these videos. This is because the iframe does not update the video URL and there is no way, that I know of, of determining which iframe is reporting a status change.</li>
+			<li>Added a video option named <code>resumeVideo</code> which when false, does not continue playing a paused video. Change this option as follows (inside of a document ready call and before the slider is initialized):
+				<pre><code>$.anythingSliderVideoDefaults.resumeVideo = false;</code></pre>
+			</li>
+		</ul>
+
 		<h3>Version 1.7.15</h3>
 		<ul>
 			<li>Fix an issue with calling the navigation window function which isn't initialized when the number of tabs shown equals the `navigationSize` value. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/209">issue #209</a>.</li>

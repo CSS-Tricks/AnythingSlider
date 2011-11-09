@@ -207,7 +207,7 @@
 				</tr>
 				<tr>
 					<td>Continue *</td>
-					<td class="good"></td> <!-- Firefox -->
+					<td class="prob"></td> <!-- Firefox -->
 					<td class="prob"></td> <!-- Chrome -->
 					<td class="prob"></td> <!-- Safari -->
 					<td class="bad"></td> <!-- Opera -->
@@ -322,10 +322,20 @@
 		<br>
 		<h3>Legend</h3>
 		<ul>
-			<li>(*) YouTube iframe autoplays (continues) the second time the video comes into view, because it gets paused even though it hasn't started; oddly this isn't a problem in Firefox. Still working on a fix.</li>
+			<li>(*) YouTube iframe
+				<ul>
+					<li>The video autoplays (continues) the second time the video comes into view, because it gets paused even though it hasn't started; oddly this isn't a problem in Firefox. Still working on a fix.</li>
+					<li>Watching a related video breaks the ability if the slider to continue playing and pause the slideshow while playing these videos. This is because the iframe does not update the video URL and there is no way, that I know of, of determining which iframe is reporting a status change.</li>
+				</ul>
+			</li>
 			<li>(FF) Firefox 3+ - No problems noted.</li>
 			<li>(C) Chrome - Ignore "Unsafe JavaScript attempt to access frame with URL" error.</li>
-			<li>(S) Safari 4+ - HTML5 video shows up as a black box when it should be hidden by overflow (at least in Windows).</li>
+			<li>(S) Safari 4+
+				<ul>
+					<li>HTML5 video shows up as a black box when it should be hidden by overflow (at least in Windows).</li>
+					<li>In Safari for Windows, including an HTML5 along with other videos appears to offset every video down and right (about 100px) for an unknown reason. For now, this issue can be solved by keeping HTML5 videos separate from other videos.</li>
+				</ul>
+			</li>
 			<li>(O) Opera 9+ - YouTube iframe does not update player status when the script controls it (<a href="https://groups.google.com/forum/#!msg/youtube-api-gdata/eaPsecXHVmc/NXNDQhMZcwsJ">reported</a>). So this breaks this extension's ability to resume a video and pause the slideshow.</li>
 			<li>(IE9) Internet Explorer 9 - See "*" Note above.</li>
 			<li>(IE8) Internet Explorer 8 - no support for HTML5.</li>
