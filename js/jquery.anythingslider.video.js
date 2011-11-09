@@ -1,10 +1,15 @@
 ﻿/*
- * AnythingSlider Video Controller 1.2 beta for AnythingSlider v1.6+
+ * AnythingSlider Video Controller 1.3 beta for AnythingSlider v1.6+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
  */
 (function($) {
 	$.fn.anythingSliderVideo = function(options){
+
+		//Set the default values, use comma to separate the settings, example:
+		var defaults = {
+			videoID : 'asvideo' // id prefix
+		};
 
 		return this.each(function(){
 			// make sure a AnythingSlider is attached
@@ -14,7 +19,7 @@
 			// Next update, I may just force users to call the video extension instead of it auto-running on window load
 			// then they can change the video options in that call instead of the base defaults, and maybe prevent the
 			// videos being initialized twice on startup (once as a regular video and second time with the API string)
-			// video.options = $.extend({}, $.anythingSliderVideoDefaults, options);
+			video.options = $.extend({}, defaults, options);
 
 			// check if SWFObject is loaded
 			video.hasSwfo = (typeof(swfobject) !== 'undefined' && swfobject.hasOwnProperty('embedSWF') && typeof(swfobject.embedSWF) === 'function') ? true : false;
@@ -35,9 +40,9 @@
 					video.$items.find(sel).each(function(){
 						tmp = $(this);
 						// save panel and video selector in the list
-						tmp.attr('id', $.anythingSliderVideoDefaults.videoID + video.len);
+						tmp.attr('id', video.options.videoID + video.len);
 						video.list[video.len] = {
-							id       : $.anythingSliderVideoDefaults.videoID + video.len++,
+							id       : video.options.videoID + video.len++,
 							panel    : tmp.closest('.panel')[0],
 							service  : service,
 							selector : sel,
@@ -163,11 +168,6 @@
 		});
 	};
 
-	$.anythingSliderVideoDefaults = {
-		videoID : 'asvideo', // id prefix
-		resumeVideo : false
-	};
-
 /* Each video service is set up as follows
  * service-name : {
  *  // initialization
@@ -225,7 +225,7 @@ $.fn.anythingSliderVideo.services = {
 		selector : 'iframe[src*=vimeo]',
 		initAPI : '&api=1&player_id=', // video ID added to the end
 		cont : function(base, vid, index){
-			if ($.anythingSliderVideoDefaults.resumeVideo && base.video.list[index].status === 'pause'){
+			if (base.options.resumeOnVisible && base.video.list[index].status === 'pause'){
 				// Commands sent to the iframe originally had "JSON.stringify" applied to them,
 				// but not all browsers support this, so it's just as easy to wrap it in quotes.
 				base.video.postMsg('{"method":"play"}', vid);
@@ -241,7 +241,7 @@ $.fn.anythingSliderVideo.services = {
 			// *** VIMEO *** iframe uses data.player_id
 			var index, vid = data.player_id || ''; // vid = data.player_id (unique to vimeo)
 			if (vid !== ''){
-				index = vid.replace($.anythingSliderVideoDefaults.videoID, '');
+				index = vid.replace(base.video.options.videoID, '');
 				if (data.event === 'ready') {
 					// Vimeo ready, add additional event listeners for video status
 					base.video.postMsg('{"method":"addEventListener","value":"play"}', vid);
@@ -264,7 +264,7 @@ $.fn.anythingSliderVideo.services = {
 		selector : 'object[data-url*=vimeo], embed[src*=vimeo]',
 		embedOpts : { flashvars : { api : 1 } },
 		cont : function(base, vid, index) {
-			if ($.anythingSliderVideoDefaults.resumeVideo) {
+			if (base.options.resumeOnVisible) {
 				var $vid = $('#' + vid);
 				// continue video if previously played & not finished (api_finish doesn't seem to exist) - duration can be a decimal number, so subtract it and look at the difference (2 seconds here)
 				if (typeof($vid[0].api_play) === 'function' && $vid[0].api_paused() && $vid[0].api_getCurrentTime() !== 0 && ($vid[0].api_getDuration() - $vid[0].api_getCurrentTime()) > 2) {
@@ -293,7 +293,7 @@ $.fn.anythingSliderVideo.services = {
 		// "iv_load_policy=3" should turn off annotations on init, but doesn't seem to
 		initAPI : '&iv_load_policy=3&enablejsapi=1&playerapiid=',
 		cont : function(base, vid, index){
-			if ($.anythingSliderVideoDefaults.resumeVideo && base.video.list[index].status === 2){
+			if (base.options.resumeOnVisible && base.video.list[index].status === 2){
 				base.video.postMsg('{"event":"command","func":"playVideo"}', vid);
 			}
 		},
@@ -316,7 +316,7 @@ $.fn.anythingSliderVideo.services = {
 					// iframe src changes when watching related videos; so there is no way to tell which video has an update
 					if (v.length) {
 						vid = v[0].id;
-						index = vid.replace($.anythingSliderVideoDefaults.videoID, '');
+						index = vid.replace(base.video.options.videoID, '');
 					// YouTube ready, add additional event listeners for video status. BUT this never fires off =(
 					// Fixing this may solve the continue problem
 					if (data.event === 'onReady') {
@@ -344,7 +344,7 @@ $.fn.anythingSliderVideo.services = {
 		initAPI : '&iv_load_policy=3&enablejsapi=1&version=3&playerapiid=', // video ID added to the end
 		// YouTube - player states: unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
 		cont : function(base, vid, index) {
-			if ($.anythingSliderVideoDefaults.resumeVideo) {
+			if (base.options.resumeOnVisible) {
 				var $vid = $('#' + vid);
 				// continue video if previously played and not cued
 				if ($vid.length && typeof($vid[0].getPlayerState) === 'function' && $vid[0].getPlayerState() > 0) {

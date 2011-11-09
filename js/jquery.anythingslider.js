@@ -1,5 +1,5 @@
 ﻿/*
-	AnythingSlider v1.7.15
+	AnythingSlider v1.7.16
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -760,6 +760,7 @@
 
 		// Video
 		resumeOnVideoEnd    : true,      // If true & the slideshow is active & a supported video is playing, it will pause the autoplay until the video is complete
+		resumeOnVisible     : true,      // If true the video will resume playing (if previously paused, except for YouTube iframe - known issue); if false, the video remains paused.
 		addWmodeToObject    : "opaque",  // If your slider has an embedded object, the script will automatically add a wmode parameter with this setting
 		isVideoPlaying      : function(base){ return false; } // return true if video is playing or false if not - used by video extension
 
