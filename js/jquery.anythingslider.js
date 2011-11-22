@@ -1,5 +1,5 @@
 ﻿/*
-	AnythingSlider v1.7.17
+	AnythingSlider v1.7.18
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -606,8 +606,8 @@
 			var h = base.win.location.hash,
 				i = h.indexOf('&'),
 				n = h.match(base.regex);
-			// test for /#/ used by the jquery address plugin - $('#/') breaks jQuery
-			if (n === null && !/^#&/.test(h) && !/#\//.test(h)) {
+			// test for "/#/" or "/#!/" used by the jquery address plugin - $('#/') breaks jQuery
+			if (n === null && !/^#&/.test(h) && !/#!?\//.test(h)) {
 				// #quote2&panel1-3&panel3-3
 				h = h.substring(0, (i >= 0 ? i : h.length));
 				// ensure the element is in the same slider
