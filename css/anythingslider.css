@@ -129,7 +129,7 @@ div.anythingSlider .arrow a {
 	background: url(../images/default.png) no-repeat;
 }
 /* hide text, target the span so IE7 doesn't text-indent the link */
-div.anythingSlider .arrow a span { display: block; text-indent: -9999px; }
+div.anythingSlider .arrow a span { display: block; visibility: hidden; }
 /* back arrow */
 div.anythingSlider .back { left: 0; }
 div.anythingSlider .back a { background-position: left top; }

@@ -138,5 +138,5 @@ div.anythingSlider-construction {
 div.anythingSlider-construction .arrow a span, div.anythingSlider-construction .anythingControls ul a span, div.anythingSlider-construction .start-stop span {
 	display: block;
 	line-height: 1px; /* needed for IE7 */
-	text-indent: -9999px;
+	visibility: hidden; /* needed for IE8, instead of text-indent: -9999px */
 }

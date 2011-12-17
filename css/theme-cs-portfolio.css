@@ -76,7 +76,8 @@ div.anythingSlider-cs-portfolio .anythingControls ul li {
 }
 
 div.anythingSlider-cs-portfolio .anythingControls ul a, div.anythingSlider-cs-portfolio.activeSlider .anythingControls ul a {
-	display: inline-block;
+	/*display: inline-block;*/
+	float: left;
 	width: 17px;
 	height: 17px;
 	margin: 18px 5px 0 0;
@@ -120,7 +121,7 @@ div.anythingSlider-cs-portfolio.rtl .anythingControls ul { float: left; }    /* 
 div.anythingSlider-cs-portfolio .start-stop, div.anythingSlider-cs-portfolio .start-stop.hover {
 	margin: 15px 50px 0 0;
 	padding: 0;
-	display: inline-block;
+	display: inline;
 	text-align: center;
 	width: 20px;
 	height: 20px;
@@ -144,5 +145,5 @@ div.anythingSlider-cs-portfolio {
 div.anythingSlider-cs-portfolio .arrow a span, div.anythingSlider-cs-portfolio .anythingControls ul a span, div.anythingSlider-cs-portfolio .start-stop span {
 	display: block;
 	line-height: 1px; /* needed for IE7 */
-	text-indent: -9999px;
+	visibility: hidden; /* needed for IE8, instead of text-indent: -9999px */
 }

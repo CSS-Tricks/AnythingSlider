@@ -142,5 +142,5 @@ div.anythingSlider-metallic {
 div.anythingSlider-metallic .arrow a span, div.anythingSlider-metallic .anythingControls ul a span, div.anythingSlider-metallic .start-stop span {
 	display: block;
 	line-height: 1px; /* needed for IE7 */
-	text-indent: -9999px;
+	visibility: hidden; /* needed for IE8, instead of text-indent: -9999px */
 }

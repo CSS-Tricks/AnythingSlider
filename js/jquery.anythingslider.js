@@ -1,5 +1,5 @@
 ﻿/*
-	AnythingSlider v1.7.18
+	AnythingSlider v1.7.20
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -491,7 +491,7 @@
 			base.currentPage = ( page > base.pages ) ? base.pages : ( page < 1 ) ? 1 : base.currentPage;
 			base.$currentPage = base.$items.eq(base.currentPage - base.adj);
 			base.exactPage = page;
-			base.targetPage = (page === 0) ? base.pages - base.adj : (page > base.pages) ? 1 - base.adj : page - base.adj;
+			base.targetPage = (page === 0) ? base.pages : (page > base.pages) ? 1 : page;
 			base.$targetPage = base.$items.eq( base.targetPage );
 			time = time || o.animationTime;
 			// don't trigger events when time = 1 - to prevent FX from firing multiple times on page resize

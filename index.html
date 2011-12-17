@@ -110,7 +110,7 @@
 				navigationFormatter : function(index, panel){ // Format navigation labels with text
 					return ['Recipe', 'Quote', 'Image', 'Quote #2', 'Image #2'][index - 1];
 				},
-				onSlideComplete: function(slider) {
+				onSlideBegin: function(e,slider) {
 					// keep the current navigation tab in view
 					slider.navWindow( slider.currentPage );
 				}
@@ -353,6 +353,17 @@
 
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.7.20</h3>
+		<ul>
+			<li>Fixed <code>targetPage</code> containing the incorrect page when <code>infiniteSlides</code> is <code>false</code>. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/233">issue #233</a>.</li>
+			<li>Hopefully fixed the issue with IE8 and the navigation. Fix for issues <a href="https://github.com/ProLoser/AnythingSlider/issues/206">#206</a> and <a href="https://github.com/ProLoser/AnythingSlider/issues/182">#182</a>.
+		</ul>
+
+		<h3>Version 1.7.19</h3>
+		<ul>
+			<li>Added package.json file to register this plugin with the new jquery plugin page (in development).</li>
+		</ul>
 
 		<h3>Version 1.7.18</h3>
 		<ul>
