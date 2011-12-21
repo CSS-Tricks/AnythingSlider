@@ -17,8 +17,6 @@
 	overflow-y: auto;
 	overflow-x: hidden;
 }
-/* Opera width restriction */
-.anythingBase { max-width: 32766px; }
 
 /*****************
   SET COLORS HERE

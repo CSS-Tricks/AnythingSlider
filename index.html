@@ -130,6 +130,7 @@
 			<a href="expand.html">Expand Demo</a>
 			<a href="video.html">Video Demo</a>
 			<a href="demos.html">FX Demos</a>
+			<a href="css3.html">CSS3 Demo</a>
 			<a class="play" href="http://jsfiddle.net/Mottie/VM8XG/">Playground</a>
 			<a class="git" href="https://github.com/ProLoser/AnythingSlider/wiki">Documentation</a>
 			<a class="git" href="http://github.com/ProLoser/AnythingSlider/downloads">Download</a>
@@ -353,6 +354,21 @@
 
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.7.21</h3>
+		<ul>
+			<li>Removed <code>max-width: 32766px</code> from the css as the latest version of Opera (11.60+) no longer appears to have this limitation - YAY!</li>
+			<li>AnythingSlider can now use the animate.css library!
+				<ul>
+					<li>Updated the FX extension to also add "animate.css" css3 animations to panels.</li>
+					<li>Added <a href="css3.html">CSS3 demo page</a> to demonstrate this new functionality.</li>
+					<li>See the "animate.css" demo of all of the animations and get the latest version from <a href="http://daneden.me/animate/">daneden.me/animate/</a>.</li>
+				</ul>
+			</li>
+			<li>Commented out the <code>appendForwardTo</code>, <code>appendBackTo</code>, <code>appendControlsTo</code>, <code>appendNavigationTo</code> and <code>appendStartStopTo</code> options from the plugin to reduce the size of the minified version. These options were set to null as placeholders in the code. They should continue to function as before.</li>
+			<li>General code cleanup to reduce the size of the minified version.</li>
+			<li>Fixed an issue with the exactPage variable, utilized by the FX extension, as mentioned in <a href="https://github.com/ProLoser/AnythingSlider/issues/233">issue #233</a>.</li>
+		</ul>
 
 		<h3>Version 1.7.20</h3>
 		<ul>

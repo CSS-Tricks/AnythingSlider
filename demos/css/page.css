@@ -17,14 +17,14 @@ blockquote             { margin-left: 30px; }
 ul                     { margin: 0; padding-left: 35px; }
 ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 
-#nav                   { display: block; width: auto; margin: 10px auto; text-align: center; white-space: nowrap; line-height: 3em; }
-#nav a                 { text-align: center; background: black; color: white; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; padding: 10px; }
+#nav                   { display: block; width: 90%; margin: 10px auto; text-align: center; line-height: 3em; }
+#nav a                 { text-align: center; background: black; color: white; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; padding: 10px; white-space: nowrap; }
 #nav a.git             { background: #006; }
 #nav a.play            { background: #060; }
 #nav a.issue           { background: #600; }
 #nav a:hover, #nav a.current { background: #666; }
 
-.themeselector         { margin: 0 auto; text-align: center; }
+.themeselector, .ani   { margin: 0 auto; text-align: center; }
 
 #status                { color: #00a; font-weight: bold; }
 .alert                 { color: #f00; font-weight: bold; }
@@ -146,3 +146,9 @@ body#expand h3         { text-align: center; }
 .bad                   { background: #800; }
 .prob                  { background: #880; }
 .group                 { border: #000 1px solid; }
+
+/******************
+  css3 demo page
+ ******************/
+.animations            { margin: 20px 20px 20px 5px; }
+.ani                   { margin-top: 10px; }

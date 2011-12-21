@@ -1,5 +1,5 @@
 /*
- * AnythingSlider Slide FX 1.5.7 for AnythingSlider v1.7.11+
+ * AnythingSlider Slide FX 1.6 for AnythingSlider v1.7.11+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
  */
@@ -46,7 +46,8 @@
 				timeOut    : 350,     // Default time for out FX animation - when using predefined FX, this number gets divided by 2
 				stopRepeat : false,   // stops repeating FX animation when clicking on the same navigation tab
 				outFxBind  : 'slide_init',    // When outFx animations are called
-				inFxBind   : 'slide_complete' // When inFx animations are called
+				inFxBind   : 'slide_complete', // When inFx animations are called
+				dataAnimate: 'data-animate' // data attribute containing the animate.css class names to add for in and out fx
 			}, options),
 
 			baseFx = getBaseFx(), // get base FX with standard sizes
@@ -134,6 +135,17 @@
 						}
 					}
 				}
+				el = page.filter('[' + defaults.dataAnimate + ']');
+				if (el.length) {
+					el.each(function(){
+						FX = $(this).attr(defaults.dataAnimate).split(',');
+						if (FX[0] !== '') {
+							$(this)
+								.removeClass(FX[0])
+								.addClass(FX[1] || FX[0]);
+						}
+					});
+				}
 			})
 
 			// bind events for "IN" effects - occurs on target page
@@ -153,6 +165,17 @@
 					} else if (el !== 'outFx' && $.isArray(FX[el]) && page.filter(el).length) {
 						animateFx( page.filter(el), getFx(FX[el],false), false);
 					}
+				}
+				el = page.filter('[' + defaults.dataAnimate + ']');
+				if (el.length) {
+					el.each(function(){
+						FX = $(this).attr(defaults.dataAnimate).split(',');
+						if (FX[0] !== '') {
+							$(this)
+								.removeClass(FX[1] || FX[0])
+								.addClass(FX[0]);
+						}
+					});
 				}
 			})
 			.data('AnythingSlider');
