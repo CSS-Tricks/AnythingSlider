@@ -129,7 +129,7 @@
  #cboxPhoto { width: 100%; height: 100%; margin: 0 !important; }
  /* Change metallic theme defaults to show thumbnails -
   using #demo2 (page wrapper) to increase this CSS priority */
- #demo2 div.anythingSlider-metallic .thumbNav a {
+ div.anythingSlider-metallic .thumbNav a {
   background-image: url();
   height: 30px;
   width: 30px;
@@ -138,6 +138,9 @@
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   text-indent: 0;
+ }
+ div.anythingSlider-metallic .thumbNav a span {
+  visibility: visible; /* span changed to visibility hidden in v1.7.20 */
  }
  /* border around link (image) to show current panel */
  #demo2 div.anythingSlider-metallic .thumbNav a:hover,

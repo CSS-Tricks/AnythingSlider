@@ -80,7 +80,7 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 /* Change metallic slider defaults to show thumbnails -
   using #demo2 (page wrapper) to increase this CSS priority */
 #demo2 div.anythingSlider-metallic .thumbNav a { background-image: url(); height: 30px; width: 30px; border: #000 1px solid; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; }
-#demo2 div.anythingSlider-metallic .thumbNav a span { text-indent: 0; }
+#demo2 div.anythingSlider-metallic .thumbNav a span { visibility: visible; }
 
 /* border around image to show current page */
 #demo2 div.anythingSlider-metallic .thumbNav a:hover,
@@ -152,3 +152,27 @@ body#expand h3         { text-align: center; }
  ******************/
 .animations            { margin: 20px 20px 20px 5px; }
 .ani                   { margin-top: 10px; }
+
+/******************
+  tooltips (Jatt)
+ ******************/
+.tooltip { cursor: pointer; }
+#tooltip {
+ min-width: 100px;
+ color: #dddddd;
+ background: #444;
+ border: 1px solid #777;
+ padding: 8px;
+ display: none;
+ opacity: 0.9;
+ filter: alpha(opacity=90);
+ text-align: left;
+ border-radius: .5em;
+ -moz-border-radius: .5em;
+ -webkit-border-radius: .5em;
+ z-index: 1000;
+}
+#tooltip .body {
+ display: block;
+ text-align: center;
+}

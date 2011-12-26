@@ -1,5 +1,5 @@
 ﻿/*
-	AnythingSlider v1.7.21
+	AnythingSlider v1.7.22
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -247,20 +247,19 @@
 				base.$items.filter(':not(.cloned)').each(function(i) {
 					var index = i + 1;
 					t = ((index === 1) ? 'first' : '') + ((index === base.pages) ? 'last' : '');
-					$a = $('<a href="#"></a>').addClass('panel' + index).wrap('<li class="' + t + '" />');
+					$a = $('<a class="panel' + index + '" href="#"><span></span></a>').wrap('<li class="' + t + '" />');
 					base.$nav.append($a.parent()); // use $a.parent() so it will add <li> instead of only the <a> to the <ul>
 
 					// If a formatter function is present, use it
 					if ($.isFunction(o.navigationFormatter)) {
 						t = o.navigationFormatter(index, $(this));
 						// Add formatting to title attribute if text is hidden
-						if (parseInt($a.find('span').css('text-indent'),10) < 0) { $a.addClass(o.tooltipClass).attr('title', t); }
+						if ($a.find('span').css('visibility') === 'hidden') { $a.addClass(o.tooltipClass).attr('title', t); }
 					} else {
 						t = index;
 					}
 
 					$a
-					.html('<span>' + t + '</span>')
 					.bind(o.clickControls, function(e) {
 						if (!base.flag && o.enableNavigation) {
 							// prevent running functions twice (once for click, second time for focusin)
@@ -269,7 +268,8 @@
 							if (o.hashTags) { base.setHash(index); }
 						}
 						e.preventDefault();
-					});
+					})
+					.find('span').html(t);
 				});
 
 				// Add navigation tab scrolling - use !! in case someone sets the size to zero
