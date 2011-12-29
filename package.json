@@ -1,6 +1,6 @@
-ï»¿{
+{
     "name": "AnythingSlider",
-    "version": "1.7.22",
+    "version": "1.7.23",
     "title": "AnythingSlider",
     "author": {
         "name": "Chris Coyier",
@@ -15,7 +15,7 @@
     "dependencies": {
         "jquery": ">=1.4.2"
     },
-    "description": "Just what the world needs, another jQuery slider. YAWN. I know, check this one out though, itâ€™s got lots of cool features.\n\nHere on CSS-Tricks, Iâ€™ve created a number of different sliders. Three, in fact. A \"featured content\" slider, a \"start/stop slider\", and \"moving boxes\". Each of them had some cool interesting feature that I needed to build at the time. All were well-received, but as is the case with these things, people want them to do X, Y, and Z in addition to what they already did.\n\nThis new AnythingSlider is an attempt at bringing together the functionality of all of those previous sliders and adding new features. In other words, to create a really \"full featured\" slider that could be widely useful. This is the first time (on CSS-Tricks) that one of these sliders is an actual plugin as well, which should make implementing it and customizing it much easier.",
+    "description": "Just what the world needs, another jQuery slider. YAWN. I know, check this one out though, it’s got lots of cool features.\n\nHere on CSS-Tricks, I’ve created a number of different sliders. Three, in fact. A \"featured content\" slider, a \"start/stop slider\", and \"moving boxes\". Each of them had some cool interesting feature that I needed to build at the time. All were well-received, but as is the case with these things, people want them to do X, Y, and Z in addition to what they already did.\n\nThis new AnythingSlider is an attempt at bringing together the functionality of all of those previous sliders and adding new features. In other words, to create a really \"full featured\" slider that could be widely useful. This is the first time (on CSS-Tricks) that one of these sliders is an actual plugin as well, which should make implementing it and customizing it much easier.",
     "keywords": [
         "customizable",
         "effects",

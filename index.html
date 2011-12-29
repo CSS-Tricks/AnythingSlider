@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -116,7 +116,7 @@
 				},
 				onSlideBegin: function(e,slider) {
 					// keep the current navigation tab in view
-					slider.navWindow( slider.currentPage );
+					slider.navWindow( slider.targetPage );
 				}
 			});
 
@@ -230,7 +230,7 @@
 
 				<li class="panel4">
 					<div class="quoteSlide">
-						<blockquote>Life is conversational. Web design should be the same way. On the web, you&#8217;re talking to someone you&#8217;ve probably never met – so it&#8217;s important to be clear and precise. Thus, well structured navigation and content organization goes hand in hand with having a good conversation.</blockquote>
+						<blockquote>Life is conversational. Web design should be the same way. On the web, you&#8217;re talking to someone you&#8217;ve probably never met � so it&#8217;s important to be clear and precise. Thus, well structured navigation and content organization goes hand in hand with having a good conversation.</blockquote>
 						<p> - <a id='perma' href='http://quotesondesign.com/chikezie-ejiasi/'>Chikezie Ejiasi</a></p>
 					</div>
 				</li>
@@ -361,6 +361,11 @@
 
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.7.23</h3>
+		<ul>
+			<li>Fixed <code>$targetPage</code> callback parameter to actually point to the right page. Continuation of <a href="https://github.com/ProLoser/AnythingSlider/issues/233">issue #233</a>.</li>
+		</ul>
 
 		<h3>Version 1.7.22</h3>
 		<ul>
