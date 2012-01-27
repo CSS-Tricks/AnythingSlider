@@ -646,8 +646,8 @@
 			}
 			if (o.buildArrows && o.toggleArrows) {
 				if (!base.hovered && base.playing) { sign = 1; op = 0; } // don't animate arrows during slideshow
-				base.$forward.stop(true,true).delay(t1).animate({ right: base.$forwardRight + ( sign ? base.$arrowWidth : 0 ), opacity: op }, o.animationTime/2);
-				base.$back.stop(true,true).delay(t1).animate({ left: base.$backLeft + ( sign ? base.$arrowWidth : 0 ), opacity: op }, o.animationTime/2);
+				base.$forward.stop(true,true).delay(t1).animate({ right: base.$forwardRight + (sign ? base.$arrowWidth : 0), opacity: op }, o.animationTime/2);
+				base.$back.stop(true,true).delay(t1).animate({ left: base.$backLeft + (sign ? base.$arrowWidth : 0), opacity: op }, o.animationTime/2);
 			}
 		};
 
