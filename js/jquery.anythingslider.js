@@ -355,6 +355,9 @@
 			base.$back.appendTo( (o.appendBackTo && $(o.appendBackTo).length) ? $(o.appendBackTo) : base.$wrapper );
 			base.$forward.appendTo( (o.appendForwardTo && $(o.appendForwardTo).length) ? $(o.appendForwardTo) : base.$wrapper );
 
+			base.$backLeft = parseInt( base.$back.css( 'left' ), 10 );
+			base.$forwardRight = parseInt( base.$forward.css( 'right' ), 10 );
+
 			base.$arrowWidth = base.$forward.width(); // assuming the left & right arrows are the same width - used for toggle
 		};
 
@@ -643,9 +646,9 @@
 			}
 			if (o.buildArrows && o.toggleArrows) {
 				if (!base.hovered && base.playing) { sign = 1; op = 0; } // don't animate arrows during slideshow
-				base.$forward.stop(true,true).delay(t1).animate({ right: sign * base.$arrowWidth, opacity: op }, o.animationTime/2);
-				base.$back.stop(true,true).delay(t1).animate({ left: sign * base.$arrowWidth, opacity: op }, o.animationTime/2);
-			}
+				base.$forward.stop(true,true).delay(t1).animate({ right: base.$forwardRight + ( sign ? base.$arrowWidth : 0 ), opacity: op }, o.animationTime/2);
+				base.$back.stop(true,true).delay(t1).animate({ left: base.$backLeft + ( sign ? base.$arrowWidth : 0 ), opacity: op }, o.animationTime/2);
+	}
 		};
 
 		base.clearTimer = function(paused){
