@@ -23,7 +23,7 @@
 
 	<!-- AnythingSlider -->
 	<link rel="stylesheet" href="css/anythingslider.css">
-	<script src="js/jquery.anythingslider.js"></script>
+	<script src="js/jquery.anythingslider.min.js"></script>
 
 	<!-- AnythingSlider video extension; optional, but needed to control video pause/play -->
 	<script src="js/jquery.anythingslider.video.js"></script>
@@ -230,7 +230,7 @@
 
 				<li class="panel4">
 					<div class="quoteSlide">
-						<blockquote>Life is conversational. Web design should be the same way. On the web, you&#8217;re talking to someone you&#8217;ve probably never met – so it&#8217;s important to be clear and precise. Thus, well structured navigation and content organization goes hand in hand with having a good conversation.</blockquote>
+						<blockquote>Life is conversational. Web design should be the same way. On the web, you&#8217;re talking to someone you&#8217;ve probably never met - so it&#8217;s important to be clear and precise. Thus, well structured navigation and content organization goes hand in hand with having a good conversation.</blockquote>
 						<p> - <a id='perma' href='http://quotesondesign.com/chikezie-ejiasi/'>Chikezie Ejiasi</a></p>
 					</div>
 				</li>
@@ -362,6 +362,11 @@
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.7.24</h3>
+		<ul>
+			<li>The <code>toggleArrows</code> option now accounts for arrows that don't have an absolute position, left or right, set to zero. Thanks to Krinkle for bringing up the issue (<a href="https://github.com/ProLoser/AnythingSlider/issues/260">#260</a>) and sharing a <a href="https://github.com/ProLoser/AnythingSlider/pull/261">fix</a>.</li>
+		</ul>
+
 		<h3>Version 1.7.23</h3>
 		<ul>
 			<li>Fixed <code>$targetPage</code> callback parameter to actually point to the right page. Continuation of <a href="https://github.com/ProLoser/AnythingSlider/issues/233">issue #233</a>.</li>
@@ -420,36 +425,6 @@
 			<li>Added a video option named <code>resumeVideo</code> which when false, does not continue playing a paused video. Change this option as follows (inside of a document ready call and before the slider is initialized):
 				<pre><code>$.anythingSliderVideoDefaults.resumeVideo = false;</code></pre>
 			</li>
-		</ul>
-
-		<h3>Version 1.7.15</h3>
-		<ul>
-			<li>Fix an issue with calling the navigation window function which isn't initialized when the number of tabs shown equals the `navigationSize` value. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/209">issue #209</a>.</li>
-		</ul>
-
-		<h3>Version 1.7.14</h3>
-		<ul>
-			<li>Attempted to fix an issue with adding slider content based on the error reported in <a href="https://github.com/ProLoser/AnythingSlider/issues/207">issue #207</a>.</li>
-			<li>Links in nested sliders should now work properly. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/208">issue #208</a>.</li>
-			<li>Changed YouTube video status updating, to hopefully fix <a href="https://github.com/ProLoser/AnythingSlider/issues/191">issue #191</a>. But I noticed a few other problems in Safari, so I will address those soon.</li>
-			<li>Fixed a problem with setting the slider height if it was undefined, or set before the image completely loaded. This was introduced in v1.7.13.</li>
-		</ul>
-
-		<h3>Version 1.7.13</h3>
-		<ul>
-			<li>Updated the plugin so that if panel sizes aren't defined in the css, it will default to the slider size. This should fix the problem with the slider initializing with a zero width or height.</li>
-			<li>Added a "targetPage" callback variable which contains the targeted page number; "$targetPage" still contains the jQuery object of the targeted page. This can be used in event or callbacks:
-				<pre><code>$('#slider').bind('slide_begin', function(event, slider){
-  console.debug( 'The target page is #' + slider.targetPage );
-  console.debug( 'The title of the target page is: ' + slider.$targetPage.find('h1').text() );
-  // Do something else
-});</code></pre>Note that the targetPage variable contains the correct page before the slider animates, whereas "slider.currentPage" contains the current slide and is not updated until after the animation completes. See the "<a href="https://github.com/ProLoser/AnythingSlider/wiki/Callbacks-and-Events">Callback Arguments</a>" section in the wiki documents for a full list.</li>
-		</ul>
-
-		<h3>Version 1.7.12</h3>
-		<ul>
-			<li>Clicking links inside of a slide when mulitple slides are showing will no longer change the slider. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/187">issue #187</a>.</li>
-			<li>Updated how the navigation width was calculated when <code>navigationSize</code> is set so the <a href="https://github.com/Mottie/AnythingSlider-Themes">new tabs-light and tabs-dark themes</a> tab widths are calculated a bit more accurately - but it's still not perfect.</li>
 		</ul>
 
 	</div>

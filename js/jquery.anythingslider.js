@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.7.23
+	AnythingSlider v1.7.24
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -355,7 +355,10 @@
 			base.$back.appendTo( (o.appendBackTo && $(o.appendBackTo).length) ? $(o.appendBackTo) : base.$wrapper );
 			base.$forward.appendTo( (o.appendForwardTo && $(o.appendForwardTo).length) ? $(o.appendForwardTo) : base.$wrapper );
 
-			base.$arrowWidth = base.$forward.width(); // assuming the left & right arrows are the same width - used for toggle
+			base.arrowWidth = base.$forward.width(); // assuming the left & right arrows are the same width - used for toggle
+			base.arrowRight = parseInt(base.$forward.css('right'), 10);
+			base.arrowLeft = parseInt(base.$back.css('left'), 10);
+
 		};
 
 		// Creates the Start/Stop button
@@ -643,8 +646,8 @@
 			}
 			if (o.buildArrows && o.toggleArrows) {
 				if (!base.hovered && base.playing) { sign = 1; op = 0; } // don't animate arrows during slideshow
-				base.$forward.stop(true,true).delay(t1).animate({ right: sign * base.$arrowWidth, opacity: op }, o.animationTime/2);
-				base.$back.stop(true,true).delay(t1).animate({ left: sign * base.$arrowWidth, opacity: op }, o.animationTime/2);
+				base.$forward.stop(true,true).delay(t1).animate({ right: base.arrowRight + (sign * base.arrowWidth), opacity: op }, o.animationTime/2);
+				base.$back.stop(true,true).delay(t1).animate({ left: base.arrowLeft + (sign * base.arrowWidth), opacity: op }, o.animationTime/2);
 			}
 		};
 

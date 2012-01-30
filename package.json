@@ -1,6 +1,6 @@
 {
     "name": "AnythingSlider",
-    "version": "1.7.23",
+    "version": "1.7.24",
     "title": "AnythingSlider",
     "author": {
         "name": "Chris Coyier",
@@ -23,9 +23,11 @@
         "video"
     ],
     "homepage": "http://css-tricks.com/3412-anythingslider-jquery-plugin/",
-    "contributors": [
+    "demo": "http://proloser.github.com/AnythingSlider/",
+    "docs": "https://github.com/ProLoser/AnythingSlider/wiki",
+    "maintainers": [
         {
-            "name": "Rob G",
+            "name": "Rob Garrison",
             "url": "https://github.com/Mottie"
         },
         {

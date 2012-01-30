@@ -23,7 +23,7 @@ div.anythingSlider-construction .arrow {
 	top: 50%;
 	position: absolute;
 	display: block;
-	z-index: 100;
+	z-index: -100;
 }
 div.anythingSlider-construction .arrow a {
 	display: block;
