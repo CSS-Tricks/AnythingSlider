@@ -265,7 +265,6 @@
 							// prevent running functions twice (once for click, second time for focusin)
 							base.flag = true; setTimeout(function(){ base.flag = false; }, 100);
 							base.gotoPage(index);
-							if (o.hashTags) { base.setHash(index); }
 						}
 						e.preventDefault();
 					})
@@ -549,7 +548,7 @@
 			base.$items.removeClass('activePage').eq(page - base.adj).addClass('activePage');
 
 			if (!base.hovered) { base.slideControls(false); }
-
+            if (o.hashTags) { base.setHash(page); }
 			if (time >= 0) { base.$el.trigger('slide_complete', base); }
 			// callback from external slide control: $('#slider').anythingSlider(4, function(slider){ })
 			if (typeof callback === 'function') { callback(base); }
