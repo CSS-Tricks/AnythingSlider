@@ -514,15 +514,18 @@
 
 			// delay starting slide animation
 			setTimeout(function(d){
+				var p, empty = true;
 				// resize slider if content size varies
 				if (!o.resizeContents) {
 					// animating the wrapper resize before the window prevents flickering in Firefox
-					d = base.getDim(page);
-					base.$wrapper.filter(':not(:animated)').animate(
-						// prevent animating a dimension to zero
-						{ width: d[0] || base.width, height: d[1] || base.height },
-						{ queue: false, duration: (time < 0 ? 0 : time), easing: o.easing }
-					);
+					// don't animate the dimension if it hasn't changed - fix for issue #264
+					p = base.getDim(page); d = {};
+					// prevent animating a dimension to zero
+					if (base.$wrapper.width() !== p[0]) { d.width = p[0] || base.width; empty = false; }
+					if (base.$wrapper.height() !== p[1]) { d.height = p[1] || base.height; empty = false; }
+					if (!empty) {
+						base.$wrapper.filter(':not(:animated)').animate(d, { queue: false, duration: (time < 0 ? 0 : time), easing: o.easing });
+					}
 				}
 				d = {};
 				d[base.dir] = -base.panelSize[(o.infiniteSlides && base.pages > 1) ? page : page - 1][2];
