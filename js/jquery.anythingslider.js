@@ -84,8 +84,6 @@
 
 			base.updateSlider();
 
-			base.$lastPage = base.$currentPage;
-
 			// Get index (run time) of this slider on the page
 			base.runTimes = $('div.anythingSlider').index(base.$wrapper) + 1;
 			base.regex = new RegExp('panel' + base.runTimes + '-(\\d+)', 'i'); // hash tag regex
@@ -111,6 +109,8 @@
 
 			// If a hash can not be used to trigger the plugin, then go to start panel
 			base.setCurrentPage(base.gotoHash() || o.startPage, false);
+
+			base.$lastPage = base.$targetPage = base.$currentPage;
 
 			// Hide/Show navigation & play/stop controls
 			base.slideControls(false);
@@ -498,7 +498,7 @@
 			base.currentPage = ( page > base.pages ) ? base.pages : ( page < 1 ) ? 1 : base.currentPage;
 			base.$currentPage = base.$items.eq(base.currentPage - base.adj);
 			base.targetPage = (page === 0) ? base.pages : (page > base.pages) ? 1 : page;
-			base.$targetPage = base.$items.eq( base.targetPage - 1 );
+			base.$targetPage = base.$items.eq( base.targetPage - base.adj);
 			time = time || o.animationTime;
 			// don't trigger events when time < 0 - to prevent FX from firing multiple times on page resize
 			if (time >= 0) { base.$el.trigger('slide_init', base); }
