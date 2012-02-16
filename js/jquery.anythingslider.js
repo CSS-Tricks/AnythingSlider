@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.7.24
+	AnythingSlider v1.7.25
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -265,7 +265,6 @@
 							// prevent running functions twice (once for click, second time for focusin)
 							base.flag = true; setTimeout(function(){ base.flag = false; }, 100);
 							base.gotoPage(index);
-							if (o.hashTags) { base.setHash(index); }
 						}
 						e.preventDefault();
 					})
@@ -549,6 +548,8 @@
 			base.$items.removeClass('activePage').eq(page - base.adj).addClass('activePage');
 
 			if (!base.hovered) { base.slideControls(false); }
+
+			if (o.hashTags) { base.setHash(page); }
 
 			if (time >= 0) { base.$el.trigger('slide_complete', base); }
 			// callback from external slide control: $('#slider').anythingSlider(4, function(slider){ })
