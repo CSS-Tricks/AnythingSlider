@@ -9,7 +9,7 @@
 	<link rel="apple-touch-icon" href="demos/images/apple-touch-icon.png">
 
 	<!-- jQuery (required) -->
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
 
 	<!-- Anything Slider optional plugins -->
@@ -361,6 +361,15 @@
 
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.7.25</h3>
+		<ul>
+			<li>When <code>hashTags</code> is true, the browser hash will now update when clicking on the slider arrows as well as navigation buttons.</li>
+			<li>Yet another fix for the <code>$targetPage</code> callback variable.</li>
+			<li>When a hash tag sets the slider position, the <code>$lastPage</code> and <code>$targetPage</code> callback variables are now set properly during the onInitialized event.</li>
+			<li>When <code>resizeContents</code> is false, the outer wrapper will no longer animate a resize if there is no change in dimensions. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/264">issue #264</a>.</li>
+			<li>Webkit browsers should now resize the outer wrapper properly when the slide is set by the hash.</li>
+		</ul>
 
 		<h3>Version 1.7.24</h3>
 		<ul>

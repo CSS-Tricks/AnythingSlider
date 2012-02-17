@@ -171,6 +171,7 @@
 
 		// called during initialization & to update the slider if a panel is added or deleted
 		base.updateSlider = function(){
+			var t;
 			// needed for updating the slider
 			base.$el.children('.cloned').remove();
 			base.$nav.empty();
@@ -229,7 +230,13 @@
 					.css('width', base.getDim(base.currentPage)[0])
 					.add(base.$items).css('height', base.height);
 			} else {
-				base.$win.load(function(){ base.setDimensions(); }); // set dimensions after all images load
+				base.$win.load(function(){
+					// set dimensions after all images load
+					base.setDimensions();
+					// make sure the outer wrapper is set properly
+					t = base.getDim(base.currentPage);
+					base.$wrapper.css({ width: t[0], height: t[1] });
+				});
 			}
 
 			if (base.currentPage > base.pages) {
@@ -283,7 +290,7 @@
 					base.navWidths = base.$nav.find('li').map(function(){
 						return $(this).innerWidth() + Math.ceil(parseInt($(this).find('span').css('left'),10)/2 || 0);
 					}).get();
-					base.navLeft = 1;
+					base.navLeft = base.currentPage;
 					// add 5 pixels to make sure the tabs don't wrap to the next line
 					base.$nav.width( base.navWidth( 1, base.pages + 1 ) + 5 );
 					base.$controls.find('.anythingNavWindow')
