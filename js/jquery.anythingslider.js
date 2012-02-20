@@ -410,6 +410,26 @@
 				// determine panel width
 				pw = (o.showMultiple > 1) ? base.width || base.$window.width()/o.showMultiple : base.$window.width(),
 				winw = base.$win.width();
+
+				if(o.hideOuterMargins !== false) {
+					var fi = base.$items.first();
+					if(o.vertical) {
+						ms = (fi.outerHeight('true') - fi.outerHeight()) / 2;
+					} else {
+						ms = (fi.outerWidth('true') - fi.outerWidth()) / 2;
+					}
+					if(ms > 0) {
+						edge = edge + ms;
+						if(o.vertical) {
+							base.$window.css({'margin': ms + 'px 0' , 'height': 'auto'});
+						} else {
+							console.log(base.$window.width());
+							base.$window.css({'margin': '0 ' + ms + 'px' , 'width': 'auto'});
+						}
+					}
+				}
+				
+				
 			if (o.expand){
 				w = base.$outer.width() - base.outerPad[0];
 				base.height = h = base.$outer.height() - base.outerPad[1];
@@ -433,20 +453,22 @@
 				} else {
 					// get panel width & height and save it
 					w = t.width() || base.width; // if image hasn't finished loading, width will be zero, so set it to base width instead
+					if(o.slidesMargins !== false) {wwm = t.outerWidth(true);} else {wwm = w;}
 					if (c.length === 1 && w >= winw){
 						w = (c.width() >= winw) ? pw : c.width(); // get width of solitary child
 						c.css('max-width', w);   // set max width for all children
 					}
 					t.css('width', w); // set width of panel
 					h = (c.length === 1 ? c.outerHeight(true) : t.height()); // get height after setting width
-					if (h <= base.outerPad[1]) { h = base.height; } // if height less than the outside padding, then set it to the preset height
+					if(c.length === 1) {hwm = c.outerHeight(true)} else if(o.slidesMargins !== false) {hwm = t.outerHeight(true);} else {hwm = t.height();}
+					if (h <= base.outerPad[1]) {h = base.height;hwm = base.height;} // if height less than the outside padding, then set it to the preset height
 					t.css('height', h);
 				}
-				base.panelSize[i] = [w,h,edge];
-				edge += (o.vertical) ? h : w;
+				base.panelSize[i] = [wwm,hwm,edge];
+				edge += (o.vertical) ? hwm : wwm;
 			});
 			// Set total width of slider, Note that this is limited to 32766 by Opera - option removed
-			base.$el.css((o.vertical ? 'height' : 'width'), edge);
+			base.$el.css((o.vertical ? 'height' : 'width'), (edge - ms));
 		};
 
 		// get dimension of multiple panels, as needed
@@ -721,6 +743,8 @@
 		vertical            : false,     // If true, all panels will slide vertically; they slide horizontally otherwise
 		showMultiple        : false,     // Set this value to a number and it will show that many slides at once
 		easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin or jQuery UI
+		slidesMargins		: false,	 // false to ignore margins, true to read margins from css (margin-left and margin-right, or with vertical:true margin-top and margin-bottom has same size), numerical value to set a margin
+		hideOuterMargins	: true,		 // if slideMargins:true each slide has a left and right margin. this option hides the outer margins from the outer visible slides to fit into slider-wrapper with no gap
 
 		buildArrows         : true,      // If true, builds the forwards and backwards buttons
 		buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
