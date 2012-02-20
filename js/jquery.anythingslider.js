@@ -743,8 +743,8 @@
 		vertical            : false,     // If true, all panels will slide vertically; they slide horizontally otherwise
 		showMultiple        : false,     // Set this value to a number and it will show that many slides at once
 		easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin or jQuery UI
-		slidesMargins		: false,	 // false to ignore margins, true to read margins from css (margin-left and margin-right, or with vertical:true margin-top and margin-bottom has same size), numerical value to set a margin
-		hideOuterMargins	: true,		 // if slideMargins:true each slide has a left and right margin. this option hides the outer margins from the outer visible slides to fit into slider-wrapper with no gap
+		slidesMargins       : false,	 // false to ignore margins, true to read margins from css (margin-left and margin-right, or with vertical:true margin-top and margin-bottom has same size), numerical value to set a margin
+		hideOuterMargins    : true,		 // if slideMargins:true each slide has a left and right margin. this option hides the outer margins from the outer visible slides to fit into slider-wrapper with no gap
 
 		buildArrows         : true,      // If true, builds the forwards and backwards buttons
 		buildNavigation     : true,      // If true, builds a list of anchor links to link to each panel
