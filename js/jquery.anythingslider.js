@@ -423,7 +423,6 @@
 						if(o.vertical) {
 							base.$window.css({'margin': ms + 'px 0' , 'height': 'auto'});
 						} else {
-							console.log(base.$window.width());
 							base.$window.css({'margin': '0 ' + ms + 'px' , 'width': 'auto'});
 						}
 					}
@@ -451,6 +450,8 @@
 						if (c.length === 1){ c.css(fullsize); }
 					}
 				} else {
+					// reset fixed height and width
+					t.css({'width': '', 'height': ''});
 					// get panel width & height and save it
 					w = t.width() || base.width; // if image hasn't finished loading, width will be zero, so set it to base width instead
 					if(o.slidesMargins !== false) {wwm = t.outerWidth(true);} else {wwm = w;}
