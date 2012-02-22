@@ -362,6 +362,12 @@
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.7.26</h3>
+		<ul>
+			<li>Modified the <code>navigationFormatter</code> option to now allow applying attributes directly to the tab as well as modifying the contents. Please refer to the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Navigation-options#wiki-navigationformatter">documentation</a> for more details.</li>
+			<li>The <code>tooltipClass</code> option now applies the tooltip class to the navigation tab (LI) automatically instead of checking to see if the text is hidden. In order to modify the tab title, you'll need to use the new <code>navigationFormatter</code> method.</li>
+		</ul>
+
 		<h3>Version 1.7.25</h3>
 		<ul>
 			<li>When <code>hashTags</code> is true, the browser hash will now update when clicking on the slider arrows as well as navigation buttons.</li>
@@ -420,20 +426,6 @@
 		<h3>Version 1.7.17</h3>
 		<ul>
 			<li>Fixed a problem with using <a href="http://www.asual.com/jquery/address/">jQuery Address</a> plugin hash tags with this slider. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/216">issue #216</a>.</li>
-		</ul>
-
-		<h3>Version 1.7.16</h3>
-		<ul>
-			<li>Ok, I didn't like changing the video option as it was below, so I moved the option into the core plugin. The option is now called <code>resumeOnVisible</code>.</li>
-		</ul>
-
-		<h3>Version 1.7.15.1</h3>
-		<ul>
-			<li>Fixed an issue in the video extension where watching a related YouTube video in the slider would cause javascript errors.</li>
-			<li>Added another known issue with the video extension - Watching a related video breaks the ability if the slider to continue playing and pause the slideshow while playing these videos. This is because the iframe does not update the video URL and there is no way, that I know of, of determining which iframe is reporting a status change.</li>
-			<li>Added a video option named <code>resumeVideo</code> which when false, does not continue playing a paused video. Change this option as follows (inside of a document ready call and before the slider is initialized):
-				<pre><code>$.anythingSliderVideoDefaults.resumeVideo = false;</code></pre>
-			</li>
 		</ul>
 
 	</div>

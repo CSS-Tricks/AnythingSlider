@@ -1,5 +1,5 @@
 /*
-	AnythingSlider v1.7.25
+	AnythingSlider v1.7.26
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -250,32 +250,35 @@
 		// Creates the numbered navigation links
 		base.buildNavigation = function() {
 			if (o.buildNavigation && (base.pages > 1)) {
-				var t, $a;
-				base.$items.filter(':not(.cloned)').each(function(i) {
-					var index = i + 1;
-					t = ((index === 1) ? 'first' : '') + ((index === base.pages) ? 'last' : '');
-					$a = $('<a class="panel' + index + '" href="#"><span></span></a>').wrap('<li class="' + t + '" />');
-					base.$nav.append($a.parent()); // use $a.parent() so it will add <li> instead of only the <a> to the <ul>
-
+				var a, c, i, t, $li;
+				base.$items.filter(':not(.cloned)').each(function(j){
+					$li = $('<li/>');
+					i = j + 1;
+					c = o.tooltipClass + ((i === 1) ? ' first' : '') + ((i === base.pages) ? ' last' : '');
+					a = '<a class="panel' + i + '" href="#"><span>@</span></a>';
 					// If a formatter function is present, use it
 					if ($.isFunction(o.navigationFormatter)) {
-						t = o.navigationFormatter(index, $(this));
-						// Add formatting to title attribute if text is hidden
-						if ($a.find('span').css('visibility') === 'hidden') { $a.addClass(o.tooltipClass).attr('title', t); }
-					} else {
-						t = index;
-					}
-
-					$a
-					.bind(o.clickControls, function(e) {
-						if (!base.flag && o.enableNavigation) {
-							// prevent running functions twice (once for click, second time for focusin)
-							base.flag = true; setTimeout(function(){ base.flag = false; }, 100);
-							base.gotoPage(index);
+						t = o.navigationFormatter(i, $(this));
+						if (typeof(t) === "string") {
+							$li.html(a.replace(/@/,t));
+						} else {
+							$li = $('<li/>', t);
 						}
-						e.preventDefault();
-					})
-					.find('span').html(t);
+					} else {
+						$li.html(a.replace(/@/,i));
+					}
+					$li
+					.appendTo(base.$nav)
+					.addClass(c)
+					.data('index', i);
+				});
+				base.$nav.children('li').bind(o.clickControls, function(e) {
+					if (!base.flag && o.enableNavigation) {
+						// prevent running functions twice (once for click, second time for focusin)
+						base.flag = true; setTimeout(function(){ base.flag = false; }, 100);
+						base.gotoPage( $(this).data('index') );
+					}
+					e.preventDefault();
 				});
 
 				// Add navigation tab scrolling - use !! in case someone sets the size to zero
@@ -687,7 +690,7 @@
 			if (o.buildStartStop) {
 				base.$startStop.toggleClass('playing', playing).find('span').html( playing ? o.stopText : o.startText );
 				// add button text to title attribute if it is hidden by text-indent
-				if (parseInt(base.$startStop.find('span').css('text-indent'),10) < 0) {
+				if ( base.$startStop.find('span').css('visibility') === "hidden" ) {
 					base.$startStop.addClass(o.tooltipClass).attr( 'title', playing ? o.stopText : o.startText );
 				}
 			}
