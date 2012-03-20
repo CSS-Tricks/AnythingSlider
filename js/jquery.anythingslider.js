@@ -1,5 +1,5 @@
-/*
-	AnythingSlider v1.7.26
+/*!
+	AnythingSlider v1.7.27
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -632,7 +632,7 @@
 				// #quote2&panel1-3&panel3-3
 				h = h.substring(0, (i >= 0 ? i : h.length));
 				// ensure the element is in the same slider
-				n = ($(h).length && $(h).closest('.anythingBase')[0] === base.el) ? $(h).closest('.panel').index() : null;
+				n = ($(h).length && $(h).closest('.anythingBase')[0] === base.el) ? $(h).closest('.panel').index() + base.adj : null;
 			} else if (n !== null) {
 				// #&panel1-3&panel3-3
 				n = (o.hashTags) ? parseInt(n[1],10) : null;
@@ -652,7 +652,7 @@
 		base.slideControls = function(toggle){
 			var dir = (toggle) ? 'slideDown' : 'slideUp',
 				t1 = (toggle) ? 0 : o.animationTime,
-				t2 = (toggle) ? o.animationTime: 0,
+				t2 = (toggle) ? o.animationTime : 0,
 				op = (toggle) ? 1 : 0,
 				sign = (toggle) ? 0 : 1; // 0 = visible, 1 = hidden
 			if (o.toggleControls) {
