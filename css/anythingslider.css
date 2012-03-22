@@ -27,9 +27,17 @@ div.anythingSlider .anythingWindow {
 	border-top: 3px solid #777;
 	border-bottom: 3px solid #777;
 }
-/* Navigation buttons, default state */
-div.anythingSlider .anythingControls ul a.cur, div.anythingSlider .anythingControls ul a {
+/* Navigation current button, default state */
+div.anythingSlider .anythingControls ul a.cur {
 	background: #777;
+	color: #000;
+}
+/* Navigation buttons, default state */
+div.anythingSlider .anythingControls ul a {
+	background: #777;
+	background-image: url(../images/default.png); /* top shadow */
+	background-position: center -288px ;
+	background-repeat: repeat-x;
 	color: #000;
 }
 /* start-stop button, stopped, default state */
@@ -51,9 +59,13 @@ div.anythingSlider .start-stop:hover, div.anythingSlider .start-stop.hover {
 div.anythingSlider.activeSlider .anythingWindow {
 	border-color: #7C9127;
 }
-/* Navigation buttons, active state */
-div.anythingSlider.activeSlider .anythingControls ul a.cur, div.anythingSlider.activeSlider .anythingControls ul a {
+/* Navigation current button, active state */
+div.anythingSlider.activeSlider .anythingControls ul a.cur {
 	background-color: #7C9127;
+}
+/* Navigation buttons, active state */
+div.anythingSlider.activeSlider .anythingControls ul a {
+	background-color: #7C9127; /* background image = top shadow */
 }
 /* start-stop button, stopped, active state */
 div.anythingSlider .start-stop {
@@ -150,9 +162,6 @@ div.anythingSlider .anythingControls ul a {
 	padding: 2px 8px;
 	height: 18px;
 	margin: 0 5px 0 0;
-	background-image: url(../images/default.png);
-	background-position: center -288px ;
-	background-repeat: repeat-x;
 	text-align: center;
 	outline: 0;
 	border-radius: 0 0 5px 5px;
