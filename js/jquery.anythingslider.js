@@ -1,5 +1,5 @@
 /*!
-	AnythingSlider v1.7.27
+	AnythingSlider v1.7.28
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -50,7 +50,7 @@
 			if (o.buildStartStop) {
 				base.$startStop.appendTo( (o.appendStartStopTo && $(o.appendStartStopTo).length) ? $(o.appendStartStopTo) : base.$controls );
 			}
-			base.$nav = $('<ul class="thumbNav" />').appendTo( (o.appendNavigationTo && $(o.appendNavigationTo).length) ? $(o.appendNavigationTo) : base.$controls );
+			base.$nav = $('<ul class="thumbNav"><li><a><span>x</span></a></li></ul>').appendTo( (o.appendNavigationTo && $(o.appendNavigationTo).length) ? $(o.appendNavigationTo) : base.$controls );
 
 			// Set up a few defaults & get details
 			base.flag    = false; // event flag to prevent multiple calls (used in control click/focusin)
@@ -174,6 +174,8 @@
 			var t;
 			// needed for updating the slider
 			base.$el.children('.cloned').remove();
+
+			base.navTextVisible = base.$nav.find('span:first').css('visibility') !== 'hidden';
 			base.$nav.empty();
 			// set currentPage to 1 in case it was zero - occurs when adding slides after removing them all
 			base.currentPage = base.currentPage || 1;
@@ -254,18 +256,18 @@
 				base.$items.filter(':not(.cloned)').each(function(j){
 					$li = $('<li/>');
 					i = j + 1;
-					c = o.tooltipClass + ((i === 1) ? ' first' : '') + ((i === base.pages) ? ' last' : '');
-					a = '<a class="panel' + i + '" href="#"><span>@</span></a>';
+					c = (i === 1 ? ' first' : '') + (i === base.pages ? ' last' : '');
+					a = '<a class="panel' + i + ( base.navTextVisible ? '"' : ' ' + o.tooltipClass + '" title="@"' ) + ' href="#"><span>@</span></a>';
 					// If a formatter function is present, use it
 					if ($.isFunction(o.navigationFormatter)) {
 						t = o.navigationFormatter(i, $(this));
 						if (typeof(t) === "string") {
-							$li.html(a.replace(/@/,t));
+							$li.html(a.replace(/@/g,t));
 						} else {
 							$li = $('<li/>', t);
 						}
 					} else {
-						$li.html(a.replace(/@/,i));
+						$li.html(a.replace(/@/g,i));
 					}
 					$li
 					.appendTo(base.$nav)
