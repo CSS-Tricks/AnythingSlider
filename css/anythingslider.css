@@ -174,7 +174,8 @@ div.anythingSlider .anythingControls ul a:hover {
 /* Navigation size window */
 div.anythingSlider .anythingControls .anythingNavWindow { overflow: hidden; float: left; }
 
-/* slider autoplay right-to-left, reverse order of nav links to look better */
+/* slider autoplay right-to-left, reverse order of nav links to look better 
+div.anythingSlider.rtl .anythingBase .panel,*/
 div.anythingSlider.rtl .anythingControls ul a { float: right; } /* reverse order of nav links */
 div.anythingSlider.rtl .anythingControls ul { float: left; }    /* move nav link group to left */
 div.anythingSlider.rtl .anythingWindow {

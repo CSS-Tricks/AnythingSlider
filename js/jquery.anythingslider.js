@@ -50,7 +50,7 @@
 			if (o.buildStartStop) {
 				base.$startStop.appendTo( (o.appendStartStopTo && $(o.appendStartStopTo).length) ? $(o.appendStartStopTo) : base.$controls );
 			}
-			base.$nav = $('<ul class="thumbNav"><li><a><span>x</span></a></li></ul>').appendTo( (o.appendNavigationTo && $(o.appendNavigationTo).length) ? $(o.appendNavigationTo) : base.$controls );
+			base.$nav = $('<ul class="thumbNav"><li><a><span></span></a></li></ul>').appendTo( (o.appendNavigationTo && $(o.appendNavigationTo).length) ? $(o.appendNavigationTo) : base.$controls );
 
 			// Set up a few defaults & get details
 			base.flag    = false; // event flag to prevent multiple calls (used in control click/focusin)
@@ -84,8 +84,8 @@
 
 			base.updateSlider();
 
-			// Get index (run time) of this slider on the page
-			base.runTimes = $('div.anythingSlider').index(base.$wrapper) + 1;
+			// Figure out how many sliders are on the page for indexing
+			base.runTimes = $('.anythingBase').length;
 			base.regex = new RegExp('panel' + base.runTimes + '-(\\d+)', 'i'); // hash tag regex
 			if (base.runTimes === 1) { base.makeActive(); } // make the first slider on the page active
 
@@ -806,7 +806,7 @@
 
 	$.fn.anythingSlider = function(options, callback) {
 
-		return this.each(function(){
+		return this.each(function(i){
 			var page, anySlide = $(this).data('AnythingSlider');
 
 			// initialize the slider but prevent multiple initializations
