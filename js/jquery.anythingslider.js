@@ -19,7 +19,7 @@
 
 	$.anythingSlider = function(el, options) {
 
-		var base = this, o;
+		var base = this, o, t;
 
 		// Wraps the ul in the necessary divs and then gives Access to jQuery element
 		base.el = el;
@@ -135,19 +135,6 @@
 				}
 			});
 
-			// Fix tabbing through the page, but don't change the view if the link is in view (showMultiple = true)
-			base.$items.delegate('a', 'focus.AnythingSlider', function(e){
-				var panel = $(this).closest('.panel'),
-				 indx = base.$items.index(panel) + base.adj; // index can be -1 in nested sliders - issue #208
-				base.$items.find('.focusedLink').removeClass('focusedLink');
-				$(this).addClass('focusedLink');
-				base.$window.scrollLeft(0);
-				if ( ( indx !== -1 && (indx >= base.currentPage + o.showMultiple || indx < base.currentPage) ) ) {
-					base.gotoPage(indx);
-					e.preventDefault();
-				}
-			});
-
 			// Binds events
 			var triggers = "slideshow_paused slideshow_unpaused slide_init slide_begin slideshow_stop slideshow_start initialized swf_completed".split(" ");
 			$.each("onShowPause onShowUnpause onSlideInit onSlideBegin onShowStop onShowStart onInitialized onSWFComplete".split(" "), function(i,f){
@@ -171,7 +158,6 @@
 
 		// called during initialization & to update the slider if a panel is added or deleted
 		base.updateSlider = function(){
-			var t;
 			// needed for updating the slider
 			base.$el.children('.cloned').remove();
 
@@ -185,6 +171,19 @@
 			base.dir = (o.vertical) ? 'top' : 'left';
 			o.showMultiple = (o.vertical) ? 1 : parseInt(o.showMultiple,10) || 1; // only integers allowed
 			o.navigationSize = (o.navigationSize === false) ? 0 : parseInt(o.navigationSize,10) || 0;
+
+			// Fix tabbing through the page, but don't change the view if the link is in view (showMultiple = true)
+			base.$items.find('a').unbind('focus.AnythingSlider').bind('focus.AnythingSlider', function(e){
+				var panel = $(this).closest('.panel'),
+				 indx = base.$items.index(panel) + base.adj; // index can be -1 in nested sliders - issue #208
+				base.$items.find('.focusedLink').removeClass('focusedLink');
+				$(this).addClass('focusedLink');
+				base.$window.scrollLeft(0);
+				if ( ( indx !== -1 && (indx >= base.currentPage + o.showMultiple || indx < base.currentPage) ) ) {
+					base.gotoPage(indx);
+					e.preventDefault();
+				}
+			});
 
 			if (o.showMultiple > 1) {
 				if (o.showMultiple > base.pages) { o.showMultiple = base.pages; }
@@ -456,11 +455,14 @@
 
 		// get dimension of multiple panels, as needed
 		base.getDim = function(page){
-			if (base.pages < 1 || isNaN(page)) { return [ base.width, base.height ]; } // prevent errors when base.panelSize is empty
+			var i, w = base.width, h = base.height;
+			if (base.pages < 1 || isNaN(page)) { return [ w, h ]; } // prevent errors when base.panelSize is empty
 			page = (o.infiniteSlides && base.pages > 1) ? page : page - 1;
-			var i,
-				w = base.panelSize[page][0],
-				h = base.panelSize[page][1];
+			i = base.panelSize[page];
+			if (i) {
+				w = i[0] || w;
+				h = i[1] || h;
+			}
 			if (o.showMultiple > 1) {
 				for (i=1; i < o.showMultiple; i++) {
 					w += base.panelSize[(page + i)%o.showMultiple][0];
