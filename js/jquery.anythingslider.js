@@ -116,7 +116,7 @@
 			base.slideControls(false);
 			base.$wrapper.bind('mouseenter mouseleave', function(e){
 				base.hovered = (e.type === "mouseenter") ? true : false;
-				base.slideControls( base.hovered, false );
+				base.slideControls(base.hovered);
 			});
 
 			// Add keyboard navigation
@@ -517,7 +517,14 @@
 			// don't trigger events when time < 0 - to prevent FX from firing multiple times on page resize
 			if (time >= 0) { base.$el.trigger('slide_init', base); }
 
-			base.slideControls(true, false);
+			// Set visual
+			if (o.buildNavigation){
+				base.$nav
+					.find('.cur').removeClass('cur').end()
+					.find('a').eq(base.targetPage - 1).addClass('cur');
+			}
+
+			base.slideControls(true);
 
 			// When autoplay isn't passed, we stop the timer
 			if (autoplay !== true) { autoplay = false; }
@@ -586,13 +593,6 @@
 			if (base.pages < 1 || page === 0 || isNaN(page)) { return; }
 			if (page > base.pages + 1 - base.adj) { page = base.pages - base.adj; }
 			if (page < base.adj ) { page = 1; }
-
-			// Set visual
-			if (o.buildNavigation){
-				base.$nav
-					.find('.cur').removeClass('cur').end()
-					.find('a').eq(page - 1).addClass('cur');
-			}
 
 			// hide/show arrows based on infinite scroll mode
 			if (!o.infiniteSlides && o.stopAtEnd){
@@ -808,7 +808,7 @@
 
 	$.fn.anythingSlider = function(options, callback) {
 
-		return this.each(function(i){
+		return this.each(function(){
 			var page, anySlide = $(this).data('AnythingSlider');
 
 			// initialize the slider but prevent multiple initializations
