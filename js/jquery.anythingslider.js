@@ -215,7 +215,7 @@
 				}
 				base.$el.find('.cloned').each(function(){
 					// disable all focusable elements in cloned panels to prevent shifting the panels by tabbing
-					$(this).find('a,input,textarea,select,button,area').attr('disabled', 'disabled');
+					$(this).find('a,input,textarea,select,button,area,form').attr({ disabled : 'disabled', name : '' });
 					$(this).find('[id]').andSelf().removeAttr('id');
 				});
 			}
