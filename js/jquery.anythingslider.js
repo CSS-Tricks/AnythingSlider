@@ -178,7 +178,7 @@
 				 indx = base.$items.index(panel) + base.adj; // index can be -1 in nested sliders - issue #208
 				base.$items.find('.focusedLink').removeClass('focusedLink');
 				$(this).addClass('focusedLink');
-				base.$window.scrollLeft(0);
+				base.$window.scrollLeft(0).scrollTop(0);
 				if ( ( indx !== -1 && (indx >= base.currentPage + o.showMultiple || indx < base.currentPage) ) ) {
 					base.gotoPage(indx);
 					e.preventDefault();
@@ -606,7 +606,7 @@
 				var d = base.getDim(page);
 				base.$wrapper
 					.css({ width: d[0], height: d[1] })
-					.add(base.$window).scrollLeft(0); // reset in case tabbing changed this scrollLeft - probably overly redundant
+					.add(base.$window).scrollLeft(0).scrollTop(0); // reset in case tabbing changed this scrollLeft - probably overly redundant
 				base.$el.css( base.dir, -base.panelSize[(o.infiniteSlides && base.pages > 1) ? page : page - 1][2] );
 			}
 			// Update local variable
@@ -635,7 +635,7 @@
 				// #quote2&panel1-3&panel3-3
 				h = h.substring(0, (i >= 0 ? i : h.length));
 				// ensure the element is in the same slider
-				n = ($(h).length && $(h).closest('.anythingBase')[0] === base.el) ? $(h).closest('.panel').index() + base.adj : null;
+				n = ($(h).length && $(h).closest('.anythingBase')[0] === base.el) ? base.$items.index($(h).closest('.panel')) + base.adj : null;
 			} else if (n !== null) {
 				// #&panel1-3&panel3-3
 				n = (o.hashTags) ? parseInt(n[1],10) : null;
