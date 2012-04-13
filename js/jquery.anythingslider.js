@@ -596,9 +596,8 @@
 
 			// hide/show arrows based on infinite scroll mode
 			if (!o.infiniteSlides && o.stopAtEnd){
-				base.$wrapper
-					.find('span.forward')[ page === base.pages ? 'addClass' : 'removeClass']('disabled').end()
-					.find('span.back')[ page === 1 ? 'addClass' : 'removeClass']('disabled');
+				base.$forward[ page === base.pages ? 'addClass' : 'removeClass']('disabled').end()
+				base.$back[ page === 1 ? 'addClass' : 'removeClass']('disabled');
 				if (page === base.pages && base.playing) { base.startStop(); }
 			}
 
