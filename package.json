@@ -1,6 +1,6 @@
 {
     "name": "AnythingSlider",
-    "version": "1.7.28",
+    "version": "1.8",
     "title": "AnythingSlider",
     "author": {
         "name": "Chris Coyier",
@@ -37,7 +37,6 @@
     ],
     "files": [
         "css/anythingslider.css",
-        "css/anythingslider-ie.css",
         "js/jquery.anythingslider.js",
         "js/jquery.anythingslider.min.js",
         "js/jquery.anythingslider.fx.js",

@@ -1,5 +1,9 @@
 $(function(){
 
+	$(".html").chili();
+	$(".css").chili();
+	$(".js").chili();
+
 	$('.accordion').accordion({
 		autoHeight  : false,
 		collapsible : true,
@@ -34,12 +38,12 @@ $(function(){
 	.anythingSliderFx({
 		// base FX definitions
 		// '.selector' : [ 'effect(s)', 'distance/size', 'time', 'easing' ] - 'time' and 'easing' are optional parameters
-		'.quoteSlide:first *' : [ 'grow', '24px', '400', 'easeInOutCirc' ],
-		'.quoteSlide:last'    : [ 'top', '500px', '400', 'easeOutElastic' ],
-		'.expand'             : [ 'expand', '10%', '400', 'easeOutBounce' ],
-		'.textSlide h3'       : [ 'top left', '200px', '500', 'easeOutCirc' ],
-		'.textSlide img,.fade': [ 'fade' ],
-		'.textSlide li'       : [ 'listLR' ]
+		'.quoteSlide:first > *' : [ 'grow', '24px', '400', 'easeInOutCirc' ],
+		'.quoteSlide:last'      : [ 'top', '500px', '400', 'easeOutElastic' ],
+		'.expand'               : [ 'expand', '10%', '400', 'easeOutBounce' ],
+		'.textSlide h3'         : [ 'top left', '200px', '500', 'easeOutCirc' ],
+		'.textSlide img,.fade'  : [ 'fade' ],
+		'.textSlide li'         : [ 'listLR' ]
 		/*
 		// for more precise control, use the "in" and "out" definitions
 		// in = the animation that occurs when you slide "in" to a panel

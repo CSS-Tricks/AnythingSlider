@@ -1,5 +1,5 @@
 /*!
-	AnythingSlider v1.7.28
+	AnythingSlider v1.8
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -15,7 +15,7 @@
 	}
 */
 
-(function($) {
+;(function($) {
 
 	$.anythingSlider = function(el, options) {
 
@@ -37,6 +37,9 @@
 			if ($.isFunction(o.onBeforeInitialize)) { base.$el.bind('before_initialize', o.onBeforeInitialize); }
 			base.$el.trigger('before_initialize', base);
 
+			// Add "as-oldie" class to body for css purposes
+			$('<!--[if lte IE 8]><script>jQuery("body").addClass("as-oldie");</script><![endif]-->').appendTo('body').remove();
+
 			// Cache existing DOM elements for later
 			// base.$el = original ul
 			// for wrap - get parent() then closest in case the ul has "anythingSlider" class
@@ -46,11 +49,16 @@
 			base.$win = $(base.win);
 
 			base.$controls = $('<div class="anythingControls"></div>').appendTo( (o.appendControlsTo && $(o.appendControlsTo).length) ? $(o.appendControlsTo) : base.$wrapper);
+			base.$nav = $('<ul class="thumbNav"><li><a><span></span></a></li></ul>').appendTo( (o.appendNavigationTo && $(o.appendNavigationTo).length) ? $(o.appendNavigationTo) : base.$controls );
 			base.$startStop = $('<a href="#" class="start-stop"></a>');
 			if (o.buildStartStop) {
 				base.$startStop.appendTo( (o.appendStartStopTo && $(o.appendStartStopTo).length) ? $(o.appendStartStopTo) : base.$controls );
 			}
-			base.$nav = $('<ul class="thumbNav"><li><a><span></span></a></li></ul>').appendTo( (o.appendNavigationTo && $(o.appendNavigationTo).length) ? $(o.appendNavigationTo) : base.$controls );
+
+			// Figure out how many sliders are on the page for indexing
+			base.runTimes = $('.anythingBase').length;
+			base.regex = new RegExp('panel' + base.runTimes + '-(\\d+)', 'i'); // hash tag regex
+			if (base.runTimes === 1) { base.makeActive(); } // make the first slider on the page active
 
 			// Set up a few defaults & get details
 			base.flag    = false; // event flag to prevent multiple calls (used in control click/focusin)
@@ -60,6 +68,16 @@
 			base.panelSize = [];  // will contain dimensions and left position of each panel
 			base.currentPage = o.startPanel = parseInt(o.startPanel,10) || 1; // make sure this isn't a string
 			o.changeBy = parseInt(o.changeBy,10) || 1;
+
+			// set slider type, but keep backward compatibility with the vertical option
+			t = (o.mode || 'h').toLowerCase().match(/(h|v|f)/);
+			t = o.vertical ? 'v' : (t || ['h'])[0];
+			o.mode = t === 'v' ? 'vertical' : t === 'f' ? 'fade' : 'horizontal';
+			if (t === 'f') {
+				o.showMultiple = 1; // all slides are stacked in fade mode
+				o.infiniteSlides = false; // no cloned slides
+			}
+
 			base.adj = (o.infiniteSlides) ? 0 : 1; // adjust page limits for infinite or limited modes
 			base.width = base.$el.width();
 			base.height = base.$el.height();
@@ -82,12 +100,9 @@
 			// can't lock autoplay it if it's not enabled
 			if (!o.autoPlay) { o.autoPlayLocked = false; }
 
-			base.updateSlider();
+			base.$lastPage = base.$targetPage = base.$currentPage;
 
-			// Figure out how many sliders are on the page for indexing
-			base.runTimes = $('.anythingBase').length;
-			base.regex = new RegExp('panel' + base.runTimes + '-(\\d+)', 'i'); // hash tag regex
-			if (base.runTimes === 1) { base.makeActive(); } // make the first slider on the page active
+			base.updateSlider();
 
 			// Make sure easing function exists.
 			if (!$.isFunction($.easing[o.easing])) { o.easing = "swing"; }
@@ -107,23 +122,20 @@
 				});
 			}
 
-			// If a hash can not be used to trigger the plugin, then go to start panel
-			base.setCurrentPage(base.gotoHash() || o.startPage, false);
-
-			base.$lastPage = base.$targetPage = base.$currentPage;
-
 			// Hide/Show navigation & play/stop controls
 			base.slideControls(false);
 			base.$wrapper.bind('mouseenter mouseleave', function(e){
-				base.hovered = (e.type === "mouseenter") ? true : false;
+				// add hovered class to outer wrapper
+				$(this)[e.type === 'mouseenter' ? 'addClass' : 'removeClass']('anythingSlider-hovered');
+				base.hovered = (e.type === 'mouseenter') ? true : false;
 				base.slideControls(base.hovered);
 			});
 
 			// Add keyboard navigation
 			$(document).keyup(function(e){
 				// Stop arrow keys from working when focused on form items
-				if (o.enableKeyboard && base.$wrapper.is('.activeSlider') && !e.target.tagName.match('TEXTAREA|INPUT|SELECT')) {
-					if (!o.vertical && (e.which === 38 || e.which === 40)) { return; }
+				if (o.enableKeyboard && base.$wrapper.hasClass('activeSlider') && !e.target.tagName.match('TEXTAREA|INPUT|SELECT')) {
+					if (o.mode !== 'vertical' && (e.which === 38 || e.which === 40)) { return; }
 					switch (e.which) {
 						case 39: case 40: // right & down arrow
 							base.goForward();
@@ -134,6 +146,10 @@
 					}
 				}
 			});
+
+			// If a hash can not be used to trigger the plugin, then go to start panel
+			base.currentPage = base.gotoHash() || o.startPanel || 1;
+			base.gotoPage(base.currentPage, false, null, -1);
 
 			// Binds events
 			var triggers = "slideshow_paused slideshow_unpaused slide_init slide_begin slideshow_stop slideshow_start initialized swf_completed".split(" ");
@@ -168,8 +184,8 @@
 
 			base.$items = base.$el.children();
 			base.pages = base.$items.length;
-			base.dir = (o.vertical) ? 'top' : 'left';
-			o.showMultiple = (o.vertical) ? 1 : parseInt(o.showMultiple,10) || 1; // only integers allowed
+			base.dir = (o.mode === 'vertical') ? 'top' : 'left';
+			o.showMultiple = (o.mode === 'vertical') ? 1 : parseInt(o.showMultiple,10) || 1; // only integers allowed
 			o.navigationSize = (o.navigationSize === false) ? 0 : parseInt(o.navigationSize,10) || 0;
 
 			// Fix tabbing through the page, but don't change the view if the link is in view (showMultiple = true)
@@ -205,7 +221,7 @@
 			// Top and tail the list with 'visible' number of items, top has the last section, and tail has the first
 			// This supports the "infinite" scrolling, also ensures any cloned elements don't duplicate an ID
 			// Moved removeAttr before addClass otherwise IE7 ignores the addClass: http://bugs.jquery.com/ticket/9871
-			if (o.infiniteSlides && base.pages > 1) {
+			if (o.mode !== 'fade' && o.infiniteSlides && base.pages > 1) {
 				base.$el.prepend( base.$items.filter(':last').clone().addClass('cloned') );
 				// Add support for multiple sliders shown at the same time
 				if (o.showMultiple > 1) {
@@ -221,7 +237,7 @@
 			}
 
 			// We just added two items, time to re-cache the list, then get the dimensions of each panel
-			base.$items = base.$el.children().addClass('panel' + (o.vertical ? ' vertical' : ''));
+			base.$items = base.$el.addClass(o.mode).children().addClass('panel');
 			base.setDimensions();
 
 			// Set the dimensions of each panel
@@ -237,6 +253,7 @@
 					// make sure the outer wrapper is set properly
 					t = base.getDim(base.currentPage);
 					base.$wrapper.css({ width: t[0], height: t[1] });
+					base.setCurrentPage(base.currentPage, false);
 				});
 			}
 
@@ -245,6 +262,12 @@
 			}
 			base.setCurrentPage(base.currentPage, false);
 			base.$nav.find('a').eq(base.currentPage - 1).addClass('cur'); // update current selection
+
+			if (o.mode === 'fade') {
+				base.$items
+					.eq(base.currentPage-1).css({ opacity: 1 })
+					.siblings().css({ opacity: 0 });
+			}
 
 		};
 
@@ -292,11 +315,11 @@
 					}
 					// include half of the left position to include extra width from themes like tabs-light and tabs-dark (still not perfect)
 					base.navWidths = base.$nav.find('li').map(function(){
-						return $(this).innerWidth() + Math.ceil(parseInt($(this).find('span').css('left'),10)/2 || 0);
+						return $(this).outerWidth(true) + Math.ceil(parseInt($(this).find('span').css('left'),10)/2 || 0);
 					}).get();
 					base.navLeft = base.currentPage;
-					// add 5 pixels to make sure the tabs don't wrap to the next line
-					base.$nav.width( base.navWidth( 1, base.pages + 1 ) + 5 );
+					// add 25 pixels (old IE needs more than 5) to make sure the tabs don't wrap to the next line
+					base.$nav.width( base.navWidth( 1, base.pages + 1 ) + 25 );
 					base.$controls.find('.anythingNavWindow')
 						.width( base.navWidth( 1, o.navigationSize + 1 ) ).end()
 						.find('.prev,.next').bind(o.clickControls, function(e) {
@@ -447,10 +470,10 @@
 					t.css('height', h);
 				}
 				base.panelSize[i] = [w,h,edge];
-				edge += (o.vertical) ? h : w;
+				edge += (o.mode === 'vertical') ? h : w;
 			});
-			// Set total width of slider, Note that this is limited to 32766 by Opera - option removed
-			base.$el.css((o.vertical ? 'height' : 'width'), edge);
+			// Set total width of slider
+			base.$el.css((o.mode === 'vertical' ? 'height' : 'width'), o.mode === 'fade' ? base.width : edge );
 		};
 
 		// get dimension of multiple panels, as needed
@@ -465,7 +488,7 @@
 			}
 			if (o.showMultiple > 1) {
 				for (i=1; i < o.showMultiple; i++) {
-					w += base.panelSize[(page + i)%o.showMultiple][0];
+					w += base.panelSize[(page + i)][0];
 					h = Math.max(h, base.panelSize[page + i][1]);
 				}
 			}
@@ -498,7 +521,7 @@
 			if (base.pages <= 1) { return; } // prevents animation
 			base.$lastPage = base.$currentPage;
 			if (typeof(page) !== "number") {
-				page = o.startPanel;
+				page = parseInt(page,10) || o.startPanel;
 				base.setCurrentPage(page);
 			}
 
@@ -510,21 +533,19 @@
 			if (page < base.adj ) { page = (!o.infiniteSlides && !o.stopAtEnd) ? base.pages : 1; }
 			if (!o.infiniteSlides) { base.exactPage = page; } // exact page used by the fx extension
 			base.currentPage = ( page > base.pages ) ? base.pages : ( page < 1 ) ? 1 : base.currentPage;
-			base.$currentPage = base.$items.eq(base.currentPage - base.adj);
+			base.$currentPage = base.$items.removeClass('activePage').eq(base.currentPage - base.adj);
 			base.targetPage = (page === 0) ? base.pages : (page > base.pages) ? 1 : page;
-			base.$targetPage = base.$items.eq( base.targetPage - base.adj);
+			base.$targetPage = base.$items.eq(base.targetPage - base.adj);
 			time = time || o.animationTime;
 			// don't trigger events when time < 0 - to prevent FX from firing multiple times on page resize
 			if (time >= 0) { base.$el.trigger('slide_init', base); }
+			// toggle arrows/controls only if there is time to see it - fix issue #317
+			if (time > 0) { base.slideControls(true); }
 
 			// Set visual
 			if (o.buildNavigation){
-				base.$nav
-					.find('.cur').removeClass('cur').end()
-					.find('a').eq(base.targetPage - 1).addClass('cur');
+				base.setNavigation(base.targetPage);
 			}
-
-			base.slideControls(true);
 
 			// When autoplay isn't passed, we stop the timer
 			if (autoplay !== true) { autoplay = false; }
@@ -548,28 +569,35 @@
 						base.$wrapper.filter(':not(:animated)').animate(d, { queue: false, duration: (time < 0 ? 0 : time), easing: o.easing });
 					}
 				}
-				d = {};
-				d[base.dir] = -base.panelSize[(o.infiniteSlides && base.pages > 1) ? page : page - 1][2];
-				// Animate Slider
-				base.$el.filter(':not(:animated)').animate(
-					d, { queue: false, duration: time, easing: o.easing, complete: function(){ base.endAnimation(page, callback, time); } }
-				);
+				if (o.mode === 'fade') {
+					if (base.$lastPage[0] !== base.$targetPage[0]) {
+						base.$lastPage.fadeTo((time < 0 ? 0 : time), 0);
+						base.$targetPage.fadeTo((time < 0 ? 0 : time), 1, function(){ base.endAnimation(page, callback, time); });
+					}
+				} else {
+					d = {};
+					d[base.dir] = -base.panelSize[(o.infiniteSlides && base.pages > 1) ? page : page - 1][2];
+					// Animate Slider
+					base.$el.filter(':not(:animated)').animate(
+						d, { queue: false, duration: time, easing: o.easing, complete: function(){ base.endAnimation(page, callback, time); } }
+					);
+				}
 			}, parseInt(o.delayBeforeAnimate, 10) || 0);
 		};
 
 		base.endAnimation = function(page, callback, time){
 			if (page === 0) {
-				base.$el.css( base.dir, -base.panelSize[base.pages][2]);
+				base.$el.css( base.dir, o.mode === 'fade' ? 0 : -base.panelSize[base.pages][2]);
 				page = base.pages;
 			} else if (page > base.pages) {
 				// reset back to start position
-				base.$el.css( base.dir, -base.panelSize[1][2]);
+				base.$el.css( base.dir, o.mode === 'fade' ? 0 : -base.panelSize[1][2]);
 				page = 1;
 			}
 			base.exactPage = page;
 			base.setCurrentPage(page, false);
 			// Add active panel class
-			base.$items.removeClass('activePage').eq(page - base.adj).addClass('activePage');
+			// base.$items.removeClass('activePage').eq(page - base.adj).addClass('activePage');
 
 			if (!base.hovered) { base.slideControls(false); }
 
@@ -590,13 +618,14 @@
 
 		base.setCurrentPage = function(page, move) {
 			page = parseInt(page, 10);
+
 			if (base.pages < 1 || page === 0 || isNaN(page)) { return; }
 			if (page > base.pages + 1 - base.adj) { page = base.pages - base.adj; }
 			if (page < base.adj ) { page = 1; }
 
 			// hide/show arrows based on infinite scroll mode
 			if (!o.infiniteSlides && o.stopAtEnd){
-				base.$forward[ page === base.pages ? 'addClass' : 'removeClass']('disabled').end()
+				base.$forward[ page === base.pages ? 'addClass' : 'removeClass']('disabled');
 				base.$back[ page === 1 ? 'addClass' : 'removeClass']('disabled');
 				if (page === base.pages && base.playing) { base.startStop(); }
 			}
@@ -607,17 +636,28 @@
 				base.$wrapper
 					.css({ width: d[0], height: d[1] })
 					.add(base.$window).scrollLeft(0).scrollTop(0); // reset in case tabbing changed this scrollLeft - probably overly redundant
-				base.$el.css( base.dir, -base.panelSize[(o.infiniteSlides && base.pages > 1) ? page : page - 1][2] );
+				base.$el.css( base.dir, o.mode === 'fade' ? 0 : -base.panelSize[(o.infiniteSlides && base.pages > 1) ? page : page - 1][2] );
 			}
+
 			// Update local variable
 			base.currentPage = page;
 			base.$currentPage = base.$items.removeClass('activePage').eq(page - base.adj).addClass('activePage');
 
+			if (o.buildNavigation){
+				base.setNavigation(page);
+			}
+
+		};
+
+		base.setNavigation = function(page){
+			base.$nav
+				.find('.cur').removeClass('cur').end()
+				.find('a').eq(page - 1).addClass('cur');
 		};
 
 		base.makeActive = function(){
 			// Set current slider as active so keyboard navigation works properly
-			if (!base.$wrapper.is('.activeSlider')){
+			if (!base.$wrapper.hasClass('activeSlider')){
 				$('.activeSlider').removeClass('activeSlider');
 				base.$wrapper.addClass('activeSlider');
 			}
@@ -722,9 +762,9 @@
 	$.anythingSlider.defaults = {
 		// Appearance
 		theme               : "default", // Theme name, add the css stylesheet manually
+		mode                : "horiz",   // Set mode to "horizontal", "vertical" or "fade" (only first letter needed); replaces vertical option
 		expand              : false,     // If true, the entire slider will expand to fit the parent element
 		resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
-		vertical            : false,     // If true, all panels will slide vertically; they slide horizontally otherwise
 		showMultiple        : false,     // Set this value to a number and it will show that many slides at once
 		easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin or jQuery UI
 
