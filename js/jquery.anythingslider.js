@@ -1,5 +1,5 @@
 /*!
-	AnythingSlider v1.8
+	AnythingSlider v1.8.1
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -162,6 +162,7 @@
 				// Added setTimeout (zero time) to ensure animation is complete... see this bug report: http://bugs.jquery.com/ticket/7157
 				base.$el.bind('slide_complete', function(){
 					setTimeout(function(){ o.onSlideComplete(base); }, 0);
+					return false;
 				});
 			}
 			base.initialized = true;

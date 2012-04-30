@@ -94,6 +94,7 @@ SET DEFAULT DIMENSIONS HERE
 		color: @navigation-text-color;
 		.navigation-border;
 
+		/* Make sure navigation text is visible */
 		span {
 			visibility: visible;
 		}
@@ -139,7 +140,7 @@ SET DEFAULT DIMENSIONS HERE
 			/* background image = top shadow */
 			background-color: @active-background-tab;
 
-			/* Navigation current button, active state */
+			/* Navigation current & hovered button, active state */
 			&.cur, &:hover {
 				/* background image removed */
 				background: @active-background-current;
@@ -361,7 +362,7 @@ COMMON SLIDER STYLING
 			left: 0;
 		}
 
-		.activePage, .visiblePage {
+		.activePage {
 			opacity: 1;
 			filter: alpha(opacity=100);
 			z-index:2;

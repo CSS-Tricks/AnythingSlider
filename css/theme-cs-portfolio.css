@@ -248,11 +248,11 @@ IE8 AND OLDER STYLING
 	top: 0;
 	left: 0;
 }
-.anythingSlider .fade .activePage,
-.anythingSlider .fade .visiblePage {
+/* fade mode active page - visible & on top */
+.anythingSlider .fade .activePage {
 	opacity: 1;
 	filter: alpha(opacity=100);
-	z-index: 2;
+	z-index:2;
 }
 
 /***********************
