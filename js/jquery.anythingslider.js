@@ -1,5 +1,5 @@
 /*!
-	AnythingSlider v1.8.1
+	AnythingSlider v1.8.2
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -14,7 +14,6 @@
 		return "Panel #" + index; // This would have each tab with the text 'Panel #X' where X = index
 	}
 */
-
 ;(function($) {
 
 	$.anythingSlider = function(el, options) {
@@ -169,7 +168,7 @@
 			base.$el.trigger('initialized', base);
 
 			// trigger the slideshow
-			base.startStop(base.playing);
+			base.startStop(o.autoPlay);
 
 		};
 
