@@ -1,5 +1,5 @@
 /*!
-	AnythingSlider v1.8.2
+	AnythingSlider v1.8.3
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -571,8 +571,8 @@
 				}
 				if (o.mode === 'fade') {
 					if (base.$lastPage[0] !== base.$targetPage[0]) {
-						base.$lastPage.fadeTo((time < 0 ? 0 : time), 0);
-						base.$targetPage.fadeTo((time < 0 ? 0 : time), 1, function(){ base.endAnimation(page, callback, time); });
+						base.$lastPage.filter(':not(:animated)').fadeTo((time < 0 ? 0 : time), 0);
+						base.$targetPage.filter(':not(:animated)').fadeTo((time < 0 ? 0 : time), 1, function(){ base.endAnimation(page, callback, time); });
 					}
 				} else {
 					d = {};

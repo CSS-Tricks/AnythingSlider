@@ -27,7 +27,7 @@
 
 	<!-- AnythingSlider -->
 	<link rel="stylesheet" href="css/anythingslider.css">
-	<script src="js/jquery.anythingslider.min.js"></script>
+	<script src="js/jquery.anythingslider.js"></script>
 
 	<!-- AnythingSlider video extension; optional, but needed to control video pause/play -->
 	<script src="js/jquery.anythingslider.video.js"></script>
@@ -367,6 +367,11 @@
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.8.3</h3>
+		<ul>
+			<li>Fixed fade mode animation bug. It should now behave as the other modes in that rapid panel changes are ignored. Fixes <a href="https://github.com/ProLoser/AnythingSlider/issues/340">issue #340</a> (and maybe issues #338 &amp; #339?).</li>
+		</ul>
+
 		<h3>Version 1.8.2</h3>
 		<ul>
 			<li>Fixed <code>autoPlay</code> option. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/331">issue #331</a>.</li>
@@ -417,12 +422,6 @@
 		<h3>Version 1.7.27</h3>
 		<ul>
 			<li>Fixed a bug that previously would show the slide before the desired one, if the window location hash was targeting an ID in the slider and <code>infiniteSlides</code> was set to false.</li>
-		</ul>
-
-		<h3>Version 1.7.26</h3>
-		<ul>
-			<li>Modified the <code>navigationFormatter</code> option to now allow applying attributes directly to the tab as well as modifying the contents. Please refer to the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Navigation-options#wiki-navigationformatter">documentation</a> for more details.</li>
-			<li>The <code>tooltipClass</code> option now applies the tooltip class to the navigation tab (LI) automatically instead of checking to see if the text is hidden. In order to modify the tab title, you'll need to use the new <code>navigationFormatter</code> method.</li>
 		</ul>
 
 	</div>
