@@ -367,6 +367,12 @@
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.8.4</h3>
+		<ul>
+			<li>The anythingControls div will no longer be added to the markup when empty. Fixes <a href="https://github.com/ProLoser/AnythingSlider/issues/342">issue #342</a>.</li>
+			<li>Fixed error that occurs when buildArrows is false and stopAtEnd is true. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/343">issue #343</a>. Thanks to <a href="https://github.com/lhwparis">lhwparis</a> for the code!</li>
+		</ul>
+
 		<h3>Version 1.8.3</h3>
 		<ul>
 			<li>Fixed fade mode animation bug. It should now behave as the other modes in that rapid panel changes are ignored. Fixes <a href="https://github.com/ProLoser/AnythingSlider/issues/340">issue #340</a> (and maybe issues #338 &amp; #339?).</li>
@@ -417,11 +423,6 @@
 			<li>Fixed an issue with the incorrect width being set on the wrapper when <code>showMultiple</code> is greater than one and <code>resizeContents</code> is false with slides of varying width.</li>
 			<li>Modified hash indexing of the sliders. You shouldn't notice a difference unless you have multiple sliders on a page and initialized them in an order other than from top to bottom.</li>
 			<li>Modified positioning of the start-stop button so it is now appended to the end of the "anythingControls" div instead of at the beginning.</li>
-		</ul>
-
-		<h3>Version 1.7.27</h3>
-		<ul>
-			<li>Fixed a bug that previously would show the slide before the desired one, if the window location hash was targeting an ID in the slider and <code>infiniteSlides</code> was set to false.</li>
 		</ul>
 
 	</div>
