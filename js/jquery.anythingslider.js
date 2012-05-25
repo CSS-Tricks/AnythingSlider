@@ -520,8 +520,8 @@
 			if (/^[#|.]/.test(page) && $(page).length) {
 				page = $(page).closest('.panel').index() + base.adj;
 			}
-			// rewind effect occurs here when changeBy > 1
-			if (o.changeBy !== 1){
+			// rewind effect occurs here when changeBy > 1 
+			if (o.changeBy !== 1 && (!o.stopAtEnd || o.infiniteSlides)){
 				if (page < 0) { page += base.pages; }
 				if (page > base.pages) { page -= base.pages; }
 			}
