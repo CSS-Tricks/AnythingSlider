@@ -72,7 +72,7 @@
 			base.slideshow = false; // slideshow flag needed to correctly trigger slideshow events
 			base.hovered = false; // actively hovering over the slider
 			base.panelSize = [];  // will contain dimensions and left position of each panel
-			base.currentPage = o.startPanel = parseInt(o.startPanel,10) || 1; // make sure this isn't a string
+			base.currentPage = base.targetPage = o.startPanel = parseInt(o.startPanel,10) || 1; // make sure this isn't a string
 			o.changeBy = parseInt(o.changeBy,10) || 1;
 
 			// set slider type, but keep backward compatibility with the vertical option
@@ -503,11 +503,12 @@
 		};
 
 		base.goForward = function(autoplay) {
-			base.gotoPage(base.currentPage + o.changeBy * (o.playRtl ? -1 : 1), autoplay);
+			// targetPage changes before animation so if rapidly changing pages, it will have the correct current page
+			base.gotoPage(base[ o.allowRapidChange ? 'targetPage' : 'currentPage'] + o.changeBy * (o.playRtl ? -1 : 1), autoplay);
 		};
 
 		base.goBack = function(autoplay) {
-			base.gotoPage(base.currentPage + o.changeBy * (o.playRtl ? 1 : -1), autoplay);
+			base.gotoPage(base[ o.allowRapidChange ? 'targetPage' : 'currentPage'] + o.changeBy * (o.playRtl ? 1 : -1), autoplay);
 		};
 
 		base.gotoPage = function(page, autoplay, callback, time) {
@@ -564,6 +565,9 @@
 			// delay starting slide animation
 			setTimeout(function(d){
 				var p, empty = true;
+				if (o.allowRapidChange) {
+					base.$wrapper.add(base.$el).add(base.$items).stop(true, true);
+				}
 				// resize slider if content size varies
 				if (!o.resizeContents) {
 					// animating the wrapper resize before the window prevents flickering in Firefox
@@ -576,6 +580,7 @@
 						base.$wrapper.filter(':not(:animated)').animate(d, { queue: false, duration: (time < 0 ? 0 : time), easing: o.easing });
 					}
 				}
+
 				if (o.mode === 'fade') {
 					if (base.$lastPage[0] !== base.$targetPage[0]) {
 						base.$lastPage.filter(':not(:animated)').fadeTo((time < 0 ? 0 : time), 0);
@@ -603,8 +608,11 @@
 			}
 			base.exactPage = page;
 			base.setCurrentPage(page, false);
-			// Add active panel class
-			// base.$items.removeClass('activePage').eq(page - base.adj).addClass('activePage');
+
+			if (o.mode === 'fade') {
+				// make sure non current panels are hidden (rapid slide changes)
+				base.$items.not(':eq(' + (page - base.adj) + ')').css('opacity', 0);
+			}
 
 			if (!base.hovered) { base.slideControls(false); }
 
@@ -810,6 +818,7 @@
 		infiniteSlides      : true,      // if false, the slider will not wrap & not clone any panels
 		navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
 		navigationSize      : false,     // Set this to the maximum number of visible navigation tabs; false to disable
+		allowRapidChange    : false,
 
 		// Slideshow options
 		autoPlay            : false,     // If true, the slideshow will start running; replaces "startStopped" option
