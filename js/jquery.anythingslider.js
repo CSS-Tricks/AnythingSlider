@@ -521,11 +521,13 @@
 			if (/^[#|.]/.test(page) && $(page).length) {
 				page = $(page).closest('.panel').index() + base.adj;
 			}
+
 			// rewind effect occurs here when changeBy > 1
 			if (o.changeBy !== 1){
 				if (page < 0) { page += base.pages; }
 				if (page > base.pages) { page -= base.pages; }
 			}
+
 			if (base.pages <= 1) { return; } // prevents animation
 			base.$lastPage = base.$currentPage;
 			if (typeof(page) !== "number") {
@@ -585,6 +587,8 @@
 					if (base.$lastPage[0] !== base.$targetPage[0]) {
 						base.$lastPage.filter(':not(:animated)').fadeTo((time < 0 ? 0 : time), 0);
 						base.$targetPage.filter(':not(:animated)').fadeTo((time < 0 ? 0 : time), 1, function(){ base.endAnimation(page, callback, time); });
+					} else {
+						base.endAnimation(page, callback, time);
 					}
 				} else {
 					d = {};
@@ -818,7 +822,6 @@
 		infiniteSlides      : true,      // if false, the slider will not wrap & not clone any panels
 		navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
 		navigationSize      : false,     // Set this to the maximum number of visible navigation tabs; false to disable
-		allowRapidChange    : false,
 
 		// Slideshow options
 		autoPlay            : false,     // If true, the slideshow will start running; replaces "startStopped" option
@@ -852,6 +855,7 @@
 		clickBackArrow      : "click",         // Event used to activate back arrow functionality (e.g. add jQuery mobile's "swipeleft")
 		clickControls       : "click focusin", // Events used to activate navigation control functionality
 		clickSlideshow      : "click",         // Event used to activate slideshow play/stop button
+		allowRapidChange    : false,           // If true, allow rapid changing of the active pane, instead of ignoring activity during animation
 
 		// Video
 		resumeOnVideoEnd    : true,      // If true & the slideshow is active & a supported video is playing, it will pause the autoplay until the video is complete
