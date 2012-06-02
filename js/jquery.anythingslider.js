@@ -1,5 +1,5 @@
 /*!
-	AnythingSlider v1.8.4
+	AnythingSlider v1.8.5
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/ProLoser/AnythingSlider
 
@@ -85,6 +85,7 @@
 			}
 
 			base.adj = (o.infiniteSlides) ? 0 : 1; // adjust page limits for infinite or limited modes
+			base.adjustMultiple = 0;
 			base.width = base.$el.width();
 			base.height = base.$el.height();
 			base.outerPad = [ base.$wrapper.innerWidth() - base.$wrapper.width(), base.$wrapper.innerHeight() - base.$wrapper.height() ];
@@ -183,7 +184,6 @@
 		base.updateSlider = function(){
 			// needed for updating the slider
 			base.$el.children('.cloned').remove();
-
 			base.navTextVisible = base.$nav.find('span:first').css('visibility') !== 'hidden';
 			base.$nav.empty();
 			// set currentPage to 1 in case it was zero - occurs when adding slides after removing them all
@@ -207,11 +207,9 @@
 					e.preventDefault();
 				}
 			});
-
 			if (o.showMultiple > 1) {
 				if (o.showMultiple > base.pages) { o.showMultiple = base.pages; }
 				base.adjustMultiple = (o.infiniteSlides && base.pages > 1) ? 0 : o.showMultiple - 1;
-				base.pages = base.$items.length - base.adjustMultiple;
 			}
 
 			// Hide navigation & player if there is only one page
@@ -524,8 +522,17 @@
 
 			// rewind effect occurs here when changeBy > 1
 			if (o.changeBy !== 1){
-				if (page < 0) { page += base.pages; }
-				if (page > base.pages) { page -= base.pages; }
+				var adj = base.pages - base.adjustMultiple;
+				if (page < 1) {
+					page = o.stopAtEnd ? 1 : ( o.infiniteSlides ? base.pages + page : ( o.showMultiple > 1 - page ? 1 : adj ) );
+				}
+				if (page > base.pages) {
+					// 
+					page = o.stopAtEnd ? base.pages : ( o.showMultiple > 1 - page ? 1 : page -= adj );
+				} else if (page >= adj) {
+					// show multiple adjustments
+					page = adj;
+				}
 			}
 
 			if (base.pages <= 1) { return; } // prevents animation
@@ -644,7 +651,7 @@
 
 			// hide/show arrows based on infinite scroll mode
 			if (o.buildArrows && !o.infiniteSlides && o.stopAtEnd){
-				base.$forward[ page === base.pages ? 'addClass' : 'removeClass']('disabled');
+				base.$forward[ page === base.pages - base.adjustMultiple ? 'addClass' : 'removeClass']('disabled');
 				base.$back[ page === 1 ? 'addClass' : 'removeClass']('disabled');
 				if (page === base.pages && base.playing) { base.startStop(); }
 			}

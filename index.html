@@ -153,7 +153,7 @@
 		<h1>AnythingSlider</h1>
 
 			<div class="themeselector">
-				Theme: 
+				Theme:
 				<select id="currentTheme">
 					<option value="default">Default</option>
 					<option value="minimalist-round">Minimalist-Round</option>
@@ -348,6 +348,7 @@
   clickBackArrow      : "click",         // Event used to activate back arrow functionality (e.g. add jQuery mobile's "swipeleft")
   clickControls       : "click focusin", // Events used to activate navigation control functionality
   clickSlideshow      : "click",         // Event used to activate slideshow play/stop button
+  allowRapidChange    : false,           // If true, allow rapid changing of the active pane, instead of ignoring activity during animation
 
   // Video
   resumeOnVideoEnd    : true,      // If true & the slideshow is active & a supported video is playing, it will pause the autoplay until the video is complete
@@ -366,6 +367,18 @@
 
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Version 1.8.5</h3>
+		<ul>
+			<li>Added a new option named <code>allowRapidChange</code>.
+				<ul>
+					<li>When false, the default setting, the slider will ignore attempts to rapidly change the current slide, using the methods or keyboard arrow keys.</li>
+					<li>If true, the plugin will allow the user to rapidly click on the navigation tabs or arrows to skip slides quickly. The animation will jump to the end, so it may not appear as smooth when this option is false.</li>
+				</ul>
+			</li>
+			<li>When using fade mode, the links in the first panel will now work properly. Fixes <a href="https://github.com/ProLoser/AnythingSlider/issues/346">issue #346</a>.</li>
+			<li>When <code>showMultiple</code> and <code>changeBy</code> are more than one, and <code>infiniteSlides</code> is false, the slider will now properly show all of the slides. Fixes <a href="https://github.com/ProLoser/AnythingSlider/issues/356">issue #356</a>. Thanks to <a href="https://github.com/NewMediaRoc">NewMediaRoc</a> for sharing the code!</li>
+		</ul>
 
 		<h3>Version 1.8.4</h3>
 		<ul>
@@ -389,40 +402,6 @@
 			<li>Nested sliders will no longer bubble the slideComplete event. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/328">issue #328</a>.</li>
 			<li>Added an additional comment or two to the css/less.</li>
 			<li>Removed an unused css class name definition.</li>
-		</ul>
-
-		<h3>Version 1.8</h3>
-		<ul>
-			<li>Current navigation tab now updates before the slider animation.</li>
-			<li>Added <code>mode</code> option:
-				<ul>
-					<li>Options include: "horizontal", "vertical" and "fade".</li>
-					<li>When set to "horizontal" (or just "h") the slider will behave as normally, sliding left and right.</li>
-					<li>When set to "vertical" (or just "v") the slider will slide panels vertically. This option replaces the <code>vertical</code> option.</li>
-					<li>With this option set to "fade" (or just "f"), the slider will cross-fade from the current image to the next. When the slider is in "fade" mode, it will override the <code>infiniteSlides</code> and <code>showMultiple</code> options.</li>
-					<li>Updated the second <a href="http://proloser.github.com/AnythingSlider/index.html">main demo</a> to use the new cross-fade mode.</li>
-					<li>This option was inspired by Jamy Golden's <a href="https://github.com/JamyGolden/PlusSlider">PlusSlider</a>.</li>
-				</ul>
-			<li>Added <code>anythingSlider-hovered</code> class which is applied to the outer wrapper when the slider is being hovered over - in case you want to apply some css3 animations.</li>
-			<li>Modified the css:
-				<ul>
-					<li>Css styling has been split up for default and active navigation tabs to allow better understanding of how it is set up. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/308">issue #308</a>.</li>
-					<li>Each css file is now completely independent, i.e. there is no need to load <code>anythingslider.css</code> when using an additional theme file.</li>
-					<li>Added an internal method that adds a class name of "as-oldie" to the document body if the browser is IE8 or older - this method uses injected conditional comments.</li>
-					<li>Removed the <code>anythingslider-ie.css</code> and moved the necessary css into each theme file, prefixed with ".as-oldie".</li>
-					<li>Added LESS files of each theme within a subfolder in the css folder. I'm still learning LESS, so it may not be optimal, so any suggestions would be appreciated.</li>
-					<li>Modified the <code>construction.gif</code> image and arrow css to allow changing the height of the construction navigation arrows to any value between 1 and 300.</li>
-				</ul>
-			</li>
-			<li>Fixed an issue with the <code>tooltipClass</code> not being applied if you use the <code>navigationFormatter</code>. Fix mentions in <a href="https://github.com/Mottie/Jatt/issues/1">issue #1</a> of my tooltip plugin (Jatt).</li>
-			<li>Fixed an issue with `toggleArrows: true` and `expand: true` causing flickering on resize. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/317">issue #317</a>.
-			<li>Fixed an issue with the tooltip class was always being added. The title attribute was not added at all.</li>
-			<li>Fixed an issue with an ID in the hash not triggering the positioning of the proper slide.</li>
-			<li>Fixed errors that occurred when initializing an empty slider.</li>
-			<li>Fixed arrows appended outside of the slider not getting the "disabled" class. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/315">issue #315</a>.</li>
-			<li>Fixed an issue with the incorrect width being set on the wrapper when <code>showMultiple</code> is greater than one and <code>resizeContents</code> is false with slides of varying width.</li>
-			<li>Modified hash indexing of the sliders. You shouldn't notice a difference unless you have multiple sliders on a page and initialized them in an order other than from top to bottom.</li>
-			<li>Modified positioning of the start-stop button so it is now appended to the end of the "anythingControls" div instead of at the beginning.</li>
 		</ul>
 
 	</div>
