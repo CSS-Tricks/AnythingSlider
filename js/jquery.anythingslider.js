@@ -553,7 +553,7 @@
 			base.$currentPage = base.$items.removeClass('activePage').eq(base.currentPage - base.adj);
 			base.targetPage = (page === 0) ? base.pages : (page > base.pages) ? 1 : page;
 			base.$targetPage = base.$items.eq(base.targetPage - base.adj);
-			time = time || o.animationTime;
+			time = typeof time !== 'undefined' ? time : o.animationTime;
 			// don't trigger events when time < 0 - to prevent FX from firing multiple times on page resize
 			if (time >= 0) { base.$el.trigger('slide_init', base); }
 			// toggle arrows/controls only if there is time to see it - fix issue #317
@@ -602,7 +602,7 @@
 					d[base.dir] = -base.panelSize[(o.infiniteSlides && base.pages > 1) ? page : page - 1][2];
 					// Animate Slider
 					base.$el.filter(':not(:animated)').animate(
-						d, { queue: false, duration: time, easing: o.easing, complete: function(){ base.endAnimation(page, callback, time); } }
+						d, { queue: false, duration: time < 0 ? 0 : time, easing: o.easing, complete: function(){ base.endAnimation(page, callback, time); } }
 					);
 				}
 			}, parseInt(o.delayBeforeAnimate, 10) || 0);
