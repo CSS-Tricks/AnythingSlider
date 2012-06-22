@@ -269,9 +269,15 @@
 			base.$nav.find('a').eq(base.currentPage - 1).addClass('cur'); // update current selection
 
 			if (o.mode === 'fade') {
-				base.$items
-					.eq(base.currentPage-1).css({ opacity: 1 })
-					.siblings().css({ opacity: 0 });
+				var t = base.$items.eq(base.currentPage-1);
+				if (o.resumeOnVisible) {
+					// prevent display: none;
+					t.css({ opacity: 1 }).siblings().css({ opacity: 0 });
+				} else {
+					// allow display: none; - resets video
+					base.$items.css('opacity',1);
+					t.fadeIn(0).siblings().fadeOut(0);
+				}
 			}
 
 		};
@@ -592,8 +598,8 @@
 
 				if (o.mode === 'fade') {
 					if (base.$lastPage[0] !== base.$targetPage[0]) {
-						base.$lastPage.filter(':not(:animated)').fadeTo((time < 0 ? 0 : time), 0);
-						base.$targetPage.filter(':not(:animated)').fadeTo((time < 0 ? 0 : time), 1, function(){ base.endAnimation(page, callback, time); });
+						base.fadeIt( base.$lastPage, 0, time );
+						base.fadeIt( base.$targetPage, 1, time, function(){ base.endAnimation(page, callback, time); });
 					} else {
 						base.endAnimation(page, callback, time);
 					}
@@ -622,7 +628,7 @@
 
 			if (o.mode === 'fade') {
 				// make sure non current panels are hidden (rapid slide changes)
-				base.$items.not(':eq(' + (page - base.adj) + ')').css('opacity', 0);
+				base.fadeIt( base.$items.not(':eq(' + (page - base.adj) + ')'), 0, 0);
 			}
 
 			if (!base.hovered) { base.slideControls(false); }
@@ -639,6 +645,15 @@
 					base.startStop(true);
 				// subtract out slide delay as the slideshow waits that additional time.
 				}, o.resumeDelay - (o.autoPlayDelayed ? o.delay : 0));
+			}
+		};
+
+		base.fadeIt = function(el, toOpacity, time, callback){
+			var t = time < 0 ? 0 : time;
+			if (o.resumeOnVisible) {
+				el.filter(':not(:animated)').fadeTo(t, toOpacity, callback);
+			} else {
+				el.filter(':not(:animated)')[ toOpacity === 0 ? 'fadeOut' : 'fadeIn' ](t, callback);
 			}
 		};
 
