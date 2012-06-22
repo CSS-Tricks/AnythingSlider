@@ -550,7 +550,7 @@
 			if (page < base.adj ) { page = (!o.infiniteSlides && !o.stopAtEnd) ? base.pages : 1; }
 			if (!o.infiniteSlides) { base.exactPage = page; } // exact page used by the fx extension
 			base.currentPage = ( page > base.pages ) ? base.pages : ( page < 1 ) ? 1 : base.currentPage;
-			base.$currentPage = base.$items.removeClass('activePage').eq(base.currentPage - base.adj);
+			base.$currentPage = base.$items.eq(base.currentPage - base.adj);
 			base.targetPage = (page === 0) ? base.pages : (page > base.pages) ? 1 : page;
 			base.$targetPage = base.$items.eq(base.targetPage - base.adj);
 			time = typeof time !== 'undefined' ? time : o.animationTime;
