@@ -368,6 +368,21 @@
 		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.8.6</h3>
+		<ul>
+			<li>Animation time can now be set to zero when using the API method.</li>
+			<li>Fixed IE9 flashing in fade mode. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/377">issue #377</a>.</li>
+			<li>Modified fade mode to use the <code>resumeOnVisible</code> option:
+				<ul>
+					<li>If the option is true, non-current panels will have an opacity of zero and be hidden by having a lower z-index.</li>
+					<li>If <code>resumeOnVisible</code> is <code>false</code> all non-current panels will be hidden. But because they are hidden (display:none), all videos will restart when they become visible again and there is no way to control it.</li>
+					<li>Hopefully setting the option to false will fix the issues that mobile devices are having with video.</li>
+				</ul>
+			</li>
+			<li>Fade mode no longer uses css to set the opacity. Hopefully this will fix <a href="https://github.com/ProLoser/AnythingSlider/issues/379">issue #379</a>.</li>
+			<li>Updated the wiki documentation to include API functions.</li>
+		</ul>
+
 		<h3>Version 1.8.5</h3>
 		<ul>
 			<li>Added a new option named <code>allowRapidChange</code>.
@@ -395,13 +410,6 @@
 		<ul>
 			<li>Fixed <code>autoPlay</code> option. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/331">issue #331</a>.</li>
 			<li>Removed IE conditional comments from demo files.</li>
-		</ul>
-
-		<h3>Version 1.8.1</h3>
-		<ul>
-			<li>Nested sliders will no longer bubble the slideComplete event. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/328">issue #328</a>.</li>
-			<li>Added an additional comment or two to the css/less.</li>
-			<li>Removed an unused css class name definition.</li>
 		</ul>
 
 	</div>
