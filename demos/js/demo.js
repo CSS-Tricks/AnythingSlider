@@ -98,7 +98,6 @@ $(function(){
 	*/
 	// add a close button (x) to the caption
 	.find('div[class*=caption]')
-		.css({ position: 'absolute' })
 		.prepend('<span class="close">x</span>')
 		.find('.close').click(function(){
 			var cap = $(this).parent(),

@@ -109,7 +109,7 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 #slider3 .caption-top,
 #slider3 .caption-right,
 #slider3 .caption-bottom,
-#slider3 .caption-left { background: #000; color: #fff; padding: 10px; margin: 0; position: relative; z-index: 10; opacity: .8; filter: alpha(opacity=80); }
+#slider3 .caption-left { background: #000; color: #fff; padding: 10px; margin: 0; position: absolute; z-index: 10; opacity: .8; filter: alpha(opacity=80); }
 
 /* Top caption - padding is included in the width (480px here, 500px in the script), same for height */
 #slider3 .caption-top  { left: 0; top: 0; width: 480px; height: 30px; }
