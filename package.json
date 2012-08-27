@@ -9,7 +9,7 @@
     "licenses": [
         {
             "type": "GPL3",
-            "url": "https://github.com/ProLoser/AnythingSlider/blob/master/license.txt"
+            "url": "https://github.com/CSS-Tricks/AnythingSlider/blob/master/license.txt"
         }
     ],
     "dependencies": {
@@ -23,8 +23,8 @@
         "video"
     ],
     "homepage": "http://css-tricks.com/3412-anythingslider-jquery-plugin/",
-    "demo": "http://proloser.github.com/AnythingSlider/",
-    "docs": "https://github.com/ProLoser/AnythingSlider/wiki",
+    "demo": "http://css-tricks.github.com/AnythingSlider/",
+    "docs": "https://github.com/CSS-Tricks/AnythingSlider/wiki",
     "maintainers": [
         {
             "name": "Rob Garrison",

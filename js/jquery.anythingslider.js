@@ -1,7 +1,7 @@
 /*!
 	AnythingSlider v1.8.6
 	Original by Chris Coyier: http://css-tricks.com
-	Get the latest version: https://github.com/ProLoser/AnythingSlider
+	Get the latest version: https://github.com/CSS-Tricks/AnythingSlider
 
 	To use the navigationFormatter function, you must have a function that
 	accepts two paramaters, and returns a string of HTML text.

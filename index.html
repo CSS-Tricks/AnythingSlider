@@ -141,14 +141,14 @@
 			<a href="video.html">Video Demo</a>
 			<a href="demos.html">FX Demos</a>
 			<a href="css3.html">CSS3 Demo</a>
-			<a class="play" href="http://jsfiddle.net/Mottie/aTKzP/">Playground</a>
-			<a class="git" href="https://github.com/ProLoser/AnythingSlider/wiki">Documentation</a>
-			<a class="git" href="https://github.com/ProLoser/AnythingSlider/zipball/master">Download</a>
-			<a class="issue" href="https://github.com/ProLoser/AnythingSlider/issues">Issues</a>
+			<a class="play" href="http://jsfiddle.net/Mottie/ycUB6/">Playground</a>
+			<a class="git" href="https://github.com/CSS-Tricks/AnythingSlider/wiki">Documentation</a>
+			<a class="git" href="https://github.com/CSS-Tricks/AnythingSlider/zipball/master">Download</a>
+			<a class="issue" href="https://github.com/CSS-Tricks/AnythingSlider/issues">Issues</a>
 		</div>
 
 		<h5><a href="http://css-tricks.com/examples/AnythingSlider/">Original</a> By <a href="http://css-tricks.com">Chris Coyier</a>,
-		expanded upon by <a href="https://github.com/ProLoser/AnythingSlider/wiki/Credits">many others</a></h5>
+		expanded upon by <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Credits">many others</a></h5>
 
 		<h1>AnythingSlider</h1>
 
@@ -263,7 +263,7 @@
 			<li>Use keyboard navigation or tabs that are built and added dynamically (any number of panels).</li>
 			<li>Link to specific slides or go forward or back one slide from static text links - go to <a href="#" id="slide-jump">Slide 4</a> (Quote #2) in second example.</li>
 			<li>Each panel has a hashtag (can link directly to specific panels) or use the ID of an element inside the panel.</li>
-			<li>Optional custom function for <a href="https://github.com/ProLoser/AnythingSlider/wiki/Navigation-Options">formatting navigation text</a>.</li>
+			<li>Optional custom function for <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Navigation-Options">formatting navigation text</a>.</li>
 			<li>Auto-playing slideshow (optional feature, can start playing or stopped).</li>
 			<li>Pauses slideshow on hover (optional).</li>
 			<li>Optionally play the slideshow once through, stopping on the last page.</li>
@@ -275,7 +275,7 @@
 
     <a name="default-options"></a>
 		<h2>Default Options</h2>
-		See the documentation for complete description of these options (<a href="https://github.com/ProLoser/AnythingSlider/wiki/Appearance-Options">appearance</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Navigation-Options">navigation</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Slideshow-Options">slideshow</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Callbacks-and-Events">callbacks &amp; events</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Video">video</a>, <a href="https://github.com/ProLoser/AnythingSlider/wiki/Interactivity-and-Miscellaneous-Options">interativity &amp; misc</a>).<br>
+		See the documentation for complete description of these options (<a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Appearance-Options">appearance</a>, <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Navigation-Options">navigation</a>, <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Slideshow-Options">slideshow</a>, <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Callbacks-and-Events">callbacks &amp; events</a>, <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Video">video</a>, <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Interactivity-and-Miscellaneous-Options">interativity &amp; misc</a>).<br>
 		<br>
 		<blockquote>
 			<pre class="js">$('#slider').anythingSlider({
@@ -363,19 +363,26 @@
     <a name="known-issues"></a>
 		<h2>Known Issues</h2>
 		<ul>
-			<li>Please refer to the <a href="https://github.com/ProLoser/AnythingSlider/wiki">documentation</a>.</li>
+			<li>Please refer to the <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki">documentation</a>.</li>
 		</ul>
 
     <a name="changelog"></a>
 		<h2>Changelog</h2>
 
-		Only the latest versions will be shown here. See the <a href="https://github.com/ProLoser/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
+		Only the latest versions will be shown here. See the <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
+
+		<h3>Moved Repo!</h3>
+		<ul>
+			<li>The AnythingSlider repo was "moved" from ProLoser/AnythingSlider to CSS-Tricks/AnythingSlider.</li>
+			<li>Due to an issue, the repository was removed and all issues and links were lost, sorry for the inconvenience.</li>
+			<li>The Wiki documents have been replaced, but as all of the jsFiddle demos were targetting the files from the previous location, they are most likely all broken. I will slowly update these demos and links as time permits.</li>
+		</ul>
 
 		<h3>Version 1.8.6</h3>
 		<ul>
 			<li>Animation time can now be set to zero when using the API method.</li>
-			<li>Fixed IE9 flashing in fade mode. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/377">issue #377</a>.</li>
+			<li>Fixed IE9 flashing in fade mode. Fix for <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/377">issue #377</a>.</li>
 			<li>Modified fade mode to use the <code>resumeOnVisible</code> option:
 				<ul>
 					<li>If the option is true, non-current panels will have an opacity of zero and be hidden by having a lower z-index.</li>
@@ -383,7 +390,7 @@
 					<li>Hopefully setting the option to false will fix the issues that mobile devices are having with video.</li>
 				</ul>
 			</li>
-			<li>Fade mode no longer uses css to set the opacity. Hopefully this will fix <a href="https://github.com/ProLoser/AnythingSlider/issues/379">issue #379</a>.</li>
+			<li>Fade mode no longer uses css to set the opacity. Hopefully this will fix <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/379">issue #379</a>.</li>
 			<li>Updated the wiki documentation to include API functions.</li>
 		</ul>
 
@@ -395,24 +402,24 @@
 					<li>If true, the plugin will allow the user to rapidly click on the navigation tabs or arrows to skip slides quickly. The animation will jump to the end, so it may not appear as smooth when this option is false.</li>
 				</ul>
 			</li>
-			<li>When using fade mode, the links in the first panel will now work properly. Fixes <a href="https://github.com/ProLoser/AnythingSlider/issues/346">issue #346</a>.</li>
-			<li>When <code>showMultiple</code> and <code>changeBy</code> are more than one, and <code>infiniteSlides</code> is false, the slider will now properly show all of the slides. Fixes <a href="https://github.com/ProLoser/AnythingSlider/issues/356">issue #356</a>. Thanks to <a href="https://github.com/NewMediaRoc">NewMediaRoc</a> for sharing the code!</li>
+			<li>When using fade mode, the links in the first panel will now work properly. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/346">issue #346</a>.</li>
+			<li>When <code>showMultiple</code> and <code>changeBy</code> are more than one, and <code>infiniteSlides</code> is false, the slider will now properly show all of the slides. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/356">issue #356</a>. Thanks to <a href="https://github.com/NewMediaRoc">NewMediaRoc</a> for sharing the code!</li>
 		</ul>
 
 		<h3>Version 1.8.4</h3>
 		<ul>
-			<li>The anythingControls div will no longer be added to the markup when empty. Fixes <a href="https://github.com/ProLoser/AnythingSlider/issues/342">issue #342</a>.</li>
-			<li>Fixed error that occurs when buildArrows is false and stopAtEnd is true. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/343">issue #343</a>. Thanks to <a href="https://github.com/lhwparis">lhwparis</a> for the code!</li>
+			<li>The anythingControls div will no longer be added to the markup when empty. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/342">issue #342</a>.</li>
+			<li>Fixed error that occurs when buildArrows is false and stopAtEnd is true. Fix for <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/343">issue #343</a>. Thanks to <a href="https://github.com/lhwparis">lhwparis</a> for the code!</li>
 		</ul>
 
 		<h3>Version 1.8.3</h3>
 		<ul>
-			<li>Fixed fade mode animation bug. It should now behave as the other modes in that rapid panel changes are ignored. Fixes <a href="https://github.com/ProLoser/AnythingSlider/issues/340">issue #340</a> (and maybe issues #338 &amp; #339?).</li>
+			<li>Fixed fade mode animation bug. It should now behave as the other modes in that rapid panel changes are ignored. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/340">issue #340</a> (and maybe issues #338 &amp; #339?).</li>
 		</ul>
 
 		<h3>Version 1.8.2</h3>
 		<ul>
-			<li>Fixed <code>autoPlay</code> option. Fix for <a href="https://github.com/ProLoser/AnythingSlider/issues/331">issue #331</a>.</li>
+			<li>Fixed <code>autoPlay</code> option. Fix for <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/331">issue #331</a>.</li>
 			<li>Removed IE conditional comments from demo files.</li>
 		</ul>
 

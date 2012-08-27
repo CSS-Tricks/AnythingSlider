@@ -79,6 +79,7 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 
 /* Change metallic slider defaults to show thumbnails -
   using #demo2 (page wrapper) to increase this CSS priority */
+#demo2 div.anythingControls { bottom: 25px; }
 #demo2 div.anythingSlider-metallic .thumbNav a { background-image: url(); height: 30px; width: 30px; border: #000 1px solid; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; }
 #demo2 div.anythingSlider-metallic .thumbNav a span { visibility: visible; }
 
