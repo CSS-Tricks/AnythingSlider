@@ -63,7 +63,7 @@
 
 			// Figure out how many sliders are on the page for indexing
 			base.runTimes = $('.anythingBase').length;
-			base.regex = new RegExp('panel' + base.runTimes + '-(\\d+)', 'i'); // hash tag regex
+			if (o.hashTags) { base.regex = new RegExp('panel' + base.runTimes + '-(\\d+)', 'i'); } // hash tag regex
 			if (base.runTimes === 1) { base.makeActive(); } // make the first slider on the page active
 
 			// Set up a few defaults & get details
