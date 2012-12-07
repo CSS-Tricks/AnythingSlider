@@ -43,6 +43,7 @@
 			// base.$el = original ul
 			// for wrap - get parent() then closest in case the ul has "anythingSlider" class
 			base.$wrapper = base.$el.parent().closest('div.anythingSlider').addClass('anythingSlider-' + o.theme);
+			base.$outer = base.$wrapper.parent();
 			base.$window = base.$el.closest('div.anythingWindow');
 			base.win = window;
 			base.$win = $(base.win);
@@ -87,17 +88,7 @@
 
 			base.adj = (o.infiniteSlides) ? 0 : 1; // adjust page limits for infinite or limited modes
 			base.adjustMultiple = 0;
-			base.width = base.$el.width();
-			base.height = base.$el.height();
-			base.outerPad = [ base.$wrapper.innerWidth() - base.$wrapper.width(), base.$wrapper.innerHeight() - base.$wrapper.height() ];
 			if (o.playRtl) { base.$wrapper.addClass('rtl'); }
-
-			// Expand slider to fit parent
-			if (o.expand) {
-				base.$outer = base.$wrapper.parent();
-				base.$window.css({ width: '100%', height: '100%' }); // needed for Opera
-				base.checkResize();
-			}
 
 			// Build start/stop button
 			if (o.buildStartStop) { base.buildAutoPlay(); }
@@ -111,6 +102,12 @@
 			base.$lastPage = base.$targetPage = base.$currentPage;
 
 			base.updateSlider();
+
+			// Expand slider to fit parent
+			if (o.expand) {
+				base.$window.css({ width: '100%', height: '100%' }); // needed for Opera
+				base.checkResize();
+			}
 
 			// Make sure easing function exists.
 			if (!$.isFunction($.easing[o.easing])) { o.easing = "swing"; }
@@ -444,13 +441,20 @@
 
 		// Set panel dimensions to either resize content or adjust panel to content
 		base.setDimensions = function(){
+
+			// reset element width & height
+			base.$wrapper.find('.anythingWindow, .anythingBase, .panel').andSelf().css({ width: '', height: '' });
+			base.width = base.$el.width();
+			base.height = base.$el.height();
+			base.outerPad = [ base.$wrapper.innerWidth() - base.$wrapper.width(), base.$wrapper.innerHeight() - base.$wrapper.height() ];
+
 			var w, h, c, t, edge = 0,
 				fullsize = { width: '100%', height: '100%' },
 				// determine panel width
 				pw = (o.showMultiple > 1) ? base.width || base.$window.width()/o.showMultiple : base.$window.width(),
 				winw = base.$win.width();
 			if (o.expand){
-				w = base.$outer.width() - base.outerPad[0];
+				w = base.$outer.css('height','').width() - base.outerPad[0];
 				base.height = h = base.$outer.height() - base.outerPad[1];
 				base.$wrapper.add(base.$window).add(base.$items).css({ width: w, height: h });
 				base.width = pw = (o.showMultiple > 1) ? w/o.showMultiple : w;
@@ -476,7 +480,7 @@
 						w = (c.width() >= winw) ? pw : c.width(); // get width of solitary child
 						c.css('max-width', w);   // set max width for all children
 					}
-					t.css('width', w); // set width of panel
+					t.css({ width: w, height: '' }); // set width of panel
 					h = (c.length === 1 ? c.outerHeight(true) : t.height()); // get height after setting width
 					if (h <= base.outerPad[1]) { h = base.height; } // if height less than the outside padding, then set it to the preset height
 					t.css('height', h);
