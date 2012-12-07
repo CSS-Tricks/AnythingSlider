@@ -63,7 +63,8 @@
 
 			// Figure out how many sliders are on the page for indexing
 			base.runTimes = $('.anythingBase').length;
-			base.regex = new RegExp('panel' + base.runTimes + '-(\\d+)', 'i'); // hash tag regex
+			// hash tag regex - fixes issue #432
+			base.regex = (o.hashTags) ? new RegExp('panel' + base.runTimes + '-(\\d+)', 'i') : null;
 			if (base.runTimes === 1) { base.makeActive(); } // make the first slider on the page active
 
 			// Set up a few defaults & get details
@@ -712,7 +713,7 @@
 				i = h.indexOf('&'),
 				n = h.match(base.regex);
 			// test for "/#/" or "/#!/" used by the jquery address plugin - $('#/') breaks jQuery
-			if (n === null && !/^#&/.test(h) && !/#!?\//.test(h)) {
+			if (n === null && !/^#&/.test(h) && !/#!?\//.test(h) && !/=/.test(h)) {
 				// #quote2&panel1-3&panel3-3
 				h = h.substring(0, (i >= 0 ? i : h.length));
 				// ensure the element is in the same slider
