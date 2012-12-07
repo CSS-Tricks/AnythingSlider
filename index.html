@@ -372,6 +372,25 @@
 		Only the latest versions will be shown here. See the <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
 		<br>
 
+		<h3>Version 1.8.7</h3>
+		<ul>
+			<li>Fixed hash tag issues.
+				<ul>
+					<li>Equals within the hash should now be ignored. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/413">issue #413</a>.</li>
+					<li>Hashtags are no longer processed if the <code>hashTags</code> option is <code>false</code>. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/432">issue #432</a>.</li>
+				</ul>
+			</li>
+			<li>Updated all themes to no longer use a negative z-index. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/447">issue #447</a>.</li>
+			<li>Updating a slider will now include updating the width and height of the slider. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/459">issue #459</a>.</li>
+			<li>Slideshow now stops/pauses when the slider is not in the active browser tab.
+				<ul>
+					<li>The slideshow completely stops if not in the active browser tab.</li>
+					<li>If the <code>autoPlayLocked</code> option is <code>true</code>, the slideshow will only pause, then resume once the browser tab is active.</li>
+					<li>Enhancement request from <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/463">issue #463</a>.</li>
+				</ul>
+			</li>
+		</ul>
+
 		<h3>Moved Repo!</h3>
 		<ul>
 			<li>The AnythingSlider repo was "moved" from ProLoser/AnythingSlider to CSS-Tricks/AnythingSlider.</li>
@@ -415,12 +434,6 @@
 		<h3>Version 1.8.3</h3>
 		<ul>
 			<li>Fixed fade mode animation bug. It should now behave as the other modes in that rapid panel changes are ignored. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/340">issue #340</a> (and maybe issues #338 &amp; #339?).</li>
-		</ul>
-
-		<h3>Version 1.8.2</h3>
-		<ul>
-			<li>Fixed <code>autoPlay</code> option. Fix for <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/331">issue #331</a>.</li>
-			<li>Removed IE conditional comments from demo files.</li>
 		</ul>
 
 	</div>

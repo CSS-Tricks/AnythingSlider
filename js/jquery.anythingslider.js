@@ -1,5 +1,5 @@
 /*!
-	AnythingSlider v1.8.6
+	AnythingSlider v1.8.7
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/CSS-Tricks/AnythingSlider
 
@@ -14,8 +14,9 @@
 		return "Panel #" + index; // This would have each tab with the text 'Panel #X' where X = index
 	}
 */
+/*jshint browser:true, jquery:true, unused:false */
 ;(function($, win, doc) {
-
+	"use strict";
 	$.anythingSlider = function(el, options) {
 
 		var base = this, o, t;
@@ -194,7 +195,7 @@
 			// Fix tabbing through the page, but don't change the view if the link is in view (showMultiple = true)
 			base.$items.find('a').unbind('focus.AnythingSlider').bind('focus.AnythingSlider', function(e){
 				var panel = $(this).closest('.panel'),
-				 indx = base.$items.index(panel) + base.adj; // index can be -1 in nested sliders - issue #208
+					indx = base.$items.index(panel) + base.adj; // index can be -1 in nested sliders - issue #208
 				base.$items.find('.focusedLink').removeClass('focusedLink');
 				$(this).addClass('focusedLink');
 				base.$window.scrollLeft(0).scrollTop(0);
@@ -388,7 +389,7 @@
 			});
 			// using tab to get to arrow links will show they have focus (outline is disabled in css)
 			base.$back.add(base.$forward).find('a').bind('focusin focusout',function(){
-			 $(this).toggleClass('hover');
+				$(this).toggleClass('hover');
 			});
 
 			// Append elements to page
@@ -715,7 +716,7 @@
 				i = h.indexOf('&'),
 				n = h.match(base.regex);
 			// test for "/#/" or "/#!/" used by the jquery address plugin - $('#/') breaks jQuery
-			if (n === null && !/^#&/.test(h) && !/#!?\//.test(h) && !/=/.test(h)) {
+			if (n === null && !/^#&/.test(h) && !/#!?\//.test(h) && !/\=/.test(h)) {
 				// #quote2&panel1-3&panel3-3
 				h = h.substring(0, (i >= 0 ? i : h.length));
 				// ensure the element is in the same slider
