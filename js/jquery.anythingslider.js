@@ -14,7 +14,7 @@
 		return "Panel #" + index; // This would have each tab with the text 'Panel #X' where X = index
 	}
 */
-;(function($) {
+;(function($, win, doc) {
 
 	$.anythingSlider = function(el, options) {
 
@@ -45,7 +45,7 @@
 			base.$wrapper = base.$el.parent().closest('div.anythingSlider').addClass('anythingSlider-' + o.theme);
 			base.$outer = base.$wrapper.parent();
 			base.$window = base.$el.closest('div.anythingWindow');
-			base.win = window;
+			base.win = win;
 			base.$win = $(base.win);
 
 			base.$controls = $('<div class="anythingControls"></div>');
@@ -70,6 +70,7 @@
 
 			// Set up a few defaults & get details
 			base.flag    = false; // event flag to prevent multiple calls (used in control click/focusin)
+			if (o.autoPlayLocked) { o.autoPlay = true; } // if autoplay is locked, start playing
 			base.playing = o.autoPlay; // slideshow state; removed "startStopped" option
 			base.slideshow = false; // slideshow flag needed to correctly trigger slideshow events
 			base.hovered = false; // actively hovering over the slider
@@ -95,9 +96,6 @@
 
 			// Build forwards/backwards buttons
 			if (o.buildArrows) { base.buildNextBackButtons(); }
-
-			// can't lock autoplay it if it's not enabled
-			if (!o.autoPlay) { o.autoPlayLocked = false; }
 
 			base.$lastPage = base.$targetPage = base.$currentPage;
 
@@ -137,7 +135,7 @@
 			});
 
 			// Add keyboard navigation
-			$(document).keyup(function(e){
+			$(doc).keyup(function(e){
 				// Stop arrow keys from working when focused on form items
 				if (o.enableKeyboard && base.$wrapper.hasClass('activeSlider') && !e.target.tagName.match('TEXTAREA|INPUT|SELECT')) {
 					if (o.mode !== 'vertical' && (e.which === 38 || e.which === 40)) { return; }
@@ -788,11 +786,16 @@
 			if (playing){
 				base.clearTimer(true); // Just in case this was triggered twice in a row
 				base.timer = base.win.setInterval(function() {
-					// prevent autoplay if video is playing
-					if ( !o.isVideoPlaying(base) ) {
+					if ( !!(doc.hidden || doc.webkitHidden || doc.mozHidden || doc.msHidden) ) {
+						// stop slideshow if the page isn't visible (issue #463)
+						if (!o.autoPlayLocked) {
+							base.startStop();
+						}
+					} else if ( !o.isVideoPlaying(base) ) {
+						// prevent autoplay if video is playing
 						base.goForward(true);
-					// stop slideshow if resume if false
 					} else if (!o.resumeOnVideoEnd) {
+						// stop slideshow if resume if false
 						base.startStop();
 					}
 				}, o.delay);
@@ -918,4 +921,4 @@
 		});
 	};
 
-})(jQuery);
+})(jQuery, window, document);
