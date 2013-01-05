@@ -1,5 +1,5 @@
 /*!
-	AnythingSlider v1.8.8
+	AnythingSlider v1.8.9
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/CSS-Tricks/AnythingSlider
 
@@ -453,7 +453,7 @@
 				pw = (o.showMultiple > 1) ? base.width || base.$window.width()/o.showMultiple : base.$window.width(),
 				winw = base.$win.width();
 			if (o.expand){
-				w = base.$outer.css('height','').width() - base.outerPad[0];
+				w = base.$outer.width() - base.outerPad[0];
 				base.height = h = base.$outer.height() - base.outerPad[1];
 				base.$wrapper.add(base.$window).add(base.$items).css({ width: w, height: h });
 				base.width = pw = (o.showMultiple > 1) ? w/o.showMultiple : w;
