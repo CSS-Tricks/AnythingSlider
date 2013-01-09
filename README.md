@@ -7,10 +7,10 @@ A very robust jQuery-based slider plugin. Need to link to a specific slide? No p
 
 ## [Main Demo](http://css-tricks.github.com/AnythingSlider/)
 
-* [Documentation](https://github.com/CSS-Tricks/AnythingSlider/wiki is maintained in the wiki pages).
-* [CSS-Tricks demo](http://css-tricks.com/examples/AnythingSlider/)
-* [Github demos!](http://css-tricks.github.com/AnythingSlider/)
-* [Download](https://github.com/CSS-Tricks/AnythingSlider/zipball/master)
+* [Documentation](https://github.com/CSS-Tricks/AnythingSlider/wiki).
+* [CSS-Tricks demo](http://css-tricks.com/examples/AnythingSlider/).
+* [Github demos!](http://css-tricks.github.com/AnythingSlider/).
+* [Download](https://github.com/CSS-Tricks/AnythingSlider/zipball/master).
 
 ## Related Projects
 
