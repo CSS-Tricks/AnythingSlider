@@ -1,5 +1,5 @@
 /*!
-	AnythingSlider v1.8.12
+	AnythingSlider v1.8.13
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/CSS-Tricks/AnythingSlider
 
