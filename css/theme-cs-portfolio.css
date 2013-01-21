@@ -27,7 +27,7 @@ through which the background color is seen... so colors set will turn out darker
  ==================================*/
 /* Overall Wrapper */
 .anythingSlider-cs-portfolio {
-	margin: 0 auto;
+	margin: 0 auto 50px auto; /* added 50px to bottom to accomodate controls */
 	padding: 0;
 }
 
