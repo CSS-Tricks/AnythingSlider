@@ -1,11 +1,9 @@
 $(function(){
 
-	$(".html").chili();
-	$(".css").chili();
-	$(".js").chili();
+	prettyPrint();
 
 	$('.accordion').accordion({
-		autoHeight  : false,
+		heightStyle : "content",
 		collapsible : true,
 		active      : false // start compressed
 	});
@@ -21,6 +19,7 @@ $(function(){
 	.find('.panel:not(.cloned) img') // ignore the cloned panels
 		.attr('rel','group')           // add all slider images to a colorbox group
 		.colorbox({
+			scalePhotos: true,
 			width  : '90%',
 			height : '90%',
 			href   : function(){ return $(this).attr('src'); },

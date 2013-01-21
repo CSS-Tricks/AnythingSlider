@@ -9,12 +9,12 @@
 	<link rel="apple-touch-icon" href="demos/images/apple-touch-icon.png">
 
 	<!-- jQuery (required) -->
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
 
 	<!-- Syntax highlighting -->
-	<script src="http://mottie.github.com/tablesorter/docs/js/chili/jquery.chili-2.2.js"></script>
-	<script src="http://mottie.github.com/tablesorter/docs/js/chili/recipes.js"></script>
+	<link rel="stylesheet" href="demos/prettify/prettify.css" media="screen">
+	<script src="demos/prettify/prettify.js"></script>
 
 	<!-- Anything Slider optional plugins -->
 	<script src="js/jquery.easing.1.2.js"></script>
@@ -45,7 +45,7 @@
 		// **************
 		$(function(){
 
-			$(".js").chili();
+			prettyPrint();
 
 			// External Link with callback function
 			$("#slide-jump").click(function(){
@@ -278,7 +278,7 @@
 		See the documentation for complete description of these options (<a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Appearance-Options">appearance</a>, <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Navigation-Options">navigation</a>, <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Slideshow-Options">slideshow</a>, <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Callbacks-and-Events">callbacks &amp; events</a>, <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Video">video</a>, <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Interactivity-and-Miscellaneous-Options">interativity &amp; misc</a>).<br>
 		<br>
 		<blockquote>
-			<pre class="js">$('#slider').anythingSlider({
+			<pre class="prettyprint lang-javascript">$('#slider').anythingSlider({
   // Appearance
   theme               : "default", // Theme name
   mode                : "horiz",   // Set mode to "horizontal", "vertical" or "fade" (only first letter needed); replaces vertical option
@@ -343,7 +343,7 @@
   onShowUnpause       : function(e, slider) {}, // Callback when slideshow unpauses - may not trigger properly if user clicks on any controls
   onSlideInit         : function(e, slider) {}, // Callback when slide initiates, before control animation
   onSlideBegin        : function(e, slider) {}, // Callback before slide animates
-  onSlideComplete     : function(slider) {},    // Callback when slide completes; this is the only callback without an event "e" variable
+  onSlideComplete     : function(slider) {},    // Callback when slide completes; this is the only callback without an event "e" parameter
 
   // Interactivity
   clickForwardArrow   : "click",         // Event used to activate forward arrow functionality (e.g. add jQuery mobile's "swiperight")
@@ -360,89 +360,18 @@
 });</pre>
 		</blockquote>
 
-    <a name="known-issues"></a>
+		<a name="known-issues"></a>
 		<h2>Known Issues</h2>
 		<ul>
 			<li>Please refer to the <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki">documentation</a>.</li>
 		</ul>
 
-    <a name="changelog"></a>
+		<br>
+		<a name="changelog"></a>
 		<h2>Changelog</h2>
 
-		Only the latest versions will be shown here. See the <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Change-Log">full change log here</a>.<br>
-		<br>
-
-		<h3>Version 1.8.10 to 1.8.13</h3>
 		<ul>
-			<li>New version, just to register with the <a href="http://plugins.jquery.com/">jquery plugin registry</a>.</li>
-		</ul>
-
-		<h3>Version 1.8.9</h3>
-		<ul>
-			<li>Removed code that clears the height of the outer wrapper when using the <code>expand</code> option. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/476">issue #476</a></li>
-		</ul>
-
-		<h3>Version 1.8.8</h3>
-		<ul>
-			<li>More <code>hashTag</code> option tweaks.
-				<ul>
-					<li>The current panel can no longer be set via the hash when the <code>hashTags</code> option is set to <code>false</code>.</li>
-					<li>This prevents errors when using other history plugins. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/432">issue #432</a>.</li>
-				</ul>
-			</li>
-		</ul>
-
-		<h3>Version 1.8.7</h3>
-		<ul>
-			<li>Fixed hash tag issues.
-				<ul>
-					<li>Equals within the hash should now be ignored. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/413">issue #413</a>.</li>
-					<li>Hashtags are no longer processed if the <code>hashTags</code> option is <code>false</code>. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/432">issue #432</a>.</li>
-				</ul>
-			</li>
-			<li>Updated all themes to no longer use a negative z-index. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/447">issue #447</a>.</li>
-			<li>Updating a slider will now include updating the width and height of the slider. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/459">issue #459</a>.</li>
-			<li>Slideshow now stops/pauses when the slider is not in the active browser tab.
-				<ul>
-					<li>The slideshow completely stops if not in the active browser tab.</li>
-					<li>If the <code>autoPlayLocked</code> option is <code>true</code>, the slideshow will only pause, then resume once the browser tab is active.</li>
-					<li>Enhancement request from <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/463">issue #463</a>.</li>
-				</ul>
-			</li>
-		</ul>
-
-		<h3>Moved Repo!</h3>
-		<ul>
-			<li>The AnythingSlider repo was "moved" from ProLoser/AnythingSlider to CSS-Tricks/AnythingSlider.</li>
-			<li>Due to an issue, the repository was removed and all issues and links were lost, sorry for the inconvenience.</li>
-			<li>The Wiki documents have been replaced, but as all of the jsFiddle demos were targetting the files from the previous location, they are most likely all broken. I will slowly update these demos and links as time permits.</li>
-		</ul>
-
-		<h3>Version 1.8.6</h3>
-		<ul>
-			<li>Animation time can now be set to zero when using the API method.</li>
-			<li>Fixed IE9 flashing in fade mode. Fix for <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/377">issue #377</a>.</li>
-			<li>Modified fade mode to use the <code>resumeOnVisible</code> option:
-				<ul>
-					<li>If the option is true, non-current panels will have an opacity of zero and be hidden by having a lower z-index.</li>
-					<li>If <code>resumeOnVisible</code> is <code>false</code> all non-current panels will be hidden. But because they are hidden (display:none), all videos will restart when they become visible again and there is no way to control it.</li>
-					<li>Hopefully setting the option to false will fix the issues that mobile devices are having with video.</li>
-				</ul>
-			</li>
-			<li>Fade mode no longer uses css to set the opacity. Hopefully this will fix <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/379">issue #379</a>.</li>
-			<li>Updated the wiki documentation to include API functions.</li>
-		</ul>
-
-		<h3>Version 1.8.5</h3>
-		<ul>
-			<li>Added a new option named <code>allowRapidChange</code>.
-				<ul>
-					<li>When false, the default setting, the slider will ignore attempts to rapidly change the current slide, using the methods or keyboard arrow keys.</li>
-					<li>If true, the plugin will allow the user to rapidly click on the navigation tabs or arrows to skip slides quickly. The animation will jump to the end, so it may not appear as smooth when this option is false.</li>
-				</ul>
-			</li>
-			<li>When using fade mode, the links in the first panel will now work properly. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/346">issue #346</a>.</li>
-			<li>When <code>showMultiple</code> and <code>changeBy</code> are more than one, and <code>infiniteSlides</code> is false, the slider will now properly show all of the slides. Fixes <a href="https://github.com/CSS-Tricks/AnythingSlider/issues/356">issue #356</a>. Thanks to <a href="https://github.com/NewMediaRoc">NewMediaRoc</a> for sharing the code!</li>
+			<li>See the <a href="https://github.com/CSS-Tricks/AnythingSlider/wiki/Change-Log">full change log here</a>.</li>
 		</ul>
 
 	</div>

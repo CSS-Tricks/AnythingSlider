@@ -74,7 +74,7 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 /** Demo 1 **/
 /* colorbox images to full size */
 #demo2 #slider1        { width: 400px; height: 300px; list-style: none; }
-#cboxPhoto             { width: 100%; height: 100%; margin: 0 !important; }
+.cboxPhoto             { width: 100%; height: 100%; margin: 0 !important; }
 #cboxTitle             { color: #000 !important; }
 
 /* Change metallic slider defaults to show thumbnails -

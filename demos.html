@@ -8,11 +8,15 @@
 	<link rel="shortcut icon" href="demos/images/favicon.ico" type="image/x-icon">
 	<link rel="apple-touch-icon" href="demos/images/apple-touch-icon.png">
 
+	<!-- Syntax highlighting -->
+	<link rel="stylesheet" href="demos/prettify/prettify.css" media="screen">
+	<script src="demos/prettify/prettify.js"></script>
+
 	<!-- jQuery (required) & jQuery UI (for this demo only) -->
-	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
 
 	<!-- Anything Slider optional plugins -->
 	<script src="js/jquery.easing.1.2.js"></script>
@@ -34,9 +38,6 @@
 	<script src="demos/js/demo.js"></script>
 	<script src="demos/colorbox/jquery.colorbox-min.js"></script>
 
-	<!-- Syntax highlighting -->
-	<script src="http://mottie.github.com/tablesorter/docs/js/chili/jquery.chili-2.2.js"></script>
-	<script src="http://mottie.github.com/tablesorter/docs/js/chili/recipes.js"></script>
 
 </head>
 
@@ -81,7 +82,7 @@
        <li>For this demo, the thumbnail images are premade; but with some server side scripting and modification to the <code>navigationFormatter</code> code, you should be able to create and link to your own thumbnail images.</li>
        <li>CSS is required to override the metallic theme CSS for thumbnail images to be visible (resize and remove negative text indentation), or you can make a new theme.</li>
        <li>Add images using the <code>navigationFormatter</code> option as follows:<br /><br />
-        <pre class="js"> navigationFormatter : function(i, panel){
+        <pre class="prettyprint lang-javascript"> navigationFormatter : function(i, panel){
   return '&lt;img src="demos/images/th-slide-' + ['civil-1', 'env-1', 'civil-2', 'env-2'][i-1] + '.jpg"&gt;';
  }</pre>
        </li>
@@ -101,7 +102,7 @@
 
    <h3><a href="#">Header</a></h3>
    <div>
-    <pre class="html"> &lt;!-- jQuery --&gt;
+    <pre class="prettyprint lang-html"> &lt;!-- jQuery --&gt;
  &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js&quot;&gt;&lt;/script&gt;
 
  &lt;!-- Anything Slider optional plugins --&gt;
@@ -118,7 +119,7 @@
 
    <h3><a href="#">CSS &amp; HTML</a></h3>
    <div>
-    <pre class="css">/* New in version 1.7+ */
+    <pre class="prettyprint lang-css"> /* New in version 1.7+ */
  #slider1 {
   width: 400px;
   height: 300px;
@@ -129,7 +130,7 @@
  /* Change metallic theme defaults to show thumbnails */
  div.anythingControls {
   bottom: 25px; /* thumbnail images are larger than the original bullets; move it up */
-}
+ }
  .anythingSlider-metallic .thumbNav a {
   background-image: url();
   height: 30px;
@@ -153,7 +154,7 @@
   margin-top: 15px;
  }</pre>
     <br>
-<pre class="html">&lt;ul id=&quot;slider1&quot;&gt;
+<pre class="prettyprint lang-html">&lt;ul id=&quot;slider1&quot;&gt;
   &lt;li&gt;&lt;img src=&quot;demos/images/slide-civil-1.jpg&quot;&gt;&lt;/li&gt;
   &lt;li&gt;&lt;img src=&quot;demos/images/slide-env-1.jpg&quot;&gt;&lt;/li&gt;
   &lt;li&gt;&lt;img src=&quot;demos/images/slide-civil-2.jpg&quot;&gt;&lt;/li&gt;
@@ -162,7 +163,7 @@
    </div>
 
    <h3><a href="#">Script</a></h3>
-   <div><pre class="js">$(function(){
+   <div><pre class="prettyprint lang-javascript">$(function(){
  $('#slider1')
   .anythingSlider({
    toggleControls : true,
@@ -249,7 +250,7 @@
       <ul>
        <li>Base effects are standard effects: <code>top</code>, <code>bottom</code>, <code>left</code>, <code>right</code>, <code>fade</code>, <code>expand</code>, <code>listLR</code>, <code>listRL</code>, <code>caption-Top</code>, <code>caption-Right</code>, <code>caption-Bottom</code>, <code>caption-Left</code>.</li>
        <li>Use the base effects as follows:<br><br>
-        <pre class="js"> $('#slider2').anythingSliderFx({
+        <pre class="prettyprint lang-javascript"> $('#slider2').anythingSliderFx({
   '.selector1' : [ 'effect(s)', 'size', 'time', 'easing' ],
   '.selector2' : [ 'effect(s)', 'size', 'time', 'easing' ]
  });</pre>
@@ -281,7 +282,7 @@
        <li>Custom effects can be mixed in with base effects as desired.</li>
        <li>When using custom effects it is important that each element with an 'inFx' method has a matching 'outFx' method, or those elements will be abnormally positioned and/or disappear from view.</li>
        <li>Standard setup for custom effects is as follows (there is no specific order required):<br><br>
-        <pre class="js"> $('#slider1').anythingSliderFx({
+        <pre class="prettyprint lang-javascript"> $('#slider1').anythingSliderFx({
   inFx : {
    '.selector1' : { top : 0, duration: 400, easing : 'easeOutBounce' },
    '.selector2' : { left: 0, duration: 400 }
@@ -306,7 +307,7 @@
 
    <h3><a href="#">Header</a></h3>
    <div>
-    <pre class="html">&lt;!-- jQuery --&gt;
+    <pre class="prettyprint lang-html">&lt;!-- jQuery --&gt;
  &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js&quot;&gt;&lt;/script&gt;
 
  &lt;!-- Anything Slider optional plugins --&gt;
@@ -321,14 +322,14 @@
    </div>
 
    <h3><a href="#">CSS &amp; HTML</a></h3>
-    <div><pre class="css">/* New in version 1.7+ */
-#slider2 {
+    <div><pre class="prettyprint lang-css">/* New in version 1.7+ */
+ #slider2 {
   width: 600px;
   height: 350px;
   list-style: none;
-}</pre>
+ }</pre>
   There is no change from the standard HTML setup, unless you want to add more specific classes so you can target them with effects.<br><br>
-    <pre class="html">&lt;ul id=&quot;slider2&quot;&gt;
+    <pre class="prettyprint lang-html">&lt;ul id=&quot;slider2&quot;&gt;
   &lt;li class=&quot;panel1&quot;&gt;
    &lt;div class=&quot;textSlide&quot;&gt;
     &lt;img src=&quot;demos/images/251356.jpg&quot; alt=&quot;tomato sandwich&quot; style=&quot;float: right;
@@ -375,7 +376,7 @@
    </div>
 
    <h3><a href="#">Script - FX addon, using base FX</a></h3>
-   <div><pre class="js">$(function(){
+   <div><pre class="prettyprint lang-javascript">$(function(){
  $('#slider2') // Demo 2 code, using FX base effects
   .anythingSlider({
    resizeContents      : false,
@@ -399,7 +400,7 @@
    </div>
 
    <h3><a href="#">Script - FX addon, using custom FX</a></h3>
-   <div><pre class="js">$(function(){
+   <div><pre class="prettyprint lang-javascript">$(function(){
  $('#slider2') // Demo 2 code, using FX full control
   .anythingSlider({
    resizeContents      : false,
@@ -501,7 +502,7 @@
 
    <h3><a href="#">Header</a></h3>
    <div>
-    <pre class="html"> &lt;!-- jQuery --&gt;
+    <pre class="prettyprint lang-html"> &lt;!-- jQuery --&gt;
  &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js&quot;&gt;&lt;/script&gt;
 
  &lt;!-- Anything Slider optional plugins --&gt;
@@ -516,7 +517,7 @@
    </div>
 
    <h3><a href="#">CSS</a></h3>
-   <div><pre class="css">/* New in version 1.7+ */
+   <div><pre class="prettyprint lang-css">/* New in version 1.7+ */
  #slider3 {
   width: 500px;
   height: 400px;
@@ -580,7 +581,7 @@
   </div>
 
    <h3><a href="#">HTML</a></h3>
-   <div><pre class="html"> &lt;ul id=&quot;slider3&quot;&gt;
+   <div><pre class="prettyprint lang-html"> &lt;ul id=&quot;slider3&quot;&gt;
   &lt;li&gt;
    &lt;!-- Note this caption is before the image, all others it is after --&gt;
    &lt;div class=&quot;caption-top&quot;&gt;
@@ -610,7 +611,7 @@
    </div>
 
    <h3><a href="#">Script - Caption appears on hover (FX extension not required)</a></h3>
-   <div><pre class="js">$(function(){
+   <div><pre class="prettyprint lang-javascript">$(function(){
  $('#slider3')
   .anythingSlider()
   /* this code will make the caption appear when you hover over the panel
@@ -676,7 +677,7 @@
    </div>
 
    <h3><a href="#">Script - FX addon, using base FX</a></h3>
-   <div><pre class="js">$(function(){
+   <div><pre class="prettyprint lang-javascript">$(function(){
  $('#slider3')
   .anythingSlider()
   .anythingSliderFx({
@@ -703,7 +704,7 @@
    </div>
 
    <h3><a href="#">Script - FX addon, using custom FX</a></h3>
-   <div><pre class="js">$(function(){
+   <div><pre class="prettyprint lang-javascript">$(function(){
  $('#slider3')
   .anythingSlider()
   /* this "custom" code is the equivalent of the base caption functions */
