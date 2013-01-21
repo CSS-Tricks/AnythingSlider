@@ -1,5 +1,5 @@
 /*!
-	AnythingSlider v1.8.13
+	AnythingSlider v1.8.14
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/CSS-Tricks/AnythingSlider
 
@@ -46,8 +46,7 @@
 			base.$wrapper = base.$el.parent().closest('div.anythingSlider').addClass('anythingSlider-' + o.theme);
 			base.$outer = base.$wrapper.parent();
 			base.$window = base.$el.closest('div.anythingWindow');
-			base.win = win;
-			base.$win = $(base.win);
+			base.$win = $(win);
 
 			base.$controls = $('<div class="anythingControls"></div>');
 			base.$nav = $('<ul class="thumbNav"><li><a><span></span></a></li></ul>');
@@ -424,18 +423,22 @@
 
 		// Adjust slider dimensions on parent element resize
 		base.checkResize = function(stopTimer){
+			// checking document visibility - 
+			var vis = !!(doc.hidden || doc.webkitHidden || doc.mozHidden || doc.msHidden);
 			clearTimeout(base.resizeTimer);
 			base.resizeTimer = setTimeout(function(){
-				var w = base.$outer.width() - base.outerPad[0],
-					h = (base.$outer[0].tagName === "BODY" ? base.$win.height() : base.$outer.height()) - base.outerPad[1];
+				var w = base.$outer.width(),
+					h = base.$outer[0].tagName === "BODY" ? base.$win.height() : base.$outer.height();
 				// base.width = width of one panel, so multiply by # of panels; outerPad is padding added for arrows.
-				if (base.width * o.showMultiple !== w || base.height !== h) {
+				// ignore changes if window hidden
+				if (!vis && (base.lastDim[0] !== w || base.lastDim[1] !== h)) {
 					base.setDimensions(); // adjust panel sizes
 					// make sure page is lined up (use -1 animation time, so we can differeniate it from when animationTime = 0)
 					base.gotoPage(base.currentPage, base.playing, null, -1);
 				}
 				if (typeof(stopTimer) === 'undefined'){ base.checkResize(); }
-			}, 500);
+				// increase time if page is hidden; but don't stop it completely
+			}, vis ? 2000 : 500);
 		};
 
 		// Set panel dimensions to either resize content or adjust panel to content
@@ -453,10 +456,12 @@
 				pw = (o.showMultiple > 1) ? base.width || base.$window.width()/o.showMultiple : base.$window.width(),
 				winw = base.$win.width();
 			if (o.expand){
-				w = base.$outer.width() - base.outerPad[0];
-				base.height = h = base.$outer.height() - base.outerPad[1];
-				base.$wrapper.add(base.$window).add(base.$items).css({ width: w, height: h });
+				base.lastDim = [ base.$outer.width(), base.$outer.height() ];
+				w = base.lastDim[0] - base.outerPad[0];
+				base.height = h = base.lastDim[1] - base.outerPad[1];
+				base.$wrapper.add(base.$window).css({ width: w, height: h });
 				base.width = pw = (o.showMultiple > 1) ? w/o.showMultiple : w;
+				base.$items.css({ width: pw, height: h });
 			}
 			base.$items.each(function(i){
 				t = $(this);
@@ -712,7 +717,7 @@
 		// If either found, it tries to find a matching item
 		// If that is found as well, then it returns the page number
 		base.gotoHash = function(){
-			var h = base.win.location.hash,
+			var h = win.location.hash,
 				i = h.indexOf('&'),
 				n = h.match(base.regex);
 			// test for "/#/" or "/#!/" used by the jquery address plugin - $('#/') breaks jQuery
@@ -730,9 +735,9 @@
 
 		base.setHash = function(n){
 			var s = 'panel' + base.runTimes + '-',
-				h = base.win.location.hash;
+				h = win.location.hash;
 			if ( typeof h !== 'undefined' ) {
-				base.win.location.hash = (h.indexOf(s) > 0) ? h.replace(base.regex, s + n) : h + "&" + s + n;
+				win.location.hash = (h.indexOf(s) > 0) ? h.replace(base.regex, s + n) : h + "&" + s + n;
 			}
 		};
 
@@ -756,7 +761,7 @@
 		base.clearTimer = function(paused){
 			// Clear the timer only if it is set
 			if (base.timer) {
-				base.win.clearInterval(base.timer);
+				win.clearInterval(base.timer);
 				if (!paused && base.slideshow) {
 					base.$el.trigger('slideshow_stop', base);
 					base.slideshow = false;
@@ -786,7 +791,7 @@
 			// Pause slideshow while video is playing
 			if (playing){
 				base.clearTimer(true); // Just in case this was triggered twice in a row
-				base.timer = base.win.setInterval(function() {
+				base.timer = win.setInterval(function() {
 					if ( !!(doc.hidden || doc.webkitHidden || doc.mozHidden || doc.msHidden) ) {
 						// stop slideshow if the page isn't visible (issue #463)
 						if (!o.autoPlayLocked) {
