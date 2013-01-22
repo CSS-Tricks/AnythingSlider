@@ -27,6 +27,10 @@ CMS plugins/mods
 
 ## Change Log
 
+# Version 1.8.15
+
+* Another version bump to try to register the plugin.
+
 # Version 1.8.14
 
 * Modified `expand`:
