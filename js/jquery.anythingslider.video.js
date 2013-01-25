@@ -22,7 +22,7 @@
 			video.options = $.extend({}, defaults, options);
 
 			// check if SWFObject is loaded
-			video.hasSwfo = (typeof(swfobject) !== 'undefined' && swfobject.hasOwnProperty('embedSWF') && typeof(swfobject.embedSWF) === 'function') ? true : false;
+			video.hasSwfo = (typeof(swfobject) !== 'undefined' && swfobject.hasOwnProperty('embedSWF') && typeof(swfobject.embedSWF) === 'function' && swfobject.hasFlashPlayerVersion('1'));
 
 			video.list = {};
 			video.hasVid = false;
