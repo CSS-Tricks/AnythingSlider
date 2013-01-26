@@ -38,10 +38,20 @@
     "video"
   ],
   "files": [
+    "package.json",
     "css/anythingslider.css",
     "js/jquery.anythingslider.js",
     "js/jquery.anythingslider.min.js",
     "js/jquery.anythingslider.fx.js",
     "js/jquery.anythingslider.video.js"
-  ]
+  ],
+  "jam": {
+    "main": "js/jquery.anythingslider.js",
+    "dependencies": {
+      "jquery": ">=1.4.2"
+    },
+    "shim": {
+      "deps": ["jquery"]
+    }
+  }
 }
