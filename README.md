@@ -27,6 +27,10 @@ CMS plugins/mods
 
 ## Change Log
 
+# Version 1.8.16
+
+* Merged in video extension update to prevent errors in iOS devices that don't support Flash. See [pull #485](https://github.com/CSS-Tricks/AnythingSlider/pull/485). Thanks [mlms13](https://github.com/mlms13)!
+
 # Version 1.8.15
 
 * Another version bump to try to register the plugin.

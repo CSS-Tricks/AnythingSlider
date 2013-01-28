@@ -1,5 +1,5 @@
 ﻿/*
- * AnythingSlider Video Controller 1.3 beta for AnythingSlider v1.6+
+ * AnythingSlider Video Controller 1.3.1 beta for AnythingSlider v1.6+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Dual licensed under the MIT and GPL licenses.
  */
