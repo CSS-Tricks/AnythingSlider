@@ -188,7 +188,7 @@
 			base.$items = base.$el.children();
 			base.pages = base.$items.length;
 			base.dir = (o.mode === 'vertical') ? 'top' : 'left';
-			o.showMultiple = (o.mode === 'vertical') ? 1 : parseInt(o.showMultiple,10) || 1; // only integers allowed
+			o.showMultiple = parseInt(o.showMultiple, 10) || 1; // only integers allowed
 			o.navigationSize = (o.navigationSize === false) ? 0 : parseInt(o.navigationSize,10) || 0;
 
 			// Fix tabbing through the page, but don't change the view if the link is in view (showMultiple = true)
@@ -449,19 +449,19 @@
 			base.width = base.$el.width();
 			base.height = base.$el.height();
 			base.outerPad = [ base.$wrapper.innerWidth() - base.$wrapper.width(), base.$wrapper.innerHeight() - base.$wrapper.height() ];
-
 			var w, h, c, t, edge = 0,
 				fullsize = { width: '100%', height: '100%' },
 				// determine panel width
-				pw = (o.showMultiple > 1) ? base.width || base.$window.width()/o.showMultiple : base.$window.width(),
-				winw = base.$win.width();
+				pw = (o.showMultiple > 1 && o.mode === 'horizontal') ? base.width || base.$window.width()/o.showMultiple : base.$window.width(),
+				ph = (o.showMultiple > 1 && o.mode === 'vertical') ? base.height/o.showMultiple || base.$window.height()/o.showMultiple : base.$window.height();
 			if (o.expand){
 				base.lastDim = [ base.$outer.width(), base.$outer.height() ];
 				w = base.lastDim[0] - base.outerPad[0];
-				base.height = h = base.lastDim[1] - base.outerPad[1];
+				h = base.lastDim[1] - base.outerPad[1];
 				base.$wrapper.add(base.$window).css({ width: w, height: h });
-				base.width = pw = (o.showMultiple > 1) ? w/o.showMultiple : w;
-				base.$items.css({ width: pw, height: h });
+				base.height = h = (o.showMultiple > 1 && o.mode === 'vertical') ? ph : h;
+				base.width = pw = (o.showMultiple > 1 && o.mode === 'horizontal') ? w/o.showMultiple : w;
+				base.$items.css({ width: pw, height: ph });
 			}
 			base.$items.each(function(i){
 				t = $(this);
@@ -479,9 +479,14 @@
 					}
 				} else {
 					// get panel width & height and save it
-					w = t.width() || base.width; // if image hasn't finished loading, width will be zero, so set it to base width instead
-					if (c.length === 1 && w >= winw){
-						w = (c.width() >= winw) ? pw : c.width(); // get width of solitary child
+					if (o.mode === 'vertical') {
+						w = t.css('display','inline-block').width();
+						t.css('display','');
+					} else {
+						w = t.width() || base.width; // if image hasn't finished loading, width will be zero, so set it to base width instead
+					}
+					if (c.length === 1 && w >= pw){
+						w = (c.width() >= pw) ? pw : c.width(); // get width of solitary child
 						c.css('max-width', w);   // set max width for all children
 					}
 					t.css({ width: w, height: '' }); // set width of panel
@@ -498,7 +503,7 @@
 
 		// get dimension of multiple panels, as needed
 		base.getDim = function(page){
-			var i, w = base.width, h = base.height;
+			var t, i, w = base.width, h = base.height;
 			if (base.pages < 1 || isNaN(page)) { return [ w, h ]; } // prevent errors when base.panelSize is empty
 			page = (o.infiniteSlides && base.pages > 1) ? page : page - 1;
 			i = base.panelSize[page];
@@ -507,9 +512,15 @@
 				h = i[1] || h;
 			}
 			if (o.showMultiple > 1) {
-				for (i=1; i < o.showMultiple; i++) {
-					w += base.panelSize[(page + i)][0];
-					h = Math.max(h, base.panelSize[page + i][1]);
+				for (i = 1; i < o.showMultiple; i++) {
+					t = page + i;
+					if (o.mode === 'vertical') {
+						w = Math.max(w, base.panelSize[t][0]);
+						h += base.panelSize[t][1];
+					} else {
+						w += base.panelSize[t][0];
+						h = Math.max(h, base.panelSize[t][1]);
+					}
 				}
 			}
 			return [w,h];
@@ -588,7 +599,7 @@
 
 			// delay starting slide animation
 			setTimeout(function(d){
-				var p, empty = true;
+				var t, p, empty = true;
 				if (o.allowRapidChange) {
 					base.$wrapper.add(base.$el).add(base.$items).stop(true, true);
 				}
@@ -615,6 +626,8 @@
 				} else {
 					d = {};
 					d[base.dir] = -base.panelSize[(o.infiniteSlides && base.pages > 1) ? page : page - 1][2];
+					// resize width of base element (ul) if vertical & width of content varies
+					if (o.mode === 'vertical' && !o.resizeContents) { d.width = p[0]; }
 					// Animate Slider
 					base.$el.filter(':not(:animated)').animate(
 						d, { queue: false, duration: time < 0 ? 0 : time, easing: o.easing, complete: function(){ base.endAnimation(page, callback, time); } }
