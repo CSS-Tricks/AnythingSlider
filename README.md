@@ -27,6 +27,15 @@ CMS plugins/mods
 
 ## Change Log
 
+# Version 1.8.18
+
+* Modified vertical `mode` to now work with `showMultiple` and show multiple slides.
+  * When showing more panels vertically, the plugin keeps the set panel size and just adds it to the bottom. So, if you set the slider to 300x200 and show two panels vertically, it will end up being 400 pixels in height, plus a bit more for the navigation. The plugin did the same with width, so it's just following this pattern.
+  * When using vertical `mode` and `expand` is `true`, the panels will be forced to fit within the height contraints, so the above pattern is not followed.
+  * If `resizeContents` is `false` the panels will be left aligned, and the slider will resize it's width and height to match the biggest panel.
+  * This feature request fulfills [issue #378](https://github.com/CSS-Tricks/AnythingSlider/issues/378).
+  * This feature has not been rigourously tested with all different combinations, so if you find any problems please report them by opening up an [issue](https://github.com/CSS-Tricks/AnythingSlider/issues).
+
 # Version 1.8.17
 
 * Minified version updated, as it was still an older version.
