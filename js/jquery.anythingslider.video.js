@@ -203,7 +203,7 @@ $.fn.anythingSliderVideo.services = {
 		selector : 'video',
 		cont : function(base, vid, index){
 			var $vid = $('#' + vid);
-			if ($vid.length && $vid[0].paused && $vid[0].currentTime > 0 && !$vid[0].ended) {
+			if (base.options.resumeOnVisible && $vid.length && $vid[0].paused && $vid[0].currentTime > 0 && !$vid[0].ended) {
 				$vid[0].play();
 			}
 		},
