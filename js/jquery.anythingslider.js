@@ -233,7 +233,7 @@
 				base.$el.find('.cloned').each(function(){
 					// disable all focusable elements in cloned panels to prevent shifting the panels by tabbing
 					$(this).find('a,input,textarea,select,button,area,form').attr({ disabled : 'disabled', name : '' });
-					$(this).find('[id]').andSelf().removeAttr('id');
+					$(this).find('[id]')[ $.fn.addBack ? 'addBack' : 'andSelf' ]().removeAttr('id');
 				});
 			}
 
@@ -265,7 +265,7 @@
 			base.$nav.find('a').eq(base.currentPage - 1).addClass('cur'); // update current selection
 
 			if (o.mode === 'fade') {
-				var t = base.$items.eq(base.currentPage-1);
+				t = base.$items.eq(base.currentPage-1);
 				if (o.resumeOnVisible) {
 					// prevent display: none;
 					t.css({ opacity: 1 }).siblings().css({ opacity: 0 });
@@ -445,7 +445,7 @@
 		base.setDimensions = function(){
 
 			// reset element width & height
-			base.$wrapper.find('.anythingWindow, .anythingBase, .panel').andSelf().css({ width: '', height: '' });
+			base.$wrapper.find('.anythingWindow, .anythingBase, .panel')[ $.fn.addBack ? 'addBack' : 'andSelf' ]().css({ width: '', height: '' });
 			base.width = base.$el.width();
 			base.height = base.$el.height();
 			base.outerPad = [ base.$wrapper.innerWidth() - base.$wrapper.width(), base.$wrapper.innerHeight() - base.$wrapper.height() ];
