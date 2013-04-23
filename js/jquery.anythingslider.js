@@ -410,7 +410,7 @@
 						base.startStop(!base.playing);
 						base.makeActive();
 						if (base.playing && !o.autoPlayDelayed) {
-							base.goForward(true);
+							base.goForward(true, o.playRtl);
 						}
 					}
 					e.preventDefault();
@@ -526,13 +526,13 @@
 			return [w,h];
 		};
 
-		base.goForward = function(autoplay) {
+		base.goForward = function(autoplay, rtl) {
 			// targetPage changes before animation so if rapidly changing pages, it will have the correct current page
-			base.gotoPage(base[ o.allowRapidChange ? 'targetPage' : 'currentPage'] + o.changeBy * (o.playRtl ? -1 : 1), autoplay);
+			base.gotoPage(base[ o.allowRapidChange ? 'targetPage' : 'currentPage'] + o.changeBy * (rtl ? -1 : 1), autoplay);
 		};
 
 		base.goBack = function(autoplay) {
-			base.gotoPage(base[ o.allowRapidChange ? 'targetPage' : 'currentPage'] + o.changeBy * (o.playRtl ? 1 : -1), autoplay);
+			base.gotoPage(base[ o.allowRapidChange ? 'targetPage' : 'currentPage'] - o.changeBy, autoplay);
 		};
 
 		base.gotoPage = function(page, autoplay, callback, time) {
@@ -812,7 +812,7 @@
 						}
 					} else if ( !o.isVideoPlaying(base) ) {
 						// prevent autoplay if video is playing
-						base.goForward(true);
+						base.goForward(true, o.playRtl);
 					} else if (!o.resumeOnVideoEnd) {
 						// stop slideshow if resume if false
 						base.startStop();
