@@ -29,13 +29,28 @@
 	<script>
 		// DOM Ready
 		$(function(){
-			$('#slider').anythingSlider({
-				resizeContents      : true,
-				addWmodeToObject    : 'transparent',
-				navigationFormatter : function(index, panel){ // Format navigation labels with text
-					return ['Vimeo-iframe', 'Vimeo-embed', 'YouTube-iframe', 'YouTube-embed', 'HTML5 Video'][index - 1];
-				}
-			});
+			$('#slider')
+				.anythingSlider({
+					resizeContents      : true,
+					addWmodeToObject    : 'opaque',
+					navigationFormatter : function(index, panel){ // Format navigation labels with text
+						return ['Vimeo-iframe', 'Vimeo-embed', 'YouTube-iframe', 'YouTube-embed', 'HTML5 Video'][index - 1];
+					}
+				})
+				// Initialize video extension
+				// see https://developers.google.com/youtube/player_parameters?hl=en#Parameters for a list of parameters
+				.anythingSliderVideo({
+					// video id prefix; suffix from $.fn.anythingSliderVideo.videoIndex
+					videoId : 'asvideo',
+					// auto load YouTube api script
+					youtubeAutoLoad : true,
+					// see: https://developers.google.com/youtube/player_parameters#Parameters
+					youtubeParams: {
+						modestbranding : 1,
+						iv_load_policy : 3,
+						fs : 1
+					}
+				});
 		});
 	</script>
 
@@ -95,13 +110,14 @@
 				<tr>
 					<th rowspan="2">Video Type</th>
 					<th rowspan="2">Function</th>
-					<th colspan="7">Browser</th>
+					<th colspan="8">Browser</th>
 				</tr>
 				<tr>
 					<th class="header">FF</th>
 					<th class="header">C</th>
 					<th class="header">S</th>
 					<th class="header">O</th>
+					<th class="header">IE10</th>
 					<th class="header">IE9</th>
 					<th class="header">IE8</th>
 					<th class="header">IE7</th>
@@ -116,6 +132,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="good"></td> <!-- IE8 -->
 					<td class="good"></td> <!-- IE7 -->
@@ -126,6 +143,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="good"></td> <!-- IE8 -->
 					<td class="bad"></td>  <!-- IE7 -->
@@ -135,6 +153,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="good"></td> <!-- IE8 -->
 					<td class="bad"></td>  <!-- IE7 -->
@@ -145,6 +164,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="good"></td> <!-- IE8 -->
 					<td class="bad"></td> <!-- IE7 -->
@@ -157,6 +177,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="good"></td> <!-- IE8 -->
 					<td class="good"></td> <!-- IE7 -->
@@ -167,6 +188,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="good"></td> <!-- IE8 -->
 					<td class="good"></td>  <!-- IE7 -->
@@ -176,6 +198,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="good"></td> <!-- IE8 -->
 					<td class="good"></td>  <!-- IE7 -->
@@ -186,6 +209,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="good"></td> <!-- IE8 -->
 					<td class="good"></td> <!-- IE7 -->
@@ -198,18 +222,20 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="good"></td> <!-- IE8 -->
 					<td class="good"></td> <!-- IE7 -->
 				</tr>
 				<tr>
 					<td>Continue *</td>
-					<td class="prob"></td> <!-- Firefox -->
-					<td class="prob"></td> <!-- Chrome -->
-					<td class="prob"></td> <!-- Safari -->
-					<td class="bad"></td> <!-- Opera -->
-					<td class="prob"></td> <!-- IE9 -->
-					<td class="prob"></td> <!-- IE8 -->
+					<td class="good"></td> <!-- Firefox -->
+					<td class="good"></td> <!-- Chrome -->
+					<td class="prob">?</td> <!-- Safari -->
+					<td class="bad">?</td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
+					<td class="good"></td> <!-- IE9 -->
+					<td class="good"></td> <!-- IE8 -->
 					<td class="bad"></td>  <!-- IE7 -->
 				</tr>
 				<tr><td>Pause</td>
@@ -217,6 +243,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="good"></td> <!-- IE8 -->
 					<td class="bad"></td>  <!-- IE7 -->
@@ -226,7 +253,8 @@
 					<td class="good"></td> <!-- Firefox -->
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
-					<td class="bad"></td> <!-- Opera -->
+					<td class="bad">?</td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="good"></td> <!-- IE8 -->
 					<td class="bad"></td> <!-- IE7 -->
@@ -239,6 +267,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="good"></td> <!-- IE8 -->
 					<td class="good"></td> <!-- IE7 -->
@@ -249,6 +278,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="good"></td> <!-- IE8 -->
 					<td class="good"></td>  <!-- IE7 -->
@@ -258,6 +288,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="good"></td> <!-- IE8 -->
 					<td class="good"></td>  <!-- IE7 -->
@@ -268,6 +299,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="good"></td> <!-- IE8 -->
 					<td class="good"></td> <!-- IE7 -->
@@ -280,6 +312,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="prob"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="bad"></td> <!-- IE8 -->
 					<td class="bad"></td> <!-- IE7 -->
@@ -290,6 +323,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="bad"></td> <!-- IE8 -->
 					<td class="bad"></td>  <!-- IE7 -->
@@ -299,6 +333,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="bad"></td> <!-- IE8 -->
 					<td class="bad"></td>  <!-- IE7 -->
@@ -309,6 +344,7 @@
 					<td class="good"></td> <!-- Chrome -->
 					<td class="good"></td> <!-- Safari -->
 					<td class="good"></td> <!-- Opera -->
+					<td class="good"></td> <!-- IE10 -->
 					<td class="good"></td> <!-- IE9 -->
 					<td class="bad"></td> <!-- IE8 -->
 					<td class="bad"></td> <!-- IE7 -->
@@ -317,12 +353,13 @@
 			</tbody>
 		</table>
 		<br>
-		<h3>Legend</h3>
+		<h3>Legend (<small>Updated 4/23/2013</small>)</h3>
 		<ul>
-			<li>(*) YouTube iframe
+			<li>(*) YouTube iframe 
 				<ul>
-					<li>The video autoplays (continues) the second time the video comes into view, because it gets paused even though it hasn't started; oddly this isn't a problem in Firefox. Still working on a fix.</li>
-					<li>Watching a related video breaks the ability if the slider to continue playing and pause the slideshow while playing these videos. This is because the iframe does not update the video URL and there is no way, that I know of, of determining which iframe is reporting a status change.</li>
+					<li><del>The video autoplays (continues) the second time the video comes into view, because it gets paused even though it hasn't started; oddly this isn't a problem in Firefox. Still working on a fix</del>.</li>
+					<li><del>Watching a related video breaks the ability if the slider to continue playing and pause the slideshow while playing these videos. This is because the iframe does not update the video URL and there is no way, that I know of, of determining which iframe is reporting a status change.</del></li>
+					<li>Did not test the updated video extension in Safari or Opera.</li>
 				</ul>
 			</li>
 			<li>(FF) Firefox 3+ - No problems noted.</li>
@@ -333,8 +370,9 @@
 					<li>In Safari for Windows, including an HTML5 along with other videos appears to offset every video down and right (about 100px) for an unknown reason. For now, this issue can be solved by keeping HTML5 videos separate from other videos.</li>
 				</ul>
 			</li>
-			<li>(O) Opera 9+ - YouTube iframe does not update player status when the script controls it (<a href="https://groups.google.com/forum/#!msg/youtube-api-gdata/eaPsecXHVmc/NXNDQhMZcwsJ">reported</a>). So this breaks this extension's ability to resume a video and pause the slideshow.</li>
-			<li>(IE9) Internet Explorer 9 - See "*" Note above.</li>
+			<li>(O) Opera 9+ - YouTube iframe does not update player status when the script controls it (<a href="https://groups.google.com/forum/#!msg/youtube-api-gdata/eaPsecXHVmc/NXNDQhMZcwsJ">reported</a>). So this breaks this extension's ability to resume a video and pause the slideshow.Not tested in the latest version.</li>
+			<li>(IE10) Internet Explorer 10 - No problems noted.</li>
+			<li>(IE9) Internet Explorer 9 - No problems noted.</li>
 			<li>(IE8) Internet Explorer 8 - no support for HTML5.</li>
 			<li>(IE7) Internet Explorer 7 - no support for HTML5 and no support for iframe communication.</li>
 		</ul>
