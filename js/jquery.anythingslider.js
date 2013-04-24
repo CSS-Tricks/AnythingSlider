@@ -553,7 +553,6 @@
 					page = o.stopAtEnd ? 1 : ( o.infiniteSlides ? base.pages + page : ( o.showMultiple > 1 - page ? 1 : adj ) );
 				}
 				if (page > base.pages) {
-					// 
 					page = o.stopAtEnd ? base.pages : ( o.showMultiple > 1 - page ? 1 : page -= adj );
 				} else if (page >= adj) {
 					// show multiple adjustments
@@ -570,7 +569,7 @@
 
 			// pause YouTube videos before scrolling or prevent change if playing
 			if (autoplay && o.isVideoPlaying(base)) { return; }
-
+			if (o.stopAtEnd && !o.infiniteSlides && page > base.pages - o.showMultiple) { page = base.pages - o.showMultiple + 1; } // fixes #515
 			base.exactPage = page;
 			if (page > base.pages + 1 - base.adj) { page = (!o.infiniteSlides && !o.stopAtEnd) ? 1 : base.pages; }
 			if (page < base.adj ) { page = (!o.infiniteSlides && !o.stopAtEnd) ? base.pages : 1; }
