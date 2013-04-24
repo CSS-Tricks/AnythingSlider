@@ -143,6 +143,7 @@ body#expand h3         { text-align: center; }
 .video-info li         { margin: 0; }
 .video-info sup        { font-size: 12px; }
 .video-info th.header  { width: 25px; }
+.good, .bad, .prob     { color: #ddd; text-align: center; }
 .good                  { background: #080; }
 .bad                   { background: #800; }
 .prob                  { background: #880; }

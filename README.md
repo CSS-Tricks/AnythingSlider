@@ -27,6 +27,56 @@ CMS plugins/mods
 
 ## Change Log
 
+# Version 1.9.0
+
+* Core updates:
+  * Support for jQuery's `addBack` and/or `andSelf` applied; see [issue #508](https://github.com/CSS-Tricks/AnythingSlider/pull/508).
+  * The `playRtl` option no longer swaps direction of the arrows; see [issue #526](https://github.com/CSS-Tricks/AnythingSlider/issues/526).
+  * The combination of `stopAtEnd:true`, `infiniteSlides:false` and `showMultiple` > `1`, no longer shows empty panels. Fixes [issue #515](https://github.com/CSS-Tricks/AnythingSlider/issues/515).
+  * Deprecated the `addWmodeToObject` option. Replaced by video extension's `wmode` option; see below for more details.
+
+* AnythingSlider Video Extension updates:
+  * Sadly, I didn't have time to completely rewrite this extension, but I think I got everything working properly again.
+  * Also, I didn't get a chance to do extensive video testing in IE, Safari or Opera... and since the newest Safari will no longer be available for Windows, I'll need some feedback on how it's working in that browser.
+  * The video extension no longer "automatically loads" itself
+      * You will now need to initialize this extension along with AnythingSlider (defaults shown below):
+
+          ```javascript
+          $('#slider')
+            .anythingSlider()
+            .anythingSliderVideo({
+              // video id prefix; suffix from $.fn.anythingSliderVideo.videoIndex
+              videoId         : 'asvideo',
+              // auto load YouTube api script
+              youtubeAutoLoad : true,
+              // YouTube iframe parameters, for a full list see:
+              // https://developers.google.com/youtube/player_parameters#Parameters
+              youtubeParams   : {
+                modestbranding : 1,
+                iv_load_policy : 3,
+                fs : 1,
+                wmode: 'opaque' // this is set by the wmode option above, so no need to include it here
+              }
+            });
+          ```
+
+      * This fixes [issue #167](https://github.com/CSS-Tricks/AnythingSlider/issues/167).
+
+  * YouTube:
+      * YouTube video should now properly pause and resume as it now dynamically loads the YouTube iframe api (set `youtubeAutoLoad` option to `false` to disable). Fixes issues [#191](https://github.com/CSS-Tricks/AnythingSlider/issues/191), [#263](https://github.com/CSS-Tricks/AnythingSlider/issues/263) &amp; [#333](https://github.com/CSS-Tricks/AnythingSlider/issues/333).
+      * Add any YouTube iframe parameters within the video extension options, as seen above.
+          * Also, [go here for a full list of iframe parameters](https://developers.google.com/youtube/player_parameters#Parameters).
+          * This will allow you to hide video controls (`controls: 0`) - see [issue #501](https://github.com/CSS-Tricks/AnythingSlider/issues/501).
+          * Autoplaying videos (`autoplay: 1`) will still be problematic, for these reasons:
+              * If multiple videos exists in the slider, they will all start autoplaying at once.
+              * If there is a single video and it isn't in the starting panel, it will start playing in the background.
+              * Autoplaying won't work in some mobile browsers like Chrome or Safari ([ref](https://developers.google.com/youtube/iframe_api_reference#Autoplay_and_scripted_playback)) - see [issue #454](https://github.com/CSS-Tricks/AnythingSlider/issues/454).
+      * The YouTube iframe wmode parameter is automatically set by the AnythingSlider `addWmodeToObject` option.
+      * YouTube embedded video still requires swfobject, but does not use the above `youtubeParams` option.
+  * HTML5 video now recognizes the `resumeOnVisible` option properly. See [issue #525](https://github.com/CSS-Tricks/AnythingSlider/issues/525).
+  * The `videoId` option automatically adds an ID to each video; this option contains the id prefix. The suffix is now properly added so having multiple video initialization blocks will no longer repeat the same Id.
+  * Changed the video extension to only use a GPL license, to match the main plugin.
+
 # Version 1.8.18
 
 * Modified vertical `mode` to now work with `showMultiple` and show multiple slides.
@@ -60,34 +110,3 @@ CMS plugins/mods
  * Updated colorbox plugin also because of errors when testing demos with jQuery v2.0.
  * Updated included jQuery file to v1.8.3.
  * Moved change log from the index.html file back to the readme.md file... it makes it easier to copy the markdown directly into the wiki change log.
-
-# Versions 1.8.10 to 1.8.13
-
-* New version, just to register with the [jquery plugin registry](http://plugins.jquery.com/).
-
-# Version 1.8.9
-
-* Removed code that clears the height of the outer wrapper when using the `expand` option. Fixes [issue #476](https://github.com/CSS-Tricks/AnythingSlider/issues/476).
-
-# Version 1.8.8
-
-* More `hashTag` option tweaks:
-  * The current panel can no longer be set via the hash when the `hashTags` option is set to `false`.
-  * This prevents errors when using other history plugins. Fixes [issue #432](https://github.com/CSS-Tricks/AnythingSlider/issues/432).
-
-# Version 1.8.7
-
-* Fixed hash tag issues.
-  * Equals within the hash should now be ignored. Fixes [issue #413](https://github.com/CSS-Tricks/AnythingSlider/issues/413).
-  * Hashtags are no longer processed if the hashTags option is false. Fixes [issue #432](https://github.com/CSS-Tricks/AnythingSlider/issues/432).
-* Updated all themes to no longer use a negative z-index. Fixes [issue #447](https://github.com/CSS-Tricks/AnythingSlider/issues/447).
-* Updating a slider will now include updating the width and height of the slider. Fixes [issue #459](https://github.com/CSS-Tricks/AnythingSlider/issues/459).
-* Slideshow now stops/pauses when the slider is not in the active browser tab.
-  * The slideshow completely stops if not in the active browser tab.
-  * If the autoPlayLocked option is true, the slideshow will only pause, then resume once the browser tab is active.
-  * Enhancement request from [issue #463](https://github.com/CSS-Tricks/AnythingSlider/issues/463).
-
-# Moved Repo!
-* The AnythingSlider repo was "moved" from ProLoser/AnythingSlider to CSS-Tricks/AnythingSlider.
-* Due to an issue, the repository was removed and all issues and links were lost, sorry for the inconvenience.
-* The Wiki documents have been replaced, but as all of the jsFiddle demos were targetting the files from the previous location, they are most likely all broken. I will slowly update these demos and links as time permits.

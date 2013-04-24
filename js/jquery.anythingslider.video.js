@@ -12,6 +12,8 @@
 		var defaults = {
 			// video id prefix; suffix from $.fn.anythingSliderVideo.videoIndex
 			videoId         : 'asvideo',
+			// this option replaces the `addWmodeToObject` option in the main plugin
+			wmode           : "opaque",
 			// auto load YouTube api script
 			youtubeAutoLoad : true,
 			// see: https://developers.google.com/youtube/player_parameters#Parameters
@@ -85,7 +87,7 @@
 						vidsrc = ($tar[0].tagName === 'EMBED') ? $tar.attr('src') : $tar.find('embed').attr('src') || $tar.children().filter('[name=movie]').attr('value');
 						opts = $.extend(true, {}, {
 							flashvars : null,
-							params    : { allowScriptAccess: 'always', wmode : base.options.addWmodeToObject, allowfullscreen : true },
+							params    : { allowScriptAccess: 'always', wmode : video.options.wmode || base.options.addWmodeToObject, allowfullscreen : true },
 							attr      : { 'class' : $tar.attr('class'), 'style' : $tar.attr('style'), 'data-url' : vidsrc }
 						}, service.embedOpts);
 						$tar.wrap('<div id="' + s.id + '"></div>');
@@ -246,7 +248,7 @@ $.fn.anythingSliderVideo.services = {
 			var vidsrc = $vid.attr('src');
 			$vid.attr('src', function(i,r){
 				// initialze api and add wmode parameter
-				return r + (vidsrc.match(/\?/g) ? '' : '?') + '&wmode=' + base.options.addWmodeToObject +
+				return r + (vidsrc.match(/\?/g) ? '' : '?') + '&wmode=' + (base.video.options.wmode || base.options.addWmodeToObject) +
 					'&api=1&player_id=' + $vid[0].id; 
 			});
 		},
@@ -326,7 +328,7 @@ $.fn.anythingSliderVideo.services = {
 					var vid = $vid[0].id,
 						src = $vid.attr('src').split('embed/')[1],
 						params = base.video.options.youtubeParams;
-					params.wmode = base.options.addWmodeToObject || 'opaque';
+					params.wmode = base.video.options.wmode || base.options.addWmodeToObject || 'opaque';
 					$vid.wrap('<div id="' + vid + '"/>').attr('id','');
 					base.video.list[index].player = new YT.Player( vid, {
 						height: '100%',
