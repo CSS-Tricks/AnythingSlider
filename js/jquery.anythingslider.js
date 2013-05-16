@@ -1,5 +1,5 @@
 /*!
-	AnythingSlider v1.9.0
+	AnythingSlider v1.9.1
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/CSS-Tricks/AnythingSlider
 
@@ -894,7 +894,7 @@
 
 /*
 		// Callbacks - commented out to reduce size of the minified version - they still work
-		onSliderResize  		: function(e, slider) {}, // Callback when slider resizes
+		onSliderResize      : function(e, slider) {}, // Callback when slider resizes
 		onBeforeInitialize  : function(e, slider) {}, // Callback before the plugin initializes
 		onInitialized       : function(e, slider) {}, // Callback when the plugin finished initializing
 		onShowStart         : function(e, slider) {}, // Callback on slideshow start

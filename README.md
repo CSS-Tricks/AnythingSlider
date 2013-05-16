@@ -27,6 +27,27 @@ CMS plugins/mods
 
 ## Change Log
 
+# Version 1.9.1
+
+* Added `onVideoInitialized` callback to the video extension.
+  * This callback function is called after the video extension has initialized.
+
+      ```js
+      onVideoInitialized: function(slider){ }
+      ```
+
+  * The function is passed a `base` (aka `slider`) parameter which can also be obtained using `$('#slider').data('AnythingSlider')`.
+  * All video functions are contained in `slider.video` and video options are contained within `slider.video.options`.
+* Added `onSliderResize` callback & `slideshow_resize` event.
+  * This callback function is called whenever the slider resizes, but only when the `expand` option is `true`.
+  * The function/event is passed an `event` object and `base` parameter.
+
+      ```js
+      onSliderResize: function(event, slider){ }
+      ```
+
+  * Thanks to [wearetelescopic](https://github.com/wearetelescopic) for sharing.
+
 # Version 1.9.0
 
 * Core updates:
@@ -93,20 +114,3 @@ CMS plugins/mods
 # Version 1.8.16
 
 * Merged in video extension update to prevent errors in iOS devices that don't support Flash. See [pull #485](https://github.com/CSS-Tricks/AnythingSlider/pull/485). Thanks [mlms13](https://github.com/mlms13)!
-
-# Version 1.8.15
-
-* Another version bump to try to register the plugin.
-
-# Version 1.8.14
-
-* Modified `expand`:
- * It now delays checking when the document is hidden.
- * Updated resizing checks to hopefully fix [issue #481](https://github.com/CSS-Tricks/AnythingSlider/issues/481).
-* Updated cs-portfolio theme to include a bottom margin so the controls don't get overlapped. See [issue #483](https://github.com/CSS-Tricks/AnythingSlider/issues/483).
-* Updated demos:
- * Demos now use jQuery 1.8. I was going to update the demos to use v1.9, but it's still very buggy. The biggest one being [this animation issue](http://bugs.jquery.com/ticket/13183) which has been fixed in v1.9.1.
- * Because I will eventually update the demos to use jQuery v2.0, I had to switch the syntax-highlighting plugin to use google's prettify.
- * Updated colorbox plugin also because of errors when testing demos with jQuery v2.0.
- * Updated included jQuery file to v1.8.3.
- * Moved change log from the index.html file back to the readme.md file... it makes it easier to copy the markdown directly into the wiki change log.
