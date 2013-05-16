@@ -1,5 +1,5 @@
 ﻿/*
- * AnythingSlider Video Controller 1.4 beta for AnythingSlider v1.6+
+ * AnythingSlider Video Controller 1.5 beta for AnythingSlider v1.6+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the GPL license.
  */
@@ -22,6 +22,7 @@
 				iv_load_policy : 3,
 				fs : 1
 			}
+			// ,onVideoInitialized : function(base){}
 		};
 
 		return this.each(function(){
@@ -181,9 +182,17 @@
 					video.control('cont');
 				});
 
-			base.options.isVideoPlaying = function(){ return video.control('isPlaying'); };
+			video.isVideoPlayingOrig = base.options.isVideoPlaying;
+			base.options.isVideoPlaying = function(){
+				return video.control('isPlaying') || video.isVideoPlayingOrig && video.isVideoPlayingOrig();
+			};
+
+			if (typeof video.options.onVideoInitialized === 'function'){
+				video.options.onVideoInitialized(base);
+			}
 
 		});
+
 	};
 
 // external index, in case multiple sliders with video are on the page
