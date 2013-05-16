@@ -155,8 +155,8 @@
 			base.gotoPage(base.currentPage, false, null, -1);
 
 			// Binds events
-			var triggers = "slideshow_paused slideshow_unpaused slide_init slide_begin slideshow_stop slideshow_start initialized swf_completed".split(" ");
-			$.each("onShowPause onShowUnpause onSlideInit onSlideBegin onShowStop onShowStart onInitialized onSWFComplete".split(" "), function(i,f){
+			var triggers = "slideshow_resized slideshow_paused slideshow_unpaused slide_init slide_begin slideshow_stop slideshow_start initialized swf_completed".split(" ");
+			$.each("onSliderResize onShowPause onShowUnpause onSlideInit onSlideBegin onShowStop onShowStart onInitialized onSWFComplete".split(" "), function(i,f){
 				if ($.isFunction(o[f])){
 					base.$el.bind(triggers[i], o[f]);
 				}
@@ -432,11 +432,18 @@
 				// base.width = width of one panel, so multiply by # of panels; outerPad is padding added for arrows.
 				// ignore changes if window hidden
 				if (!vis && (base.lastDim[0] !== w || base.lastDim[1] !== h)) {
+					
 					base.setDimensions(); // adjust panel sizes
+					
+					//callback for slider resize
+					base.$el.trigger('slideshow_resized', base);
+					
 					// make sure page is lined up (use -1 animation time, so we can differeniate it from when animationTime = 0)
 					base.gotoPage(base.currentPage, base.playing, null, -1);
+					
 				}
 				if (typeof(stopTimer) === 'undefined'){ base.checkResize(); }
+				
 				// increase time if page is hidden; but don't stop it completely
 			}, vis ? 2000 : 500);
 		};
@@ -887,6 +894,7 @@
 
 /*
 		// Callbacks - commented out to reduce size of the minified version - they still work
+		onSliderResize  		: function(e, slider) {}, // Callback when slider resizes
 		onBeforeInitialize  : function(e, slider) {}, // Callback before the plugin initializes
 		onInitialized       : function(e, slider) {}, // Callback when the plugin finished initializing
 		onShowStart         : function(e, slider) {}, // Callback on slideshow start
