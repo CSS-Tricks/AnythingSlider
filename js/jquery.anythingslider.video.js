@@ -1,5 +1,5 @@
 ﻿/*
- * AnythingSlider Video Controller 1.5 beta for AnythingSlider v1.6+
+ * AnythingSlider Video Controller 1.5.1 beta for AnythingSlider v1.6+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the GPL license.
  */
@@ -153,7 +153,8 @@
 					slide = (toDo === 'pause') ? base.$lastPage[0] : base.$currentPage[0],
 					isPlaying = false;
 				for (i=0; i < $.fn.anythingSliderVideo.videoIndex; i++){
-					if (s[i].panel === slide && video.services[s[i].service].hasOwnProperty(toDo)){
+					// s[i] may exist in different slider; see #548
+					if (s[i] && s[i].panel === slide && video.services[s[i].service].hasOwnProperty(toDo)){
 						isPlaying = video.services[s[i].service][toDo](base, $('#' + s[i].id), i);
 					}
 				}

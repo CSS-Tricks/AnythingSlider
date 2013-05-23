@@ -27,6 +27,10 @@ CMS plugins/mods
 
 ## Change Log
 
+# Version 1.9.2
+
+* Fixed video extension to now properly work with multiple sliders. See [issue #548](https://github.com/CSS-Tricks/AnythingSlider/issues/548).
+
 # Version 1.9.1
 
 * Added `onVideoInitialized` callback to the video extension.
