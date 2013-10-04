@@ -590,7 +590,7 @@
 			// don't trigger events when time < 0 - to prevent FX from firing multiple times on page resize
 			if (time >= 0) { base.$el.trigger('slide_init', base); }
 			// toggle arrows/controls only if there is time to see it - fix issue #317
-			if (time > 0) { base.slideControls(true); }
+			if (time > 0 && o.toggleControls === true ) { base.slideControls(true); }
 
 			// Set visual
 			if (o.buildNavigation){
