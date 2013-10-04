@@ -268,7 +268,8 @@
 				t = base.$items.eq(base.currentPage-1);
 				if (o.resumeOnVisible) {
 					// prevent display: none;
-					t.css({ opacity: 1 }).siblings().css({ opacity: 0 });
+					t.css({ opacity: 1, visibility: 'visible' })
+						.siblings().css({ opacity: 0, visibility: 'hidden' });
 				} else {
 					// allow display: none; - resets video
 					base.$items.css('opacity',1);
@@ -677,11 +678,22 @@
 		};
 
 		base.fadeIt = function(el, toOpacity, time, callback){
-			var t = time < 0 ? 0 : time;
+			var f = el.filter(':not(:animated)'),
+				t = time < 0 ? 0 : time;
 			if (o.resumeOnVisible) {
-				el.filter(':not(:animated)').fadeTo(t, toOpacity, callback);
+				if (toOpacity === 1) {
+					f.css('visibility', 'visible');
+				}
+				f.fadeTo(t, toOpacity, function(){
+					if (toOpacity === 0) {
+						f.css('visibility', 'hidden');
+					}
+					if ($.isFunction(callback)) {
+						callback();
+					}
+				});
 			} else {
-				el.filter(':not(:animated)')[ toOpacity === 0 ? 'fadeOut' : 'fadeIn' ](t, callback);
+				f[ toOpacity === 0 ? 'fadeOut' : 'fadeIn' ](t, callback);
 			}
 		};
 
