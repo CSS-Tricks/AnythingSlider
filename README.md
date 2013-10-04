@@ -27,6 +27,16 @@ CMS plugins/mods
 
 ## Change Log
 
+# Version 1.9.3
+
+* Updated all css themes (added `s` to css3 transition duration) so it will pass css3 validation. Fixes [issue #556](https://github.com/CSS-Tricks/AnythingSlider/issues/556).
+* Fade mode with `resumeOnVisible` set to `true` will now set the panel visibility to hidden when it is not the current panel. Fixes [issue #559](https://github.com/CSS-Tricks/AnythingSlider/issues/559).
+* Added a method to customize the `toggleControls` to only hide/show the arrows while the slide show is playing.
+  * To toggle both the navigation arrows and controls, set the `toggleControls` option is `true`.
+  * To toggle only the navigation arrows, but not the controls, set the `toggleControls` option to anything other than false - use `"true"` (or any string within the quotes).
+  * This fulfills the enhancement request from [issue #560](https://github.com/CSS-Tricks/AnythingSlider/issues/560).
+* Added a `component.json` file to allow registering this plugin with bower. Fulfills [issue #566](https://github.com/CSS-Tricks/AnythingSlider/issues/566).
+
 # Version 1.9.2
 
 * Fixed video extension to now properly work with multiple sliders. See [issue #548](https://github.com/CSS-Tricks/AnythingSlider/issues/548).
