@@ -101,21 +101,21 @@
 			
 			// Initialize o.aspectRatio 
 			// if aspectRatio = true calculate it
-                        if (o.expand && o.aspectRatio === true){
-                            o.aspectRatio = base.$el.width() / base.$el.height();
-                        }
+			if (o.expand && o.aspectRatio === true){
+				o.aspectRatio = base.$el.width() / base.$el.height();
+			}
 			// Calculate and set a float from a string e.g. '680:317'
 			if (o.expand && !!o.aspectRatio && !(o.aspectRatio > 0) && o.aspectRatio.indexOf(':') !== -1){
-			    var f = o.aspectRatio.split(':');
-			    o.aspectRatio = f[0] / f[1];
+				var f = o.aspectRatio.split(':');
+				o.aspectRatio = f[0] / f[1];
 			}
-                        // Adjust the aspectRatio according to showMultiple i.e. the more panels shown the wider the slider gets
-                        if (o.expand && o.aspectRatio > 0 && o.showMultiple > 1) {
-                            o.aspectRatio = o.aspectRatio * o.showMultiple;
-                        }
-			
+			// Adjust the aspectRatio according to showMultiple i.e. the more panels shown the wider the slider gets
+			if (o.expand && o.aspectRatio > 0 && o.showMultiple > 1) {
+				o.aspectRatio = o.aspectRatio * o.showMultiple;
+			}
+
 			base.updateSlider();
-			
+
 			// Expand slider to fit parent
 			if (o.expand) {
 				base.$window.css({ width: '100%', height: '100%' }); // needed for Opera
@@ -484,17 +484,17 @@
 				
 				// Rescale according to the aspectRatio if not null
 				// We have already insured that (in init) o.aspectRatio contains a float.
-                                if (!!o.aspectRatio){
-                                    var arW = h * o.aspectRatio;
-                                    // Really: only one of these should be adjusted therefor the else ... if
-                                    if (arW < w){
-                                        w = arW;
-                                    } else {
-					var arH = w / o.aspectRatio;
-					if (arH < h){
-					    h = arH;
+				if (!!o.aspectRatio){
+					var arW = h * o.aspectRatio;
+					// Really: only one of these should be adjusted therefor the else ... if
+					if (arW < w){
+						w = arW;
+					} else {
+						var arH = w / o.aspectRatio;
+						if (arH < h){
+							h = arH;
+						}
 					}
-				    }
 				}
 					
 				
