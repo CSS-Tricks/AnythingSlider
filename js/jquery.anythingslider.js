@@ -98,9 +98,24 @@
 			if (o.buildArrows) { base.buildNextBackButtons(); }
 
 			base.$lastPage = base.$targetPage = base.$currentPage;
-
+			
+			// Initialize o.aspectRatio 
+			// if aspectRatio = true calculate it
+                        if (o.expand && o.aspectRatio === true){
+                            o.aspectRatio = base.$el.width() / base.$el.height();
+                        }
+			// Calculate and set a float from a string e.g. '680:317'
+			if (o.expand && !!o.aspectRatio && !(o.aspectRatio > 0) && o.aspectRatio.indexOf(':') !== -1){
+			    var f = o.aspectRatio.split(':');
+			    o.aspectRatio = f[0] / f[1];
+			}
+                        // Adjust the aspectRatio according to showMultiple i.e. the more panels shown the wider the slider gets
+                        if (o.expand && o.aspectRatio > 0 && o.showMultiple > 1) {
+                            o.aspectRatio = o.aspectRatio * o.showMultiple;
+                        }
+			
 			base.updateSlider();
-
+			
 			// Expand slider to fit parent
 			if (o.expand) {
 				base.$window.css({ width: '100%', height: '100%' }); // needed for Opera
@@ -466,6 +481,23 @@
 				base.lastDim = [ base.$outer.width(), base.$outer.height() ];
 				w = base.lastDim[0] - base.outerPad[0];
 				h = base.lastDim[1] - base.outerPad[1];
+				
+				// Rescale according to the aspectRatio if not null
+				// We have already insured that (in init) o.aspectRatio contains a float.
+                                if (!!o.aspectRatio){
+                                    var arW = h * o.aspectRatio;
+                                    // Really: only one of these should be adjusted therefor the else ... if
+                                    if (arW < w){
+                                        w = arW;
+                                    } else {
+					var arH = w / o.aspectRatio;
+					if (arH < h){
+					    h = arH;
+					}
+				    }
+				}
+					
+				
 				base.$wrapper.add(base.$window).css({ width: w, height: h });
 				base.height = h = (o.showMultiple > 1 && o.mode === 'vertical') ? ph : h;
 				base.width = pw = (o.showMultiple > 1 && o.mode === 'horizontal') ? w/o.showMultiple : w;
@@ -851,6 +883,9 @@
 		mode                : "horiz",   // Set mode to "horizontal", "vertical" or "fade" (only first letter needed); replaces vertical option
 		expand              : false,     // If true, the entire slider will expand to fit the parent element
 		resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
+		// commented out as this will reduce the size of the minified version
+		//aspectRatio       : null,      // Valid values: null, true, a float e.g. 1.5 (or as 3/2) or a ratio in a string e.g. '3:2'
+		//				 // If true calculate it from original width/height for slider element, if it is a number/ratio use that value 
 		showMultiple        : false,     // Set this value to a number and it will show that many slides at once
 		easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin or jQuery UI
 
