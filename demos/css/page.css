@@ -33,6 +33,7 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 .data td, .data th     { border: #555 1px solid; padding: 0 5px; }
 .data th               { background: #eee; }
 .data .col             { width: 200px; }
+.spacer                { height: 50px; }
 
 /*****************
   Main demo page
@@ -141,9 +142,10 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 
 #expand #slider1,
 #expand #slider2       { width: 100%; height: 300px; list-style: none; }
+#expand p              { width: 75%; margin: 0 auto; }
 
 /* The next one is really vital since it is used to calculate the aspect ratio from. */
-#slider4              { width: 680px; height: 317px; }
+#expand #slider4       { width: 680px; height: 317px; }
 
 body#expand h2,
 body#expand h3         { text-align: center; }

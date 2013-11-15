@@ -29,8 +29,7 @@ CMS plugins/mods
 
 # Version 1.9.4
 
-* Added aspectRatio so that the slider scales according to this ratio when the expand option is given.
-
+* Added aspectRatio so that the slider scales according to this ratio when the expand option is given. Thanks [npn66nicke](https://github.com/npn66nicke)!
 
 # Version 1.9.3
 

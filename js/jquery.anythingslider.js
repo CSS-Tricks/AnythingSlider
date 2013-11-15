@@ -1,5 +1,5 @@
 /*!
-	AnythingSlider v1.9.3
+	AnythingSlider v1.9.4
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/CSS-Tricks/AnythingSlider
 
@@ -51,7 +51,7 @@
 			base.$controls = $('<div class="anythingControls"></div>');
 			base.$nav = $('<ul class="thumbNav"><li><a><span></span></a></li></ul>');
 			base.$startStop = $('<a href="#" class="start-stop"></a>');
-			
+
 			if (o.buildStartStop || o.buildNavigation) {
 				base.$controls.appendTo( (o.appendControlsTo && $(o.appendControlsTo).length) ? $(o.appendControlsTo) : base.$wrapper);
 			}
@@ -98,20 +98,21 @@
 			if (o.buildArrows) { base.buildNextBackButtons(); }
 
 			base.$lastPage = base.$targetPage = base.$currentPage;
-			
-			// Initialize o.aspectRatio 
-			// if aspectRatio = true calculate it
-			if (o.expand && o.aspectRatio === true){
-				o.aspectRatio = base.$el.width() / base.$el.height();
-			}
-			// Calculate and set a float from a string e.g. '680:317'
-			if (o.expand && !!o.aspectRatio && !(o.aspectRatio > 0) && o.aspectRatio.indexOf(':') !== -1){
-				var f = o.aspectRatio.split(':');
-				o.aspectRatio = f[0] / f[1];
-			}
-			// Adjust the aspectRatio according to showMultiple i.e. the more panels shown the wider the slider gets
-			if (o.expand && o.aspectRatio > 0 && o.showMultiple > 1) {
-				o.aspectRatio = o.aspectRatio * o.showMultiple;
+
+			// Initialize o.aspectRatio
+			if (o.expand) {
+				if (o.aspectRatio === true){
+					// if aspectRatio = true calculate it
+					o.aspectRatio = base.$el.width() / base.$el.height();
+				} else if (typeof o.aspectRatio === 'string' && o.aspectRatio.indexOf(':') !== -1){
+					// Calculate and set a float from a string e.g. '680:317'
+					var f = o.aspectRatio.split(':');
+					o.aspectRatio = f[0] / f[1];
+				}
+				// Adjust the aspectRatio according to showMultiple i.e. the more panels shown the wider the slider gets
+				if (o.aspectRatio > 0 && o.showMultiple > 1) {
+					o.aspectRatio = o.aspectRatio * o.showMultiple;
+				}
 			}
 
 			base.updateSlider();
@@ -439,7 +440,7 @@
 
 		// Adjust slider dimensions on parent element resize
 		base.checkResize = function(stopTimer){
-			// checking document visibility - 
+			// checking document visibility
 			var vis = !!(doc.hidden || doc.webkitHidden || doc.mozHidden || doc.msHidden);
 			clearTimeout(base.resizeTimer);
 			base.resizeTimer = setTimeout(function(){
@@ -448,18 +449,18 @@
 				// base.width = width of one panel, so multiply by # of panels; outerPad is padding added for arrows.
 				// ignore changes if window hidden
 				if (!vis && (base.lastDim[0] !== w || base.lastDim[1] !== h)) {
-					
+
 					base.setDimensions(); // adjust panel sizes
-					
+
 					//callback for slider resize
 					base.$el.trigger('slideshow_resized', base);
-					
+
 					// make sure page is lined up (use -1 animation time, so we can differeniate it from when animationTime = 0)
 					base.gotoPage(base.currentPage, base.playing, null, -1);
-					
+
 				}
 				if (typeof(stopTimer) === 'undefined'){ base.checkResize(); }
-				
+
 				// increase time if page is hidden; but don't stop it completely
 			}, vis ? 2000 : 500);
 		};
@@ -481,10 +482,11 @@
 				base.lastDim = [ base.$outer.width(), base.$outer.height() ];
 				w = base.lastDim[0] - base.outerPad[0];
 				h = base.lastDim[1] - base.outerPad[1];
-				
+
 				// Rescale according to the aspectRatio if not null
 				// We have already insured that (in init) o.aspectRatio contains a float.
-				if (!!o.aspectRatio){
+				// make sure aspectRatio isn't infinity (divided by zero; so must be less than width, 3 might be a better number)
+				if (o.aspectRatio && o.aspectRatio < base.width){
 					var arW = h * o.aspectRatio;
 					// Really: only one of these should be adjusted therefor the else ... if
 					if (arW < w){
@@ -496,8 +498,7 @@
 						}
 					}
 				}
-					
-				
+
 				base.$wrapper.add(base.$window).css({ width: w, height: h });
 				base.height = h = (o.showMultiple > 1 && o.mode === 'vertical') ? ph : h;
 				base.width = pw = (o.showMultiple > 1 && o.mode === 'horizontal') ? w/o.showMultiple : w;
@@ -885,7 +886,7 @@
 		resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
 		// commented out as this will reduce the size of the minified version
 		//aspectRatio       : null,      // Valid values: null, true, a float e.g. 1.5 (or as 3/2) or a ratio in a string e.g. '3:2'
-		//				 // If true calculate it from original width/height for slider element, if it is a number/ratio use that value 
+		// If true calculate it from original width/height for slider element, if it is a number/ratio use that value
 		showMultiple        : false,     // Set this value to a number and it will show that many slides at once
 		easing              : "swing",   // Anything other than "linear" or "swing" requires the easing plugin or jQuery UI
 
