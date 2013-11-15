@@ -1,7 +1,7 @@
 /********************
   Overall Demo pages
  ********************/
-body                   { font: 12px Georgia, Serif; background: #fff; color: #000; }
+body, p                { font: 14px Georgia, Serif; background: #fff; color: #000; }
 a, a img               { border: 0; text-decoration: none; }
 
 #page-wrap, #demo2     { width: 90%; padding: 0 15px; margin: 0 auto 50px; position: relative; }
@@ -129,8 +129,22 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
  ******************/
 #wrapper1              { width: 100%; height: 300px; margin: 0 auto; }
 #wrapper2              { width: 50%; height: 300px; margin: 0 auto; }
+
+/* div-wrappers for aspect ratio demos: */
+#wrapper3              { width: 75%; height: 500px; margin: 0 auto; border: solid red;    }
+#wrapper4              { width: 75%; height: 500px; margin: 0 auto; border: solid green;  }
+#wrapper5              { width: 75%; height: 500px; margin: 0 auto; border: solid green;  }
+#wrapper6              { width: 75%; height: 500px; margin: 0 auto; border: solid green;  }
+#wrapper7              { width: 75%; height: 200px; margin: 0 auto; border: solid green;  }
+#wrapper8              { width: 75%; height: 200px; margin: 0 auto; border: solid green;  }
+
+
 #expand #slider1,
 #expand #slider2       { width: 100%; height: 300px; list-style: none; }
+
+/* The next one is really vital since it is used to calculate the aspect ratio from. */
+#slider4              { width: 680px; height: 317px; }
+
 body#expand h2,
 body#expand h3         { text-align: center; }
 

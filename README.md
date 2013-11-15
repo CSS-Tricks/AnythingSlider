@@ -27,6 +27,11 @@ CMS plugins/mods
 
 ## Change Log
 
+# Version 1.9.4
+
+* Added aspectRatio so that the slider scales according to this ratio when the expand option is given.
+
+
 # Version 1.9.3
 
 * Updated all css themes (added `s` to css3 transition duration) so it will pass css3 validation. Fixes [issue #556](https://github.com/CSS-Tricks/AnythingSlider/issues/556).
