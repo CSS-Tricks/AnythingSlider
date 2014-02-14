@@ -30,7 +30,7 @@
 			// make sure a AnythingSlider is attached
 			var video, tmp, service, sel, base = $(this).data('AnythingSlider');
 			if (!base) { return; }
-			//custom code
+			//if anythingSliderVideo was initialized before, don't overwrite it
 			if(typeof base.video == 'undefined'){
 				video = base.video = {};
 				// Next update, I may just force users to call the video extension instead of it auto-running on window load
@@ -68,9 +68,9 @@
 								service  : service,
 								selector : sel,
 								status   : -1, // YouTube uses -1 to mean the video is unstarted 
-								isInitialized : false, //custom Code Mark as Initialized to prevent double initialisation on adding video to slider
+								isInitialized : false, //Mark as Initialized to prevent double initialisation on adding video to slider
 							};
-							//custom Code
+
 							//add indicator that this video was already initialized
 							pan.data('AnythingSliderVideoInitialized', true);
 							video.hasVid = true;
@@ -128,7 +128,7 @@
 						}
 					});
 				}
-				//custom code -> als initialisiert kennzeichnen
+				//mark as initialized
 				s.isInitialized = true;
 			});
 
