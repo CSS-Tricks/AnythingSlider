@@ -24,53 +24,67 @@
 			}
 			// ,onVideoInitialized : function(base){}
 		};
+		
 
 		return this.each(function(){
 			// make sure a AnythingSlider is attached
 			var video, tmp, service, sel, base = $(this).data('AnythingSlider');
 			if (!base) { return; }
-			video = base.video = {};
-			// Next update, I may just force users to call the video extension instead of it auto-running on window load
-			// then they can change the video options in that call instead of the base defaults, and maybe prevent the
-			// videos being initialized twice on startup (once as a regular video and second time with the API string)
-			video.options = $.extend({}, defaults, options);
-
-			// check if SWFObject is loaded
-			video.hasSwfo = (typeof(swfobject) !== 'undefined' && swfobject.hasOwnProperty('embedSWF') && typeof(swfobject.embedSWF) === 'function' && swfobject.hasFlashPlayerVersion('1'));
-
-			video.list = {};
-			video.hasVid = false;
-			video.hasEmbed = false;
-			video.services = $.fn.anythingSliderVideo.services;
-			video.hasEmbedCount = 0;
-			video.hasiframeCount = 0;
-			video.$items = base.$items.filter(':not(.cloned)');
-
+			//if anythingSliderVideo was initialized before, don't overwrite it
+			if(typeof base.video == 'undefined'){
+				video = base.video = {};
+				// Next update, I may just force users to call the video extension instead of it auto-running on window load
+				// then they can change the video options in that call instead of the base defaults, and maybe prevent the
+				// videos being initialized twice on startup (once as a regular video and second time with the API string)
+				video.options = $.extend({}, defaults, options);
+	
+				// check if SWFObject is loaded
+				video.hasSwfo = (typeof(swfobject) !== 'undefined' && swfobject.hasOwnProperty('embedSWF') && typeof(swfobject.embedSWF) === 'function' && swfobject.hasFlashPlayerVersion('1'));
+				video.list = {};
+				video.hasVid = false;
+				video.hasEmbed = false;
+				video.services = $.fn.anythingSliderVideo.services;
+				video.hasEmbedCount = 0;
+				video.hasiframeCount = 0;
+				video.$items = base.$items.filter(':not(.cloned)');
+			} else {
+				video = base.video;
+				video.$items = base.$items.filter(':not(.cloned)');
+			}
+				
 			// find and save all known videos
 			for (service in video.services) { /*jshint loopfunc:true */
 				if (typeof(service) === 'string') {
 					sel = video.services[service].selector;
 					video.$items.find(sel).each(function(){
 						tmp = $(this);
-						// save panel and video selector in the list
-						tmp.attr('id', video.options.videoId + $.fn.anythingSliderVideo.videoIndex);
-						video.list[$.fn.anythingSliderVideo.videoIndex] = {
-							id       : video.options.videoId + $.fn.anythingSliderVideo.videoIndex++,
-							panel    : tmp.closest('.panel')[0],
-							service  : service,
-							selector : sel,
-							status   : -1 // YouTube uses -1 to mean the video is unstarted 
-						};
-						video.hasVid = true;
-						if (sel.match('embed|object')) {
-							video.hasEmbed = true;
-							video.hasEmbedCount++;
-						} else if (sel.match('iframe')) {
-							video.hasiframeCount++;
+						var pan = tmp.closest('.panel');
+						if(pan.data('AnythingSliderVideoInitialized') != true){
+							// save panel and video selector in the list
+							tmp.attr('id', video.options.videoId + $.fn.anythingSliderVideo.videoIndex);
+							video.list[$.fn.anythingSliderVideo.videoIndex] = {
+								id       : video.options.videoId + $.fn.anythingSliderVideo.videoIndex++,
+								panel    : pan[0],
+								service  : service,
+								selector : sel,
+								status   : -1, // YouTube uses -1 to mean the video is unstarted 
+								isInitialized : false, //Mark as Initialized to prevent double initialisation on adding video to slider
+							};
+
+							//add indicator that this video was already initialized
+							pan.data('AnythingSliderVideoInitialized', true);
+							video.hasVid = true;
+							if (sel.match('embed|object')) {
+								video.hasEmbed = true;
+								video.hasEmbedCount++;
+							} else if (sel.match('iframe')) {
+								video.hasiframeCount++;
+							}
 						}
 					});
 				}
 			}
+			
 			// Initialize each video, as needed
 			$.each(video.list, function(i,s){
 				// s.id = ID, s.panel = slider panel (DOM), s.selector = 'jQuery selector'
@@ -80,7 +94,7 @@
 					api = service.api && service.api.initParam || '',
 					apiId = service.api && service.api.playerId || '';
 				// Initialize embeded video javascript api using SWFObject, if loaded
-				if (video.hasEmbed && video.hasSwfo && s.selector.match('embed|object')) {
+				if (video.hasEmbed && video.hasSwfo && s.selector.match('embed|object') && !s.isInitialized /* Custom Code */) {
 					$vid.each(function(){
 						$t = $(this);
 						// Older IE doesn't have an object - just make sure we are wrapping the correct element
@@ -106,7 +120,7 @@
 							}
 						);
 					});
-				} else if (s.selector.match('iframe')) {
+				} else if (s.selector.match('iframe') && !s.isInitialized /* Custom Code */) {
 					$vid.each(function(){
 						var $t = $(this);
 						if (service.hasOwnProperty('init')) {
@@ -114,6 +128,8 @@
 						}
 					});
 				}
+				//mark as initialized
+				s.isInitialized = true;
 			});
 
 			// Returns URL parameter; url: http://www.somesite.com?name=hello&id=11111
