@@ -7,7 +7,7 @@
 /*global swfobject: true, YT: true */
 ;(function($) {
 	"use strict";
-	$.fn.anythingSliderVideo = function(options){
+	$.fn.anythingSliderVideo = function(options) {
 		//Set the default values, use comma to separate the settings, example:
 		var defaults = {
 			// video id prefix; suffix from $.fn.anythingSliderVideo.videoIndex
@@ -22,16 +22,16 @@
 				iv_load_policy : 3,
 				fs : 1
 			}
-			// ,onVideoInitialized : function(base){}
+			// ,onVideoInitialized : function(base) {}
 		};
 
-		return this.each(function(){
+		return this.each(function() {
 			// make sure a AnythingSlider is attached
 			var video, tmp, service, sel, panel,
 				base = $(this).data('AnythingSlider');
 			if (!base) { return; }
 			// if anythingSliderVideo was initialized before, don't overwrite it
-			if(typeof base.video == 'undefined'){
+			if(typeof base.video == 'undefined') {
 				video = base.video = {};
 				video.options = $.extend({}, defaults, options);
 
@@ -53,10 +53,10 @@
 			for (service in video.services) { /*jshint loopfunc:true */
 				if (typeof(service) === 'string') {
 					sel = video.services[service].selector;
-					video.$items.find(sel).each(function(){
+					video.$items.find(sel).each(function() {
 						tmp = $(this);
 						panel = tmp.closest('.panel');
-						if (panel.data('AnythingSliderVideoInitialized') != true){
+						if (panel.data('AnythingSliderVideoInitialized') != true) {
 							// save panel and video selector in the list
 							tmp.attr('id', video.options.videoId + $.fn.anythingSliderVideo.videoIndex);
 							video.list[$.fn.anythingSliderVideo.videoIndex] = {
@@ -83,7 +83,7 @@
 			}
 
 			// Initialize each video, as needed
-			$.each(video.list, function(i,s){
+			$.each(video.list, function(i,s) {
 				// s.id = ID, s.panel = slider panel (DOM), s.selector = 'jQuery selector'
 				var tmp, $t, $tar, vidsrc, opts,
 					$vid = $(s.panel).find(s.selector),
@@ -92,7 +92,7 @@
 					apiId = service.api && service.api.playerId || '';
 				// Initialize embeded video javascript api using SWFObject, if loaded
 				if (video.hasEmbed && video.hasSwfo && s.selector.match('embed|object') && !s.isInitialized /* Custom Code */) {
-					$vid.each(function(){
+					$vid.each(function() {
 						$t = $(this);
 						// Older IE doesn't have an object - just make sure we are wrapping the correct element
 						$tar = ($(this).parent()[0].tagName === 'OBJECT') ? $(this).parent() : $(this);
@@ -106,7 +106,7 @@
 						// use SWFObject if it exists, it replaces the wrapper with the object/embed
 						swfobject.embedSWF(vidsrc + api + (apiId ? apiId + s.id : ''), s.id,
 							$tar.attr('width'), $tar.attr('height'), '10', null,
-							opts.flashvars, opts.params, opts.attr, function(){
+							opts.flashvars, opts.params, opts.attr, function() {
 								// run init code if it exists
 								if (service.hasOwnProperty('init')) {
 									service.init(base, $t, i);
@@ -118,7 +118,7 @@
 						);
 					});
 				} else if (s.selector.match('iframe') && !s.isInitialized /* Custom Code */) {
-					$vid.each(function(){
+					$vid.each(function() {
 						var $t = $(this);
 						if (service.hasOwnProperty('init')) {
 							service.init(base, $t, i);
@@ -131,27 +131,27 @@
 
 			// Returns URL parameter; url: http://www.somesite.com?name=hello&id=11111
 			// Original code from Netlobo.com (http://www.netlobo.com/url_query_string_javascript.html)
-			video.gup = function(n,s){
+			video.gup = function(n,s) {
 				n = n.replace(/[\[]/,"\\[").replace(/[\]]/,"\\]");
 				var p = (new RegExp("[\\?&]"+n+"=([^&#]*)")).exec(s || window.location.href);
 				return (p===null) ? "" : p[1];
 			};
 
 			// postMessage to iframe - http://benalman.com/projects/jquery-postmessage-plugin/ (FOR IE7)
-			video.postMsg = function(data, vid){
+			video.postMsg = function(data, vid) {
 				var $vid = $('#' + vid);
-				if ($vid.length){
+				if ($vid.length) {
 					$vid[0].contentWindow.postMessage(data, $vid.attr('src').split('?')[0]);
 				}
 			};
 
 			// receive message from iframe
 			// no way to figure out which iframe since the message is from the window
-			video.message = function(e){
+			video.message = function(e) {
 				if (e.data) {
 					if (/infoDelivery/g.test(e.data)) { return; } // ignore youtube video loading spam
 					var data = $.parseJSON(e.data);
-					$.each(video.list, function(i,s){
+					$.each(video.list, function(i,s) {
 						if (video.services[video.list[i].service].hasOwnProperty('message')) {
 							video.services[video.list[i].service].message(base, data);
 						}
@@ -160,14 +160,14 @@
 			};
 
 			// toDO = 'cont', 'pause' or 'isPlaying'
-			video.control = function(toDo){
+			video.control = function(toDo) {
 				var i,
 					s = video.list,
 					slide = (toDo === 'pause') ? base.$lastPage[0] : base.$currentPage[0],
 					isPlaying = false;
-				for (i=0; i < $.fn.anythingSliderVideo.videoIndex; i++){
+				for (i=0; i < $.fn.anythingSliderVideo.videoIndex; i++) {
 					// s[i] may exist in different slider; see #548
-					if (s[i] && s[i].panel === slide && video.services[s[i].service].hasOwnProperty(toDo)){
+					if (s[i] && s[i].panel === slide && video.services[s[i].service].hasOwnProperty(toDo)) {
 						isPlaying = video.services[s[i].service][toDo](base, $('#' + s[i].id), i);
 					}
 				}
@@ -175,33 +175,33 @@
 			};
 
 			// iframe event listener
-			video.bindFrames = function(msg){
-				if (window.addEventListener){
+			video.bindFrames = function(msg) {
+				if (window.addEventListener) {
 					window.addEventListener(msg, video.message, false);
 				} else { // IE
 					window.attachEvent(/^on/.test(msg) ? msg : 'on' + msg, video.message, false);
 				}
 			};
 
-			if (video.hasiframeCount){
+			if (video.hasiframeCount) {
 				video.bindFrames('message');
 			}
 
 			// bind to events
 			base.$el
-				.bind('slide_init', function(){
+				.bind('slide_init', function() {
 					video.control('pause');
 				})
-				.bind('slide_complete', function(){
+				.bind('slide_complete', function() {
 					video.control('cont');
 				});
 
 			video.isVideoPlayingOrig = base.options.isVideoPlaying;
-			base.options.isVideoPlaying = function(){
+			base.options.isVideoPlaying = function() {
 				return video.control('isPlaying') || video.isVideoPlayingOrig && video.isVideoPlayingOrig();
 			};
 
-			if (typeof video.options.onVideoInitialized === 'function'){
+			if (typeof video.options.onVideoInitialized === 'function') {
 				video.options.onVideoInitialized(base);
 			}
 
@@ -222,12 +222,12 @@ $.fn.anythingSliderVideo.videoIndex = 0;
  *  },
  *  embedOpts : { flashvars: {}, params: {}, attr: {} },          // optional: add any required flashvars, parameters or attributes to initialize the API
  *  // video startup functions
- *  init      : function(base, $vid, index){ }, // optional: include any additional initialization code here; function called AFTER the embeded video is added using SWFObject
+ *  init      : function(base, $vid, index) { }, // optional: include any additional initialization code here; function called AFTER the embeded video is added using SWFObject
  *  // required functions
- *  cont      : function(base, $vid, index){ }, // required: continue play if video was previously played
- *  pause     : function(base, $vid, index){ }, // required: pause ALL videos
- *  message   : function(base, data){ },       // required for iframe: process data received from iframe and update the video status for the "isPlaying" function
- *  isPlaying : function(base, $vid, index){ }  // required: return true if video is playing and return false if not playing (paused or ended)
+ *  cont      : function(base, $vid, index) { }, // required: continue play if video was previously played
+ *  pause     : function(base, $vid, index) { }, // required: pause ALL videos
+ *  message   : function(base, data) { },       // required for iframe: process data received from iframe and update the video status for the "isPlaying" function
+ *  isPlaying : function(base, $vid, index) { }  // required: return true if video is playing and return false if not playing (paused or ended)
  * }
  *
  * Function variables
@@ -247,18 +247,18 @@ $.fn.anythingSliderVideo.services = {
 	// *** HTML5 video ***
 	video : {
 		selector : 'video',
-		cont : function(base, $vid, index){
+		cont : function(base, $vid, index) {
 			if (base.options.resumeOnVisible && $vid.length && $vid[0].paused && $vid[0].currentTime > 0 && !$vid[0].ended) {
 				$vid[0].play();
 			}
 		},
-		pause : function(base, $vid){
+		pause : function(base, $vid) {
 			// pause ALL videos on the page
-			$('video').each(function(){
+			$('video').each(function() {
 				if (typeof(this.pause) !== 'undefined') { this.pause(); } // throws an error in older ie without this
 			});
 		},
-		isPlaying : function(base, $vid, index){
+		isPlaying : function(base, $vid, index) {
 			// media.paused seems to be the only way to determine if a video is playing
 			return ($vid.length && typeof($vid[0].pause) !== 'undefined' && !$vid[0].paused && !$vid[0].ended) ? true : false;
 		}
@@ -267,31 +267,33 @@ $.fn.anythingSliderVideo.services = {
 	// *** Vimeo iframe *** isolated demo: http://jsfiddle.net/Mottie/GxwEX/
 	vimeo1 : {
 		selector : 'iframe[src*=vimeo]',
-		init: function(base, $vid, index){
+		init: function(base, $vid, index) {
 			var vidsrc = $vid.attr('src');
-			$vid.attr('src', function(i,r){
+			$vid.attr('src', function(i,r) {
+				// vimeo api appears to require https now...
+				r = r.replace('http:', 'https:');
 				// initialze api and add wmode parameter
 				return r + (vidsrc.match(/\?/g) ? '' : '?') + '&wmode=' + (base.video.options.wmode || base.options.addWmodeToObject) +
 					'&api=1&player_id=' + $vid[0].id;
 			});
 		},
-		cont : function(base, $vid, index){
-			if (base.options.resumeOnVisible && base.video.list[index].status === 'pause'){
+		cont : function(base, $vid, index) {
+			if (base.options.resumeOnVisible && base.video.list[index].status === 'pause') {
 				// Commands sent to the iframe originally had "JSON.stringify" applied to them,
 				// but not all browsers support this, so it's just as easy to wrap it in quotes.
 				base.video.postMsg('{"method":"play"}', $vid[0].id);
 			}
 		},
-		pause : function(base, $vid){
+		pause : function(base, $vid) {
 			// pause ALL videos on the page
-			$('iframe[src*=vimeo]').each(function(){
+			$('iframe[src*=vimeo]').each(function() {
 				base.video.postMsg('{"method":"pause"}', this.id);
 			});
 		},
-		message : function(base, data){
+		message : function(base, data) {
 			// *** VIMEO *** iframe uses data.player_id
 			var index, vid = data.player_id || ''; // vid = data.player_id (unique to vimeo)
-			if (vid !== ''){
+			if (vid !== '') {
 				index = vid.replace(base.video.options.videoId, '');
 				if (data.event === 'ready') {
 					// Vimeo ready, add additional event listeners for video status
@@ -303,7 +305,7 @@ $.fn.anythingSliderVideo.services = {
 				if (base.video.list[index]) { base.video.list[index].status = data.event; }
 			}
 		},
-		isPlaying : function(base, $vid, index){
+		isPlaying : function(base, $vid, index) {
 			return (base.video.list[index].status === 'play') ? true : false;
 		}
 	},
@@ -322,16 +324,16 @@ $.fn.anythingSliderVideo.services = {
 				}
 			}
 		},
-		pause : function(base, $vid){
+		pause : function(base, $vid) {
 			// find ALL videos and pause them, just in case
-			$('object[data-url*=vimeo], embed[src*=vimeo]').each(function(){
+			$('object[data-url*=vimeo], embed[src*=vimeo]').each(function() {
 				var el = (this.tagName === 'EMBED') ? $(this).parent()[0] : this;
 				if (typeof(el.api_pause) === 'function') {
 					el.api_pause();
 				}
 			});
 		},
-		isPlaying : function(base, $vid, index){
+		isPlaying : function(base, $vid, index) {
 			return (typeof($vid[0].api_paused) === 'function' && !$vid[0].api_paused()) ? true : false;
 		}
 	},
@@ -339,14 +341,14 @@ $.fn.anythingSliderVideo.services = {
 	// *** iframe YouTube *** isolated demo: http://jsfiddle.net/Mottie/qk5MY/
 	youtube1 : {
 		selector : 'iframe[src*=youtube]',
-		init: function(base, $vid, index){
+		init: function(base, $vid, index) {
 			if (!$.fn.anythingSliderVideo.youTubeLoaded && base.video.options.youtubeAutoLoad) {
 				$.getScript("http://www.youtube.com/iframe_api", function(data, textStatus, jqxhr) {
 					$.fn.anythingSliderVideo.youTubeLoaded = true;
 				});
 			}
 			var indx = 0,
-			timer = setInterval(function(){
+			timer = setInterval(function() {
 				if ($.fn.anythingSliderVideo.youTubeReady) {
 					var vid = $vid[0].id,
 						src = $vid.attr('src').split('embed/')[1],
@@ -359,10 +361,10 @@ $.fn.anythingSliderVideo.services = {
 						videoId: src,
 						playerVars: params,
 						events: {
-							'onReady': function(e){
+							'onReady': function(e) {
 								base.video.list[index].status = e.data;
 							},
-							'onStateChange':  function(e){
+							'onStateChange':  function(e) {
 								base.video.list[index].status = e.data;
 							}
 						}
@@ -373,18 +375,18 @@ $.fn.anythingSliderVideo.services = {
 				if (++indx > 60) { clearInterval(timer); }
 			}, 1000);
 		},
-		cont : function(base, $vid, index){
-			if (base.options.resumeOnVisible && base.video.list[index].status === 2){
+		cont : function(base, $vid, index) {
+			if (base.options.resumeOnVisible && base.video.list[index].status === 2) {
 				// base.video.postMsg('{"event":"command","func":"playVideo"}', $vid[0].id);
 				// if ($vid[0].playVideo) { $vid[0].playVideo(); }
 				base.video.list[index].player && base.video.list[index].player.playVideo();
 			}
 		},
-		pause : function(base, $vid, index){
+		pause : function(base, $vid, index) {
 			// pause video; doesn't pause all videos on the page
 			base.video.list[index].player && base.video.list[index].player.pauseVideo();
 		},
-		isPlaying : function(base, $vid, index){
+		isPlaying : function(base, $vid, index) {
 			var status = base.video.list[index].status;
 			// state: unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
 			return (status === 1 || status > 2) ? true : false;
@@ -409,9 +411,9 @@ $.fn.anythingSliderVideo.services = {
 				}
 			}
 		},
-		pause : function(base, $vid){
+		pause : function(base, $vid) {
 			// find ALL videos and pause them, just in case
-			$('object[data-url*=youtube], embed[src*=youtube]').each(function(){
+			$('object[data-url*=youtube], embed[src*=youtube]').each(function() {
 				var el = (this.tagName === 'EMBED') ? $(this).parent()[0] : this;
 				// player states: unstarted (-1), ended (0), playing (1), paused (2), buffering (3), video cued (5).
 				if (typeof(el.getPlayerState) === 'function' && el.getPlayerState() > 0) {
@@ -420,7 +422,7 @@ $.fn.anythingSliderVideo.services = {
 				}
 			});
 		},
-		isPlaying : function(base, $vid){
+		isPlaying : function(base, $vid) {
 			return (typeof($vid[0].getPlayerState) === 'function' && ($vid[0].getPlayerState() === 1 || $vid[0].getPlayerState() > 2)) ? true : false;
 		}
 	}
