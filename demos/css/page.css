@@ -42,7 +42,7 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 #main #slider2         { width: 800px; height: 390px; list-style: none; }
 
 /* Set slider1 panel 5 stuff - adding padding directly to the panel will
-   shift panels after it, so we need a wrapper */
+shift panels after it, so we need a wrapper */
 #main #slider1 .panel5 ul { width: 200px; margin: 0 5px; }
 
 /* Set slider2 panel sizes, Main & FX demo pages */
@@ -79,7 +79,7 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 #cboxTitle             { color: #000 !important; }
 
 /* Change metallic slider defaults to show thumbnails -
-  using #demo2 (page wrapper) to increase this CSS priority */
+using #demo2 (page wrapper) to increase this CSS priority */
 #demo2 div.anythingControls { bottom: 25px; }
 #demo2 div.anythingSlider-metallic .thumbNav a { background-image: url(); height: 30px; width: 30px; border: #000 1px solid; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; }
 #demo2 div.anythingSlider-metallic .thumbNav a span { visibility: visible; }
@@ -111,10 +111,10 @@ ul li                  { font: 15px Georgia, Serif; margin: 0 0 8px 0; }
 #slider3 .caption-top,
 #slider3 .caption-right,
 #slider3 .caption-bottom,
-#slider3 .caption-left { background: #000; color: #fff; padding: 10px; margin: 0; position: absolute; z-index: 10; opacity: .8; filter: alpha(opacity=80); }
+#slider3 .caption-left   { background: #000; color: #fff; padding: 10px; margin: 0; position: absolute; z-index: 10; opacity: .8; filter: alpha(opacity=80); }
 
 /* Top caption - padding is included in the width (480px here, 500px in the script), same for height */
-#slider3 .caption-top  { left: 0; top: 0; width: 480px; height: 30px; }
+#slider3 .caption-top    { left: 0; top: 0; width: 480px; height: 30px; }
 
 /* Right caption - padding is included in the width (130px here, 150px in the script), same for height */
 #slider3 .caption-right  { right: 0; bottom: 0; width: 130px; height: 180px;  }
@@ -166,19 +166,18 @@ body#expand h3         { text-align: center; }
 .group                 { border: #000 1px solid; }
 
 /**************************
-Updating Video
-**************************/
-
+  Updating Video
+ **************************/
 #updatingVideoDemo div#slider1, ul#slider1 div {
-    width: 300px;
-    height: 200px;
-    list-style: none;
+  width: 300px;
+  height: 200px;
+  list-style: none;
 }
 
 #updatingVideoDemo div#slider2, div#slider2 div {
-    width: 300px;
-    height: 200px;
-    list-style: none;
+  width: 300px;
+  height: 200px;
+  list-style: none;
 }
 
 #updatingVideoDemo .updatingVideoDemoInputs {
@@ -192,29 +191,29 @@ Updating Video
 /******************
   css3 demo page
  ******************/
-.animations            { margin: 20px 20px 20px 5px; }
-.ani                   { margin-top: 10px; }
+.animations { margin: 20px 20px 20px 5px; }
+.ani        { margin-top: 10px; }
 
 /******************
   tooltips (Jatt)
  ******************/
 .tooltip { cursor: pointer; }
 #tooltip {
- min-width: 100px;
- color: #dddddd;
- background: #444;
- border: 1px solid #777;
- padding: 8px;
- display: none;
- opacity: 0.9;
- filter: alpha(opacity=90);
- text-align: left;
- border-radius: .5em;
- -moz-border-radius: .5em;
- -webkit-border-radius: .5em;
- z-index: 1000;
+  min-width: 100px;
+  color: #dddddd;
+  background: #444;
+  border: 1px solid #777;
+  padding: 8px;
+  display: none;
+  opacity: 0.9;
+  filter: alpha(opacity=90);
+  text-align: left;
+  border-radius: .5em;
+  -moz-border-radius: .5em;
+  -webkit-border-radius: .5em;
+  z-index: 1000;
 }
 #tooltip .body {
- display: block;
- text-align: center;
+  display: block;
+  text-align: center;
 }

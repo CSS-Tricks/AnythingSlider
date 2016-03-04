@@ -24,20 +24,17 @@
 			}
 			// ,onVideoInitialized : function(base){}
 		};
-		
 
 		return this.each(function(){
 			// make sure a AnythingSlider is attached
-			var video, tmp, service, sel, base = $(this).data('AnythingSlider');
+			var video, tmp, service, sel, panel,
+				base = $(this).data('AnythingSlider');
 			if (!base) { return; }
-			//if anythingSliderVideo was initialized before, don't overwrite it
+			// if anythingSliderVideo was initialized before, don't overwrite it
 			if(typeof base.video == 'undefined'){
 				video = base.video = {};
-				// Next update, I may just force users to call the video extension instead of it auto-running on window load
-				// then they can change the video options in that call instead of the base defaults, and maybe prevent the
-				// videos being initialized twice on startup (once as a regular video and second time with the API string)
 				video.options = $.extend({}, defaults, options);
-	
+
 				// check if SWFObject is loaded
 				video.hasSwfo = (typeof(swfobject) !== 'undefined' && swfobject.hasOwnProperty('embedSWF') && typeof(swfobject.embedSWF) === 'function' && swfobject.hasFlashPlayerVersion('1'));
 				video.list = {};
@@ -51,28 +48,28 @@
 				video = base.video;
 				video.$items = base.$items.filter(':not(.cloned)');
 			}
-				
+
 			// find and save all known videos
 			for (service in video.services) { /*jshint loopfunc:true */
 				if (typeof(service) === 'string') {
 					sel = video.services[service].selector;
 					video.$items.find(sel).each(function(){
 						tmp = $(this);
-						var pan = tmp.closest('.panel');
-						if(pan.data('AnythingSliderVideoInitialized') != true){
+						panel = tmp.closest('.panel');
+						if (panel.data('AnythingSliderVideoInitialized') != true){
 							// save panel and video selector in the list
 							tmp.attr('id', video.options.videoId + $.fn.anythingSliderVideo.videoIndex);
 							video.list[$.fn.anythingSliderVideo.videoIndex] = {
 								id       : video.options.videoId + $.fn.anythingSliderVideo.videoIndex++,
-								panel    : pan[0],
+								panel    : panel[0],
 								service  : service,
 								selector : sel,
-								status   : -1, // YouTube uses -1 to mean the video is unstarted 
-								isInitialized : false, //Mark as Initialized to prevent double initialisation on adding video to slider
+								status   : -1, // YouTube uses -1 to mean the video is unstarted
+								isInitialized : false, // Mark as Initialized to prevent double initialisation on adding video to slider
 							};
 
-							//add indicator that this video was already initialized
-							pan.data('AnythingSliderVideoInitialized', true);
+							// add indicator that this video was already initialized
+							panel.data('AnythingSliderVideoInitialized', true);
 							video.hasVid = true;
 							if (sel.match('embed|object')) {
 								video.hasEmbed = true;
@@ -84,7 +81,7 @@
 					});
 				}
 			}
-			
+
 			// Initialize each video, as needed
 			$.each(video.list, function(i,s){
 				// s.id = ID, s.panel = slider panel (DOM), s.selector = 'jQuery selector'
@@ -275,7 +272,7 @@ $.fn.anythingSliderVideo.services = {
 			$vid.attr('src', function(i,r){
 				// initialze api and add wmode parameter
 				return r + (vidsrc.match(/\?/g) ? '' : '?') + '&wmode=' + (base.video.options.wmode || base.options.addWmodeToObject) +
-					'&api=1&player_id=' + $vid[0].id; 
+					'&api=1&player_id=' + $vid[0].id;
 			});
 		},
 		cont : function(base, $vid, index){

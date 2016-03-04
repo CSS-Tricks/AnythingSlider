@@ -51,87 +51,87 @@
 						fs : 1
 					}
 				});
-				
+
 				//Update demo
 			$("#slider1, #slider2").anythingSlider({
-			    expand: false,
-			    resizeContents: false,
-			    mode: "fade",
-			    autoPlay: false,
-			    delay: 5000,
-			    infiniteSlides: false,
-			    buildArrows         : true,     // If true, builds the forwards and backwards buttons 
-			    buildNavigation     : false,    // If true, builds a list of anchor links to link to each panel 
-			    buildStartStop      : false,    // If true, builds the start/stop button 
-			    resumeDelay         : 2500,     // Resume slideshow after user interaction, only if autoplayLocked is true (in milliseconds). 
-			    animationTime       : 800,      // How long the slideshow transition takes (in milliseconds) 
-			})	//AnythingSlider 
+				expand: false,
+				resizeContents: false,
+				mode: "fade",
+				autoPlay: false,
+				delay: 5000,
+				infiniteSlides: false,
+				buildArrows         : true,     // If true, builds the forwards and backwards buttons
+				buildNavigation     : false,    // If true, builds a list of anchor links to link to each panel
+				buildStartStop      : false,    // If true, builds the start/stop button
+				resumeDelay         : 2500,     // Resume slideshow after user interaction, only if autoplayLocked is true (in milliseconds).
+				animationTime       : 800,      // How long the slideshow transition takes (in milliseconds)
+			})	//AnythingSlider
 			.anythingSliderVideo({
-			    // video id prefix; suffix from $.fn.anythingSliderVideo.videoIndex
-			    videoId         : 'asvideo',
-			    // this option replaces the `addWmodeToObject` option in the main plugin
-			    wmode           : "opaque",
-			    // auto load YouTube api script
-			    youtubeAutoLoad : true,
-			    // YouTube iframe parameters, for a full list see:
-			    // https://developers.google.com/youtube/player_parameters#Parameters
-			    youtubeParams   : {
-			        modestbranding : 1,
-			        autohide : 1,
-			        color: 'white',
-			        fs: 0,
-			        controls: 1,
-			        showinfo: 0,
-			        rel: 0,
-			        wmode: 'opaque' // this is set by the wmode option above, so no need to include it here
-			    }
+				// video id prefix; suffix from $.fn.anythingSliderVideo.videoIndex
+				videoId         : 'asvideo',
+				// this option replaces the `addWmodeToObject` option in the main plugin
+				wmode           : "opaque",
+				// auto load YouTube api script
+				youtubeAutoLoad : true,
+				// YouTube iframe parameters, for a full list see:
+				// https://developers.google.com/youtube/player_parameters#Parameters
+				youtubeParams   : {
+					modestbranding : 1,
+					autohide : 1,
+					color: 'white',
+					fs: 0,
+					controls: 1,
+					showinfo: 0,
+					rel: 0,
+					wmode: 'opaque' // this is set by the wmode option above, so no need to include it here
+				}
 			});
 			//add Video
 			$(document).on('click', '#sliderOneAdd', function(){
-			    var html = '<div class="videoContainer"><iframe height="100%" width="100%" src="'+ $('#sliderOneInput').val() +'" frameborder="0"></iframe></div>';
-			    //append
-			    $(html).appendTo('#slider1');
-			    //update
-			    $('#slider1').anythingSlider().anythingSliderVideo();
-			    //alert
-			    alert('Video added successfully!');
+				var html = '<div class="videoContainer"><iframe height="100%" width="100%" src="'+ $('#sliderOneInput').val() +'" frameborder="0"></iframe></div>';
+				//append
+				$(html).appendTo('#slider1');
+				//update
+				$('#slider1').anythingSlider().anythingSliderVideo();
+				//alert
+				alert('Video added successfully!');
 			});
 
 			//add Video
 			$(document).on('click', '#sliderTwoAdd', function(){
-			    var html = '<div class="videoContainer"><iframe height="100%" width="100%" src="'+ $('#sliderTwoInput').val() +'" frameborder="0"></iframe></div>';
-			    //append
-			    $(html).appendTo('#slider2');
-			    //update
-			    $('#slider2').anythingSlider().anythingSliderVideo();
-			    //alert
-			    alert('Video added successfully!');
+				var html = '<div class="videoContainer"><iframe height="100%" width="100%" src="'+ $('#sliderTwoInput').val() +'" frameborder="0"></iframe></div>';
+				//append
+				$(html).appendTo('#slider2');
+				//update
+				$('#slider2').anythingSlider().anythingSliderVideo();
+				//alert
+				alert('Video added successfully!');
 			});
 
 			//delete Video
 			$(document).on('click', '#sliderOneRemove', function(){
-			    var api = $('#slider1').data('AnythingSlider');
-			    if(api){
-			        var page = api.$currentPage;
-			        page.remove();
-			        //update
-			        $('#slider1').anythingSlider().anythingSliderVideo();
-			        //alert
-			        alert('Video removed!');
-			    }
+				var api = $('#slider1').data('AnythingSlider');
+				if (api){
+					var page = api.$currentPage;
+					page.remove();
+					//update
+					$('#slider1').anythingSlider().anythingSliderVideo();
+					//alert
+					alert('Video removed!');
+				}
 			});
 
 			//delete Video
 			$(document).on('click', '#sliderTwoRemove', function(){
-			    var api = $('#slider2').data('AnythingSlider');
-			    if(api){
-			        var page = api.$currentPage;
-			        page.remove();
-			        //update
-			        $('#slider2').anythingSlider().anythingSliderVideo();
-			        //alert
-			        alert('Video removed');
-			    }
+				var api = $('#slider2').data('AnythingSlider');
+				if (api){
+					var page = api.$currentPage;
+					page.remove();
+					//update
+					$('#slider2').anythingSlider().anythingSliderVideo();
+					//alert
+					alert('Video removed');
+				}
 			});
 		});
 	</script>
@@ -159,7 +159,7 @@
 	<ul id="slider">
 
 		<!-- Vimeo: iframe -->
-		<li class="panel1"><iframe src="http://player.vimeo.com/video/18011143?title=0&amp;byline=0&amp;portrait=0" width="400" height="225" frameborder="0"></iframe></li>
+		<li class="panel1"><iframe src="https://player.vimeo.com/video/18011143?title=0&amp;byline=0&amp;portrait=0" width="400" height="225" frameborder="0"></iframe></li>
 
 		<!-- Vimeo: Embeded -->
 		<li class="panel2"><object width="940" height="529"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=12280336&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=00adef&amp;fullscreen=1&amp;autoplay=0&amp;loop=0" /><embed src="http://vimeo.com/moogaloop.swf?clip_id=12280336&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=00adef&amp;fullscreen=1&amp;autoplay=0&amp;loop=0" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="940" height="529"></embed></object></li>
@@ -437,7 +437,7 @@
 		<br>
 		<h3>Legend (<small>Updated 4/23/2013</small>)</h3>
 		<ul>
-			<li>(*) YouTube iframe 
+			<li>(*) YouTube iframe
 				<ul>
 					<li><del>The video autoplays (continues) the second time the video comes into view, because it gets paused even though it hasn't started; oddly this isn't a problem in Firefox. Still working on a fix</del>.</li>
 					<li><del>Watching a related video breaks the ability if the slider to continue playing and pause the slideshow while playing these videos. This is because the iframe does not update the video URL and there is no way, that I know of, of determining which iframe is reporting a status change.</del></li>
@@ -462,19 +462,19 @@
 	</div>
 
 	<br>
-	
+
 	<div id="updatingVideoDemo">
 		<h1>Updating Video Sliders</h1>
 		<div id="slider1">
-		    <div class="videoContainer">
-		        <iframe height="100%" width="100%" src="//www.youtube.com/embed/9hGoTnTCyRo" frameborder="0"></iframe>
-		    </div>
-		    <div class="videoContainer">
-		        <iframe height="100%" width="100%" src="//www.youtube.com/embed/gB0sJA6SK5I" frameborder="0"></iframe>
-		    </div>
-		    <div class="videoContainer">
-		        <iframe height="100%" width="100%" src="//www.youtube.com/embed/dLA76V-e2TM" frameborder="0"></iframe>
-		    </div>
+				<div class="videoContainer">
+						<iframe height="100%" width="100%" src="//www.youtube.com/embed/9hGoTnTCyRo" frameborder="0"></iframe>
+				</div>
+				<div class="videoContainer">
+						<iframe height="100%" width="100%" src="//www.youtube.com/embed/gB0sJA6SK5I" frameborder="0"></iframe>
+				</div>
+				<div class="videoContainer">
+						<iframe height="100%" width="100%" src="//www.youtube.com/embed/dLA76V-e2TM" frameborder="0"></iframe>
+				</div>
 		</div>
 		<div class="updatingVideoDemoInputs">
 			<input name="videoUrlOne" id="sliderOneInput" type="text" placeholder="embedded URL" />
@@ -483,9 +483,9 @@
 		</div>
 		<br/>
 		<div id="slider2">
-		    <div class="videoContainer">
-		        <iframe height="100%" width="100%" src="//www.youtube.com/embed/TTMNqh_eGcU" frameborder="0"></iframe>
-		    </div>
+				<div class="videoContainer">
+						<iframe height="100%" width="100%" src="//www.youtube.com/embed/TTMNqh_eGcU" frameborder="0"></iframe>
+				</div>
 		</div>
 		<div class="updatingVideoDemoInputs">
 			<input name="videoUrlTwo" id="sliderTwoInput" type="text" placeholder="embedded URL" />

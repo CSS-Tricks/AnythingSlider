@@ -341,7 +341,8 @@
 					base.navWidths = base.$nav.find('li').map(function(){
 						return $(this).outerWidth(true) + Math.ceil(parseInt($(this).find('span').css('left'),10)/2 || 0);
 					}).get();
-					base.navLeft = base.currentPage;
+					// start navLeft at one so calling base.navWindow() will position the current page on the left
+					base.navLeft = 1;
 					// add 25 pixels (old IE needs more than 5) to make sure the tabs don't wrap to the next line
 					base.$nav.width( base.navWidth( 1, base.pages + 1 ) + 25 );
 					base.$controls.find('.anythingNavWindow')
