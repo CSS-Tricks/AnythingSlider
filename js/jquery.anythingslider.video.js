@@ -1,5 +1,5 @@
 ﻿/*
- * AnythingSlider Video Controller 1.5.1 beta for AnythingSlider v1.6+
+ * AnythingSlider Video Controller 1.5.2 beta for AnythingSlider v1.6+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the GPL license.
  */
@@ -85,7 +85,7 @@
 			// Initialize each video, as needed
 			$.each(video.list, function(i,s) {
 				// s.id = ID, s.panel = slider panel (DOM), s.selector = 'jQuery selector'
-				var tmp, $t, $tar, vidsrc, opts,
+				var $t, $tar, vidsrc, opts,
 					$vid = $(s.panel).find(s.selector),
 					service = video.services[s.service],
 					api = service.api && service.api.initParam || '',

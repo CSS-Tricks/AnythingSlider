@@ -1,5 +1,5 @@
 /*!
-	AnythingSlider v1.9.4
+	AnythingSlider v1.9.5
 	Original by Chris Coyier: http://css-tricks.com
 	Get the latest version: https://github.com/CSS-Tricks/AnythingSlider
 
@@ -640,7 +640,7 @@
 
 			// delay starting slide animation
 			setTimeout(function(d){
-				var t, p, empty = true;
+				var p, empty = true;
 				if (o.allowRapidChange) {
 					base.$wrapper.add(base.$el).add(base.$items).stop(true, true);
 				}
