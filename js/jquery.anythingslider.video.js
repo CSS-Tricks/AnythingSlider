@@ -1,5 +1,5 @@
 ﻿/*
- * AnythingSlider Video Controller 1.5.2 beta for AnythingSlider v1.6+
+ * AnythingSlider Video Controller 1.5.3 beta for AnythingSlider v1.6+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the GPL license.
  */
@@ -343,7 +343,7 @@ $.fn.anythingSliderVideo.services = {
 		selector : 'iframe[src*=youtube]',
 		init: function(base, $vid, index) {
 			if (!$.fn.anythingSliderVideo.youTubeLoaded && base.video.options.youtubeAutoLoad) {
-				$.getScript("http://www.youtube.com/iframe_api", function(data, textStatus, jqxhr) {
+				$.getScript("https://www.youtube.com/iframe_api", function(data, textStatus, jqxhr) {
 					$.fn.anythingSliderVideo.youTubeLoaded = true;
 				});
 			}

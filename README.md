@@ -27,7 +27,12 @@ CMS plugins/mods
 
 ## Recent Changes
 
-# Version 1.9.5
+# Version 1.9.6 (5/25/2016)
+
+* Video: Use https for YouTube api calls. Fixes [issue #648](https://github.com/CSS-Tricks/AnythingSlider/issues/648).
+* Demos: Use https for external files. Fixes [issue #646](https://github.com/CSS-Tricks/AnythingSlider/issues/646).
+
+# Version 1.9.5 (3/4/2016)
 
 * Dynamic video extension
   * Prevent reinitializing the video more than once.
@@ -36,16 +41,6 @@ CMS plugins/mods
   * All thanks to [christian-seifert](https://github.com/christian-seifert) in [pull #604](https://github.com/CSS-Tricks/AnythingSlider/pull/604)!
 * Force vimeo iframe to use `https` to prevent iframe communication issues. Fixes [issue #645](https://github.com/CSS-Tricks/AnythingSlider/issues/645).
 
-# Version 1.9.4
+# Version 1.9.4 (11/15/2013)
 
 * Added aspectRatio so that the slider scales according to this ratio when the expand option is given. Thanks [npn66nicke](https://github.com/npn66nicke)!
-
-# Version 1.9.3
-
-* Updated all css themes (added `s` to css3 transition duration) so it will pass css3 validation. Fixes [issue #556](https://github.com/CSS-Tricks/AnythingSlider/issues/556).
-* Fade mode with `resumeOnVisible` set to `true` will now set the panel visibility to hidden when it is not the current panel. Fixes [issue #559](https://github.com/CSS-Tricks/AnythingSlider/issues/559).
-* Added a method to customize the `toggleControls` to only hide/show the arrows while the slide show is playing.
-  * To toggle both the navigation arrows and controls, set the `toggleControls` option is `true`.
-  * To toggle only the navigation arrows, but not the controls, set the `toggleControls` option to anything other than false - use `"true"` (or any string within the quotes).
-  * This fulfills the enhancement request from [issue #560](https://github.com/CSS-Tricks/AnythingSlider/issues/560).
-* Added a `component.json` file to allow registering this plugin with bower. Fulfills [issue #566](https://github.com/CSS-Tricks/AnythingSlider/issues/566).
