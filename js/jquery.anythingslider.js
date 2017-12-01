@@ -555,7 +555,9 @@
 			}
 			if (o.showMultiple > 1) {
 				for (i = 1; i < o.showMultiple; i++) {
-					t = page + i;
+					// if panel doesn't exist; calculate the next one to be the
+					// same size as the last - fixes #659
+					t = base.panelSize[page + i] ? page + i : page;
 					if (o.mode === 'vertical') {
 						w = Math.max(w, base.panelSize[t][0]);
 						h += base.panelSize[t][1];
