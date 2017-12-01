@@ -27,6 +27,10 @@ CMS plugins/mods
 
 ## Recent Changes
 
+# Version 1.9.7 (12/1/2017)
+
+* Core: Prevent JS error when panel doesn't exist. Fixes [issue #659](https://github.com/CSS-Tricks/AnythingSlider/issues/659).
+
 # Version 1.9.6 (5/25/2016)
 
 * Video: Use https for YouTube api calls. Fixes [issue #648](https://github.com/CSS-Tricks/AnythingSlider/issues/648).
@@ -40,7 +44,3 @@ CMS plugins/mods
   * Add dynamic demo to video page.
   * All thanks to [christian-seifert](https://github.com/christian-seifert) in [pull #604](https://github.com/CSS-Tricks/AnythingSlider/pull/604)!
 * Force vimeo iframe to use `https` to prevent iframe communication issues. Fixes [issue #645](https://github.com/CSS-Tricks/AnythingSlider/issues/645).
-
-# Version 1.9.4 (11/15/2013)
-
-* Added aspectRatio so that the slider scales according to this ratio when the expand option is given. Thanks [npn66nicke](https://github.com/npn66nicke)!
