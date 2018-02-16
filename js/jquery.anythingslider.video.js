@@ -1,4 +1,4 @@
-﻿/*
+/*
  * AnythingSlider Video Controller 1.5.3 beta for AnythingSlider v1.6+
  * By Rob Garrison (aka Mottie & Fudgey)
  * Licensed under the GPL license.

@@ -1,4 +1,4 @@
-﻿$(function(){
+$(function(){
 	/* css3 demo page */
 	// animate.css list as of 12/2011
 	var animationList = [
