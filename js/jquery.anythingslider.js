@@ -264,7 +264,7 @@
 					.css('width', base.getDim(base.currentPage)[0])
 					.add(base.$items).css('height', base.height);
 			} else {
-				base.$win.load(function(){
+				base.$win.on('load', function(){
 					// set dimensions after all images load
 					base.setDimensions();
 					// make sure the outer wrapper is set properly
