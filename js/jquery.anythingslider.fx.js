@@ -120,7 +120,7 @@
 				if (slider.options.animationTime < defaults.timeOut) {
 					time = slider.options.animationTime || defaults.timeOut;
 				}
-				page = page.find('*').andSelf(); // include the panel in the selectors
+				page = page.find('*').addBack(); // include the panel in the selectors
 				for (el in FX) {
 					if (el === 'outFx') {
 						// process "out" custom effects
@@ -153,7 +153,7 @@
 				if (defaults.stopRepeat && slider.$lastPage[0] === slider.$targetPage[0]) { return; }
 				var el, elIn, page = slider.$currentPage.add( slider.$items.eq(slider.exactPage) ),
 				FX = slider.fx; // allow dynamically added FX
-				page = page.find('*').andSelf(); // include the panel in the selectors
+				page = page.find('*').addBack(); // include the panel in the selectors
 				for (el in FX) {
 					if (el === 'inFx') {
 						// process "in" custom effects
@@ -181,7 +181,7 @@
 			.data('AnythingSlider');
 
 			// call gotoPage to trigger intro animation
-			$(window).load(function(){ base.gotoPage(base.currentPage, base.playing); });
+			$(window).on('load', function(){ base.gotoPage(base.currentPage, base.playing); });
 
 		});
 	};
